@@ -1,0 +1,150 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BottomModal renders correctly 1`] = `
+<Modal
+  animationType="slide"
+  hardwareAccelerated={false}
+  onRequestClose={[MockFunction]}
+  transparent={true}
+  visible={true}
+>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessible={true}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "backgroundColor": "rgba(0,0,0,0.5)",
+        "bottom": 0,
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+  />
+  <View
+    style={
+      [
+        {
+          "width": "100%",
+        },
+        {
+          "backgroundColor": "#fff",
+        },
+        {
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
+        },
+        {
+          "position": "absolute",
+        },
+        {
+          "bottom": 0,
+        },
+        {
+          "shadowColor": "rgba(0, 0, 0, 0.1)",
+          "shadowOffset": {
+            "height": 25,
+            "width": 0,
+          },
+          "shadowOpacity": 1,
+          "shadowRadius": 50,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "height": 64,
+          },
+          {
+            "backgroundColor": "#6366f1",
+          },
+          {
+            "borderTopLeftRadius": 8,
+            "borderTopRightRadius": 8,
+          },
+          {
+            "paddingLeft": 16,
+            "paddingRight": 16,
+          },
+          {
+            "flexDirection": "row",
+          },
+          {
+            "alignItems": "center",
+          },
+          {
+            "justifyContent": "space-between",
+          },
+        ]
+      }
+    >
+      <View />
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+      >
+        <Text />
+      </View>
+    </View>
+    <View
+      style={
+        [
+          {
+            "paddingBottom": 16,
+            "paddingLeft": 16,
+            "paddingRight": 16,
+            "paddingTop": 16,
+          },
+        ]
+      }
+    />
+  </View>
+</Modal>
+`;

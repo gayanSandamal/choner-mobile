@@ -1,0 +1,373 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Btn /> rendered sucessfully 1`] = `
+<View
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": false,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "opacity": 1,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "borderBottomLeftRadius": 6,
+          "borderBottomRightRadius": 6,
+          "borderTopLeftRadius": 6,
+          "borderTopRightRadius": 6,
+        },
+        {
+          "backgroundColor": "#fff",
+        },
+        {
+          "shadowColor": "rgba(0, 0, 0, 0.1)",
+          "shadowOffset": {
+            "height": 2,
+            "width": 0,
+          },
+          "shadowOpacity": 1,
+          "shadowRadius": 6,
+        },
+        {
+          "paddingLeft": 12,
+          "paddingRight": 12,
+        },
+        {
+          "paddingBottom": 12,
+          "paddingTop": 12,
+        },
+        {
+          "display": "flex",
+        },
+        {
+          "justifyContent": "center",
+        },
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "fontWeight": "600",
+          },
+          {
+            "marginBottom": "auto",
+            "marginLeft": "auto",
+            "marginRight": "auto",
+            "marginTop": "auto",
+          },
+          {
+            "color": "#374151",
+          },
+        ]
+      }
+    >
+      Test
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`<BtnGroup /> rendered sucessfully 1`] = `
+<RCTScrollView
+  horizontal={true}
+>
+  <View>
+    <View
+      style={
+        [
+          {
+            "display": "flex",
+          },
+          {
+            "flexDirection": "row",
+          },
+          {
+            "justifyContent": "space-between",
+          },
+          {
+            "borderBottomLeftRadius": 6,
+            "borderBottomRightRadius": 6,
+            "borderTopLeftRadius": 6,
+            "borderTopRightRadius": 6,
+          },
+          {
+            "shadowColor": "rgba(0, 0, 0, 0.1)",
+            "shadowOffset": {
+              "height": 1,
+              "width": 0,
+            },
+            "shadowOpacity": 1,
+            "shadowRadius": 2,
+          },
+          {
+            "backgroundColor": "#fff",
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "opacity": 1,
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "fontWeight": "600",
+              },
+              {
+                "marginBottom": "auto",
+                "marginLeft": "auto",
+                "marginRight": "auto",
+                "marginTop": "auto",
+              },
+              {
+                "paddingLeft": 12,
+                "paddingRight": 12,
+              },
+              {
+                "paddingBottom": 12,
+                "paddingTop": 12,
+              },
+              {
+                "borderBottomLeftRadius": 6,
+                "borderBottomRightRadius": 6,
+                "borderTopLeftRadius": 6,
+                "borderTopRightRadius": 6,
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              [
+                {
+                  "fontWeight": "600",
+                },
+                {
+                  "marginBottom": "auto",
+                  "marginLeft": "auto",
+                  "marginRight": "auto",
+                  "marginTop": "auto",
+                },
+                {
+                  "color": "#4b5563",
+                },
+              ]
+            }
+          >
+            Test 1
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`<BtnLink /> rendered sucessfully 1`] = `
+<Text
+  href="/"
+  onPress={[Function]}
+  role="link"
+>
+  <View
+    style={
+      [
+        {
+          "borderBottomLeftRadius": 6,
+          "borderBottomRightRadius": 6,
+          "borderTopLeftRadius": 6,
+          "borderTopRightRadius": 6,
+        },
+        {
+          "backgroundColor": "#fff",
+        },
+        {
+          "paddingLeft": 16,
+          "paddingRight": 16,
+        },
+        {
+          "paddingBottom": 12,
+          "paddingTop": 12,
+        },
+        {
+          "display": "flex",
+        },
+        {
+          "justifyContent": "center",
+        },
+        {
+          "shadowColor": "rgba(0, 0, 0, 0.1)",
+          "shadowOffset": {
+            "height": 1,
+            "width": 0,
+          },
+          "shadowOpacity": 1,
+          "shadowRadius": 2,
+        },
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "fontWeight": "600",
+          },
+          {
+            "marginBottom": "auto",
+            "marginLeft": "auto",
+            "marginRight": "auto",
+            "marginTop": "auto",
+          },
+          {
+            "paddingLeft": 12,
+            "paddingRight": 12,
+          },
+          {
+            "color": "#6133bd",
+          },
+        ]
+      }
+    >
+      Test
+    </Text>
+  </View>
+</Text>
+`;
+
+exports[`<CharmBtn /> rendered sucessfully 1`] = `
+<View
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": false,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+>
+  <View
+    style={
+      [
+        {
+          "borderBottomLeftRadius": 6,
+          "borderBottomRightRadius": 6,
+          "borderTopLeftRadius": 6,
+          "borderTopRightRadius": 6,
+        },
+        {
+          "backgroundColor": "#fff",
+        },
+        {
+          "shadowColor": "rgba(0, 0, 0, 0.1)",
+          "shadowOffset": {
+            "height": 2,
+            "width": 0,
+          },
+          "shadowOpacity": 1,
+          "shadowRadius": 6,
+        },
+        {
+          "paddingLeft": 8,
+          "paddingRight": 8,
+        },
+        {
+          "paddingBottom": 8,
+          "paddingTop": 8,
+        },
+        {
+          "display": "flex",
+        },
+        {
+          "justifyContent": "center",
+        },
+      ]
+    }
+  >
+    <Text />
+  </View>
+</View>
+`;
