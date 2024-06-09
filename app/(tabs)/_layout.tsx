@@ -11,8 +11,8 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].white,
-        tabBarInactiveTintColor: Colors[colorScheme ?? 'light'].icon,
+        tabBarActiveTintColor: Colors.dark.white,
+        tabBarInactiveTintColor: Colors.dark.icon,
         headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: {
@@ -28,7 +28,7 @@ export default function TabLayout() {
           borderColor: 'black',
           borderRadius: 20,
           height: 60,
-          backgroundColor: Colors[colorScheme ?? 'light'].primary,
+          backgroundColor: Colors.dark.primary,
         }
       }}>
       <Tabs.Screen
@@ -36,7 +36,7 @@ export default function TabLayout() {
         options={{
           title: 'Home',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+            <TabBarIcon name={'home-outline'} color={focused ? Colors.dark.activeIcon : color} />
           ),
         }}
       />
@@ -45,7 +45,7 @@ export default function TabLayout() {
         options={{
           title: 'Shop',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'grid' : 'grid-outline'} color={color} />
+            <TabBarIcon name={'grid-outline'} color={focused ? Colors.dark.activeIcon : color} />
           ),
         }}
       />
@@ -54,7 +54,7 @@ export default function TabLayout() {
         options={{
           title: 'Favourites',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'heart' : 'heart-outline'} color={color} />
+            <TabBarIcon name={'heart-outline'} color={focused ? Colors.dark.activeIcon : color} />
           ),
         }}
       />
@@ -63,7 +63,7 @@ export default function TabLayout() {
         options={{
           title: 'Profile',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'person' : 'person-outline'} color={color} />
+            <TabBarIcon name={'person-outline'} color={focused ? Colors.dark.activeIcon : color} />
           ),
         }}
       />

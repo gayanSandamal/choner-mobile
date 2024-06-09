@@ -54,7 +54,7 @@ export const Btn = (props: BtnProps) => {
 
 export const BtnGroup = (props: BtnGroupProps) => {
   const colorScheme = useColorScheme();
-  const { buttons, onPress, color = Colors[colorScheme ?? 'light'].primary, selectedId } = props
+  const { buttons, onPress, color = Colors.dark.primary, selectedId } = props
 
   return (
     <ScrollView horizontal={true}>
@@ -73,7 +73,7 @@ export const BtnGroup = (props: BtnGroupProps) => {
 
 export const BtnLink = (props: BtnLinkProps) => {
   const colorScheme = useColorScheme();
-  const { href = '', title = 'Save', color = Colors[colorScheme ?? 'light'].primary } = props;
+  const { href = '', title = 'Save', color = Colors.dark.primary } = props;
   return (
     <Link href={href}>
       <View className={'rounded-md bg-white px-4 py-3 flex justify-center shadow-sm'}>

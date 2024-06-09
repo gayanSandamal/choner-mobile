@@ -11,7 +11,7 @@ export const CategoriesStrip = (props: CategoriesStripProps) => {
   
   return (
     <ScrollView horizontal={true}>
-      <BtnGroup buttons={categories} onPress={(btn) => onCategoryPress(btn)} selectedId={selectedCategoryId} color={Colors[colorScheme ?? 'light'].primary} />
+      <BtnGroup buttons={categories} onPress={(btn) => onCategoryPress(btn)} selectedId={selectedCategoryId} color={Colors.dark.primary} />
     </ScrollView>
   )
 }

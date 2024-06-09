@@ -7,7 +7,7 @@ import { VividCardProps } from "@/types/Components";
 export const Vivid = (props: VividCardProps) => {
   const { title, subtitleLine1, subtitleLine2, button, bgImgUri = '', color = 'text-white' } = props;
   const colorScheme = useColorScheme();
-  return (<View className="overflow-hidden overflow-hidden rounded-xl" style={{ backgroundColor: Colors[colorScheme ?? 'light'].primary }}>
+  return (<View className="overflow-hidden overflow-hidden rounded-xl" style={{ backgroundColor: Colors.dark.primary }}>
     <ImageBackground className='p-6' style={{ borderRadius: 20 }} source={{ uri: bgImgUri }}>
       <View>
         {title && <Text className={`mt-2 text-2xl font-medium ${color} mb-4`}>
@@ -19,7 +19,7 @@ export const Vivid = (props: VividCardProps) => {
           <BtnLink
             href={button.href}
             title={button.title}
-            color={Colors[colorScheme ?? 'light'].primary}
+            color={Colors.dark.primary}
           />
         </View>}
       </View>
