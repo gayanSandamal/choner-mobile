@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
-import { View, TextInput, TouchableOpacity } from 'react-native'
+import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { SearchProps } from '@/types/Components'
+
+const styles = StyleSheet.create({
+
+})
 
 const SearchBar = (props: SearchProps) => {
   const { placeholder = 'Search', onSubmit } = props
@@ -19,7 +23,7 @@ const SearchBar = (props: SearchProps) => {
   }
 
   return (
-    <View className={`flex flex-row items-center bg-gray-100 rounded-full px-3 shadow-md`}>
+    <View className={`flex flex-row items-center rounded-full px-3 shadow-md`}>
       <TextInput
         value={searchTerm}
         onChangeText={setSearchTerm}

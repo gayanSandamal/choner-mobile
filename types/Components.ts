@@ -21,14 +21,20 @@ export type BtnLinkProps = {
   color?: string
 }
 
+export enum InputSizes {
+  'sm',
+  'md',
+  'lg'
+}
+
+export type CharmBtnSize = InputSizes.sm | InputSizes.md | InputSizes.lg
+
 export type CharmBtnProps = {
   onPress: () => void
   icon?: string
-  color?: string
-  bgColor?: string
-  disabled?: boolean
-  size?: string
-  iconsSize?: number
+  frame?: boolean
+  size?: CharmBtnSize
+  slot?: React.ReactNode
 }
 
 export type BtnProps = {
@@ -109,5 +115,50 @@ export type VividCardProps = {
     href: string
   }
   bgImgUri?: string
+  color?: string
+}
+
+export enum FontSizes {
+  FTitle1 = 20,
+  FTitle2 = 16
+}
+
+export enum FontTypes {
+  FTitle1 = 'title1',
+  FTitle2 = 'title2',
+  FLabel = 'label',
+  FP = 'p'
+}
+
+export type FontType = FontTypes.FTitle1 | FontTypes.FTitle2 | FontTypes.FLabel | FontTypes.FP
+
+export enum FontColors {
+  'light' = 'light',
+  'dark' = 'dark'
+}
+
+export type FontColor = FontColors.light | FontColors.dark | string
+
+export type LabelProps = {
+  type: FontType
+  color?: FontColor
+  classNames?: string
+  label?: string
+}
+
+export type IconSize = InputSizes.sm | InputSizes.md | InputSizes.lg
+
+export enum IconNames {
+  'bell'
+}
+
+export type IconName = IconNames.bell
+
+export type IconProps = {
+  name: IconName,
+  size?: IconSize
+}
+
+export type IndicatorProps = {
   color?: string
 }

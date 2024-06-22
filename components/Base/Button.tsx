@@ -1,43 +1,54 @@
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { BtnGroupProps, BtnLinkProps, BtnProps, CharmBtnProps } from '@/types/Components';
+import { BtnGroupProps, BtnLinkProps, BtnProps, CharmBtnProps, IconNames, InputSizes } from '@/types/Components';
 import { Link } from 'expo-router';
 import React from 'react';
 import { Text, View, TouchableOpacity, ScrollView, Pressable } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons'
+import Icon from './Icon';
 
 export const CharmBtn = (props: CharmBtnProps) => {
-  const { onPress, icon = 'cart-outline', color = '#b12ac8', bgColor = 'bg-white', disabled = false, size = 'md', iconsSize = 28 } = props;
-  const sizable = () => {
-    if (size === 'sm') {
-      return {
-        size: 20,
-        px: 'px-1',
-        py: 'py-1',
-        textSize: 'text-xs'
+  const { onPress, frame = true, size, slot } = props;
+  const styles = () => {
+    let specificStyles
+    if (size === InputSizes.sm) {
+      specificStyles = {
+        width: 30,
+        height: 30,
+        borderRadius: 5
       }
-    } else if (size === 'md') {
-      return {
-        size: 28,
-        px: 'px-2',
-        py: 'py-2',
-        textSize: 'text-sm'
+    } else if (size === InputSizes.md) {
+      specificStyles = {
+        width: 34,
+        height: 34,
+        borderRadius: 5
       }
-    } else {
-      return {
-        size: 36,
-        px: 'px-3',
-        py: 'py-3',
-        textSize: 'text-base'
+    } else if (size === InputSizes.lg) {
+      specificStyles = {
+        width: 60,
+        height: 60,
+        borderRadius: 20
+      }
+    }
+    return {
+      btnStyles: {
+        ...specificStyles,
+        ...(frame ? { backgroundColor: `rgba(236, 239, 241, 0.1)` } : null),
+        alignItems: 'center',
+        justifyContent: 'center'
+      },
+      iconStyles: {
+        iconSize: size,
       }
     }
   }
   return (
-    <Pressable disabled={disabled} onPress={onPress}>
-      <View className={`rounded-md ${disabled ? 'bg-gray-300' : `${bgColor} shadow`} ${sizable().px} ${sizable().py} flex justify-center`}>
-        <Ionicons size={iconsSize} name={icon} color={color} />
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles().btnStyles as any}>
+        <Icon name={IconNames.bell} size={styles().iconStyles.iconSize} />
+        {slot}
       </View>
-    </Pressable>
+    </TouchableOpacity>
   )
 }
 
