@@ -8,56 +8,57 @@ import { IconName, IconNames } from '@/types/Components';
 import Header from '@/components/Common/Header';
 import { commonStyles } from '@/assets/styles/common';
 
+type TabType = {
+  name: string,
+  title: string,
+  icon: {
+    name: IconName,
+    link: string
+  }
+}
 export default function TabLayout() {
-  const tabs: {
-    name: string,
-    title: string,
-    icon: {
-      name: IconName,
-      link: string
-    }
-  }[] = [
-      {
-        name: 'index',
-        title: 'choner',
-        icon: {
-          name: IconNames.insight,
-          link: ''
-        }
-      },
-      {
-        name: 'community',
-        title: 'Community',
-        icon: {
-          name: IconNames.handshake,
-          link: 'community'
-        }
-      },
-      {
-        name: 'interests',
-        title: 'Interests',
-        icon: {
-          name: IconNames.interests,
-          link: 'interests'
-        }
-      },
-      {
-        name: 'video',
-        title: 'Video',
-        icon: {
-          name: IconNames.play,
-          link: 'video'
-        }
-      },
-      {
-        name: 'challenges',
-        title: 'Challenges',
-        icon: {
-          name: IconNames.trophy,
-          link: 'challenges'
-        }
-      },
-    ]
+  const tabs: TabType[] = [
+    {
+      name: 'index',
+      title: 'choner',
+      icon: {
+        name: IconNames.insight,
+        link: ''
+      }
+    },
+    {
+      name: 'community',
+      title: 'Community',
+      icon: {
+        name: IconNames.handshake,
+        link: 'community'
+      }
+    },
+    {
+      name: 'interests',
+      title: 'Interests',
+      icon: {
+        name: IconNames.interests,
+        link: 'interests'
+      }
+    },
+    {
+      name: 'video',
+      title: 'Video',
+      icon: {
+        name: IconNames.play,
+        link: 'video'
+      }
+    },
+    {
+      name: 'challenges',
+      title: 'Challenges',
+      icon: {
+        name: IconNames.trophy,
+        link: 'challenges'
+      }
+    },
+  ]
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.dark.grey }}>
       <ScrollView contentContainerStyle={{ flex: 1, paddingHorizontal: 12 }}>
@@ -85,11 +86,11 @@ export default function TabLayout() {
               ...commonStyles['shadow-md']
             }
           }}>
-          {tabs.map(tab => {
+          {tabs.map((tab: TabType, key) => {
             return (
               <Tabs.Screen
                 name={tab.name}
-                key={tab.name}
+                {...{ key }}
                 options={{
                   title: tab.title,
                   tabBarIcon: ({ focused }) => (

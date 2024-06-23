@@ -27,14 +27,14 @@ export enum InputSizes {
   'lg'
 }
 
-export type CharmBtnSize = InputSizes.sm | InputSizes.md | InputSizes.lg
+export type InputSize = InputSizes.sm | InputSizes.md | InputSizes.lg
 
 export type CharmBtnProps = {
   color?: string
   onPress: () => void
   icon?: IconName
   frame?: boolean
-  size?: CharmBtnSize
+  size?: InputSize
   slot?: React.ReactNode
 }
 
@@ -147,8 +147,6 @@ export type LabelProps = {
   label?: string
 }
 
-export type IconSize = InputSizes.sm | InputSizes.md | InputSizes.lg
-
 export enum IconNames {
   'bell',
   'insight',
@@ -163,7 +161,7 @@ export type IconName = IconNames.bell | IconNames.insight | IconNames.handshake 
 export type IconProps = {
   color?: string,
   name: IconName,
-  size?: IconSize
+  size?: InputSize
 }
 
 export type IndicatorProps = {
@@ -172,4 +170,12 @@ export type IndicatorProps = {
 
 export type HeaderProps = {
   unreadNotifications?: boolean
+}
+
+type ContainerStyles = { [key: string]: string | number }
+
+export type AvatarProps = {
+  containerStyles?: ContainerStyles
+  img?: string
+  size?: InputSize
 }
