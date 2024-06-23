@@ -158,7 +158,7 @@ export enum IconNames {
   'trophy'
 }
 
-export type IconName = IconNames.bell | IconNames.insight
+export type IconName = IconNames.bell | IconNames.insight | IconNames.handshake | IconNames.interests | IconNames.play | IconNames.trophy
 
 export type IconProps = {
   color?: string,

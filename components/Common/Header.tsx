@@ -5,18 +5,39 @@ import { FontColors, FontTypes, HeaderProps, InputSizes } from '@/types/Componen
 import { CharmBtn } from '../Base/Button';
 import Indicator from '../Base/Indicator';
 import { Colors } from '@/constants/Colors';
+import { usePathname } from 'expo-router';
+import { commonStyles } from '@/assets/styles/common';
 
 const styles = StyleSheet.create({
     headerWrapper: {
         backgroundColor: Colors.dark.grey,
-        height: 60
+        height: 60,
+        marginTop: 5,
+        marginBottom: 10,
+        ...commonStyles['shadow-md']
     }
 })
+
+const getTabTitle = (pathname: string) => {
+    if (pathname === '/') {
+        return 'choner'
+    } else if (pathname === '/community') {
+        return 'Community'
+    } else if (pathname === '/interests') {
+        return 'Interests'
+    } else if (pathname === '/video') {
+        return 'Video'
+    } else if (pathname === '/challenges') {
+        return 'Challenges'
+    }
+}
+
 const Header = (props: HeaderProps) => {
     const { unreadNotifications = false } = props
+    const pathname = usePathname()
     return (
-        <View className='rounded-2xl shadow-2xl flex flex-row items-center justify-between px-5' style={[styles.headerWrapper]}>
-            <Label type={FontTypes.FTitle2} color={FontColors.light} />
+        <View className='rounded-2xl flex flex-row items-center justify-between px-5' style={styles.headerWrapper}>
+            <Label label={getTabTitle(pathname)} type={FontTypes.FTitle2} color={FontColors.light} />
             <CharmBtn onPress={() => { }} size={InputSizes.md} frame={false} slot={
                 unreadNotifications && <View style={{ position: 'absolute', bottom: 4, right: 4 }}><Indicator /></View>
             } />

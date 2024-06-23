@@ -1,9 +1,10 @@
+import { Colors } from '@/constants/Colors'
 import { View, Text } from 'react-native'
 
 export default function InterestsScreen() {
   return (
-    <View className='flex h-full items-center justify-center'>
-      <Text className='text-2xl font-bold'>Interests Screen</Text>
+    <View className='flex h-full items-center justify-center' style={{ backgroundColor: Colors.dark.grey }}>
+      <Text className='text-2xl font-bold text-white'>Interests Screen</Text>
     </View>
   )
 }

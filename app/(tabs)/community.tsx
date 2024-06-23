@@ -1,11 +1,12 @@
+import { Colors } from '@/constants/Colors';
 import React from 'react';
 import { ScrollView, View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const CummunityScreen = () => {
   return (
-    <View className='flex h-full items-center justify-center'>
-      <Text className='text-2xl font-bold'>Community Screen</Text>
+    <View className='flex h-full items-center justify-center' style={{ backgroundColor: Colors.dark.grey }}>
+      <Text className='text-2xl font-bold text-white'>Community Screen</Text>
     </View>
   );
 }
