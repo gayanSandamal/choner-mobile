@@ -1,16 +1,30 @@
 import React from 'react';
 import Svg from "react-native-svg"
-import { IconBell } from './Icons';
+import { IconBell, IconInsight, IconHandshake, IconInterests, IconPlay, IconTrophy } from './Icons';
 import { IconName, IconNames, InputSizes, IconProps } from '@/types/Components';
+import { Colors } from '@/constants/Colors';
 
-const getIcon = (name: IconName) => {
+const getIcon = (props: { color: string, name: IconName }) => {
+    const { color, name } = props
     if (name === IconNames.bell) {
-        return <IconBell fill="#ffffff" />
+        return <IconBell fill={color} />
+    } else if (name === IconNames.insight) {
+        return <IconInsight fill={color} />
+    } else if (name === IconNames.handshake) {
+        return <IconHandshake fill={color} />
+    } else if (name === IconNames.interests) {
+        return <IconInterests fill={color} />
+    } else if (name === IconNames.interests) {
+        return <IconInterests fill={color} />
+    } else if (name === IconNames.play) {
+        return <IconPlay fill={color} />
+    } else if (name === IconNames.trophy) {
+        return <IconTrophy fill={color} />
     }
 }
 
 const Icon = (props: IconProps) => {
-    const { name = IconNames.bell, size = InputSizes.md } = props
+    const { color = Colors.dark.background, name = IconNames.bell, size = InputSizes.md } = props
     const styles = () => {
         if (size === InputSizes.sm) {
             return {
@@ -32,7 +46,7 @@ const Icon = (props: IconProps) => {
     }
     return (
         <Svg width={24} height={24} style={{ transform: [{ scale: styles().scale }] }}>
-            {getIcon(name)}
+            {getIcon({ color, name })}
         </Svg>
     )
 }

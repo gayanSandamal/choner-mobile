@@ -3,12 +3,11 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 import { BtnGroupProps, BtnLinkProps, BtnProps, CharmBtnProps, IconNames, InputSizes } from '@/types/Components';
 import { Link } from 'expo-router';
 import React from 'react';
-import { Text, View, TouchableOpacity, ScrollView, Pressable } from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons'
+import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import Icon from './Icon';
 
 export const CharmBtn = (props: CharmBtnProps) => {
-  const { onPress, frame = true, size, slot } = props;
+  const { color = Colors.dark.background, icon = IconNames.bell, onPress, frame = true, size, slot } = props;
   const styles = () => {
     let specificStyles
     if (size === InputSizes.sm) {
@@ -30,6 +29,7 @@ export const CharmBtn = (props: CharmBtnProps) => {
         borderRadius: 20
       }
     }
+
     return {
       btnStyles: {
         ...specificStyles,
@@ -45,7 +45,7 @@ export const CharmBtn = (props: CharmBtnProps) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles().btnStyles as any}>
-        <Icon name={IconNames.bell} size={styles().iconStyles.iconSize} />
+        <Icon color={color} name={icon} size={styles().iconStyles.iconSize} />
         {slot}
       </View>
     </TouchableOpacity>

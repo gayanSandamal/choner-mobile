@@ -20,7 +20,7 @@ const fontColor = (color: FontColor) => {
         }
     } else if (color === FontColors.light) {
         return {
-            color: Colors.dark.white
+            color: Colors.dark.background
         }
     } else {
         return {
