@@ -17,8 +17,6 @@ export default function TabLayout() {
       <ScrollView contentContainerStyle={{ flex: 1 }}>
         <Tabs
           screenOptions={{
-            tabBarActiveTintColor: Colors.dark.background,
-            tabBarInactiveTintColor: Colors.dark.icon,
             headerShown: false,
             tabBarShowLabel: false,
             tabBarStyle: {
@@ -40,8 +38,8 @@ export default function TabLayout() {
           <Tabs.Screen
             name="index"
             options={{
-              title: 'Home',
-              tabBarIcon: ({ color, focused }) => (
+              title: 'choner',
+              tabBarIcon: ({ focused }) => (
                 <TabBarIcon icon={IconNames.insight} color={focused ? Colors.dark['primary-shade-1'] : Colors.dark.background} link="" />
               ),
             }}
@@ -50,7 +48,7 @@ export default function TabLayout() {
             name="community"
             options={{
               title: 'Community',
-              tabBarIcon: ({ color, focused }) => (
+              tabBarIcon: ({ focused }) => (
                 <TabBarIcon icon={IconNames.handshake} color={focused ? Colors.dark['primary-shade-1'] : Colors.dark.background} link="community" />
               ),
             }}
@@ -59,7 +57,7 @@ export default function TabLayout() {
             name="interests"
             options={{
               title: 'Interests',
-              tabBarIcon: ({ color, focused }) => (
+              tabBarIcon: ({ focused }) => (
                 <TabBarIcon icon={IconNames.interests} color={focused ? Colors.dark['primary-shade-1'] : Colors.dark.background} link="interests" />
               ),
             }}
@@ -68,7 +66,7 @@ export default function TabLayout() {
             name="video"
             options={{
               title: 'Video',
-              tabBarIcon: ({ color, focused }) => (
+              tabBarIcon: ({ focused }) => (
                 <TabBarIcon icon={IconNames.play} color={focused ? Colors.dark['primary-shade-1'] : Colors.dark.background} link="video" />
               ),
             }}
@@ -77,7 +75,7 @@ export default function TabLayout() {
             name="challenges"
             options={{
               title: 'Challenges',
-              tabBarIcon: ({ color, focused }) => (
+              tabBarIcon: ({ focused }) => (
                 <TabBarIcon icon={IconNames.trophy} color={focused ? Colors.dark['primary-shade-1'] : Colors.dark.background} link="challenges" />
               ),
             }}
