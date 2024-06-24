@@ -4,66 +4,18 @@ import { ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
-import { IconName, IconNames } from '@/types/Components';
+import { TabType } from '@/types/Components';
 import Header from '@/components/Common/Header';
 import { commonStyles } from '@/assets/styles/common';
+import { tabs } from '@/constants/NavigationTabs';
 
-type TabType = {
-  name: string,
-  title: string,
-  icon: {
-    name: IconName,
-    link: string
-  }
-}
 export default function TabLayout() {
-  const tabs: TabType[] = [
-    {
-      name: 'index',
-      title: 'choner',
-      icon: {
-        name: IconNames.insight,
-        link: ''
-      }
-    },
-    {
-      name: 'community',
-      title: 'Community',
-      icon: {
-        name: IconNames.handshake,
-        link: 'community'
-      }
-    },
-    {
-      name: 'interests',
-      title: 'Interests',
-      icon: {
-        name: IconNames.interests,
-        link: 'interests'
-      }
-    },
-    {
-      name: 'video',
-      title: 'Video',
-      icon: {
-        name: IconNames.play,
-        link: 'video'
-      }
-    },
-    {
-      name: 'challenges',
-      title: 'Challenges',
-      icon: {
-        name: IconNames.trophy,
-        link: 'challenges'
-      }
-    },
-  ]
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.dark.grey }}>
       <ScrollView contentContainerStyle={{ flex: 1, paddingHorizontal: 12 }}>
         <Header />
         <Tabs
+          sceneContainerStyle={{ backgroundColor: Colors.dark.grey }}
           screenOptions={{
             headerShown: false,
             tabBarShowLabel: false,
