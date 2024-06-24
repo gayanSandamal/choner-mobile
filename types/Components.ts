@@ -212,3 +212,33 @@ export type AvatarProps = {
   img?: string
   size?: InputSize
 }
+
+type BaseGridDimensions = {
+  width: number
+  height: number
+}
+
+export type GridItemProps = {
+  columns?: number
+  gridDimentions?: BaseGridDimensions
+  classNames?: string
+  containerStyles?: ContainerStyles
+  children?: React.ReactNode
+}
+
+export type BaseGridProps = {
+  children?: React.ReactNode
+  containerStyles?: ContainerStyles
+  classNames?: string
+  onFetchDimensions?: (dimensoins: BaseGridDimensions) => void
+}
+
+type Gradient = {
+  colorBase: string
+  colorSecondary: string
+}
+
+export type CardProps = {
+  borderColor?: Gradient
+  backgroundColor?: Gradient
+}

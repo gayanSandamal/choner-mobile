@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
         height: 60,
         marginTop: 5,
         marginBottom: 10,
+        marginHorizontal: 12,
         ...commonStyles['shadow-md']
     }
 })
@@ -27,7 +28,7 @@ const hasSearch = (pathname: string) => {
 
 const getTabTitle = (pathname: string) => {
     if (pathname === '/') {
-        return 'Insights'
+        return 'choner'
     } else {
         return tabs.find((tab: TabType) => `/${tab.name}` === pathname)?.title
     }
@@ -40,7 +41,7 @@ const Header = (props: HeaderProps) => {
         <View className='rounded-2xl flex flex-row items-center justify-between px-5' style={styles.headerWrapper}>
             <View className='flex flex-row items-center'>
                 {hasSearch(pathname) && <CharmBtn icon={IconNames.search} onPress={() => { }} size={InputSizes.md} frame={false} />}
-                <Label classNames='ml-3' label={getTabTitle(pathname)} type={FontTypes.FTitle3} color={FontColors.light} />
+                <Label classNames='ml-3' label={getTabTitle(pathname)} type={FontTypes.FTitle3Bold} color={FontColors.light} />
             </View>
             <View className='flex flex-row items-center'>
                 <CharmBtn onPress={() => { }} size={InputSizes.md} frame={false} slot={
