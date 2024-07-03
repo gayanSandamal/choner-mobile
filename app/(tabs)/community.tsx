@@ -1,14 +1,55 @@
-import { Colors } from '@/constants/Colors';
-import React from 'react';
-import { ScrollView, View, Text } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Post } from '@/components/Post/Post'
+import { ContentSection } from '@/components/Wrappers/Sections'
+import { IconNames, PostTypeProps, PublishPostProps } from '@/types/Components'
+import { ScrollView } from 'react-native'
 
-const CummunityScreen = () => {
+export default function CommunityScreen() {
+  const onPostTypePress = (item: PostTypeProps) => {
+    alert(item)
+  }
+  const onPublish = (content: string) => {
+    alert(content)
+  }
+  const postTypes: PostTypeProps[] = [
+    {
+      icon: IconNames.addPost,
+      subtitle: 'Share your thoughts, ideas & tips with your followers',
+      title: 'Publish Post',
+      placeholder: 'Enter your thoughts...',
+      enableScheduling: true,
+      cancelButtonProps: {
+        label: 'Cancel',
+      },
+      submitButtonProps: {
+        label: 'Share',
+        onPress: onPublish
+      }
+    },
+    {
+      icon: IconNames.qanda,
+      title: 'Need an answer?',
+      subtitle: 'Get help from your audience by publishing your question',
+      placeholder: 'Ask your question...',
+      enableScheduling: true,
+      cancelButtonProps: {
+        label: 'Cancel',
+      },
+      submitButtonProps: {
+        label: 'Ask',
+        onPress: onPublish
+      }
+    },
+  ]
   return (
-    <View className='flex h-full items-center justify-center'>
-      <Text className='text-2xl font-bold text-white'>Community Screen</Text>
-    </View>
-  );
+    <ScrollView className='px-3'>
+      <ContentSection classNames='mt-3' cardMode={false} slot={
+        <Post
+          list={postTypes}
+          onPostTypePress={onPostTypePress}
+          actionBarData={
+            { title: 'Share your story...' }
+          } />
+      } />
+    </ScrollView>
+  )
 }
-
-export default CummunityScreen;

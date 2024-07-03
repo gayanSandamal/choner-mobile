@@ -1,7 +1,7 @@
 import { useCartItems, useRemoveFromCart, useUpdateQty } from '@/hooks/useCart';
 import { View, Text, ScrollView, Image } from 'react-native';
 import { CartItem } from '@/types/Products';
-import { Btn } from '@/components/Base/Button';
+// import { Btn } from '@/components/Base/Button';
 import { useResetCart } from "@/hooks/useCart";
 import { CartItemComponent } from '@/components/Cart/CartItem';
 import BottomModal from '@/components/Base/Modal';
@@ -71,10 +71,10 @@ export default function ShoppingCartScreen() {
         </View>
         <View className='flex flex-row'>
           {items.length > 0 && <View className='w-1/3'>
-            <Btn outlined={true} color={'text-white'} title="Clear" wrapperClasses='my-4' onPress={resetCart} />
+            {/* <Btn outlined={true} color={'text-white'} title="Clear" wrapperClasses='my-4' onPress={resetCart} /> */}
           </View>}
           <View className={`${items.length > 0 ? 'w-2/3 ml-2' : 'w-full'}`}>
-            <Btn disabled={items.length === 0} title="Checkout" wrapperClasses='my-4 border-white bg-white border-2 rounded-md' onPress={() => { }} />
+            {/* <Btn disabled={items.length === 0} title="Checkout" wrapperClasses='my-4 border-white bg-white border-2 rounded-md' onPress={() => { }} /> */}
           </View>
         </View>
       </View>

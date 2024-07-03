@@ -5,59 +5,107 @@ import { Link } from 'expo-router';
 import React from 'react';
 import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import Icon from './Icon';
+import Label from './Label';
+import { opacity } from 'react-native-reanimated/lib/typescript/reanimated2/Colors';
 
+const iconSizes = (size = InputSizes.md) => {
+  return {
+    iconSize: size,
+  }
+}
 export const CharmBtn = (props: CharmBtnProps) => {
-  const { color = Colors.dark.background, icon = IconNames.bell, onPress, frame = true, size, slot } = props;
+  const { color = Colors.dark.background, icon = IconNames.bell, onPress, frame = true, size, bgColor } = props;
   const styles = () => {
-    let specificStyles
-    if (size === InputSizes.sm) {
-      specificStyles = {
-        width: 30,
-        height: 30,
-        borderRadius: 5
+    const charmBtnSizes = () => {
+      let specificSizes
+      if (size === InputSizes.sm) {
+        specificSizes = {
+          width: 30,
+          height: 30,
+          borderRadius: 5
+        }
+      } else if (size === InputSizes.md) {
+        specificSizes = {
+          width: 34,
+          height: 34,
+          borderRadius: 5
+        }
+      } else if (size === InputSizes.lg) {
+        specificSizes = {
+          width: 60,
+          height: 60,
+          borderRadius: 20
+        }
       }
-    } else if (size === InputSizes.md) {
-      specificStyles = {
-        width: 34,
-        height: 34,
-        borderRadius: 5
-      }
-    } else if (size === InputSizes.lg) {
-      specificStyles = {
-        width: 60,
-        height: 60,
-        borderRadius: 20
+      return {
+        specificSizes,
+        ...iconSizes(size)
       }
     }
-
     return {
-      btnStyles: {
-        ...specificStyles,
-        ...(frame ? { backgroundColor: `rgba(236, 239, 241, 0.1)` } : null),
+      charmBtnStyles: {
+        ...charmBtnSizes().specificSizes,
+        ...(frame ? {
+          backgroundColor: `${Colors.dark['grey-shade-4']}1A`,
+        } : null),
         alignItems: 'center',
         justifyContent: 'center'
-      },
-      iconStyles: {
-        iconSize: size,
       }
     }
   }
   return (
     <TouchableOpacity onPress={onPress}>
-      <View style={styles().btnStyles as any}>
-        <Icon color={color} name={icon} size={styles().iconStyles.iconSize} />
-        {slot}
+      <View style={styles().charmBtnStyles as any}>
+        <Icon color={color} name={icon} size={styles().charmBtnStyles.iconSize} />
       </View>
     </TouchableOpacity>
   )
 }
 
 export const Btn = (props: BtnProps) => {
-  const { onPress, title = 'Save', color = 'text-gray-700', bgColor = 'bg-white', disabled = false, wrapperClasses, outlined } = props;
+  const { color = Colors.dark.background, icon, onPress, label = 'Save', bgColor = Colors.dark['soundcloud-gdr-1'], disabled = false, wrapperClasses, outlined, size = InputSizes.md, iconWidth, iconHeight, block } = props;
+
+  const btnSizes = () => {
+    if (size === InputSizes.sm) {
+      return {
+        borderRadius: 22,
+        paddingHorizontal: 8,
+        paddingVertical: 3,
+        minHeight: 22
+      }
+    } else if (size === InputSizes.md) {
+      return {
+        borderRadius: 30,
+        paddingHorizontal: 15,
+        paddingVertical: 7,
+        minHeight: 30
+      }
+    } else if (size === InputSizes.lg) {
+      return {
+        borderRadius: 60,
+        paddingHorizontal: 30,
+        paddingVertical: 12,
+        minHeight: 60
+      }
+    }
+  }
+  const btnStyles = {
+    ...(outlined ? {
+      borderColor: color,
+      borderWidth: 1
+    } : {
+      backgroundColor: bgColor
+    }),
+    ...(disabled && {
+      opacity: 0.7
+    }),
+    ...btnSizes()
+  }
   return (
-    <TouchableOpacity className={wrapperClasses} disabled={disabled} onPress={onPress}>
-      <View className={`rounded-md ${disabled ? 'bg-gray-300' : `${outlined ? `border-white border-2` : bgColor} shadow`} px-3 py-3 flex justify-center`}>
-        <Text className={`font-semibold m-auto ${color}`}>{title}</Text>
+    <TouchableOpacity className={`flex flex-row items-center justify-center ${block && 'w-full'} ${wrapperClasses}`} disabled={disabled} onPress={onPress}>
+      <View className={`flex flex-row items-center justify-center ${block && 'w-full'}`} style={btnStyles}>
+        {icon && <Icon color={color} name={icon} size={iconSizes(size).iconSize} width={iconWidth} height={iconHeight} />}
+        <Label {...{ label, color }} containerStyles={{ fontWeight: 600, marginLeft: 10 }} />
       </View>
     </TouchableOpacity>
   );

@@ -6,7 +6,6 @@ import { Colors } from "@/constants/Colors";
 
 const styles = StyleSheet.create({
   background: {
-    height: 150,
     width: '100%'
   },
   foreground: {
@@ -24,23 +23,23 @@ const Card = (props: CardProps) => {
     colorBase: Colors.dark.grey,
     colorSecondary: Colors.dark.grey
   }
-  const { borderColor = borderColorInitial, backgroundColor = bgColorInitial } = props
+  const { borderColor = borderColorInitial, backgroundColor = bgColorInitial, children, classNames, containerStyles, gap = true } = props
   return (
     <LinearGradient
-      className="rounded-xl"
+      className={`rounded-xl ${classNames}`}
       colors={[borderColor.colorBase, borderColor.colorSecondary]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 0 }}
-      style={styles.background}
+      style={[styles.background, containerStyles]}
     >
       <LinearGradient
-        className="rounded-xl p-4"
+        className={`rounded-xl ${gap && 'p-4'}`}
         colors={[backgroundColor.colorBase, backgroundColor.colorSecondary]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.foreground}
       >
-        <Text>THIS GRADIENT BORDER</Text>
+        {children}
       </LinearGradient>
     </LinearGradient>
   )

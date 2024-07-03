@@ -3,7 +3,7 @@ import React, { useState, useMemo } from 'react';
 import { View, Image, Text, ScrollView } from 'react-native';
 import { useFetchAllProductsQuery } from './../../api'
 import { Product } from "@/types/Products";
-import { Btn } from "@/components/Base/Button";
+// import { Btn } from "@/components/Base/Button";
 import Chip from "@/components/Base/Chip";
 import BottomModal from "@/components/Base/Modal";
 import NumberInput from "@/components/Base/NumberInput";
@@ -60,7 +60,7 @@ const ProductPage = () => {
             <NumberInput initialValue={qty} onChange={setQty} />
           </View>
           <View className="w-2/3">
-            <Btn title="Add to Cart" bgColor="bg-green-600" color="text-white" onPress={() => onAddToCart()} disabled={!Boolean(selectedSize)} />
+            {/* <Btn title="Add to Cart" bgColor="bg-green-600" color="text-white" onPress={() => onAddToCart()} disabled={!Boolean(selectedSize)} /> */}
           </View>
         </View>
       </View>
@@ -100,7 +100,7 @@ const ProductPage = () => {
             <CartIndicator size='sm' color='white' bgColor='bg-red-500' />
           </View>
           <View className="w-3/5">
-            <Btn title="Add to Cart" bgColor="bg-green-600" color="text-white" onPress={getAddToCartQtyModal} />
+            {/* <Btn title="Add to Cart" bgColor="bg-green-600" color="text-white" onPress={getAddToCartQtyModal} /> */}
           </View>
         </View>
         <View className="my-4">

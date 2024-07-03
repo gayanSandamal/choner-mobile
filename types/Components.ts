@@ -45,27 +45,29 @@ export enum InputSizes {
 
 export type InputSize = InputSizes.sm | InputSizes.md | InputSizes.lg
 
-export type CharmBtnProps = {
-  color?: string
-  onPress: () => void
-  icon?: IconName
-  frame?: boolean
-  size?: InputSize
-  slot?: React.ReactNode
-}
-
-export type BtnProps = {
-  id?: string | number
-  onPress?: () => void
-  title: string
+type ButtonProps = {
   bgColor?: string
   color?: string
-  icon?: string
+  icon?: IconName
+  id?: string | number
+  onPress?: (data?: any) => void
+  size?: InputSize
+}
+
+export type CharmBtnProps = {
+  frame?: boolean
+} & ButtonProps
+
+export type BtnProps = {
+  label?: string
   iconColor?: string
   disabled?: boolean
   wrapperClasses?: string
   outlined?: boolean
-}
+  iconWidth?: number
+  iconHeight?: number
+  block?: boolean
+} & ButtonProps
 
 export type BtnGroupProps = {
   buttons: BtnProps[]
@@ -145,7 +147,8 @@ export enum FontSizes {
   FTitle1 = 20,
   FTitle2 = 18,
   FTitle3 = 16,
-  FP = 12
+  FP = 12,
+  FSmall = 10
 }
 
 export enum FontTypes {
@@ -156,14 +159,16 @@ export enum FontTypes {
   FDisplay5 = 'h5',
   FDisplay6 = 'h6',
   FTitle1 = 'title1',
+  FTitle1Bold = 'title1-bold',
   FTitle2 = 'title2',
   FTitle3 = 'title3',
   FTitle3Bold = 'title3-bold',
   FLabel = 'label',
-  FP = 'p'
+  FP = 'p',
+  FSmall = 'small'
 }
 
-export type FontType = FontTypes.FDisplay1 | FontTypes.FDisplay2 | FontTypes.FDisplay3 | FontTypes.FDisplay4 | FontTypes.FDisplay5 | FontTypes.FDisplay6 | FontTypes.FTitle1 | FontTypes.FTitle2 | FontTypes.FTitle3 | FontTypes.FTitle3Bold | FontTypes.FLabel | FontTypes.FP
+export type FontType = FontTypes.FDisplay1 | FontTypes.FDisplay2 | FontTypes.FDisplay3 | FontTypes.FDisplay4 | FontTypes.FDisplay5 | FontTypes.FDisplay6 | FontTypes.FTitle1 | FontTypes.FTitle1Bold | FontTypes.FTitle2 | FontTypes.FTitle3 | FontTypes.FTitle3Bold | FontTypes.FLabel | FontTypes.FP | FontTypes.FSmall
 
 export enum FontColors {
   'light' = 'light',
@@ -177,6 +182,7 @@ export type LabelProps = {
   color?: FontColor
   classNames?: string
   label?: string
+  containerStyles?: ContainerStyles
 }
 
 export enum IconNames {
@@ -186,15 +192,23 @@ export enum IconNames {
   'interests',
   'play',
   'trophy',
-  'search'
+  'search',
+  'fist',
+  'biceps',
+  'addPost',
+  'qanda',
+  'close',
+  'send'
 }
 
-export type IconName = IconNames.bell | IconNames.insight | IconNames.handshake | IconNames.interests | IconNames.play | IconNames.trophy | IconNames.search
+export type IconName = IconNames.bell | IconNames.insight | IconNames.handshake | IconNames.interests | IconNames.play | IconNames.trophy | IconNames.search | IconNames.fist | IconNames.biceps | IconNames.addPost | IconNames.qanda | IconNames.close | IconNames.send
 
 export type IconProps = {
   color?: string,
   name: IconName,
-  size?: InputSize
+  size?: InputSize,
+  width?: number
+  height?: number
 }
 
 export type IndicatorProps = {
@@ -241,4 +255,44 @@ type Gradient = {
 export type CardProps = {
   borderColor?: Gradient
   backgroundColor?: Gradient
+  children?: React.ReactNode
+  classNames?: string
+  containerStyles?: ContainerStyles
+  gap?: boolean
 }
+
+export type SpacerProps = {
+  height?: number
+}
+
+export type ActionBarProps = {
+  active?: boolean
+  onPress?: () => void
+  title?: string
+}
+
+export type PostTypesProps = {
+  list?: PostTypeProps[]
+  onPress: (item: PostTypeProps) => void
+  onClosePress?: () => void
+}
+export type PostProps = {
+  list?: PostTypeProps[]
+  actionBarData?: ActionBarProps
+  publishPostData?: PublishPostProps
+  onPostTypePress: (item: PostTypeProps) => void
+}
+export type PublishPostProps = {
+  icon?: IconName
+  title?: string
+  placeholder?: string
+  enableScheduling?: boolean
+  onCancelPublish?: () => void
+  onPublish?: (content: string) => void
+  cancelButtonProps?: BtnProps
+  submitButtonProps?: BtnProps
+}
+
+export type PostTypeProps = {
+  subtitle?: string
+} & PublishPostProps

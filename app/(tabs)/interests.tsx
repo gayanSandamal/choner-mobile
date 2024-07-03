@@ -1,10 +1,37 @@
-import { Colors } from '@/constants/Colors'
-import { View, Text } from 'react-native'
+import { Post } from '@/components/Post/Post'
+import { ContentSection } from '@/components/Wrappers/Sections'
+import { IconNames, PostTypeProps, PublishPostProps } from '@/types/Components'
+import { ScrollView } from 'react-native'
 
 export default function InterestsScreen() {
+  const onPostTypePress = (item: PostTypeProps) => {
+    alert(item)
+  }
+  const onPublish = (content: string) => {
+    alert(content)
+  }
   return (
-    <View className='flex h-full items-center justify-center'>
-      <Text className='text-2xl font-bold text-white'>Interests Screen</Text>
-    </View>
+    <ScrollView className='px-3'>
+      <ContentSection classNames='mt-3' cardMode={false} slot={
+        <Post
+          onPostTypePress={onPostTypePress}
+          publishPostData={{
+            icon: IconNames.interests,
+            title: 'Share Interests',
+            placeholder: 'Write your interest',
+            enableScheduling: true,
+            cancelButtonProps: {
+              label: 'Cancel',
+            },
+            submitButtonProps: {
+              label: 'Share',
+              onPress: onPublish
+            }
+          } as PostTypeProps}
+          actionBarData={
+            { title: 'Hey, any interests on your mind..?' }
+          } />
+      } />
+    </ScrollView>
   )
 }

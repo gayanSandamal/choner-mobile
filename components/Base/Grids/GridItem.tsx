@@ -1,6 +1,6 @@
 import { GridItemProps } from "@/types/Components";
 import React from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 
 const GridItem = (props: GridItemProps) => {
   const { classNames, columns = 1, gridDimentions = { width: 0, height: 0 }, children } = props;

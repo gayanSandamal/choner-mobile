@@ -1,6 +1,6 @@
 import React from 'react';
 import Svg from "react-native-svg"
-import { IconBell, IconInsight, IconHandshake, IconInterests, IconPlay, IconTrophy, IconSearch } from './Icons';
+import { IconBell, IconInsight, IconHandshake, IconInterests, IconPlay, IconTrophy, IconSearch, IconFistBump, IconBiceps, IconAddPost, IconQandA, IconClose, IconSend } from './Icons';
 import { IconName, IconNames, InputSizes, IconProps } from '@/types/Components';
 import { Colors } from '@/constants/Colors';
 
@@ -14,19 +14,29 @@ const getIcon = (props: { color: string, name: IconName }) => {
         return <IconHandshake fill={color} />
     } else if (name === IconNames.interests) {
         return <IconInterests fill={color} />
-    } else if (name === IconNames.interests) {
-        return <IconInterests fill={color} />
     } else if (name === IconNames.play) {
         return <IconPlay fill={color} />
     } else if (name === IconNames.trophy) {
         return <IconTrophy fill={color} />
     } else if (name === IconNames.search) {
         return <IconSearch fill={color} />
+    } else if (name === IconNames.fist) {
+        return <IconFistBump fill={color} />
+    } else if (name === IconNames.biceps) {
+        return <IconBiceps fill={color} />
+    } else if (name === IconNames.addPost) {
+        return <IconAddPost fill={color} />
+    } else if (name === IconNames.qanda) {
+        return <IconQandA fill={color} />
+    } else if (name === IconNames.close) {
+        return <IconClose fill={color} />
+    } else if (name === IconNames.send) {
+        return <IconSend fill={color} />
     }
 }
 
 const Icon = (props: IconProps) => {
-    const { color = Colors.dark.background, name = IconNames.bell, size = InputSizes.md } = props
+    const { color = Colors.dark.background, name = IconNames.bell, size = InputSizes.md, width = 24, height = 24 } = props
     const styles = () => {
         if (size === InputSizes.sm) {
             return {
@@ -47,7 +57,7 @@ const Icon = (props: IconProps) => {
         }
     }
     return (
-        <Svg width={24} height={24} style={{ transform: [{ scale: styles().scale }] }}>
+        <Svg width={width} height={height} style={{ transform: [{ scale: styles().scale }] }}>
             {getIcon({ color, name })}
         </Svg>
     )

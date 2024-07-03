@@ -1,12 +1,15 @@
-import Card from '@/components/Base/Card';
 import BaseGrid from '@/components/Base/Grids/BaseGrid';
 import GridItem from '@/components/Base/Grids/GridItem';
+import { Spacer } from '@/components/Base/Spacer';
 import Greeting from '@/components/Insights/Greeting';
+import ChallengesWidget from '@/components/Widgets/ChallengesWidget';
+import DiagnosisWidget from '@/components/Widgets/DiagnosisWidget';
+import InterestsWidget from '@/components/Widgets/InterestsWidget';
+import SurveyWidget from '@/components/Widgets/SurveyWidget';
 import { ContentSection } from '@/components/Wrappers/Sections';
-import { Colors } from '@/constants/Colors';
 import { StatusBar } from 'expo-status-bar'
 import React, { useState } from 'react'
-import { View, Text, ScrollView } from 'react-native'
+import { ScrollView } from 'react-native'
 
 const HomeScreen = () => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
@@ -18,24 +21,25 @@ const HomeScreen = () => {
       } />
       <BaseGrid onFetchDimensions={setDimensions}>
         <GridItem columns={1} gridDimentions={dimensions}>
-          <Card></Card>
+          <ChallengesWidget />
         </GridItem>
         <GridItem columns={2} gridDimentions={dimensions}>
-          <Card></Card>
+          <SurveyWidget />
         </GridItem>
         <GridItem columns={2} gridDimentions={dimensions}>
+          <InterestsWidget />
+        </GridItem>
+        <GridItem columns={1} gridDimentions={dimensions}>
+          <DiagnosisWidget />
+        </GridItem>
+        {/* <GridItem columns={1} gridDimentions={dimensions}>
           <Card></Card>
         </GridItem>
         <GridItem columns={1} gridDimentions={dimensions}>
           <Card></Card>
-        </GridItem>
-        <GridItem columns={1} gridDimentions={dimensions}>
-          <Card></Card>
-        </GridItem>
-        <GridItem columns={1} gridDimentions={dimensions}>
-          <Card></Card>
-        </GridItem>
+        </GridItem> */}
       </BaseGrid>
+      <Spacer height={80} />
       <StatusBar style="auto" />
       {/* </View> */}
     </ScrollView>

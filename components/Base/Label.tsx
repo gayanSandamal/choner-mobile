@@ -20,12 +20,16 @@ const fontStyleBasics = (type: FontType) => {
         return { fontSize: FontSizes.FDisplay6, fontWeight: '500' }
     } else if (type === FontTypes.FTitle1) {
         return { fontSize: FontSizes.FTitle1, fontWeight: '500' }
+    } else if (type === FontTypes.FTitle1Bold) {
+        return { fontSize: FontSizes.FTitle1, fontWeight: '700' }
     } else if (type === FontTypes.FTitle2) {
         return { fontSize: FontSizes.FTitle2, fontWeight: '500' }
     } else if (type === FontTypes.FTitle3) {
         return { fontSize: FontSizes.FTitle3, fontWeight: '300' }
     } else if (type === FontTypes.FTitle3Bold) {
         return { fontSize: FontSizes.FTitle3, fontWeight: '500' }
+    } else if (type === FontTypes.FSmall) {
+        return { fontSize: FontSizes.FSmall, fontWeight: '400' }
     } else {
         return { fontSize: FontSizes.FP, fontWeight: '400' }
     }
@@ -48,10 +52,11 @@ const fontColor = (color: FontColor) => {
 }
 
 const Label = (props: LabelProps) => {
-    const { color = FontColors.light, classNames, type = FontTypes.FP, label = 'choner' } = props
+    const { color = FontColors.light, classNames, type = FontTypes.FP, label = 'choner', containerStyles } = props
     const fontStyles = {
         ...fontStyleBasics(type),
-        ...fontColor(color)
+        ...fontColor(color),
+        ...containerStyles
     }
     return (
         <Text className={classNames} style={fontStyles as Style}>{label}</Text>
