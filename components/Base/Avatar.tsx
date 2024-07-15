@@ -1,3 +1,4 @@
+import { Colors } from '@/constants/Colors';
 import { AvatarProps, InputSize, InputSizes } from '@/types/Components';
 import { Image } from 'expo-image';
 import { StyleSheet, View } from 'react-native';
@@ -24,12 +25,12 @@ const getSize = (size: InputSize) => {
     } else if (size === InputSizes.md) {
         dimentions = {
             wrapper: 80,
-            img: 76
+            img: 74
         }
     } else if (size === InputSizes.lg) {
         dimentions = {
             wrapper: 100,
-            img: 96
+            img: 90
         }
     }
     return {
@@ -49,11 +50,11 @@ const getSize = (size: InputSize) => {
 const dummyImgUrl = 'https://media.licdn.com/dms/image/D5603AQHSXcO7ppl6WA/profile-displayphoto-shrink_400_400/0/1718211361174?e=1724889600&v=beta&t=23Did5ziv00-uQIhIvA2_i7BpNwAV1YXI3ob8RKIrEU'
 
 export const Avatar = (props: AvatarProps) => {
-    const { containerStyles, img = dummyImgUrl, size = InputSizes.md } = props
+    const { containerStyles, img = dummyImgUrl, size = InputSizes.md, bgColor = Colors.dark.background } = props
     const wrapperDimensions = getSize(size).wrapper
     const imgDimensions = getSize(size).img
     return (
-        <View style={[styles.container, wrapperDimensions, containerStyles]}>
+        <View style={[styles.container, { backgroundColor: bgColor }, wrapperDimensions, containerStyles]}>
             <Image
                 style={[imgDimensions]}
                 source={img}
@@ -67,7 +68,6 @@ export const Avatar = (props: AvatarProps) => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center'
     }

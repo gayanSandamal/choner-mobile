@@ -215,6 +215,7 @@ export type IconProps = {
 
 export type IndicatorProps = {
   color?: string
+  children?: React.ReactNode
 }
 
 export type HeaderProps = {
@@ -225,6 +226,7 @@ type ContainerStyles = { [key: string]: string | number }
 
 export type AvatarProps = {
   containerStyles?: ContainerStyles
+  bgColor?: string
   img?: string
   size?: InputSize
 }
