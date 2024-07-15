@@ -38,12 +38,13 @@ export type BtnLinkProps = {
 }
 
 export enum InputSizes {
+  'xs',
   'sm',
   'md',
   'lg'
 }
 
-export type InputSize = InputSizes.sm | InputSizes.md | InputSizes.lg
+export type InputSize = InputSizes.xs | InputSizes.sm | InputSizes.md | InputSizes.lg
 
 type ButtonProps = {
   bgColor?: string
@@ -52,6 +53,7 @@ type ButtonProps = {
   id?: string | number
   onPress?: (data?: any) => void
   size?: InputSize
+  children?: React.ReactNode
 }
 
 export type CharmBtnProps = {
@@ -296,3 +298,10 @@ export type PublishPostProps = {
 export type PostTypeProps = {
   subtitle?: string
 } & PublishPostProps
+
+export type Circle = {
+  id: number,
+  imageUri?: string,
+  title: string,
+  unreadCount: number
+}

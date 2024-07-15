@@ -11,15 +11,20 @@ const getSize = (size: InputSize) => {
         wrapper: 16,
         img: 16
     }
-    if (size === InputSizes.sm) {
+    if (size === InputSizes.xs) {
         dimentions = {
             wrapper: 16,
             img: 12
         }
-    } else if (size === InputSizes.md) {
+    } else if (size === InputSizes.sm) {
         dimentions = {
             wrapper: 32,
             img: 28
+        }
+    } else if (size === InputSizes.md) {
+        dimentions = {
+            wrapper: 80,
+            img: 76
         }
     } else if (size === InputSizes.lg) {
         dimentions = {

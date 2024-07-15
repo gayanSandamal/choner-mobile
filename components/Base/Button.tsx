@@ -14,7 +14,7 @@ const iconSizes = (size = InputSizes.md) => {
   }
 }
 export const CharmBtn = (props: CharmBtnProps) => {
-  const { color = Colors.dark.background, icon = IconNames.bell, onPress, frame = true, size, bgColor } = props;
+  const { color = Colors.dark.background, children, icon = IconNames.bell, onPress, frame = true, size, bgColor } = props;
   const styles = () => {
     const charmBtnSizes = () => {
       let specificSizes
@@ -45,6 +45,7 @@ export const CharmBtn = (props: CharmBtnProps) => {
     return {
       charmBtnStyles: {
         ...charmBtnSizes().specificSizes,
+        iconSize: iconSizes(size).iconSize, // Add the iconSize property
         ...(frame ? {
           backgroundColor: `${Colors.dark['grey-shade-4']}1A`,
         } : null),
@@ -57,6 +58,7 @@ export const CharmBtn = (props: CharmBtnProps) => {
     <TouchableOpacity onPress={onPress}>
       <View style={styles().charmBtnStyles as any}>
         <Icon color={color} name={icon} size={styles().charmBtnStyles.iconSize} />
+        {children}
       </View>
     </TouchableOpacity>
   )
@@ -121,7 +123,7 @@ export const BtnGroup = (props: BtnGroupProps) => {
         {buttons.map((btn, index) =>
           <TouchableOpacity key={btn.id || index} onPress={() => onPress(btn)} >
             <View className={`font-semibold m-auto px-3 py-3 rounded-md ${selectedId === btn.id && 'bg-purple-600'}`}>
-              <Text className={`font-semibold m-auto ${selectedId === btn.id ? 'text-white' : 'text-gray-600'}`}>{btn.title}</Text>
+              <Text className={`font-semibold m-auto ${selectedId === btn.id ? 'text-white' : 'text-gray-600'}`}>{btn.label}</Text>
             </View>
           </TouchableOpacity>
         )}

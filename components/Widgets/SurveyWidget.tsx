@@ -32,7 +32,7 @@ const SurveyWidget = () => {
     <Card backgroundColor={{ colorBase: '#003E62', colorSecondary: '#003E62' }} containerStyles={{ minHeight: 190 }}>
       <TouchableOpacity className="flex items-center justify-center mb-1" onPress={() => { }}>
         <View className="flex flex-row w-full justify-start">
-          <Icon color={Colors.dark.background} name={IconNames.fist} size={InputSizes.sm} />
+          <Icon color={Colors.dark.background} name={IconNames.fist} size={InputSizes.xs} />
           <Label type={FontTypes.FTitle3} label={'COMPLETE SURVEY'} containerStyles={{ letterSpacing: 1, fontWeight: 700 }} classNames="mb-3"></Label>
         </View>
         <View className="flex items-center align-center justify-center">

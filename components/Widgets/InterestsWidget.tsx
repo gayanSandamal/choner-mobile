@@ -52,7 +52,7 @@ const InterestsWidget = () => {
 
       <TouchableOpacity className="flex align-between justify-center mb-1" onPress={() => { }}>
         <View className="flex flex-row items-start w-full justify-start mb-10">
-          <Icon color={Colors.dark.background} name={IconNames.interests} size={InputSizes.sm} />
+          <Icon color={Colors.dark.background} name={IconNames.interests} size={InputSizes.xs} />
           <Label type={FontTypes.FTitle3} label={'INTERESTS'} containerStyles={{ letterSpacing: 1, fontWeight: 700 }} classNames="mb-3"></Label>
         </View>
         <View className="flex flex-row w-full mt-8">

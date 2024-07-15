@@ -44,10 +44,12 @@ const Header = (props: HeaderProps) => {
                 <Label classNames='ml-3' label={getTabTitle(pathname)} type={FontTypes.FTitle3Bold} color={FontColors.light} />
             </View>
             <View className='flex flex-row items-center'>
-                <CharmBtn onPress={() => { }} size={InputSizes.md} frame={false} slot={
-                    unreadNotifications && <View style={{ position: 'absolute', bottom: 4, right: 4 }}><Indicator /></View>
-                } />
-                <Avatar containerStyles={{ marginLeft: 10 }} />
+                <CharmBtn onPress={() => { }} size={InputSizes.md} frame={false}>
+                    {
+                        unreadNotifications && <View style={{ position: 'absolute', bottom: 4, right: 4 }}><Indicator /></View>
+                    }
+                </CharmBtn>
+                <Avatar containerStyles={{ marginLeft: 10 }} size={InputSizes.sm} />
             </View>
         </View>
     )

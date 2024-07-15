@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, TextInput, TouchableOpacity, View, Text } from "
 import Label from "../Base/Label"
 import { ActionBarProps, FontTypes, IconNames, InputSizes, PostProps, PostTypeProps, PostTypesProps, PublishPostProps } from "@/types/Components"
 import { Colors } from "@/constants/Colors"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import Icon from "../Base/Icon"
 import { Btn, CharmBtn } from "../Base/Button"
 import Checkbox from 'expo-checkbox'
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 const ActionBar = (props: ActionBarProps) => {
   const { active = false, onPress, title } = props
   return (
-    <Pressable onPress={onPress} className={`py-3 px-5 rounded-3xl ${active && 'border'}`} style={{ backgroundColor: Colors.dark.darkText, borderColor: Colors.dark['soundcloud-gdr-1'] }}>
+    <Pressable onPress={onPress} className={`py-3 px-5 rounded-3xl border`} style={{ backgroundColor: Colors.dark.darkText, borderColor: active ? Colors.dark['soundcloud-gdr-1'] : Colors.dark.darkText }}>
       <Label containerStyles={{ fontWeight: 400 }} type={FontTypes.FTitle3} label={title} />
     </Pressable>
   )
@@ -113,6 +113,13 @@ export const Post = (props: PostProps) => {
   const onCancel = () => {
     setCurrentPostType(undefined)
   }
+
+  useEffect(() => {
+    return () => {
+      setShowPostTypes(false)
+      onCancel()
+    }
+  }, [])
 
   return (
     <View>
