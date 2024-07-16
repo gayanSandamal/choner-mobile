@@ -107,7 +107,7 @@ export const Btn = (props: BtnProps) => {
     <TouchableOpacity className={`flex flex-row items-center justify-center ${block && 'w-full'} ${wrapperClasses}`} disabled={disabled} onPress={onPress}>
       <View className={`flex flex-row items-center justify-center ${block && 'w-full'}`} style={btnStyles}>
         {icon && <Icon color={color} name={icon} size={iconSizes(size).iconSize} width={iconWidth} height={iconHeight} />}
-        <Label {...{ label, color }} containerStyles={{ fontWeight: 600, marginLeft: 10 }} />
+        <Label {...{ label, color }} containerStyles={{ fontWeight: 600, marginLeft: 4, marginRight: 4 }} />
       </View>
     </TouchableOpacity>
   );

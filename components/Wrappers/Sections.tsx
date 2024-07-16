@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 
 
 export const ContentSection = (props: SectionProps) => {
-  const { title, link, slot, cardMode = true, containerStyles, classNames } = props;
+  const { title, link, children, cardMode = true, containerStyles, classNames } = props;
   return (
     <View className={`mb-4 ${classNames}`} style={containerStyles}>
       {title && <View className="flex flex-row items-end justify-between mb-2">
@@ -29,7 +29,7 @@ export const ContentSection = (props: SectionProps) => {
         </Link>}
       </View>}
       <View className={`${cardMode && 'shadow bg-white rounded-xl'}`}>
-        {slot}
+        {children}
       </View>
     </View>
   );

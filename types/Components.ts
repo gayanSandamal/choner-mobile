@@ -28,6 +28,7 @@ export type SectionProps = {
   slot?: React.ReactNode
   cardMode?: boolean
   containerStyles?: ContainerStyles
+  children?: React.ReactNode
   classNames?: string
 }
 
@@ -194,6 +195,7 @@ export enum IconNames {
   'insight',
   'handshake',
   'interests',
+  'interestsFill',
   'play',
   'trophy',
   'search',
@@ -202,10 +204,11 @@ export enum IconNames {
   'addPost',
   'qanda',
   'close',
-  'send'
+  'send',
+  'options'
 }
 
-export type IconName = IconNames.bell | IconNames.insight | IconNames.handshake | IconNames.interests | IconNames.play | IconNames.trophy | IconNames.search | IconNames.fist | IconNames.biceps | IconNames.addPost | IconNames.qanda | IconNames.close | IconNames.send
+export type IconName = IconNames.bell | IconNames.insight | IconNames.handshake | IconNames.interests | IconNames.interestsFill | IconNames.play | IconNames.trophy | IconNames.search | IconNames.fist | IconNames.biceps | IconNames.addPost | IconNames.qanda | IconNames.close | IconNames.send | IconNames.options
 
 export type IconProps = {
   color?: string,
@@ -308,4 +311,18 @@ export type Circle = {
   imageUri?: string,
   title: string,
   unreadCount: number
+}
+
+export type PostedByProps = {
+  name: string
+  postedDate: string
+  img?: string
+}
+
+export type InterestCardProps = {
+  id: number
+  title: string
+  subtitle: string
+  postedBy: PostedByProps
+  interestedCount: number
 }

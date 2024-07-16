@@ -1,6 +1,6 @@
 import React from 'react';
 import Svg from "react-native-svg"
-import { IconBell, IconInsight, IconHandshake, IconInterests, IconPlay, IconTrophy, IconSearch, IconFistBump, IconBiceps, IconAddPost, IconQandA, IconClose, IconSend } from './Icons';
+import { IconBell, IconInsight, IconHandshake, IconInterests, IconInterestsFill, IconPlay, IconTrophy, IconSearch, IconFistBump, IconBiceps, IconAddPost, IconQandA, IconClose, IconSend, IconOptions } from './Icons';
 import { IconName, IconNames, InputSizes, IconProps } from '@/types/Components';
 import { Colors } from '@/constants/Colors';
 
@@ -14,6 +14,8 @@ const getIcon = (props: { color: string, name: IconName }) => {
         return <IconHandshake fill={color} />
     } else if (name === IconNames.interests) {
         return <IconInterests fill={color} />
+    } else if (name === IconNames.interestsFill) {
+        return <IconInterestsFill fill={color} />
     } else if (name === IconNames.play) {
         return <IconPlay fill={color} />
     } else if (name === IconNames.trophy) {
@@ -32,6 +34,8 @@ const getIcon = (props: { color: string, name: IconName }) => {
         return <IconClose fill={color} />
     } else if (name === IconNames.send) {
         return <IconSend fill={color} />
+    } else if (name === IconNames.options) {
+        return <IconOptions fill={color} />
     }
 }
 

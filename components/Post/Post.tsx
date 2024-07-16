@@ -40,7 +40,7 @@ const PostTypes = (props: PostTypesProps) => {
               <Icon name={item.icon} size={InputSizes.md} />
               <View className="ml-2">
                 <Label classNames="mb-1" type={FontTypes.FLabel} containerStyles={{ fontWeight: 600 }} label={item.title} />
-                <Label type={FontTypes.FSmall} label={item.subtitle} color={Colors.dark['green-shade-3']} />
+                <Label type={FontTypes.FSmall} label={item.subtitle} color={Colors.dark['grey-shade-3']} />
               </View>
             </TouchableOpacity>
           )

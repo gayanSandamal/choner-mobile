@@ -42,14 +42,14 @@ export default function CommunityScreen() {
   ]
   return (
     <ScrollView className='px-3'>
-      <ContentSection classNames='mt-3' cardMode={false} slot={
+      <ContentSection classNames='mt-3' cardMode={false}>
         <Post
           list={postTypes}
           onPostTypePress={onPostTypePress}
           actionBarData={
             { title: 'Share your story...' }
           } />
-      } />
+      </ContentSection>
     </ScrollView>
   )
 }

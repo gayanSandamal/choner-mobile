@@ -16,9 +16,9 @@ const HomeScreen = () => {
   return (
     <ScrollView className='px-3'>
       {/* <View className='flex'> */}
-      <ContentSection classNames='mt-3' cardMode={false} slot={
+      <ContentSection classNames='mt-3' cardMode={false}>
         <Greeting />
-      } />
+      </ContentSection>
       <BaseGrid onFetchDimensions={setDimensions}>
         <GridItem columns={1} gridDimentions={dimensions}>
           <ChallengesWidget />
