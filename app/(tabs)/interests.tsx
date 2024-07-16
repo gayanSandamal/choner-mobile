@@ -1,17 +1,15 @@
-import { Avatar } from '@/components/Base/Avatar'
-import Indicator from '@/components/Base/Indicator'
+import { Circle } from '@/components/Common/Circle'
 import { Post } from '@/components/Post/Post'
 import { ContentSection } from '@/components/Wrappers/Sections'
-import { Colors } from '@/constants/Colors'
-import { Circle, IconNames, InputSizes, PostTypeProps, PublishPostProps } from '@/types/Components'
+import { Circle as CircleType, IconNames, InputSizes, PostTypeProps, PublishPostProps } from '@/types/Components'
 import { useEffect, useState } from 'react'
-import { FlatList, View, Text } from 'react-native' // Import the Text component from react-native
+import { FlatList } from 'react-native' // Import the Text component from react-native
 import { ScrollView } from 'react-native-virtualized-view'
 
 export default function InterestsScreen() {
-  const [circles, setCircles] = useState<Circle[]>([])
+  const [circles, setCircles] = useState<CircleType[]>([])
 
-  const tempCircles: Circle[] = [
+  const tempCircles: CircleType[] = [
     {
       id: 1,
       imageUri: 'https://d2jx2rerrg6sh3.cloudfront.net/images/news/ImageForNews_749471_16854181808683364.jpg',
@@ -70,14 +68,7 @@ export default function InterestsScreen() {
       } />
       <FlatList
         data={circles}
-        renderItem={({ item }) => <View style={{ marginRight: 20 }}>
-          <Avatar img={item.imageUri} size={InputSizes.md} bgColor={Colors.dark['primary-material-1']} />
-          <View style={{ position: 'absolute', bottom: 0, right: 0 }}>
-            <Indicator>
-              <Text className='text-xs text-white'>99+</Text>
-            </Indicator>
-          </View>
-        </View>}
+        renderItem={({ item }) => <Circle {...item} />}
         keyExtractor={item => item.id.toString()} // Convert the id to a string
         horizontal={true}
       />

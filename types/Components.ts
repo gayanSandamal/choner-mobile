@@ -185,6 +185,8 @@ export type LabelProps = {
   classNames?: string
   label?: string
   containerStyles?: ContainerStyles
+  ellipsizeMode?: 'head' | 'middle' | 'tail' | 'clip'
+  numberOfLines?: number
 }
 
 export enum IconNames {

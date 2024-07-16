@@ -52,14 +52,14 @@ const fontColor = (color: FontColor) => {
 }
 
 const Label = (props: LabelProps) => {
-    const { color = FontColors.light, classNames, type = FontTypes.FP, label = 'choner', containerStyles } = props
+    const { color = FontColors.light, classNames, type = FontTypes.FP, label = 'choner', containerStyles, ellipsizeMode, numberOfLines } = props
     const fontStyles = {
         ...fontStyleBasics(type),
         ...fontColor(color),
         ...containerStyles
     }
     return (
-        <Text className={classNames} style={fontStyles as Style}>{label}</Text>
+        <Text className={classNames} style={fontStyles as Style} ellipsizeMode={ellipsizeMode} numberOfLines={numberOfLines}>{label}</Text>
     )
 }
 
