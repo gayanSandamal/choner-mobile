@@ -31,7 +31,7 @@ const DiagnosisWidget = () => {
   const [interests, setIntersts] = useState<number>(0)
 
   const labelText = () => {
-    return `  ${interests > 1 ? 'Days' : 'Day'} days without diagnostics!`
+    return `  ${interests > 1 ? 'Days' : 'Day'} without diagnostics!`
   }
 
   const count = interests > 99 ? '99+' : interests
@@ -42,7 +42,7 @@ const DiagnosisWidget = () => {
         <Label type={FontTypes.FTitle1Bold} label={challange?.label} containerStyles={{ letterSpacing: 3, fontWeight: 700, lineHeight: 30 }}></Label>
         <View className="flex flex-row items-end w-full mt-2 mb-4" style={{ height: 28 }}>
           <Label type={FontTypes.FDisplay3} label={String(count)} color={'#96FD9A'} containerStyles={{ letterSpacing: 1, fontWeight: 700 }}></Label>
-          <Label type={FontTypes.FLabel} label={labelText()} containerStyles={{ letterSpacing: 1, fontWeight: 700 }}></Label>
+          <Label type={FontTypes.FLabel} label={labelText()} containerStyles={{ letterSpacing: 1, fontWeight: 600 }}></Label>
         </View>
         <Btn icon={IconNames.biceps} label="Let's Rev Up!" size={InputSizes.md} iconHeight={18} outlined />
       </View>

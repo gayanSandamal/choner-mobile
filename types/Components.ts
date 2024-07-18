@@ -34,7 +34,7 @@ export type SectionProps = {
 
 export type BtnLinkProps = {
   href: string
-  title: string
+  label?: string
   color?: string
 }
 
@@ -53,6 +53,7 @@ type ButtonProps = {
   icon?: IconName
   id?: string | number
   onPress?: (data?: any) => void
+  link?: string
   size?: InputSize
   children?: React.ReactNode
 }
@@ -70,6 +71,7 @@ export type BtnProps = {
   iconWidth?: number
   iconHeight?: number
   block?: boolean
+  textMode?: boolean
 } & ButtonProps
 
 export type BtnGroupProps = {
@@ -150,6 +152,7 @@ export enum FontSizes {
   FTitle1 = 20,
   FTitle2 = 18,
   FTitle3 = 16,
+  FLabel = 14,
   FP = 12,
   FSmall = 10
 }

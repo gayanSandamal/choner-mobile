@@ -65,51 +65,51 @@ export const CharmBtn = (props: CharmBtnProps) => {
 }
 
 export const Btn = (props: BtnProps) => {
-  const { color = Colors.dark.background, icon, onPress, label = 'Save', bgColor = Colors.dark['soundcloud-gdr-1'], disabled = false, wrapperClasses, outlined, size = InputSizes.md, iconWidth, iconHeight, block } = props;
+  const { color = Colors.dark.background, icon, link, onPress, label = 'Save', bgColor = Colors.dark['soundcloud-gdr-1'], disabled = false, wrapperClasses, outlined, size = InputSizes.md, iconWidth, iconHeight, block, textMode = false } = props;
 
   const btnSizes = () => {
     if (size === InputSizes.sm) {
       return {
         borderRadius: 22,
-        paddingHorizontal: 8,
+        paddingHorizontal: !textMode && 8,
         paddingVertical: 3,
         minHeight: 22
       }
     } else if (size === InputSizes.md) {
       return {
         borderRadius: 30,
-        paddingHorizontal: 15,
+        paddingHorizontal: !textMode && 15,
         paddingVertical: 7,
         minHeight: 30
       }
     } else if (size === InputSizes.lg) {
       return {
         borderRadius: 60,
-        paddingHorizontal: 30,
+        paddingHorizontal: !textMode && 30,
         paddingVertical: 12,
         minHeight: 60
       }
     }
   }
   const btnStyles = {
-    ...(outlined ? {
+    ...(outlined && !textMode ? {
       borderColor: color,
       borderWidth: 1
     } : {
-      backgroundColor: bgColor
+      backgroundColor: !textMode && bgColor
     }),
     ...(disabled && {
       opacity: 0.7
     }),
     ...btnSizes()
   }
+  const buttonCore = () =>
+    <View className={`flex flex-row items-center justify-center ${block && 'w-full'}`} style={btnStyles}>
+      {icon && <Icon color={color} name={icon} size={iconSizes(size).iconSize} width={iconWidth} height={iconHeight} />}
+      <Label {...{ label, color }} containerStyles={{ fontWeight: textMode ? 400 : 600, marginLeft: 4, marginRight: 4 }} />
+    </View>
   return (
-    <TouchableOpacity className={`flex flex-row items-center justify-center ${block && 'w-full'} ${wrapperClasses}`} disabled={disabled} onPress={onPress}>
-      <View className={`flex flex-row items-center justify-center ${block && 'w-full'}`} style={btnStyles}>
-        {icon && <Icon color={color} name={icon} size={iconSizes(size).iconSize} width={iconWidth} height={iconHeight} />}
-        <Label {...{ label, color }} containerStyles={{ fontWeight: 600, marginLeft: 4, marginRight: 4 }} />
-      </View>
-    </TouchableOpacity>
+    link ? <Link href={link} className={`flex flex-row items-center justify-center ${block && 'w-full'} ${wrapperClasses}`} disabled={disabled}>{buttonCore()}</Link> : <TouchableOpacity className={`flex flex-row items-center justify-center ${block && 'w-full'} ${wrapperClasses}`} disabled={disabled} onPress={onPress}>{buttonCore()}</TouchableOpacity>
   );
 }
 
@@ -134,11 +134,11 @@ export const BtnGroup = (props: BtnGroupProps) => {
 
 export const BtnLink = (props: BtnLinkProps) => {
   const colorScheme = useColorScheme();
-  const { href = '', title = 'Save', color = Colors.dark.primary } = props;
+  const { href = '', label = 'View all', color = Colors.dark.primary } = props;
   return (
     <Link href={href}>
       <View className={'rounded-md bg-white px-4 py-3 flex justify-center shadow-sm'}>
-        <Text className='font-semibold m-auto px-3' style={{ color }}>{title}</Text>
+        <Text className='font-semibold m-auto px-3' style={{ color }}>{label}</Text>
       </View>
     </Link>
   );

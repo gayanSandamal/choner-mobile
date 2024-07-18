@@ -28,6 +28,8 @@ const fontStyleBasics = (type: FontType) => {
         return { fontSize: FontSizes.FTitle3, fontWeight: '300' }
     } else if (type === FontTypes.FTitle3Bold) {
         return { fontSize: FontSizes.FTitle3, fontWeight: '500' }
+    } else if (type === FontTypes.FLabel) {
+        return { fontSize: FontSizes.FLabel, fontWeight: '400' }
     } else if (type === FontTypes.FSmall) {
         return { fontSize: FontSizes.FSmall, fontWeight: '400' }
     } else {

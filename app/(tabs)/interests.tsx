@@ -1,5 +1,5 @@
 import { Avatar } from '@/components/Base/Avatar'
-import { Btn, CharmBtn } from '@/components/Base/Button'
+import { Btn, BtnLink, CharmBtn } from '@/components/Base/Button'
 import Icon from '@/components/Base/Icon'
 import Label from '@/components/Base/Label'
 import { Circle } from '@/components/Common/Circle'
@@ -125,8 +125,10 @@ export default function InterestsScreen() {
         keyExtractor={item => item.id.toString()} // Convert the id to a string
         horizontal={true}
       />
-
-      <ContentSection classNames='mt-8' containerStyles={{ paddingBottom: 60 }} cardMode={false}>
+      <View className='mt-4 mb-4 flex items-end'>
+        <Btn link="/allInterests" label="View all" textMode={true} />
+      </View>
+      <ContentSection containerStyles={{ paddingBottom: 60 }} cardMode={false}>
         {/* Interest card */}
         <FlatList
           data={interests}
