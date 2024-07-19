@@ -1,7 +1,7 @@
 import { useLocalSearchParams } from "expo-router";
 import React, { useState, useMemo } from 'react';
 import { View, Image, Text, ScrollView } from 'react-native';
-import { useFetchAllProductsQuery } from './../../api'
+import { useFetchAllProductsQuery } from '../../../api'
 import { Product } from "@/types/Products";
 // import { Btn } from "@/components/Base/Button";
 import Chip from "@/components/Base/Chip";
