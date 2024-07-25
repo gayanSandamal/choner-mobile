@@ -1,21 +1,32 @@
-import { router } from 'expo-router';
-import { Text, View } from 'react-native';
-
-import { useSession } from './../hooks/ctx';
+import { View } from 'react-native';
+import { Colors } from '@/constants/Colors';
+import Authentications from '@/components/Authentications';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ContentSection } from '@/components/Wrappers/Sections';
+import Logo from '@/components/Common/Logo';
+import { useState } from 'react';
+import SignUpScreen from '@/components/Authentications/SignUp';
+import Label from '@/components/Base/Label';
+import { FontTypes, IconNames, InputSizes } from '@/types/Components';
+import { CharmBtn } from '@/components/Base/Button';
 
 export default function SignIn() {
-  const { signIn } = useSession();
+  const [activeScreen, setActiveScreen] = useState<string>('initial');
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text
-        onPress={() => {
-          signIn();
-          // Navigate after signing in. You may want to tweak this to ensure sign-in is
-          // successful before navigating.
-          router.replace('/');
-        }}>
-        Sign In
-      </Text>
-    </View>
+    <SafeAreaView className='flex items-center' style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: Colors.dark.grey }}>
+      <CharmBtn icon={IconNames.chevronLeft} onPress={() => { }} size={InputSizes.md} frame={false} />
+      <ContentSection containerStyles={{ maxWidth: 353 }} cardMode={false}>
+        <Logo style={{ width: 169, height: 66 }} />
+      </ContentSection>
+      {/* initial screen */}
+      {activeScreen === 'initial' && <>
+        <View style={{ height: 130 }}></View>
+        <Authentications onSetActiveScreen={setActiveScreen} />
+      </>}
+      {activeScreen === 'sign-up' && <>
+        <Label classNames='mb-8' type={FontTypes.FP} containerStyles={{ fontWeight: 700 }} label='SIGN UP USING' />
+        <SignUpScreen onSetActiveScreen={setActiveScreen} />
+      </>}
+    </SafeAreaView >
   );
 }

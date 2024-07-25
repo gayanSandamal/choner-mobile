@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 import "./../../global.css"
 import { store, persistor } from '../../store.config';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Provider } from 'react-redux';
@@ -45,7 +45,9 @@ export default function RootLayout() {
   }, [isLoading]);
 
   if (isLoading) {
-    return <Text>Loading...</Text>;
+    return <View className='flex h-100 items-center justify-center'>
+      <Text>Loading...</Text>
+    </View>;
   }
 
   if (!session) {

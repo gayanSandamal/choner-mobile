@@ -208,10 +208,13 @@ export enum IconNames {
   'qanda',
   'close',
   'send',
-  'options'
+  'options',
+  'login',
+  'register',
+  'chevronLeft'
 }
 
-export type IconName = IconNames.bell | IconNames.insight | IconNames.handshake | IconNames.interests | IconNames.interestsFill | IconNames.play | IconNames.trophy | IconNames.search | IconNames.fist | IconNames.biceps | IconNames.addPost | IconNames.qanda | IconNames.close | IconNames.send | IconNames.options
+export type IconName = IconNames.bell | IconNames.insight | IconNames.handshake | IconNames.interests | IconNames.interestsFill | IconNames.play | IconNames.trophy | IconNames.search | IconNames.fist | IconNames.biceps | IconNames.addPost | IconNames.qanda | IconNames.close | IconNames.send | IconNames.options | IconNames.login | IconNames.register | IconNames.chevronLeft
 
 export type IconProps = {
   color?: string,
@@ -328,4 +331,8 @@ export type InterestCardProps = {
   subtitle: string
   postedBy: PostedByProps
   interestedCount: number
+}
+
+export type SignUpScreenProps = {
+  onSetActiveScreen: (screen: string) => void
 }
