@@ -1,49 +1,38 @@
-import React from 'react';
-import Svg from "react-native-svg"
-import { IconBell, IconInsight, IconHandshake, IconInterests, IconInterestsFill, IconPlay, IconTrophy, IconSearch, IconFistBump, IconBiceps, IconAddPost, IconQandA, IconClose, IconSend, IconOptions, IconLogin, IconRegister, IconChevronLeft } from './Icons';
-import { IconName, IconNames, InputSizes, IconProps } from '@/types/Components';
-import { Colors } from '@/constants/Colors';
+import { IconName, IconNames, IconProps, InputSizes } from "@/types/Components";
+import * as Icons from "./Icons";
+import { Colors } from "@/constants/Colors";
+import Svg from "react-native-svg";
 
 const getIcon = (props: { color: string, name: IconName }) => {
-    const { color, name } = props
-    if (name === IconNames.bell) {
-        return <IconBell fill={color} />
-    } else if (name === IconNames.insight) {
-        return <IconInsight fill={color} />
-    } else if (name === IconNames.handshake) {
-        return <IconHandshake fill={color} />
-    } else if (name === IconNames.interests) {
-        return <IconInterests fill={color} />
-    } else if (name === IconNames.interestsFill) {
-        return <IconInterestsFill fill={color} />
-    } else if (name === IconNames.play) {
-        return <IconPlay fill={color} />
-    } else if (name === IconNames.trophy) {
-        return <IconTrophy fill={color} />
-    } else if (name === IconNames.search) {
-        return <IconSearch fill={color} />
-    } else if (name === IconNames.fist) {
-        return <IconFistBump fill={color} />
-    } else if (name === IconNames.biceps) {
-        return <IconBiceps fill={color} />
-    } else if (name === IconNames.addPost) {
-        return <IconAddPost fill={color} />
-    } else if (name === IconNames.qanda) {
-        return <IconQandA fill={color} />
-    } else if (name === IconNames.close) {
-        return <IconClose fill={color} />
-    } else if (name === IconNames.send) {
-        return <IconSend fill={color} />
-    } else if (name === IconNames.options) {
-        return <IconOptions fill={color} />
-    } else if (name === IconNames.login) {
-        return <IconLogin fill={color} />
-    } else if (name === IconNames.register) {
-        return <IconRegister fill={color} />
-    } else if (name === IconNames.chevronLeft) {
-        return <IconChevronLeft fill={color} />
-    }
-}
+    const { color, name } = props;
+    const iconMap = {
+        [IconNames.bell]: <Icons.IconBell fill={color} />,
+        [IconNames.insight]: <Icons.IconInsight fill={color} />,
+        [IconNames.handshake]: <Icons.IconHandshake fill={color} />,
+        [IconNames.interests]: <Icons.IconInterests fill={color} />,
+        [IconNames.interestsFill]: <Icons.IconInterestsFill fill={color} />,
+        [IconNames.play]: <Icons.IconPlay fill={color} />,
+        [IconNames.trophy]: <Icons.IconTrophy fill={color} />,
+        [IconNames.search]: <Icons.IconSearch fill={color} />,
+        [IconNames.fist]: <Icons.IconFistBump fill={color} />,
+        [IconNames.biceps]: <Icons.IconBiceps fill={color} />,
+        [IconNames.addPost]: <Icons.IconAddPost fill={color} />,
+        [IconNames.qanda]: <Icons.IconQandA fill={color} />,
+        [IconNames.close]: <Icons.IconClose fill={color} />,
+        [IconNames.send]: <Icons.IconSend fill={color} />,
+        [IconNames.options]: <Icons.IconOptions fill={color} />,
+        [IconNames.login]: <Icons.IconLogin fill={color} />,
+        [IconNames.register]: <Icons.IconRegister fill={color} />,
+        [IconNames.chevronLeft]: <Icons.IconChevronLeft fill={color} />,
+        [IconNames.email]: <Icons.IconEmail fill={color} />,
+        [IconNames.password]: <Icons.IconPassword fill={color} />,
+        [IconNames.apple]: <Icons.IconApple fill={color} />,
+        [IconNames.google]: <Icons.IconGoogle fill={color} />,
+        [IconNames.facebook]: <Icons.IconFacebook fill={color} />
+    };
+
+    return iconMap[name];
+};
 
 const Icon = (props: IconProps) => {
     const { color = Colors.dark.background, name = IconNames.bell, size = InputSizes.md, width = 24, height = 24 } = props

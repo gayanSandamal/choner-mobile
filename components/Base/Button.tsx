@@ -56,7 +56,7 @@ export const CharmBtn = (props: CharmBtnProps) => {
   }
   return (
     <TouchableOpacity onPress={onPress}>
-      <View style={styles().charmBtnStyles as any}>
+      <View style={styles().charmBtnStyles as any} className={frame ? 'shadow-sm' : ''}>
         <Icon color={color} name={icon} size={styles().charmBtnStyles.iconSize} />
         {children}
       </View>
@@ -104,7 +104,7 @@ export const Btn = (props: BtnProps) => {
     ...btnSizes()
   }
   const buttonCore = () =>
-    <View className={`flex flex-row items-center justify-center ${block && 'w-full'}`} style={btnStyles}>
+    <View className={`flex flex-row items-center justify-center shadow-sm ${block && 'w-full'}`} style={btnStyles}>
       {icon && <Icon color={color} name={icon} size={iconSizes(size).iconSize} width={iconWidth} height={iconHeight} />}
       <Label {...{ label, color }} containerStyles={{ fontWeight: textMode ? 400 : 600, marginLeft: icon ? 12 : 0, marginRight: 4 }} />
     </View>

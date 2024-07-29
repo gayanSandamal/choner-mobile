@@ -8,10 +8,10 @@ import { Colors } from '@/constants/Colors';
 import { Input } from "../Base/Input";
 import { Separator } from "../Base/Separator";
 
-export default function SignUpScreen(props: SignUpScreenProps) {
+export default function SignInScreen(props: SignUpScreenProps) {
   const { onSetActiveScreen } = props;
   const { signIn } = useSession();
-  const onPressSignUp = () => {
+  const onPressSignIn = () => {
     signIn();
     // Navigate after signing in. You may want to tweak this to ensure sign-in is
     // successful before navigating.
@@ -28,10 +28,9 @@ export default function SignUpScreen(props: SignUpScreenProps) {
         <Separator />
         <Input classNames='mb-5' placeholder={'ENTER EMAIL'} value={undefined} icon={IconNames.email} />
         <Input classNames='mb-5' placeholder={'ENTER PASSWORD'} value={undefined} icon={IconNames.password} />
-        <Input classNames='mb-5' placeholder={'CONFIRM PASSWORD'} value={undefined} icon={IconNames.password} />
-        <Btn onPress={onPressSignUp} icon={IconNames.register} size={InputSizes.lg} block label="SIGN UP" wrapperClasses='mb-10'></Btn>
-
-        <Btn onPress={() => onSetActiveScreen('sign-in')} icon={IconNames.login} size={InputSizes.lg} block outlined color={Colors.dark['primary-shade-2']} label="SIGN IN" wrapperClasses='mt-5'></Btn>
+        <Btn onPress={onPressSignIn} icon={IconNames.login} size={InputSizes.lg} block label="SIGN IN"></Btn>
+        <Btn wrapperClasses='text-center mt-16' onPress={() => onSetActiveScreen('forgot-password')} size={InputSizes.sm} textMode link={'/'} color={Colors.dark['grey-shade-2']} label="FORGOT PASSWORD"></Btn>
+        <Btn onPress={() => onSetActiveScreen('sign-up')} icon={IconNames.register} size={InputSizes.lg} block outlined color={Colors.dark['primary-shade-2']} label="SIGN UP" wrapperClasses='mt-5'></Btn>
       </View>
     </ContentSection>)
 }

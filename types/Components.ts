@@ -211,10 +211,15 @@ export enum IconNames {
   'options',
   'login',
   'register',
-  'chevronLeft'
+  'chevronLeft',
+  'email',
+  'password',
+  'apple',
+  'google',
+  'facebook'
 }
 
-export type IconName = IconNames.bell | IconNames.insight | IconNames.handshake | IconNames.interests | IconNames.interestsFill | IconNames.play | IconNames.trophy | IconNames.search | IconNames.fist | IconNames.biceps | IconNames.addPost | IconNames.qanda | IconNames.close | IconNames.send | IconNames.options | IconNames.login | IconNames.register | IconNames.chevronLeft
+export type IconName = IconNames.bell | IconNames.insight | IconNames.handshake | IconNames.interests | IconNames.interestsFill | IconNames.play | IconNames.trophy | IconNames.search | IconNames.fist | IconNames.biceps | IconNames.addPost | IconNames.qanda | IconNames.close | IconNames.send | IconNames.options | IconNames.login | IconNames.register | IconNames.chevronLeft | IconNames.email | IconNames.password | IconNames.apple | IconNames.google | IconNames.facebook
 
 export type IconProps = {
   color?: string,
@@ -335,4 +340,21 @@ export type InterestCardProps = {
 
 export type SignUpScreenProps = {
   onSetActiveScreen: (screen: string) => void
+}
+
+export type InputType = 'text' | 'numeric'
+
+export type InputProps = {
+  containerStyles?: ContainerStyles
+  classNames?: string
+  size?: InputSize
+  value?: string
+  placeholder?: string
+  type?: InputType
+  icon?: IconName
+}
+
+export type SeparatorProps = {
+  label?: string
+  barWidth?: number
 }
