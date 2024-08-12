@@ -12,14 +12,24 @@ import { useSession } from '@/hooks/ctx';
 import { StatusBar } from 'expo-status-bar'
 import React, { useState } from 'react'
 import { ScrollView } from 'react-native'
+import { fbSignUp, fbSignIn, fblogOut } from './../../../auth';
 
 const HomeScreen = () => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
   const { signOut } = useSession();
+  const onLogout = () => {
+    fblogOut()
+      .then(() => {
+        signOut();
+      })
+      .catch((error: any) => {
+        console.error('Error signing out:', error);
+      })
+  }
   return (
     <ScrollView className='px-3'>
       <ContentSection classNames='mt-3' cardMode={false}>
-        <Btn label='sign out' onPress={signOut} />
+        <Btn label='sign out' onPress={onLogout} />
         <Greeting />
       </ContentSection>
       <BaseGrid onFetchDimensions={setDimensions}>

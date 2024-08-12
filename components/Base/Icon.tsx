@@ -28,7 +28,9 @@ const getIcon = (props: { color: string, name: IconName }) => {
         [IconNames.password]: <Icons.IconPassword fill={color} />,
         [IconNames.apple]: <Icons.IconApple fill={color} />,
         [IconNames.google]: <Icons.IconGoogle fill={color} />,
-        [IconNames.facebook]: <Icons.IconFacebook fill={color} />
+        [IconNames.facebook]: <Icons.IconFacebook fill={color} />,
+        [IconNames.view]: <Icons.IconView fill={color} />,
+        [IconNames.hidden]: <Icons.IconHidden fill={color} />
     };
 
     return iconMap[name];

@@ -9,7 +9,6 @@ import SignUpScreen from '@/components/Authentications/SignUp';
 import Label from '@/components/Base/Label';
 import { FontTypes, IconNames, InputSizes } from '@/types/Components';
 import { CharmBtn } from '@/components/Base/Button';
-import { router } from 'expo-router';
 import SignInScreen from '@/components/Authentications/SignIn';
 import ForgotPasswordScreen from '@/components/Authentications/ForgotPassword';
 

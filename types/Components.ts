@@ -216,10 +216,12 @@ export enum IconNames {
   'password',
   'apple',
   'google',
-  'facebook'
+  'facebook',
+  'view',
+  'hidden'
 }
 
-export type IconName = IconNames.bell | IconNames.insight | IconNames.handshake | IconNames.interests | IconNames.interestsFill | IconNames.play | IconNames.trophy | IconNames.search | IconNames.fist | IconNames.biceps | IconNames.addPost | IconNames.qanda | IconNames.close | IconNames.send | IconNames.options | IconNames.login | IconNames.register | IconNames.chevronLeft | IconNames.email | IconNames.password | IconNames.apple | IconNames.google | IconNames.facebook
+export type IconName = IconNames.bell | IconNames.insight | IconNames.handshake | IconNames.interests | IconNames.interestsFill | IconNames.play | IconNames.trophy | IconNames.search | IconNames.fist | IconNames.biceps | IconNames.addPost | IconNames.qanda | IconNames.close | IconNames.send | IconNames.options | IconNames.login | IconNames.register | IconNames.chevronLeft | IconNames.email | IconNames.password | IconNames.apple | IconNames.google | IconNames.facebook | IconNames.view | IconNames.hidden
 
 export type IconProps = {
   color?: string,
@@ -352,6 +354,10 @@ export type InputProps = {
   placeholder?: string
   type?: InputType
   icon?: IconName
+  iconRight?: IconName
+  secureTextEntry?: boolean
+  onChange?: (text: string) => void
+  onPressIconRight?: (show: boolean) => void
 }
 
 export type SeparatorProps = {

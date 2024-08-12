@@ -7,12 +7,18 @@ import { ContentSection } from "../Wrappers/Sections";
 import { Colors } from '@/constants/Colors';
 import { Input } from "../Base/Input";
 import { Separator } from "../Base/Separator";
+import { fbSignUp, fbSignIn, fblogOut } from './../../auth';
 
 export default function SignInScreen(props: SignUpScreenProps) {
   const { onSetActiveScreen } = props;
   const { signIn } = useSession();
   const onPressSignIn = () => {
-    signIn();
+    fbSignIn('user@example.com', 'password123').then((userCredential) => {
+      signIn();
+    })
+      .catch((error) => {
+        console.error('Error signing in:', error);
+      });
     // Navigate after signing in. You may want to tweak this to ensure sign-in is
     // successful before navigating.
     router.replace('/');
