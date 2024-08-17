@@ -1,5 +1,4 @@
 import { View } from "react-native";
-import { router } from 'expo-router';
 import { useSession } from "@/hooks/ctx";
 import { Btn, CharmBtn } from "../Base/Button";
 import { IconNames, InputSizes, SignUpScreenProps } from "@/types/Components";
@@ -44,8 +43,8 @@ export default function SignUpScreen(props: SignUpScreenProps) {
     }
     fbSignUp(email, password)
       .then((userCredential) => {
-        console.log('User signed up:', userCredential);
-        signIn();
+        // alert(`User signed up: ${userCredential.user.email}`);
+        onSetActiveScreen('sign-in');
       })
       .catch((error) => {
         console.error('Error signing up:', error);
@@ -57,12 +56,13 @@ export default function SignUpScreen(props: SignUpScreenProps) {
   return (
     <ContentSection cardMode={false} containerStyles={{ maxWidth: 353 }}>
       <View className='flex items-center mt-3'>
-        <View className="flex flex-row w-full items-center justify-between" style={{ maxWidth: 241 }}>
+        {/* TODO: Enable the below code block later */}
+        {/* <View className="flex flex-row w-full items-center justify-between" style={{ maxWidth: 241 }}>
           <CharmBtn icon={IconNames.google} onPress={() => { }} size={InputSizes.lg} />
           <CharmBtn icon={IconNames.facebook} onPress={() => { }} size={InputSizes.lg} />
           <CharmBtn icon={IconNames.apple} onPress={() => { }} size={InputSizes.lg} />
         </View>
-        <Separator />
+        <Separator /> */}
         <Input classNames='mb-5' placeholder={'ENTER EMAIL'} value={email} onChange={setEmail} icon={IconNames.email} />
         <Input classNames='mb-5' placeholder={'ENTER PASSWORD'} value={password} onChange={setPassword} icon={IconNames.password} iconRight={showPassword ? IconNames.view : IconNames.hidden} onPressIconRight={onShowPasswordPress} secureTextEntry={!showPassword} />
         <Input classNames='mb-5' placeholder={'CONFIRM PASSWORD'} value={confirmPassword} onChange={setConfirmPassword} icon={IconNames.password}  iconRight={showConfirmPassword ? IconNames.view : IconNames.hidden} onPressIconRight={onShowConfirmPasswordPress} secureTextEntry={!showConfirmPassword} />

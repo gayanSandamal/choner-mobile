@@ -30,11 +30,11 @@ export default function SignIn() {
         <Authentications onSetActiveScreen={setActiveScreen} />
       </>}
       {activeScreen === 'sign-in' && <>
-        <Label classNames='mb-8' type={FontTypes.FP} containerStyles={{ fontWeight: 700 }} label='SIGN IN USING' />
+        <Label classNames='mb-8' type={FontTypes.FP} containerStyles={{ fontWeight: 700 }} label='SIGN IN' />
         <SignInScreen onSetActiveScreen={setActiveScreen} />
       </>}
       {activeScreen === 'sign-up' && <>
-        <Label classNames='mb-8' type={FontTypes.FP} containerStyles={{ fontWeight: 700 }} label='SIGN UP USING' />
+        <Label classNames='mb-8' type={FontTypes.FP} containerStyles={{ fontWeight: 700 }} label='SIGN UP' />
         <SignUpScreen onSetActiveScreen={setActiveScreen} />
       </>}
       {activeScreen === 'forgot-password' && <>
