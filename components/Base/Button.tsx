@@ -71,23 +71,23 @@ export const Btn = (props: BtnProps) => {
     if (size === InputSizes.sm) {
       return {
         borderRadius: 22,
-        paddingHorizontal: !textMode && 8,
         paddingVertical: 3,
-        minHeight: 22
+        minHeight: 22,
+        ...(!textMode && {paddingHorizontal: 8})
       }
     } else if (size === InputSizes.md) {
       return {
         borderRadius: 30,
-        paddingHorizontal: !textMode && 15,
         paddingVertical: 7,
-        minHeight: 30
+        minHeight: 30,
+        ...(!textMode && {paddingHorizontal: 15})
       }
     } else if (size === InputSizes.lg) {
       return {
         borderRadius: 60,
-        paddingHorizontal: !textMode && 30,
         paddingVertical: 12,
-        minHeight: 60
+        minHeight: 60,
+        ...(!textMode && {paddingHorizontal: 30})
       }
     }
   }
@@ -95,9 +95,9 @@ export const Btn = (props: BtnProps) => {
     ...(outlined && !textMode ? {
       borderColor: color,
       borderWidth: 1
-    } : {
-      backgroundColor: !textMode && bgColor
-    }),
+    } : 
+      !textMode && {backgroundColor: bgColor}
+    ),
     ...(disabled && {
       opacity: 0.7
     }),

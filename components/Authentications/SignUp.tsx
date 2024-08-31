@@ -1,25 +1,32 @@
 import { View } from "react-native";
-import { useSession } from "@/hooks/ctx";
-import { Btn, CharmBtn } from "../Base/Button";
-import { IconNames, InputSizes, SignUpScreenProps } from "@/types/Components";
+import { Btn } from "../Base/Button";
+import { IconNames, InputSizes } from "@/types/Components";
 import { ContentSection } from "../Wrappers/Sections";
 import { Colors } from '@/constants/Colors';
 import { Input } from "../Base/Input";
 import { Separator } from "../Base/Separator";
 import { fbSignUp } from './../../auth';
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { router } from "expo-router";
+import { getAuth, onAuthStateChanged, UserCredential } from "firebase/auth";
+import { useSession } from "@/hooks/ctx";
 
-export default function SignUpScreen(props: SignUpScreenProps) {
-  const { onSetActiveScreen } = props;
+export default function SignUpScreen() {
+  const user = useRef<UserCredential | null>(null)
+
+  const auth = getAuth()
   const { signIn } = useSession();
+
   const [email, setEmail] = useState<string | undefined>(undefined);
   const [password, setPassword] = useState<string | undefined>(undefined);
   const [confirmPassword, setConfirmPassword] = useState<string | undefined>(undefined);
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
+
   const onShowPasswordPress = () => {
     setShowPassword(!showPassword);
   }
-  const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
+
   const onShowConfirmPasswordPress = () => {
     setShowConfirmPassword(!showConfirmPassword);
   }
@@ -43,16 +50,22 @@ export default function SignUpScreen(props: SignUpScreenProps) {
     }
     fbSignUp(email, password)
       .then((userCredential) => {
-        // alert(`User signed up: ${userCredential.user.email}`);
-        onSetActiveScreen('sign-in');
+        user.current = userCredential
+        if (userCredential.user) {
+          signIn(userCredential)
+          router.replace('/')
+        } else {
+          router.navigate('/sign-in');
+        }
       })
       .catch((error) => {
-        console.error('Error signing up:', error);
+        alert('Error signing up. Try again');
       });
     // Navigate after signing in. You may want to tweak this to ensure sign-in is
     // successful before navigating.
     // router.replace('/');
-  };
+  }
+
   return (
     <ContentSection cardMode={false} containerStyles={{ maxWidth: 353 }}>
       <View className='flex items-center mt-3'>
@@ -69,7 +82,8 @@ export default function SignUpScreen(props: SignUpScreenProps) {
 
         <Btn onPress={onPressSignUp} icon={IconNames.register} size={InputSizes.lg} block label="SIGN UP" wrapperClasses='mb-10'></Btn>
 
-        <Btn onPress={() => onSetActiveScreen('sign-in')} icon={IconNames.login} size={InputSizes.lg} block outlined color={Colors.dark['primary-shade-2']} label="SIGN IN" wrapperClasses='mt-5'></Btn>
+        <Btn onPress={() => router.navigate('/sign-in')} icon={IconNames.login} size={InputSizes.lg} block outlined color={Colors.dark['primary-shade-2']} label="SIGN IN" wrapperClasses='mt-5'></Btn>
       </View>
-    </ContentSection>)
+    </ContentSection>
+  )
 }

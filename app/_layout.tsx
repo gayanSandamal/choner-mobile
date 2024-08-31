@@ -1,11 +1,17 @@
-import { Slot } from 'expo-router';
+import { Slot, Stack } from 'expo-router';
 import { SessionProvider } from './../hooks/ctx';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 export default function Root() {
-  // Set up the auth context and render our layout inside of it.
   return (
     <SessionProvider>
-      <Slot />
+      <Stack screenOptions={{headerShown: false}}>
+        <Stack.Screen name='landing-page' />
+        <Stack.Screen name='sign-in' />
+        <Stack.Screen name='sign-up' />
+        <Stack.Screen name='forgot-password' />
+        <Stack.Screen name='(app)' />
+      </Stack>
     </SessionProvider>
   );
 }

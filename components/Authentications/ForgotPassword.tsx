@@ -1,21 +1,18 @@
 import { View } from "react-native";
 import { router } from 'expo-router';
 import { useSession } from "@/hooks/ctx";
-import { Btn, CharmBtn } from "../Base/Button";
-import { IconNames, InputSizes, SignUpScreenProps } from "@/types/Components";
+import { Btn } from "../Base/Button";
+import { IconNames, InputSizes } from "@/types/Components";
 import { ContentSection } from "../Wrappers/Sections";
-import { Colors } from '@/constants/Colors';
 import { Input } from "../Base/Input";
-import { Separator } from "../Base/Separator";
 
-export default function ForgotPasswordScreen(props: SignUpScreenProps) {
-  const { onSetActiveScreen } = props;
+export default function ForgotPasswordScreen() {
   const { signIn } = useSession();
   const onPressSignIn = () => {
-    signIn();
+    // signIn();
     // Navigate after signing in. You may want to tweak this to ensure sign-in is
     // successful before navigating.
-    router.replace('/');
+    router.replace('/landing-page');
   };
   return (
     <ContentSection cardMode={false} containerStyles={{ maxWidth: 353 }}>
