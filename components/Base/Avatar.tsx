@@ -1,7 +1,7 @@
 import { Colors } from '@/constants/Colors';
 import { AvatarProps, InputSize, InputSizes } from '@/types/Components';
 import { Image } from 'expo-image';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 const blurhash =
     '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
@@ -54,7 +54,7 @@ export const Avatar = (props: AvatarProps) => {
     const wrapperDimensions = getSize(size).wrapper
     const imgDimensions = getSize(size).img
     return (
-        <View style={[styles.container, { backgroundColor: bgColor }, wrapperDimensions, containerStyles]}>
+        <Pressable style={[styles.container, { backgroundColor: bgColor }, wrapperDimensions, containerStyles]} onPress={() => props.onPressAvatar && props.onPressAvatar()}>
             <Image
                 style={[imgDimensions]}
                 source={img}
@@ -62,7 +62,7 @@ export const Avatar = (props: AvatarProps) => {
                 contentFit="cover"
                 transition={1000}
             />
-        </View>
+        </Pressable>
     );
 }
 

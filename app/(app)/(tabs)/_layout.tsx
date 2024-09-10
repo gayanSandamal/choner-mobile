@@ -1,4 +1,4 @@
-import { Tabs } from 'expo-router';
+import { router, Tabs } from 'expo-router';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
@@ -11,7 +11,7 @@ import { tabs } from '@/constants/NavigationTabs';
 export default function TabLayout() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.dark.grey }}>
-      <Header />
+      <Header onPressAvatar={() => router.navigate('/basic-info')} />
       <Tabs
         sceneContainerStyle={{ backgroundColor: Colors.dark.grey }}
         screenOptions={{

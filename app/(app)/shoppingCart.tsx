@@ -6,6 +6,7 @@ import { useResetCart } from "@/hooks/useCart";
 import { CartItemComponent } from '@/components/Cart/CartItem';
 import BottomModal from '@/components/Base/Modal';
 import { useState } from 'react';
+import { MainWrapper } from '@/components/Wrappers/MainWrapper';
 
 
 export default function ShoppingCartScreen() {
@@ -41,7 +42,7 @@ export default function ShoppingCartScreen() {
   const total = parseFloat(subTotal) + deliveryCost
 
   return (
-    <>
+    <MainWrapper>
       <ScrollView>
         <View className="p-4">
           {items.map((item: CartItem, index: number) => (
@@ -79,6 +80,6 @@ export default function ShoppingCartScreen() {
         </View>
       </View>
       <BottomModal hieght='2/4' isVisible={imageModalVisibility} onClose={() => setImageModalVisibility(false)} slot={imageModalContent()} />
-    </>
+    </MainWrapper>
   );
 }

@@ -65,7 +65,7 @@ export const CharmBtn = (props: CharmBtnProps) => {
 }
 
 export const Btn = (props: BtnProps) => {
-  const { color = Colors.dark.background, icon, link, onPress, label = 'Save', bgColor = Colors.dark['soundcloud-gdr-1'], disabled = false, wrapperClasses, outlined, size = InputSizes.md, iconWidth, iconHeight, block, textMode = false } = props;
+  const { color = Colors.dark.background, icon, link, onPress, label = 'Save', bgColor = props.backgroundColor || Colors.dark['soundcloud-gdr-1'], disabled = false, wrapperClasses, outlined, size = InputSizes.md, iconWidth, iconHeight, block, textMode = false } = props;
 
   const btnSizes = () => {
     if (size === InputSizes.sm) {
@@ -101,10 +101,10 @@ export const Btn = (props: BtnProps) => {
     ...(disabled && {
       opacity: 0.7
     }),
-    ...btnSizes()
+    ...btnSizes(),
   }
   const buttonCore = () =>
-    <View className={`flex flex-row items-center justify-center shadow-sm ${block && 'w-full'}`} style={btnStyles}>
+    <View className={`flex flex-row items-center justify-center shadow-sm ${block && 'w-full'}`} style={[btnStyles, props.style]}>
       {icon && <Icon color={color} name={icon} size={iconSizes(size).iconSize} width={iconWidth} height={iconHeight} />}
       <Label {...{ label, color }} containerStyles={{ fontWeight: textMode ? 400 : 600, marginLeft: icon ? 12 : 0, marginRight: 4 }} />
     </View>

@@ -10,29 +10,61 @@ import SurveyWidget from '@/components/Widgets/SurveyWidget';
 import { ContentSection } from '@/components/Wrappers/Sections';
 import { useSession } from '@/hooks/ctx';
 import { StatusBar } from 'expo-status-bar'
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
-import { fbSignUp, fbSignIn, fblogOut } from './../../../auth';
+import { fblogOut } from './../../../auth';
+import { useAuthUserId } from '@/hooks/useAuthUser';
+import { useUser } from '@/contexts/userContext';
+import { useGetUser } from '@/hooks/get/useUser';
+import { router } from 'expo-router';
 
 const HomeScreen = () => {
+  const userId = useAuthUserId()
+
+  const {setUser} = useUser()
+  const {signOut} = useSession()
+  
+  // This cause grid dimentions to transform from 0 -> full. Creating a transform effect in the initial grid render
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
-  const { signOut } = useSession();
-  const onLogout = () => {
-    fblogOut()
-      .then(() => {
-        signOut();
-      })
-      .catch((error: any) => {
-        console.error('Error signing out:', error);
-      })
-  }
+
+  const {data: fetchedUser, refetch: fetchUser} = useGetUser(userId || '', false)
+
+    useEffect(() => {
+      if (fetchedUser) {
+        setUser(fetchedUser)
+        if (!fetchedUser?.displayName) {
+          router.navigate('/basic-info')
+        }
+      }
+    }, [fetchedUser])
+
+    useEffect(() => {
+      if (userId) {
+        fetchUser()
+      }
+    }, [userId])
+  
+    const onLogout = useCallback(() => {
+      fblogOut()
+        .then(() => {
+          signOut(userId)
+        })
+        .catch((error: any) => {
+          console.error('Error signing out:', error)
+        });
+    }, [userId])
+
+    const handleSetDimensions = useCallback((newDimensions: {width: number, height: number}) => {
+      setDimensions(newDimensions)
+    }, [])
+
   return (
     <ScrollView className='px-3'>
       <ContentSection classNames='mt-3' cardMode={false}>
         <Btn label='sign out' onPress={onLogout} />
         <Greeting />
       </ContentSection>
-      <BaseGrid onFetchDimensions={setDimensions}>
+      <BaseGrid onFetchDimensions={handleSetDimensions}>
         <GridItem columns={1} gridDimentions={dimensions}>
           <ChallengesWidget />
         </GridItem>
