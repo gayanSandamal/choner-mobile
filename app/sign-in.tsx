@@ -22,5 +22,5 @@ export default function SignIn() {
       <Label classNames='mb-8' type={FontTypes.FP} containerStyles={{ fontWeight: 700 }} label='SIGN IN' />
       <SignInScreen />
     </SafeAreaView >
-  );
+  )
 }

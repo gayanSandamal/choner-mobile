@@ -9,7 +9,6 @@ import { Input } from "../Base/Input";
 export default function ForgotPasswordScreen() {
   const { signIn } = useSession();
   const onPressSignIn = () => {
-    // signIn();
     // Navigate after signing in. You may want to tweak this to ensure sign-in is
     // successful before navigating.
     router.replace('/landing-page');
@@ -18,7 +17,7 @@ export default function ForgotPasswordScreen() {
     <ContentSection cardMode={false} containerStyles={{ maxWidth: 353 }}>
       <View className='flex items-center mt-3'>
         <Input classNames='mb-5' placeholder={'ENTER EMAIL'} value={undefined} icon={IconNames.email} />
-        <Btn onPress={onPressSignIn} icon={IconNames.login} size={InputSizes.lg} block label="SIGN IN"></Btn>
+        <Btn onPress={() => router.navigate('/sign-in')} icon={IconNames.login} size={InputSizes.lg} block label="SEND CODE"></Btn>
       </View>
     </ContentSection>)
 }

@@ -1,20 +1,18 @@
 import { View } from "react-native";
-import { Btn } from "../Base/Button";
-import { IconNames, InputSizes } from "@/types/Components";
+import { Btn, CharmBtn } from "../Base/Button";
+import { IconNames, InputSizes, SignUpScreenProps } from "@/types/Components";
 import { ContentSection } from "../Wrappers/Sections";
 import { Colors } from '@/constants/Colors';
 import { Input } from "../Base/Input";
-import { Separator } from "../Base/Separator";
 import { fbSignUp } from './../../auth';
 import { useRef, useState } from "react";
 import { router } from "expo-router";
-import { getAuth, onAuthStateChanged, UserCredential } from "firebase/auth";
+import { UserCredential } from "firebase/auth";
 import { useSession } from "@/hooks/ctx";
 
 export default function SignUpScreen() {
   const user = useRef<UserCredential | null>(null)
 
-  const auth = getAuth()
   const { signIn } = useSession();
 
   const [email, setEmail] = useState<string | undefined>(undefined);
@@ -52,7 +50,7 @@ export default function SignUpScreen() {
       .then((userCredential) => {
         user.current = userCredential
         if (userCredential.user) {
-          signIn(userCredential)
+          signIn(userCredential.user)
           router.replace('/')
         } else {
           router.navigate('/sign-in');

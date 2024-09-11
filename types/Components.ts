@@ -1,3 +1,4 @@
+import { StyleProp, StyleSheet, ViewStyle } from "react-native"
 import { CartItem } from "./Products"
 
 type sizes = 'sm' | 'md' | 'lg'
@@ -20,6 +21,10 @@ export type SectionLink = {
   title: string
   href: string
   color?: string
+}
+
+export type MainWrapperProps = {
+  children: React.ReactNode
 }
 
 export type SectionProps = {
@@ -72,6 +77,8 @@ export type BtnProps = {
   iconHeight?: number
   block?: boolean
   textMode?: boolean
+  backgroundColor?: string
+  style?: StyleProp<ViewStyle>
 } & ButtonProps
 
 export type BtnGroupProps = {
@@ -238,6 +245,7 @@ export type IndicatorProps = {
 
 export type HeaderProps = {
   unreadNotifications?: boolean
+  onPressAvatar?: () => void
 }
 
 type ContainerStyles = { [key: string]: string | number }
@@ -247,6 +255,7 @@ export type AvatarProps = {
   bgColor?: string
   img?: string
   size?: InputSize
+  onPressAvatar?: () => void
 }
 
 type BaseGridDimensions = {

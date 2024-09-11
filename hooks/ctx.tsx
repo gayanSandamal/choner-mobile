@@ -1,14 +1,16 @@
 import { useContext, createContext, type PropsWithChildren } from 'react';
 import { useStorageState } from './../hooks/useStorageState';
+import { useQueryClient } from '@tanstack/react-query';
+import { QueryKeys } from '@/constants/values';
 
 const AuthContext = createContext<{
   signIn: (userCredential: any) => void;
-  signOut: () => void;
+  signOut: (uid: string | null) => void;
   session?: string | null;
   isLoading: boolean;
 }>({
   signIn: (userCredential: any) => null,
-  signOut: () => null,
+  signOut: (uid: string | null) => null,
   session: null,
   isLoading: false,
 });
@@ -26,6 +28,8 @@ export function useSession() {
 }
 
 export function SessionProvider({ children }: PropsWithChildren) {
+  const queryClient = useQueryClient()
+  
   const [[isLoading, session], setSession] = useStorageState('session');
 
   return (
@@ -35,7 +39,9 @@ export function SessionProvider({ children }: PropsWithChildren) {
           // Perform sign-in logic here
           setSession(JSON.stringify(userCredential));
         },
-        signOut: () => {
+        signOut: (uid: string | null) => {
+          // Enabe if fetched user cache need to be removed on sign-out
+          // queryClient.removeQueries({queryKey: [QueryKeys.USER, uid], exact: !!uid})
           setSession(null);
         },
         session,

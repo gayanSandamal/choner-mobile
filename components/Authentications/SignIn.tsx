@@ -1,13 +1,12 @@
 import { View } from "react-native";
 import { router } from 'expo-router';
 import { useSession } from "@/hooks/ctx";
-import { Btn, CharmBtn } from "../Base/Button";
-import { IconNames, InputSizes, SignUpScreenProps } from "@/types/Components";
+import { Btn } from "../Base/Button";
+import { IconNames, InputSizes } from "@/types/Components";
 import { ContentSection } from "../Wrappers/Sections";
 import { Colors } from '@/constants/Colors';
 import { Input } from "../Base/Input";
-import { Separator } from "../Base/Separator";
-import { fbSignUp, fbSignIn, fblogOut } from './../../auth';
+import { fbSignIn } from './../../auth';
 import { useState } from "react";
 
 export default function SignInScreen() {

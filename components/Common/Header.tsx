@@ -49,7 +49,7 @@ const Header = (props: HeaderProps) => {
                         unreadNotifications && <View style={{ position: 'absolute', bottom: 4, right: 4 }}><Indicator /></View>
                     }
                 </CharmBtn>
-                <Avatar containerStyles={{ marginLeft: 10 }} size={InputSizes.sm} />
+                <Avatar containerStyles={{ marginLeft: 10 }} size={InputSizes.sm} onPressAvatar={props.onPressAvatar} />
             </View>
         </View>
     )
