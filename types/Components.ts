@@ -1,4 +1,4 @@
-import { StyleProp, StyleSheet, ViewStyle } from "react-native"
+import { StyleProp, ViewStyle } from "react-native"
 import { CartItem } from "./Products"
 
 type sizes = 'sm' | 'md' | 'lg'
@@ -11,7 +11,7 @@ export type TabType = {
   name: string,
   title: string,
   icon: {
-    name: IconName,
+    name: string,
     link: string
   },
   meta?: TabMeta
@@ -25,6 +25,12 @@ export type SectionLink = {
 
 export type MainWrapperProps = {
   children: React.ReactNode
+}
+
+export type SettignsWrapperProps = {
+  header: string
+  children: React.ReactNode
+  onBack?: () => void
 }
 
 export type SectionProps = {
@@ -43,6 +49,13 @@ export type BtnLinkProps = {
   color?: string
 }
 
+export type BtnDetailedProps = {
+  leftIcon: string,
+  rightIcon: string,
+  label: string,
+  onPress: () => void
+}
+
 export enum InputSizes {
   'xs',
   'sm',
@@ -55,7 +68,7 @@ export type InputSize = InputSizes.xs | InputSizes.sm | InputSizes.md | InputSiz
 type ButtonProps = {
   bgColor?: string
   color?: string
-  icon?: IconName
+  icon?: string
   id?: string | number
   onPress?: (data?: any) => void
   link?: string
@@ -177,11 +190,12 @@ export enum FontTypes {
   FTitle3 = 'title3',
   FTitle3Bold = 'title3-bold',
   FLabel = 'label',
+  FLabelBold = 'label-bold',
   FP = 'p',
   FSmall = 'small'
 }
 
-export type FontType = FontTypes.FDisplay1 | FontTypes.FDisplay2 | FontTypes.FDisplay3 | FontTypes.FDisplay4 | FontTypes.FDisplay5 | FontTypes.FDisplay6 | FontTypes.FTitle1 | FontTypes.FTitle1Bold | FontTypes.FTitle2 | FontTypes.FTitle3 | FontTypes.FTitle3Bold | FontTypes.FLabel | FontTypes.FP | FontTypes.FSmall
+export type FontType = FontTypes.FDisplay1 | FontTypes.FDisplay2 | FontTypes.FDisplay3 | FontTypes.FDisplay4 | FontTypes.FDisplay5 | FontTypes.FDisplay6 | FontTypes.FTitle1 | FontTypes.FTitle1Bold | FontTypes.FTitle2 | FontTypes.FTitle3 | FontTypes.FTitle3Bold | FontTypes.FLabel | FontTypes.FP | FontTypes.FSmall | FontTypes.FLabelBold
 
 export enum FontColors {
   'light' = 'light',
@@ -194,6 +208,7 @@ export type LabelProps = {
   type?: FontType
   color?: FontColor
   classNames?: string
+  underline?: boolean
   label?: string
   containerStyles?: ContainerStyles
   ellipsizeMode?: 'head' | 'middle' | 'tail' | 'clip'
@@ -201,38 +216,42 @@ export type LabelProps = {
 }
 
 export enum IconNames {
-  'bell',
-  'insight',
-  'handshake',
-  'interests',
-  'interestsFill',
-  'play',
-  'trophy',
-  'search',
-  'fist',
-  'biceps',
-  'addPost',
-  'qanda',
-  'close',
-  'send',
-  'options',
-  'login',
-  'register',
-  'chevronLeft',
-  'email',
-  'password',
-  'apple',
-  'google',
-  'facebook',
-  'view',
-  'hidden'
+  bell = 'bell',
+  insight = 'insight',
+  handshake = 'handshake',
+  interests = 'interests',
+  interestsFill = 'interestsFill',
+  play = 'play',
+  trophy = 'trophy',
+  search = 'search',
+  fist = 'fist',
+  biceps = 'biceps',
+  addPost = 'addPost',
+  qanda = 'qanda',
+  close = 'close',
+  send = 'send',
+  options = 'options',
+  login = 'login',
+  register = 'register',
+  chevronLeft = 'chevronLeft',
+  email = 'email',
+  password = 'password',
+  apple = 'apple',
+  google = 'google',
+  facebook = 'facebook',
+  view = 'view',
+  hidden = 'hidden',
+  info = 'info',
+  person = 'person',
+  incognito = 'incognito',
+  lock = 'lock',
+  personAdd = 'personAdd',
+  chevronMiniRight = 'chevronMiniRight',
 }
-
-export type IconName = IconNames.bell | IconNames.insight | IconNames.handshake | IconNames.interests | IconNames.interestsFill | IconNames.play | IconNames.trophy | IconNames.search | IconNames.fist | IconNames.biceps | IconNames.addPost | IconNames.qanda | IconNames.close | IconNames.send | IconNames.options | IconNames.login | IconNames.register | IconNames.chevronLeft | IconNames.email | IconNames.password | IconNames.apple | IconNames.google | IconNames.facebook | IconNames.view | IconNames.hidden
 
 export type IconProps = {
   color?: string,
-  name: IconName,
+  name: string,
   size?: InputSize,
   width?: number
   height?: number
@@ -294,6 +313,7 @@ export type CardProps = {
 
 export type SpacerProps = {
   height?: number
+  width?: number
 }
 
 export type ActionBarProps = {
@@ -314,7 +334,7 @@ export type PostProps = {
   onPostTypePress: (item: PostTypeProps) => void
 }
 export type PublishPostProps = {
-  icon?: IconName
+  icon?: string
   title?: string
   placeholder?: string
   enableScheduling?: boolean
@@ -362,8 +382,8 @@ export type InputProps = {
   value?: string
   placeholder?: string
   type?: InputType
-  icon?: IconName
-  iconRight?: IconName
+  icon?: string
+  iconRight?: string
   secureTextEntry?: boolean
   onChange?: (text: string) => void
   onPressIconRight?: (show: boolean) => void

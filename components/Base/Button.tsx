@@ -1,12 +1,16 @@
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { BtnGroupProps, BtnLinkProps, BtnProps, CharmBtnProps, IconNames, InputSizes } from '@/types/Components';
+import { BtnDetailedProps, BtnGroupProps, BtnLinkProps, BtnProps, CharmBtnProps, FontTypes, IconNames, InputSizes } from '@/types/Components';
 import { Link } from 'expo-router';
 import React from 'react';
-import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, View, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import Icon from './Icon';
 import Label from './Label';
-import { opacity } from 'react-native-reanimated/lib/typescript/reanimated2/Colors';
+import { Spacer } from './Spacer';
+
+const styles = StyleSheet.create({
+  btnDetailedWrapper: {width: '100%', height: 43, borderRadius: 10, borderWidth: 1, borderColor: Colors.light.white, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}
+})
 
 const iconSizes = (size = InputSizes.md) => {
   return {
@@ -142,4 +146,23 @@ export const BtnLink = (props: BtnLinkProps) => {
       </View>
     </Link>
   );
+}
+
+export const BtnDetailed = (props: BtnDetailedProps) => {
+  return (
+    <TouchableOpacity
+        style={styles.btnDetailedWrapper}
+        onPress={props.onPress}
+    >
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Spacer width={10}/>
+            <Icon name={props.leftIcon} />
+            <Spacer width={10}/>
+            <Label type={FontTypes.FLabel} label={props.label} />
+        </View>
+        <View style={{marginRight: 8}}>
+            <Icon name={props.rightIcon} width={10} height={10} />
+        </View>
+    </TouchableOpacity>
+)
 }

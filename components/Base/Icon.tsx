@@ -1,9 +1,9 @@
-import { IconName, IconNames, IconProps, InputSizes } from "@/types/Components";
+import { IconNames, IconProps, InputSizes } from "@/types/Components";
 import * as Icons from "./Icons";
 import { Colors } from "@/constants/Colors";
 import Svg from "react-native-svg";
 
-const getIcon = (props: { color: string, name: IconName }) => {
+const getIcon = (props: { color: string, name: string }) => {
     const { color, name } = props;
     const iconMap = {
         [IconNames.bell]: <Icons.IconBell fill={color} />,
@@ -30,7 +30,13 @@ const getIcon = (props: { color: string, name: IconName }) => {
         [IconNames.google]: <Icons.IconGoogle fill={color} />,
         [IconNames.facebook]: <Icons.IconFacebook fill={color} />,
         [IconNames.view]: <Icons.IconView fill={color} />,
-        [IconNames.hidden]: <Icons.IconHidden fill={color} />
+        [IconNames.hidden]: <Icons.IconHidden fill={color} />,
+        [IconNames.info]: <Icons.IconInfo fill={color} />,
+        [IconNames.person]: <Icons.IconPerson fill={color} />,
+        [IconNames.incognito]: <Icons.IconIncognito fill={color} />,
+        [IconNames.lock]: <Icons.IconLock fill={color} />,
+        [IconNames.personAdd]: <Icons.IconPersonAdd fill={color} />,
+        [IconNames.chevronMiniRight]: <Icons.IconChevronMiniRight fill={color} />,
     };
 
     return iconMap[name];
