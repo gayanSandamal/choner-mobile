@@ -154,8 +154,7 @@ export const BtnDetailed = (props: BtnDetailedProps) => {
         style={styles.btnDetailedWrapper}
         onPress={props.onPress}
     >
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Spacer width={10}/>
+        <View className={'pl-2.5'} style={{flexDirection: 'row', alignItems: 'center'}}>
             <Icon name={props.leftIcon} />
             <Spacer width={10}/>
             <Label type={FontTypes.FLabel} label={props.label} />
