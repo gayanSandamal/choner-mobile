@@ -11,7 +11,7 @@ import { tabs } from '@/constants/NavigationTabs';
 export default function TabLayout() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.dark.grey }}>
-      <Header onPressAvatar={() => router.navigate('/basic-info')} />
+      <Header onPressAvatar={() => router.navigate('/settings-home')} />
       <Tabs
         sceneContainerStyle={{ backgroundColor: Colors.dark.grey }}
         screenOptions={{

@@ -4,7 +4,6 @@ export default function ProfileLayout() {
         <>
             <Stack screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="(settings)" />
-                <Stack.Screen name="basic-info" />
             </Stack>
         </>
     )
