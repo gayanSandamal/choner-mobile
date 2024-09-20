@@ -1,10 +1,10 @@
+import { SectionList } from "react-native";
 import { BtnDetailed } from "@/components/Base/Button";
 import Label from "@/components/Base/Label";
 import { Spacer } from "@/components/Base/Spacer";
 import { SettingsWrapper } from "@/components/Wrappers/SettingsWrapper";
 import { FontTypes, IconNames } from "@/types/Components";
 import { router } from "expo-router";
-import { SectionList, View } from "react-native";
 
 const SECTIONS = [
   {
@@ -31,7 +31,7 @@ export default function SettingsHome() {
         sections={SECTIONS}
         keyExtractor={(item, index) => item.label + index}
         renderItem={({ item }) => (
-          <View>
+          <>
             <BtnDetailed
               leftIcon={item.icon}
               rightIcon={IconNames.chevronMiniRight}
@@ -39,12 +39,10 @@ export default function SettingsHome() {
               onPress={() => router.navigate(item.route)}
             />
             <Spacer height={10} />
-          </View>
+          </>
         )}
         renderSectionHeader={({ section: { title } }) => (
-          <View>
             <Label underline type={FontTypes.FLabelBold} label={title} />
-          </View>
         )}
         SectionSeparatorComponent={() => <Spacer height={20} />}
       />
