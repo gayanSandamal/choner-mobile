@@ -11,8 +11,9 @@ import { useUser } from "@/contexts/userContext"
 import { useSetUser } from "@/hooks/mutate/useMutateUser"
 
 const styles = StyleSheet.create({
+    dropDownWrapper: {zIndex: 1},
     btnWrapper: { width: '100%', paddingHorizontal: 25, borderRadius: 30, height: 60, marginBottom: 20, backgroundColor: Colors.dark['fied-bg-idle'], flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-    dropdown: { position: 'absolute', marginTop: 70, backgroundColor: Colors.dark['fied-bg-idle'], borderRadius: 5, width: '100%', zIndex: 1 },
+    dropdown: { position: 'absolute', marginTop: 70, backgroundColor: Colors.dark['fied-bg-idle'], borderRadius: 5, width: '100%', zIndex: 2 },
     dropdownItem: { padding: 15 },
     dropDownText: { color: Colors.light.white },
 })
@@ -65,7 +66,7 @@ export default function SettingsHome() {
             <Label classNames='text-white mb-[5px]' label="Last name" />
             <Input classNames='mb-5' placeholder={'Last name'} fontSize={FontSizes.FLabel} value={lastName} onChange={checkAndSetLastName} />
             <Label classNames='text-white mb-[5px]' label="Professional in" />
-            <View>
+            <View style={styles.dropDownWrapper}>
                 <BtnDetailed
                     label={selectedProfession || 'Select a profession'}
                     rightIcon={{ name: IconNames.down, color: Colors.dark['primary-shade-3'] }}

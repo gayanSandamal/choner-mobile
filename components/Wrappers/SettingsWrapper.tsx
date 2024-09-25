@@ -6,8 +6,8 @@ import { Colors } from "@/constants/Colors"
 import { SettignsWrapperProps } from "@/types/Components"
 
 const styles = StyleSheet.create({
-    wrapper: {flex: 1, paddingHorizontal: 15, justifyContent: 'center', alignItems: 'flex-start', backgroundColor: Colors.dark.grey },
-    subWrapper: {width: '100%', height: '100%' }
+    wrapper: { justifyContent: 'center', alignItems: 'flex-start', backgroundColor: Colors.dark.grey },
+    subWrapper: {paddingHorizontal: 15, width: '100%', height: '100%'}
 })
 
 export const SettingsWrapper = (props: SettignsWrapperProps) => {
