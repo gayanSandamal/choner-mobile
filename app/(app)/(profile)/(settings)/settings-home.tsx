@@ -1,10 +1,15 @@
-import { SectionList } from "react-native";
+import { SectionList, StyleSheet } from "react-native";
 import { BtnDetailed } from "@/components/Base/Button";
 import Label from "@/components/Base/Label";
 import { Spacer } from "@/components/Base/Spacer";
 import { SettingsWrapper } from "@/components/Wrappers/SettingsWrapper";
 import { FontTypes, IconNames } from "@/types/Components";
 import { router } from "expo-router";
+import { Colors } from "@/constants/Colors";
+
+const styles = StyleSheet.create({
+  btnWrapper: {width: '100%', paddingHorizontal: 8, height: 43, borderRadius: 10, marginBottom: 10, borderWidth: 1, borderColor: Colors.light.white, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}
+})
 
 const SECTIONS = [
   {
@@ -31,15 +36,13 @@ export default function SettingsHome() {
         sections={SECTIONS}
         keyExtractor={(item, index) => item.label + index}
         renderItem={({ item }) => (
-          <>
-            <BtnDetailed
-              leftIcon={item.icon}
-              rightIcon={IconNames.chevronMiniRight}
-              label={item.label}
-              onPress={() => router.navigate(item.route)}
-            />
-            <Spacer height={10} />
-          </>
+          <BtnDetailed
+            leftIcon={{name: item.icon}}
+            rightIcon={{name: IconNames.chevronMiniRight, size: 10}}
+            label={item.label}
+            wrapperStyle={styles.btnWrapper}
+            onPress={() => router.navigate(item.route)}
+          />
         )}
         renderSectionHeader={({ section: { title } }) => (
             <Label underline type={FontTypes.FLabelBold} label={title} />

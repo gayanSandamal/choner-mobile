@@ -1,15 +1,15 @@
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { BtnDetailedProps, BtnGroupProps, BtnLinkProps, BtnProps, CharmBtnProps, FontTypes, IconNames, InputSizes } from '@/types/Components';
+import { BtnDetailedProps, BtnGroupProps, BtnLinkProps, BtnProps, CharmBtnProps, FontTypes, IconNames, InputSizes, JustifyContent } from '@/types/Components';
 import { Link } from 'expo-router';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Text, View, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import Icon from './Icon';
 import Label from './Label';
 import { Spacer } from './Spacer';
 
 const styles = StyleSheet.create({
-  btnDetailedWrapper: {width: '100%', height: 43, borderRadius: 10, borderWidth: 1, borderColor: Colors.light.white, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}
+  btnDetailedWrapper: {width: '100%', paddingHorizontal: 8, height: 43, borderRadius: 10, borderWidth: 1, borderColor: Colors.light.white, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}
 })
 
 const iconSizes = (size = InputSizes.md) => {
@@ -149,19 +149,43 @@ export const BtnLink = (props: BtnLinkProps) => {
 }
 
 export const BtnDetailed = (props: BtnDetailedProps) => {
+
+  const labelStyles = useMemo(() => {
+    const alignment = {
+      justifyContent:
+        props.labelAlign === JustifyContent.center
+          ? 'center'
+          : props.labelAlign === JustifyContent.right
+          ? 'flex-end'
+          : 'flex-start',
+    };
+    return { flex: 1, flexDirection: 'row', ...alignment }
+  }, [props.labelAlign])
+
   return (
     <TouchableOpacity
-        style={styles.btnDetailedWrapper}
-        onPress={props.onPress}
+      style={[props.wrapperStyle, { opacity: props.disabled ? 0.7 : 1 }]}
+      onPress={props.onPress}
+      disabled={props.disabled}
     >
-        <View className={'pl-2.5'} style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Icon name={props.leftIcon} />
-            <Spacer width={10}/>
-            <Label type={FontTypes.FLabel} label={props.label} />
+      {props.leftIcon && (
+        <>
+          <Icon name={props.leftIcon.name} size={props.leftIcon.size} color={props.leftIcon.color} />
+          <Spacer width={10} />
+        </>
+      )}
+      {props.label && (
+        <View style={labelStyles}>
+          <Label type={FontTypes.FLabel} label={props.label} />
         </View>
-        <View style={{marginRight: 8}}>
-            <Icon name={props.rightIcon} width={10} height={10} />
-        </View>
+      )}
+      {props.rightIcon && (
+        <>
+          <Spacer width={10} />
+          <Icon name={props.rightIcon.name} width={props.rightIcon.size} height={props.rightIcon.size} color={props.rightIcon.color} />
+        </>
+      )}
     </TouchableOpacity>
-)
-}
+  );
+};
+

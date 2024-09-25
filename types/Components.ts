@@ -50,9 +50,15 @@ export type BtnLinkProps = {
 }
 
 export type BtnDetailedProps = {
-  leftIcon: string,
-  rightIcon: string,
   label: string,
+  labelAlign?: JustifyContent.center | JustifyContent.left | JustifyContent.right
+  disabled?: boolean
+  leftIcon?: {name: string, size?: number, color?: string},
+  rightIcon?: {name: string, size?: number, color?: string},
+  wrapperStyle?: ViewStyle
+  leftIconStyle?: ViewStyle
+  centerIconStyle?: ViewStyle
+  rightIconStyle?: ViewStyle
   onPress: () => void
 }
 
@@ -61,6 +67,12 @@ export enum InputSizes {
   'sm',
   'md',
   'lg'
+}
+
+export enum JustifyContent {
+  'center',
+  'left',
+  'right'
 }
 
 export type InputSize = InputSizes.xs | InputSizes.sm | InputSizes.md | InputSizes.lg
@@ -247,12 +259,14 @@ export enum IconNames {
   lock = 'lock',
   personAdd = 'personAdd',
   chevronMiniRight = 'chevronMiniRight',
+  save = 'save',
+  down = 'down',
 }
 
 export type IconProps = {
-  color?: string,
-  name: string,
-  size?: InputSize,
+  color?: string
+  name: string
+  size?: InputSize
   width?: number
   height?: number
 }
@@ -382,6 +396,7 @@ export type InputProps = {
   value?: string
   placeholder?: string
   type?: InputType
+  fontSize?: FontSizes
   icon?: string
   iconRight?: string
   secureTextEntry?: boolean

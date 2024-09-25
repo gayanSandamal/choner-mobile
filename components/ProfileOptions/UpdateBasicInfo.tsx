@@ -1,9 +1,8 @@
 import { useState } from "react"
 import { Input } from "../Base/Input"
-import { Spacer } from "../Base/Spacer"
-import { View, StyleSheet} from "react-native"
-import { Btn } from "../Base/Button"
-import { IconNames, InputSizes } from "@/types/Components"
+import { View, StyleSheet, FlatList, Text, TouchableOpacity} from "react-native"
+import { Btn, BtnDetailed } from "../Base/Button"
+import { FontSizes, IconNames, InputSizes } from "@/types/Components"
 import { Colors } from "@/constants/Colors"
 import { router } from "expo-router"
 import { matchOnlyLetters } from "@/utils/commonUtils"
@@ -12,17 +11,23 @@ import { useUser } from "@/contexts/userContext"
 import { useSetUser } from "@/hooks/mutate/useMutateUser"
 
 const styles = StyleSheet.create({
-    buttonStyles: {
-        width: 190
-    },
+    btnWrapper: { width: '100%', paddingHorizontal: 25, borderRadius: 30, height: 60, marginBottom: 20, backgroundColor: Colors.dark['fied-bg-idle'], flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+    dropdown: { position: 'absolute', marginTop: 70, backgroundColor: Colors.dark['fied-bg-idle'], borderRadius: 5, width: '100%', zIndex: 1 },
+    dropdownItem: { padding: 15 },
+    dropDownText: { color: Colors.light.white },
 })
+
+const professions = ['LIFE COACH', 'MENTOR', 'FITNESS COACH', 'YOGA EXPERT']
 
 export default function SettingsHome() {
     const {user} = useUser()
 
     const [firstName, setFirstName] = useState<string>(user?.displayName?.split(' ')?.[0] || '')
     const [lastName, setLastName] = useState<string>(user?.displayName?.split(' ')?.[1] || '')
+    const [selectedProfession, setSeletedProfession] = useState<string | null>(user?.professionalIn || null)
+    const [dropdownVisible, setDropdownVisible] = useState(false)
 
+    
     const {mutate: updateUser, isPending: isUpdating} = useSetUser(() => onSuccess(), () => onError())
 
     const onSuccess = () => {}
@@ -41,22 +46,50 @@ export default function SettingsHome() {
     }
 
     const onSave = () => {
-        user && updateUser({ uid: user?.uid, displayName: firstName + ' ' + lastName })
+        user && updateUser({ uid: user?.uid, displayName: firstName + ' ' + lastName, ...(selectedProfession && {professionalIn: selectedProfession}) })
+    }
+
+
+    const toggleDropdown = () => {
+        setDropdownVisible(!dropdownVisible)
+    }
+    const selectProfession = (profession: string) => {
+        setSeletedProfession(profession)
+        setDropdownVisible(false)
     }
     
     return (
         <>
-            <Label classNames='text-1xl text-white' label="First Name" />
-            <Spacer height={5} />
-            <Input classNames='mb-5' placeholder={'ENTER EMAIL'} value={firstName} onChange={checkAndSetFirstName} />
-            <Spacer height={30} />
-            <Label classNames='text-1xl text-white' label="Last Name" />
-            <Spacer height={5} />
-            <Input classNames='mb-5' placeholder={'ENTER EMAIL'} value={lastName} onChange={checkAndSetLastName} />
-            <Spacer height={30} />
-            <View className="flex-row w-full justify-between">
-                <Btn disabled={isUpdating} style={styles.buttonStyles} onPress={onSave} icon={IconNames.insight} size={InputSizes.lg} outlined color={Colors.dark['green-shade-1']} label="SAVE CHANGES" />
-                <Btn disabled={isUpdating} style={styles.buttonStyles} onPress={() => router.back()} icon={IconNames.login} size={InputSizes.lg} backgroundColor={Colors.dark['green-shade-1']} label="CANCEL" />
+            <Label classNames='text-white  mb-[5px]' label="First name" />
+            <Input classNames='mb-5' placeholder={'First name'} fontSize={FontSizes.FLabel} value={firstName} onChange={checkAndSetFirstName} />
+            <Label classNames='text-white mb-[5px]' label="Last name" />
+            <Input classNames='mb-5' placeholder={'Last name'} fontSize={FontSizes.FLabel} value={lastName} onChange={checkAndSetLastName} />
+            <Label classNames='text-white mb-[5px]' label="Professional in" />
+            <View>
+                <BtnDetailed
+                    label={selectedProfession || 'Select a profession'}
+                    rightIcon={{ name: IconNames.down, color: Colors.dark['primary-shade-3'] }}
+                    wrapperStyle={styles.btnWrapper}
+                    onPress={toggleDropdown}
+                />
+                {dropdownVisible && (
+                    <View style={styles.dropdown}>
+                        <FlatList
+                            data={professions.filter((item) => item !== selectedProfession)}
+                            keyExtractor={(item) => `${item}`}
+                            renderItem={({ item }) => (
+                                <TouchableOpacity onPress={() => selectProfession(item)} style={styles.dropdownItem}>
+                                    <Text style={styles.dropDownText}>{item}</Text>
+                                </TouchableOpacity>
+                            )}
+                            ItemSeparatorComponent={() =>{ return <View className="flex h-px ml-2 mr-2 bg-white"/>}}
+                        />
+                    </View>
+                )}
+            </View>
+            <View className="ml-0.5 mr-0.5 flex-row justify-between">
+                <Btn disabled={isUpdating} onPress={onSave} icon={IconNames.save} size={InputSizes.lg} outlined color={Colors.dark['green-shade-1']} label="SAVE CHANGES" />
+                <Btn disabled={isUpdating} onPress={() => router.back()} icon={IconNames.login} size={InputSizes.lg} backgroundColor={Colors.dark['green-shade-1']} label="CANCEL" />
             </View>
         </>
     )

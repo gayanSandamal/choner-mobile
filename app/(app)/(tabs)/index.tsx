@@ -33,7 +33,7 @@ const HomeScreen = () => {
       if (fetchedUser) {
         setUser(fetchedUser)
         if (!fetchedUser?.displayName) {
-          router.navigate('/settings/basic-info')
+          router.navigate('/basic-info')
         }
       }
     }, [fetchedUser])
