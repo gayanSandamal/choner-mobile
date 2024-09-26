@@ -8,11 +8,9 @@ import DiagnosisWidget from '@/components/Widgets/DiagnosisWidget';
 import InterestsWidget from '@/components/Widgets/InterestsWidget';
 import SurveyWidget from '@/components/Widgets/SurveyWidget';
 import { ContentSection } from '@/components/Wrappers/Sections';
-import { useSession } from '@/hooks/ctx';
 import { StatusBar } from 'expo-status-bar'
 import React, { useCallback, useEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
-import { fblogOut } from './../../../auth';
 import { useAuthUserId } from '@/hooks/useAuthUser';
 import { useUser } from '@/contexts/userContext';
 import { useGetUser } from '@/hooks/get/useUser';
@@ -22,7 +20,6 @@ const HomeScreen = () => {
   const userId = useAuthUserId()
 
   const {setUser} = useUser()
-  const {signOut} = useSession()
   
   // This cause grid dimentions to transform from 0 -> full. Creating a transform effect in the initial grid render
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
@@ -43,16 +40,6 @@ const HomeScreen = () => {
         fetchUser()
       }
     }, [userId])
-  
-    const onLogout = useCallback(() => {
-      fblogOut()
-        .then(() => {
-          signOut(userId)
-        })
-        .catch((error: any) => {
-          console.error('Error signing out:', error)
-        });
-    }, [userId])
 
     const handleSetDimensions = useCallback((newDimensions: {width: number, height: number}) => {
       setDimensions(newDimensions)
@@ -61,7 +48,6 @@ const HomeScreen = () => {
   return (
     <ScrollView className='px-3'>
       <ContentSection classNames='mt-3' cardMode={false}>
-        <Btn label='sign out' onPress={onLogout} />
         <Greeting />
       </ContentSection>
       <BaseGrid onFetchDimensions={handleSetDimensions}>

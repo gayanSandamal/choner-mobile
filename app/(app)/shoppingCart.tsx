@@ -4,7 +4,6 @@ import { CartItem } from '@/types/Products';
 // import { Btn } from '@/components/Base/Button';
 import { useResetCart } from "@/hooks/useCart";
 import { CartItemComponent } from '@/components/Cart/CartItem';
-import BottomModal from '@/components/Base/Modal';
 import { useState } from 'react';
 import { MainWrapper } from '@/components/Wrappers/MainWrapper';
 
@@ -79,7 +78,6 @@ export default function ShoppingCartScreen() {
           </View>
         </View>
       </View>
-      <BottomModal hieght='2/4' isVisible={imageModalVisibility} onClose={() => setImageModalVisibility(false)} slot={imageModalContent()} />
     </MainWrapper>
   );
 }

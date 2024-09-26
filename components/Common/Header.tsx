@@ -9,6 +9,7 @@ import { usePathname } from 'expo-router';
 import { commonStyles } from '@/assets/styles/common';
 import { Avatar } from '../Base/Avatar';
 import { tabs } from '@/constants/NavigationTabs';
+import { useUser } from '@/contexts/userContext';
 
 const styles = StyleSheet.create({
     headerWrapper: {
@@ -35,6 +36,7 @@ const getTabTitle = (pathname: string) => {
 }
 
 const Header = (props: HeaderProps) => {
+    const {user} = useUser()
     const { unreadNotifications = false } = props
     const pathname = usePathname()
     return (
@@ -49,7 +51,7 @@ const Header = (props: HeaderProps) => {
                         unreadNotifications && <View style={{ position: 'absolute', bottom: 4, right: 4 }}><Indicator /></View>
                     }
                 </CharmBtn>
-                <Avatar containerStyles={{ marginLeft: 10 }} size={InputSizes.sm} onPressAvatar={props.onPressAvatar} />
+                <Avatar img={user?.profileImageUrl} containerStyles={{ marginLeft: 10 }} size={InputSizes.sm} onPressAvatar={props.onPressAvatar} />
             </View>
         </View>
     )

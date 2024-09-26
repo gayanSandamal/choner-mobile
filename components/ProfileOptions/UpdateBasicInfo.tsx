@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Input } from "../Base/Input"
-import { View, StyleSheet, FlatList, Text, TouchableOpacity} from "react-native"
+import { View, StyleSheet, FlatList, Text, TouchableOpacity, Modal, TouchableWithoutFeedback, Pressable, Keyboard, ScrollView} from "react-native"
 import { Btn, BtnDetailed } from "../Base/Button"
 import { FontSizes, IconNames, InputSizes, UploadImage } from "@/types/Components"
 import { Colors } from "@/constants/Colors"
@@ -14,19 +14,22 @@ import * as ImagePicker from "expo-image-picker"
 import * as MediaLibrary from 'expo-media-library'
 import Icon from "../Base/Icon"
 import { useUploadImage } from "@/hooks/mutate/useMutateImage"
+import BottomDrawer from "../Base/BottomDrawer"
 
 const styles = StyleSheet.create({
     avatarWrapper: {marginLeft: 'auto', marginRight: 'auto'},
     avatar: { marginTop: 20, backgroundColor: '#F7971E' },
     cameraButton: {position: 'absolute', bottom: 0, right: -3, padding: 6, borderRadius: 8, backgroundColor: Colors.dark['grey-transparent']},
     dropDownWrapper: {zIndex: 1},
-    btnWrapper: { width: '100%', paddingHorizontal: 25, borderRadius: 30, height: 60, marginBottom: 20, backgroundColor: Colors.dark['fied-bg-idle'], flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+    btnWrapper: { width: '100%', paddingHorizontal: 25, borderRadius: 30, height: 60, marginBottom: 20, backgroundColor: Colors.dark['fied-bg-idle'], flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderWidth: 0 },
     dropdown: { position: 'absolute', marginTop: 70, backgroundColor: Colors.dark['fied-bg-idle'], borderRadius: 5, width: '100%', zIndex: 2 },
     dropdownItem: { padding: 15 },
     dropDownText: { color: Colors.light.white },
 })
 
 const professions = ['LIFE COACH', 'MENTOR', 'FITNESS COACH', 'YOGA EXPERT']
+
+const imagePromptText = [{icon: IconNames.camera, text: 'Take a photo'}, {icon: IconNames.gallery, text: 'Choose from gallery'}]
 
 export default function SettingsHome() {
     const {user} = useUser()
@@ -39,6 +42,7 @@ export default function SettingsHome() {
     const [image, setImage] = useState< UploadImage| null>(null)
     const [dropdownVisible, setDropdownVisible] = useState(false)
     const [isUpdating, setIsupdating] = useState<boolean>(false)
+    const [showDrawer, setShowDrawer] = useState<boolean>(false)
 
     const {mutate: updateUser} = useSetUser(() => onSuccess(), () => onError())
 
@@ -132,18 +136,25 @@ export default function SettingsHome() {
     }
             
     const toggleDropdown = () => {
+        Keyboard.isVisible() && Keyboard.dismiss()
         setDropdownVisible(!dropdownVisible)
     }
     const selectProfession = (profession: string) => {
         setSeletedProfession(profession)
         setDropdownVisible(false)
     }
+
+    const onPressImagePickItem = (index: number) => {
+        index === 0 ? captureAndPickImage(): pickImage()
+        setShowDrawer(false)
+    }
     
     return (
-        <>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+    <View style={{flex: 1}}>
             <View style={styles.avatarWrapper}>
-                <Avatar img={image?.uri || user?.profileImageUrl} containerStyles={styles.avatar} size={InputSizes.xl} onPressAvatar={pickImage} />
-                <TouchableOpacity disabled={isUpdating} style={styles.cameraButton} onPress={captureAndPickImage}>
+                <Avatar img={image?.uri || user?.profileImageUrl} containerStyles={styles.avatar} size={InputSizes.xl} onPressAvatar={() => setShowDrawer(true)}/>
+                <TouchableOpacity disabled={isUpdating} style={styles.cameraButton} onPress={() => setShowDrawer(true)}>
                     <Icon name={IconNames.camera} />
                 </TouchableOpacity>
             </View>
@@ -175,9 +186,25 @@ export default function SettingsHome() {
                 )}
             </View>
             <View className="ml-0.5 mr-0.5 flex-row justify-between">
-                <Btn isLoading={isUpdating} disabled={isUpdating} onPress={onSave} icon={IconNames.save} size={InputSizes.lg} outlined color={Colors.dark['green-shade-1']} label="SAVE CHANGES" />
-                <Btn disabled={isUpdating} onPress={() => router.back()} icon={IconNames.login} size={InputSizes.lg} backgroundColor={Colors.dark['green-shade-1']} label="CANCEL" />
+                <Btn outlined disabled={isUpdating} onPress={() => router.back()} icon={IconNames.cancel} size={InputSizes.lg} color={Colors.dark['green-shade-1']} label="CANCEL" />
+                <Btn isLoading={isUpdating} disabled={isUpdating} onPress={onSave} icon={IconNames.save} size={InputSizes.lg} backgroundColor={Colors.dark['green-shade-1']} label="SAVE" />
+            </View>       
+            <BottomDrawer showModal={showDrawer} setShowModal={setShowDrawer}>
+                <FlatList
+                    data={imagePromptText}
+                    keyExtractor={(item) => `${item.text}`}
+                    renderItem={({ item, index }) => (
+                        <BtnDetailed
+                            label={item.text} 
+                            leftIcon={{name: item.icon, color: Colors.light.white}}
+                            wrapperStyle={{borderWidth: 0, borderBottomWidth: 1, borderRadius: 0}}
+                            onPress={() => onPressImagePickItem(index)}
+                        />
+                    )}
+                    ItemSeparatorComponent={() =>{ return <View className="mt-1"/>}}
+                />
+            </BottomDrawer>
             </View>
-        </>
+        </TouchableWithoutFeedback>
     )
 }

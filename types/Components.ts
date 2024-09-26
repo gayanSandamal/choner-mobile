@@ -120,12 +120,10 @@ export type SearchProps = {
   onSubmit: (text: string) => void
 }
 
-export type BottomModalProps = {
-  isVisible: boolean
-  slot: React.ReactNode
-  title?: string
-  hieght?: string
-  onClose: () => void
+export type ModalProps = {
+  showModal: boolean
+  children: React.ReactNode
+  setShowModal: (show: boolean) => void
 }
 
 export type CartItemProps = {
@@ -264,6 +262,10 @@ export enum IconNames {
   save = 'save',
   down = 'down',
   camera = 'camera',
+  gallery = 'gallery',
+  cancel = 'cancel',
+  delete = 'delete',
+  logout = 'logout',
 }
 
 export type IconProps = {

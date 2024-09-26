@@ -9,7 +9,7 @@ import Label from './Label';
 import { Spacer } from './Spacer';
 
 const styles = StyleSheet.create({
-  btnDetailedWrapper: {width: '100%', paddingHorizontal: 8, height: 43, borderRadius: 10, borderWidth: 1, borderColor: Colors.light.white, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}
+  btnDetailedWrapper: {width: '100%', paddingHorizontal: 8, height: 43, borderRadius: 10, marginBottom: 10, borderWidth: 1, borderColor: Colors.light.white, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}
 })
 
 const iconSizes = (size = InputSizes.md) => {
@@ -138,7 +138,6 @@ export const BtnGroup = (props: BtnGroupProps) => {
 }
 
 export const BtnLink = (props: BtnLinkProps) => {
-  const colorScheme = useColorScheme();
   const { href = '', label = 'View all', color = Colors.dark.primary } = props;
   return (
     <Link href={href}>
@@ -165,7 +164,7 @@ export const BtnDetailed = (props: BtnDetailedProps) => {
 
   return (
     <TouchableOpacity
-      style={[props.wrapperStyle, { opacity: props.disabled ? 0.7 : 1 }]}
+      style={[styles.btnDetailedWrapper, props.wrapperStyle, { opacity: props.disabled ? 0.7 : 1 }]}
       onPress={props.onPress}
       disabled={props.disabled}
     >

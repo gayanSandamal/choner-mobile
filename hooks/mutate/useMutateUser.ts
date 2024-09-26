@@ -1,4 +1,4 @@
-import { setUser } from "@/api/userApis"
+import { deleteUser, setUser } from "@/api/userApis"
 import { QueryKeys } from "@/constants/values"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
@@ -17,6 +17,20 @@ export const useSetUser = (onSuccess: () => void, onError: (error: Error) => voi
                 }
             }
             onSuccess()
+        },
+        onError,
+    })
+}
+
+export const useDeleteUser = (onSuccess: () => void, onError: (error: Error) => void) => {
+    const queryClient = useQueryClient()
+    return useMutation({
+        mutationFn: deleteUser,
+        onSuccess(data) {
+            if (data?.status === 200) {
+                queryClient.clear()
+                onSuccess()
+            }
         },
         onError,
     })

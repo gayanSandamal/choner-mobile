@@ -1,4 +1,4 @@
-import { SectionList, StyleSheet } from "react-native";
+import { SectionList } from "react-native";
 import { BtnDetailed } from "@/components/Base/Button";
 import Label from "@/components/Base/Label";
 import { Spacer } from "@/components/Base/Spacer";
@@ -6,12 +6,17 @@ import { SettingsWrapper } from "@/components/Wrappers/SettingsWrapper";
 import { FontTypes, IconNames } from "@/types/Components";
 import { router } from "expo-router";
 import { Colors } from "@/constants/Colors";
+import { useCallback } from "react";
+import { fblogOut } from "@/auth";
+import { useAuthUserId } from "@/hooks/useAuthUser";
+import { useSession } from "@/hooks/ctx";
 
-const styles = StyleSheet.create({
-  btnWrapper: {width: '100%', paddingHorizontal: 8, height: 43, borderRadius: 10, marginBottom: 10, borderWidth: 1, borderColor: Colors.light.white, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}
-})
+type Section = {
+  title: string
+  data: {label: string, icon: IconNames, route: string, hideRightIcon?: boolean}[]
+}
 
-const SECTIONS = [
+const SECTIONS: Section[] = [
   {
     title: "Your Account",
     data: [
@@ -26,10 +31,29 @@ const SECTIONS = [
     data: [
       { label: "Add secondary account", icon: IconNames.personAdd, route: "/secondary-account" }
     ],
+  },
+  {
+    title: "Login",
+    data: [
+      { label: "Log out", icon: IconNames.logout, route: "", hideRightIcon: true }
+    ],
   }
-];
+]
 
 export default function SettingsHome() {
+  const userId = useAuthUserId()
+  const {signOut} = useSession()
+
+  const onLogOut = useCallback(() => {
+    fblogOut()
+      .then(() => {
+        signOut(userId)
+      })
+      .catch((error: any) => {
+        console.error('Error signing out:', error)
+      })
+  }, [userId])
+  
   return (
     <SettingsWrapper header="Settings">
       <SectionList className={'mt-12'}
@@ -38,10 +62,9 @@ export default function SettingsHome() {
         renderItem={({ item }) => (
           <BtnDetailed
             leftIcon={{name: item.icon}}
-            rightIcon={{name: IconNames.chevronMiniRight, size: 10}}
+            rightIcon={!item.hideRightIcon ? {name: IconNames.chevronMiniRight, size: 10}: undefined}
             label={item.label}
-            wrapperStyle={styles.btnWrapper}
-            onPress={() => router.navigate(item.route)}
+            onPress={() => item.hideRightIcon ? onLogOut() : router.navigate(item.route)}
           />
         )}
         renderSectionHeader={({ section: { title } }) => (
@@ -50,5 +73,5 @@ export default function SettingsHome() {
         SectionSeparatorComponent={() => <Spacer height={20} />}
       />
     </SettingsWrapper>
-  );
+  )
 }
