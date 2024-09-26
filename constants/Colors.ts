@@ -47,6 +47,7 @@ export const Colors = {
     'green-shade-2': '#A5D6A7',
     'green-shade-3': '#E8F5E9',
     'purple-shade-1': '#CE93D8',
-    'soundcloud-gdr-1': '#FE8C00'
+    'soundcloud-gdr-1': '#FE8C00',
+    'grey-transparent': 'rgba(69, 90, 100, 0.5)'
   },
 };

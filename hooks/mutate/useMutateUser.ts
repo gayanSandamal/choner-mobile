@@ -2,7 +2,7 @@ import { setUser } from "@/api/userApis"
 import { QueryKeys } from "@/constants/values"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-export const useSetUser = (onSuccess: () => void, onError: () => void) => {
+export const useSetUser = (onSuccess: () => void, onError: (error: Error) => void) => {
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: setUser,
@@ -11,7 +11,7 @@ export const useSetUser = (onSuccess: () => void, onError: () => void) => {
                 const response: any = queryClient.getQueryData([QueryKeys.USER, variables.uid])
 
                 if (response && response?.data) {
-                    const updatedUserData = { ...response?.data?.result, displayName: variables.displayName, professionalIn: variables.professionalIn }
+                    const updatedUserData = { ...response?.data?.result, displayName: variables.displayName, professionalIn: variables.professionalIn, profileImageUrl: variables.profileImageUrl }
                     response.data = { ...response.data, result: updatedUserData }
                     queryClient.setQueryData([QueryKeys.USER, variables.uid], () => { return response })
                 }

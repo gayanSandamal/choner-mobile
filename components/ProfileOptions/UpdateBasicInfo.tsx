@@ -2,15 +2,23 @@ import { useState } from "react"
 import { Input } from "../Base/Input"
 import { View, StyleSheet, FlatList, Text, TouchableOpacity} from "react-native"
 import { Btn, BtnDetailed } from "../Base/Button"
-import { FontSizes, IconNames, InputSizes } from "@/types/Components"
+import { FontSizes, IconNames, InputSizes, UploadImage } from "@/types/Components"
 import { Colors } from "@/constants/Colors"
 import { router } from "expo-router"
-import { matchOnlyLetters } from "@/utils/commonUtils"
+import { getBlobFromUri, matchOnlyLetters } from "@/utils/commonUtils"
 import Label from "../Base/Label"
 import { useUser } from "@/contexts/userContext"
 import { useSetUser } from "@/hooks/mutate/useMutateUser"
+import { Avatar } from "../Base/Avatar"
+import * as ImagePicker from "expo-image-picker"
+import * as MediaLibrary from 'expo-media-library'
+import Icon from "../Base/Icon"
+import { useUploadImage } from "@/hooks/mutate/useMutateImage"
 
 const styles = StyleSheet.create({
+    avatarWrapper: {marginLeft: 'auto', marginRight: 'auto'},
+    avatar: { marginTop: 20, backgroundColor: '#F7971E' },
+    cameraButton: {position: 'absolute', bottom: 0, right: -3, padding: 6, borderRadius: 8, backgroundColor: Colors.dark['grey-transparent']},
     dropDownWrapper: {zIndex: 1},
     btnWrapper: { width: '100%', paddingHorizontal: 25, borderRadius: 30, height: 60, marginBottom: 20, backgroundColor: Colors.dark['fied-bg-idle'], flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
     dropdown: { position: 'absolute', marginTop: 70, backgroundColor: Colors.dark['fied-bg-idle'], borderRadius: 5, width: '100%', zIndex: 2 },
@@ -23,34 +31,106 @@ const professions = ['LIFE COACH', 'MENTOR', 'FITNESS COACH', 'YOGA EXPERT']
 export default function SettingsHome() {
     const {user} = useUser()
 
+    const {uploadImage} = useUploadImage((uri) => updateUserWithImage(uri), (e) => onUploadImageError(e))
+
     const [firstName, setFirstName] = useState<string>(user?.displayName?.split(' ')?.[0] || '')
     const [lastName, setLastName] = useState<string>(user?.displayName?.split(' ')?.[1] || '')
     const [selectedProfession, setSeletedProfession] = useState<string | null>(user?.professionalIn || null)
+    const [image, setImage] = useState< UploadImage| null>(null)
     const [dropdownVisible, setDropdownVisible] = useState(false)
+    const [isUpdating, setIsupdating] = useState<boolean>(false)
 
-    
-    const {mutate: updateUser, isPending: isUpdating} = useSetUser(() => onSuccess(), () => onError())
-
-    const onSuccess = () => {}
-
-    const onError = () => {
-        setFirstName(user?.displayName?.split(' ')?.[0] || '')
-        setLastName(user?.displayName?.split(' ')?.[1] || '')
-    }
+    const {mutate: updateUser} = useSetUser(() => onSuccess(), () => onError())
 
     const checkAndSetFirstName = (text: string) => {
+        if (isUpdating) return
         setFirstName(text.trim() === '' ? '' : matchOnlyLetters(text) ? text : lastName)
     }
 
     const checkAndSetLastName = (text: string) => {
+        if (isUpdating) return
         setLastName(text.trim() === '' ? '' : matchOnlyLetters(text) ? text : lastName)
     }
 
-    const onSave = () => {
-        user && updateUser({ uid: user?.uid, displayName: firstName + ' ' + lastName, ...(selectedProfession && {professionalIn: selectedProfession}) })
+    const onSave = async () => {
+        setIsupdating(true)  
+
+        if (user && image?.blob) {
+            await uploadImage(image, user)
+        }
+        
+        user && !image?.blob && updateUser(commonUploadData())
     }
 
+    const updateUserWithImage = (uri: string) => {
+        const newUrl = uri.replace(`.${image?.type}`, '_200x200.png')
+        updateUser({...commonUploadData(), profileImageUrl: newUrl})
+    }
 
+    const onUploadImageError = (e: any) => {
+        setIsupdating(false)  
+        setImage(null)
+    }
+
+    const onSuccess = () => {
+        setIsupdating(false)  
+    }
+
+    const onError = () => {
+        setImage(null)
+        setIsupdating(false)  
+        setFirstName(user?.displayName?.split(' ')?.[0] || '')
+        setLastName(user?.displayName?.split(' ')?.[1] || '')
+    }
+
+    const commonUploadData = () => {
+        return {
+            uid: user?.uid || '',
+            displayName: firstName + ' ' + lastName,
+            profileImageUrl: user?.profileImageUrl,
+            ...(selectedProfession && { professionalIn: selectedProfession }),
+        }
+    }
+
+    const pickImage = async () => {
+        if (isUpdating) return
+
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [1, 1],
+            quality: 1,
+        })
+    
+        if (!result.canceled) await setImageData(result)
+    }
+    
+    const captureAndPickImage = async () => {
+        await ImagePicker.requestCameraPermissionsAsync()
+        await MediaLibrary.requestPermissionsAsync()
+        const result = await ImagePicker.launchCameraAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [1, 1],
+            quality: 1,
+        })
+
+        if (!result.canceled) await setImageData(result)
+    }
+
+    const setImageData = async (image: ImagePicker.ImagePickerResult) => {
+        const imageUri = image?.assets?.[0].uri || ''
+        const imageType = image?.assets?.[0]?.fileName?.split('.').slice(-1)[0] || 'jpg'
+        const imageBlob = await getBlobFromUri(imageUri)
+    
+        setImage({
+            uri: imageUri,
+            name: `${user?.uid}.${imageType}`,
+            type: imageType,
+            blob: imageBlob as Blob,
+        })
+    }
+            
     const toggleDropdown = () => {
         setDropdownVisible(!dropdownVisible)
     }
@@ -61,6 +141,12 @@ export default function SettingsHome() {
     
     return (
         <>
+            <View style={styles.avatarWrapper}>
+                <Avatar img={image?.uri || user?.profileImageUrl} containerStyles={styles.avatar} size={InputSizes.xl} onPressAvatar={pickImage} />
+                <TouchableOpacity disabled={isUpdating} style={styles.cameraButton} onPress={captureAndPickImage}>
+                    <Icon name={IconNames.camera} />
+                </TouchableOpacity>
+            </View>
             <Label classNames='text-white  mb-[5px]' label="First name" />
             <Input classNames='mb-5' placeholder={'First name'} fontSize={FontSizes.FLabel} value={firstName} onChange={checkAndSetFirstName} />
             <Label classNames='text-white mb-[5px]' label="Last name" />
@@ -89,7 +175,7 @@ export default function SettingsHome() {
                 )}
             </View>
             <View className="ml-0.5 mr-0.5 flex-row justify-between">
-                <Btn disabled={isUpdating} onPress={onSave} icon={IconNames.save} size={InputSizes.lg} outlined color={Colors.dark['green-shade-1']} label="SAVE CHANGES" />
+                <Btn isLoading={isUpdating} disabled={isUpdating} onPress={onSave} icon={IconNames.save} size={InputSizes.lg} outlined color={Colors.dark['green-shade-1']} label="SAVE CHANGES" />
                 <Btn disabled={isUpdating} onPress={() => router.back()} icon={IconNames.login} size={InputSizes.lg} backgroundColor={Colors.dark['green-shade-1']} label="CANCEL" />
             </View>
         </>

@@ -66,7 +66,8 @@ export enum InputSizes {
   'xs',
   'sm',
   'md',
-  'lg'
+  'lg',
+  'xl'
 }
 
 export enum JustifyContent {
@@ -75,7 +76,7 @@ export enum JustifyContent {
   'right'
 }
 
-export type InputSize = InputSizes.xs | InputSizes.sm | InputSizes.md | InputSizes.lg
+export type InputSize = InputSizes.xs | InputSizes.sm | InputSizes.md | InputSizes.lg | InputSizes.xl
 
 type ButtonProps = {
   bgColor?: string
@@ -104,6 +105,7 @@ export type BtnProps = {
   textMode?: boolean
   backgroundColor?: string
   style?: StyleProp<ViewStyle>
+  isLoading?: boolean
 } & ButtonProps
 
 export type BtnGroupProps = {
@@ -261,6 +263,7 @@ export enum IconNames {
   chevronMiniRight = 'chevronMiniRight',
   save = 'save',
   down = 'down',
+  camera = 'camera',
 }
 
 export type IconProps = {
@@ -284,7 +287,7 @@ export type HeaderProps = {
 type ContainerStyles = { [key: string]: string | number }
 
 export type AvatarProps = {
-  containerStyles?: ContainerStyles
+  containerStyles?: ViewStyle
   bgColor?: string
   img?: string
   size?: InputSize
@@ -407,4 +410,11 @@ export type InputProps = {
 export type SeparatorProps = {
   label?: string
   barWidth?: number
+}
+
+export type UploadImage = {
+  uri?: string
+  name?: string
+  type?: string
+  blob?: Blob
 }

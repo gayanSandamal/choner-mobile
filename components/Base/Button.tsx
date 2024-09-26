@@ -3,7 +3,7 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 import { BtnDetailedProps, BtnGroupProps, BtnLinkProps, BtnProps, CharmBtnProps, FontTypes, IconNames, InputSizes, JustifyContent } from '@/types/Components';
 import { Link } from 'expo-router';
 import React, { useMemo } from 'react';
-import { Text, View, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
 import Icon from './Icon';
 import Label from './Label';
 import { Spacer } from './Spacer';
@@ -109,7 +109,8 @@ export const Btn = (props: BtnProps) => {
   }
   const buttonCore = () =>
     <View className={`flex flex-row items-center justify-center shadow-sm ${block && 'w-full'}`} style={[btnStyles, props.style]}>
-      {icon && <Icon color={color} name={icon} size={iconSizes(size).iconSize} width={iconWidth} height={iconHeight} />}
+      {icon && !props.isLoading && <Icon color={color} name={icon} size={iconSizes(size).iconSize} width={iconWidth} height={iconHeight} />}
+      {props.isLoading && <ActivityIndicator color={color} size={24} />}
       <Label {...{ label, color }} containerStyles={{ fontWeight: textMode ? 400 : 600, marginLeft: icon ? 12 : 0, marginRight: 4 }} />
     </View>
   return (
