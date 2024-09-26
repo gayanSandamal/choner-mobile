@@ -37,6 +37,13 @@ const getIcon = (props: { color: string, name: string }) => {
         [IconNames.lock]: <Icons.IconLock fill={color} />,
         [IconNames.personAdd]: <Icons.IconPersonAdd fill={color} />,
         [IconNames.chevronMiniRight]: <Icons.IconChevronMiniRight fill={color} />,
+        [IconNames.save]: <Icons.IconSave fill={color} />,
+        [IconNames.down]: <Icons.IconDown fill={color} />,
+        [IconNames.camera]: <Icons.IconCamera fill={color} />,
+        [IconNames.gallery]: <Icons.IconGallery fill={color} />,
+        [IconNames.cancel]: <Icons.IconCancel fill={color} />,
+        [IconNames.logout]: <Icons.IconLogOut fill={color} />,
+        [IconNames.delete]: <Icons.IconDelete fill={color} />,
     };
 
     return iconMap[name];

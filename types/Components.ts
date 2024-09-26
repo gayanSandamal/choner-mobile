@@ -50,9 +50,15 @@ export type BtnLinkProps = {
 }
 
 export type BtnDetailedProps = {
-  leftIcon: string,
-  rightIcon: string,
   label: string,
+  labelAlign?: JustifyContent.center | JustifyContent.left | JustifyContent.right
+  disabled?: boolean
+  leftIcon?: {name: string, size?: number, color?: string},
+  rightIcon?: {name: string, size?: number, color?: string},
+  wrapperStyle?: ViewStyle
+  leftIconStyle?: ViewStyle
+  centerIconStyle?: ViewStyle
+  rightIconStyle?: ViewStyle
   onPress: () => void
 }
 
@@ -60,10 +66,17 @@ export enum InputSizes {
   'xs',
   'sm',
   'md',
-  'lg'
+  'lg',
+  'xl'
 }
 
-export type InputSize = InputSizes.xs | InputSizes.sm | InputSizes.md | InputSizes.lg
+export enum JustifyContent {
+  'center',
+  'left',
+  'right'
+}
+
+export type InputSize = InputSizes.xs | InputSizes.sm | InputSizes.md | InputSizes.lg | InputSizes.xl
 
 type ButtonProps = {
   bgColor?: string
@@ -92,6 +105,7 @@ export type BtnProps = {
   textMode?: boolean
   backgroundColor?: string
   style?: StyleProp<ViewStyle>
+  isLoading?: boolean
 } & ButtonProps
 
 export type BtnGroupProps = {
@@ -106,12 +120,10 @@ export type SearchProps = {
   onSubmit: (text: string) => void
 }
 
-export type BottomModalProps = {
-  isVisible: boolean
-  slot: React.ReactNode
-  title?: string
-  hieght?: string
-  onClose: () => void
+export type ModalProps = {
+  showModal: boolean
+  children: React.ReactNode
+  setShowModal: (show: boolean) => void
 }
 
 export type CartItemProps = {
@@ -247,12 +259,19 @@ export enum IconNames {
   lock = 'lock',
   personAdd = 'personAdd',
   chevronMiniRight = 'chevronMiniRight',
+  save = 'save',
+  down = 'down',
+  camera = 'camera',
+  gallery = 'gallery',
+  cancel = 'cancel',
+  delete = 'delete',
+  logout = 'logout',
 }
 
 export type IconProps = {
-  color?: string,
-  name: string,
-  size?: InputSize,
+  color?: string
+  name: string
+  size?: InputSize
   width?: number
   height?: number
 }
@@ -270,7 +289,7 @@ export type HeaderProps = {
 type ContainerStyles = { [key: string]: string | number }
 
 export type AvatarProps = {
-  containerStyles?: ContainerStyles
+  containerStyles?: ViewStyle
   bgColor?: string
   img?: string
   size?: InputSize
@@ -382,6 +401,7 @@ export type InputProps = {
   value?: string
   placeholder?: string
   type?: InputType
+  fontSize?: FontSizes
   icon?: string
   iconRight?: string
   secureTextEntry?: boolean
@@ -392,4 +412,11 @@ export type InputProps = {
 export type SeparatorProps = {
   label?: string
   barWidth?: number
+}
+
+export type UploadImage = {
+  uri?: string
+  name?: string
+  type?: string
+  blob?: Blob
 }

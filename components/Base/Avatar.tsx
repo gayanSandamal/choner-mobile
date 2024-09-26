@@ -32,6 +32,11 @@ const getSize = (size: InputSize) => {
             wrapper: 100,
             img: 90
         }
+    }else if (size === InputSizes.xl) {
+        dimentions = {
+            wrapper: 105,
+            img: 100
+        }
     }
     return {
         wrapper: {

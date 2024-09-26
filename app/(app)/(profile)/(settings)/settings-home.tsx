@@ -5,8 +5,18 @@ import { Spacer } from "@/components/Base/Spacer";
 import { SettingsWrapper } from "@/components/Wrappers/SettingsWrapper";
 import { FontTypes, IconNames } from "@/types/Components";
 import { router } from "expo-router";
+import { Colors } from "@/constants/Colors";
+import { useCallback } from "react";
+import { fblogOut } from "@/auth";
+import { useAuthUserId } from "@/hooks/useAuthUser";
+import { useSession } from "@/hooks/ctx";
 
-const SECTIONS = [
+type Section = {
+  title: string
+  data: {label: string, icon: IconNames, route: string, hideRightIcon?: boolean}[]
+}
+
+const SECTIONS: Section[] = [
   {
     title: "Your Account",
     data: [
@@ -21,25 +31,41 @@ const SECTIONS = [
     data: [
       { label: "Add secondary account", icon: IconNames.personAdd, route: "/secondary-account" }
     ],
+  },
+  {
+    title: "Login",
+    data: [
+      { label: "Log out", icon: IconNames.logout, route: "", hideRightIcon: true }
+    ],
   }
-];
+]
 
 export default function SettingsHome() {
+  const userId = useAuthUserId()
+  const {signOut} = useSession()
+
+  const onLogOut = useCallback(() => {
+    fblogOut()
+      .then(() => {
+        signOut(userId)
+      })
+      .catch((error: any) => {
+        console.error('Error signing out:', error)
+      })
+  }, [userId])
+  
   return (
     <SettingsWrapper header="Settings">
       <SectionList className={'mt-12'}
         sections={SECTIONS}
         keyExtractor={(item, index) => item.label + index}
         renderItem={({ item }) => (
-          <>
-            <BtnDetailed
-              leftIcon={item.icon}
-              rightIcon={IconNames.chevronMiniRight}
-              label={item.label}
-              onPress={() => router.navigate(item.route)}
-            />
-            <Spacer height={10} />
-          </>
+          <BtnDetailed
+            leftIcon={{name: item.icon}}
+            rightIcon={!item.hideRightIcon ? {name: IconNames.chevronMiniRight, size: 10}: undefined}
+            label={item.label}
+            onPress={() => item.hideRightIcon ? onLogOut() : router.navigate(item.route)}
+          />
         )}
         renderSectionHeader={({ section: { title } }) => (
             <Label underline type={FontTypes.FLabelBold} label={title} />
@@ -47,5 +73,5 @@ export default function SettingsHome() {
         SectionSeparatorComponent={() => <Spacer height={20} />}
       />
     </SettingsWrapper>
-  );
+  )
 }

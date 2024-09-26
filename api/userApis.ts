@@ -24,8 +24,8 @@ type SetUserProps = {
     displayName?: string
     profileImageUrl?: string
     professionalIn?: string
-
 }
+
 export const setUser = async ({displayName, profileImageUrl, professionalIn}: SetUserProps) => {
     const session = await SecureStore.getItemAsync('session')
 
@@ -41,4 +41,17 @@ export const setUser = async ({displayName, profileImageUrl, professionalIn}: Se
       }
 
     return axios.post(`/setUser`, { data })
+}
+
+// Delete user
+type DeleteUserProps = {
+    userId: string
+}
+
+export const deleteUser = async (props: DeleteUserProps) => {
+    return axios.post(`/deleteUser`, {
+        data: {
+            uid: props.userId 
+        }
+    })
 }

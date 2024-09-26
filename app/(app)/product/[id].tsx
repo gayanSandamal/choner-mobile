@@ -5,7 +5,6 @@ import { useFetchAllProductsQuery } from '../../../api'
 import { Product } from "@/types/Products";
 // import { Btn } from "@/components/Base/Button";
 import Chip from "@/components/Base/Chip";
-import BottomModal from "@/components/Base/Modal";
 import NumberInput from "@/components/Base/NumberInput";
 import { useAddToCart } from "@/hooks/useCart";
 import { CartIndicator } from "@/components/Cart/CartIndicator";
@@ -108,7 +107,6 @@ const ProductPage = () => {
           <Text className={`text-gray-700`}>{description}</Text>
         </View>
       </View>
-      <BottomModal isVisible={qtyModalVisibility} title='Select and Add' onClose={() => setQtyModalVisibility(false)} slot={qtyModalContent()} />
     </ScrollView>
   );
 };

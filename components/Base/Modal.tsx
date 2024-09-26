@@ -1,36 +1,25 @@
-import { Modal, View, Text, Pressable, TouchableWithoutFeedback, StyleSheet } from 'react-native';
-import { BottomModalProps } from '@/types/Components';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { Modal as RNModal, View, StyleSheet } from 'react-native';
+import { ModalProps } from '@/types/Components';
+import { Colors } from '@/constants/Colors';
 
 const styles = StyleSheet.create({
-  modalOverlay: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: 'rgba(0,0,0,0.5)'
-  },
+  modalWrapper: {width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(15, 32, 40, 0.5)'},
+    modalContentWrapper: {backgroundColor: Colors.dark.disabled, borderRadius: 8, padding: 20, width: '90%', height: 'auto'},
 });
 
-export default function BottomModal(props: BottomModalProps) {
-  const { isVisible, slot, title, hieght = '1/3', onClose } = props
+export default function Modal(props: ModalProps) {
   return (
-    <Modal animationType="slide" transparent={true} visible={isVisible} onRequestClose={onClose}>
-      <TouchableWithoutFeedback onPress={onClose}>
-        <View style={styles.modalOverlay} />
-      </TouchableWithoutFeedback>
-      <View className={`h-${hieght} w-full bg-white rounded-t-lg absolute bottom-0 shadow-2xl`}>
-        <View className="h-16 bg-indigo-500 rounded-t-lg px-4 flex-row items-center justify-between">
-          {title ? <Text className="text-white text-base font-medium">{title}</Text> : <View></View>}
-          <Pressable onPress={onClose}>
-            <Ionicons size={28} name="close-circle" color='#fff' />
-          </Pressable>
-        </View>
-        <View className='p-4'>
-          {slot}
+    <RNModal
+      transparent={true}
+      visible={props.showModal}
+      animationType={'fade'}
+      onRequestClose={() => props.setShowModal(false)}
+    >
+      <View style={styles.modalWrapper}>
+        <View style={styles.modalContentWrapper}>
+          {props.children}
         </View>
       </View>
-    </Modal>
-  );
+    </RNModal>
+  )
 }
