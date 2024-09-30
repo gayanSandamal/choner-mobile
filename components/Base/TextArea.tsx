@@ -31,7 +31,7 @@ export const TextArea = (props: TextAreaProps) => {
             maxLength={props.maxCharacters}
             style={[styles.wrapper, {height: props.height || 'auto'}]}
             onChangeText={onChangeText}
-            placeholder={'Add a bio here...'}
+            placeholder={props.placeHolder}
             placeholderTextColor={Colors.dark['grey-shade-4']}
             value={props.value}
         />
