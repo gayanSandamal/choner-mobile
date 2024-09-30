@@ -24,16 +24,12 @@ export default function UserProfile () {
     const [showEditBio, setShowEditBio] = useState<boolean>(false)
     const [newBio, setNewBio] = useState<string>(user?.bio || '')
 
-    const {mutate: updateUser, isPending: isUpdatingUser} = useSetUser((data) => onSuccessUpdatingUser(data), () => onErrorpdatingUser())
+    const {mutate: updateUser, isPending: isUpdatingUser} = useSetUser((data) => onSuccessUpdatingUser(data), () => {})
 
     const onSuccessUpdatingUser = (data: User) => {
         user && setUser({...user, bio: data.bio})
         setShowEditBio(false)
         setNewBio(data.bio)
-    }
-
-    const onErrorpdatingUser = () => {
-        setNewBio(user?.bio || '')
     }
 
     const onSaveBio = () => {
