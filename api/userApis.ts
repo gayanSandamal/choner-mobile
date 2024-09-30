@@ -22,11 +22,12 @@ export const getUser = async () => {
 type SetUserProps = {
     uid: string
     displayName?: string
+    bio?: string
     profileImageUrl?: string
     professionalIn?: string
 }
 
-export const setUser = async ({displayName, profileImageUrl, professionalIn}: SetUserProps) => {
+export const setUser = async ({displayName, profileImageUrl, professionalIn, bio}: SetUserProps) => {
     const session = await SecureStore.getItemAsync('session')
 
     if (!session) return null
@@ -38,6 +39,7 @@ export const setUser = async ({displayName, profileImageUrl, professionalIn}: Se
         ...(displayName !== undefined && { displayName }),
         ...(profileImageUrl !== undefined && { profileImageUrl }),
         ...(professionalIn !== undefined && { professionalIn }),
+        ...(bio !== undefined && { bio })
       }
 
     return axios.post(`/setUser`, { data })

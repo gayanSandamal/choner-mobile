@@ -1,8 +1,9 @@
 import { deleteUser, setUser } from "@/api/userApis"
 import { QueryKeys } from "@/constants/values"
+import { User } from "@/types/User"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-export const useSetUser = (onSuccess: () => void, onError: (error: Error) => void) => {
+export const useSetUser = (onSuccess: (data: User) => void, onError: (error: Error) => void) => {
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: setUser,
@@ -11,12 +12,19 @@ export const useSetUser = (onSuccess: () => void, onError: (error: Error) => voi
                 const response: any = queryClient.getQueryData([QueryKeys.USER, variables.uid])
 
                 if (response && response?.data) {
-                    const updatedUserData = { ...response?.data?.result, displayName: variables.displayName, professionalIn: variables.professionalIn, profileImageUrl: variables.profileImageUrl }
+                    const updatedUserData = {
+                        ...response?.data?.result,
+                        displayName: variables?.displayName || response?.data?.result?.displayName,
+                        professionalIn: variables?.professionalIn  || response?.data?.result?.professionalIn,
+                        profileImageUrl: variables?.profileImageUrl  || response?.data?.result?.profileImageUrl,
+                        bio: variables?.bio || response?.data?.result?.bio
+                    }
                     response.data = { ...response.data, result: updatedUserData }
+
                     queryClient.setQueryData([QueryKeys.USER, variables.uid], () => { return response })
                 }
             }
-            onSuccess()
+            onSuccess(variables as User)
         },
         onError,
     })

@@ -44,6 +44,8 @@ const getIcon = (props: { color: string, name: string }) => {
         [IconNames.cancel]: <Icons.IconCancel fill={color} />,
         [IconNames.logout]: <Icons.IconLogOut fill={color} />,
         [IconNames.delete]: <Icons.IconDelete fill={color} />,
+        [IconNames.settings]: <Icons.IconSettings fill={color} />,
+        [IconNames.editPencil]: <Icons.IconEditPencil fill={color} />,
     };
 
     return iconMap[name];

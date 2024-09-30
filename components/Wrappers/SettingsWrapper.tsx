@@ -15,7 +15,7 @@ export const SettingsWrapper = (props: SettignsWrapperProps) => {
         <SafeAreaView style={styles.wrapper}>
             <View style={styles.subWrapper}>
                 {Platform.OS === 'android' && <Spacer height={70}/>}
-                <NavigateBack label={props.header} navigate={() => props.onBack?.() || router.back()} />
+                <NavigateBack label={props.header} rightIcon={props.rightIcon} onPressRightIcon={props.onPressRightIcon} navigate={() => props.onBack?.() || router.back()} />
                 {props.children}
             </View>
         </SafeAreaView>
