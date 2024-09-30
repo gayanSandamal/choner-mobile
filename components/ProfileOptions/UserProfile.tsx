@@ -38,7 +38,7 @@ export default function UserProfile () {
 
     const onCancel = () => {
         setShowEditBio(false)
-        setNewBio('')
+        setNewBio(user?.bio || '')
     }
 
     const noDiscription = !user?.bio || user?.bio?.length === 0
