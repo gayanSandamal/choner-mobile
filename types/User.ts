@@ -3,6 +3,7 @@ export type User = {
     email: string
     emailVerified: boolean
     displayName: string
+    description: string
     professionalIn: string
     profileImageUrl: string
 }

@@ -9,7 +9,7 @@ import Label from './Label';
 import { Spacer } from './Spacer';
 
 const styles = StyleSheet.create({
-  btnDetailedWrapper: {width: '100%', paddingHorizontal: 8, height: 43, borderRadius: 10, marginBottom: 10, borderWidth: 1, borderColor: Colors.light.white, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}
+  btnDetailedWrapper: {width: '100%', paddingHorizontal: 8, height: 43, borderRadius: 10, marginBottom: 10, borderWidth: 1, borderColor: Colors.dark['grey-shade-3'], flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}
 })
 
 const iconSizes = (size = InputSizes.md) => {
@@ -69,27 +69,27 @@ export const CharmBtn = (props: CharmBtnProps) => {
 }
 
 export const Btn = (props: BtnProps) => {
-  const { color = Colors.dark.background, icon, link, onPress, label = 'Save', bgColor = props.backgroundColor || Colors.dark['soundcloud-gdr-1'], disabled = false, wrapperClasses, outlined, size = InputSizes.md, iconWidth, iconHeight, block, textMode = false } = props;
+  const { color = Colors.dark.background, icon, link, onPress, label = 'Save', bgColor = props.backgroundColor || Colors.dark['soundcloud-gdr-1'], disabled = false, isLoading = false, wrapperClasses, outlined, size = InputSizes.md, iconWidth, iconHeight, block, textMode = false, className = '' } = props;
 
   const btnSizes = () => {
     if (size === InputSizes.sm) {
       return {
         borderRadius: 22,
-        paddingVertical: 3,
+        paddingVertical: outlined ? 1: 3,
         minHeight: 22,
         ...(!textMode && {paddingHorizontal: 8})
       }
     } else if (size === InputSizes.md) {
       return {
         borderRadius: 30,
-        paddingVertical: 7,
+        paddingVertical: outlined ? 5: 7,
         minHeight: 30,
         ...(!textMode && {paddingHorizontal: 15})
       }
     } else if (size === InputSizes.lg) {
       return {
         borderRadius: 60,
-        paddingVertical: 12,
+        paddingVertical: outlined ? 10: 12,
         minHeight: 60,
         ...(!textMode && {paddingHorizontal: 30})
       }
@@ -108,13 +108,13 @@ export const Btn = (props: BtnProps) => {
     ...btnSizes(),
   }
   const buttonCore = () =>
-    <View className={`flex flex-row items-center justify-center shadow-sm ${block && 'w-full'}`} style={[btnStyles, props.style]}>
-      {icon && !props.isLoading && <Icon color={color} name={icon} size={iconSizes(size).iconSize} width={iconWidth} height={iconHeight} />}
-      {props.isLoading && <ActivityIndicator color={color} size={24} />}
+    <View className={`flex flex-row items-center justify-center shadow-sm ${block && 'w-full'} ${className}`} style={[btnStyles, props.style]}>
+      {icon && !isLoading && <Icon color={color} name={icon} size={iconSizes(size).iconSize} width={iconWidth} height={iconHeight} />}
+      {isLoading && <ActivityIndicator color={color} size={24} />}
       <Label {...{ label, color }} containerStyles={{ fontWeight: textMode ? 400 : 600, marginLeft: icon ? 12 : 0, marginRight: 4 }} />
     </View>
   return (
-    link ? <Link href={link} className={`flex flex-row items-center justify-center ${block && 'w-full'} ${wrapperClasses}`} disabled={disabled}>{buttonCore()}</Link> : <TouchableOpacity className={`flex flex-row items-center justify-center ${block && 'w-full'} ${wrapperClasses}`} disabled={disabled} onPress={onPress}>{buttonCore()}</TouchableOpacity>
+    link ? <Link href={link} className={`flex flex-row items-center justify-center ${block && 'w-full'} ${wrapperClasses}`} disabled={disabled}>{buttonCore()}</Link> : <TouchableOpacity className={`flex flex-row items-center justify-center ${block && 'w-full'} ${wrapperClasses}`} disabled={disabled || isLoading} onPress={onPress}>{buttonCore()}</TouchableOpacity>
   );
 }
 

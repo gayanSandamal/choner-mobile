@@ -151,7 +151,7 @@ export default function SettingsHome() {
     
     return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-    <View style={{flex: 1}}>
+        <View style={{flex: 1}}>
             <View style={styles.avatarWrapper}>
                 <Avatar img={image?.uri || user?.profileImageUrl} containerStyles={styles.avatar} size={InputSizes.xl} onPressAvatar={() => setShowDrawer(true)}/>
                 <TouchableOpacity disabled={isUpdating} style={styles.cameraButton} onPress={() => setShowDrawer(true)}>
@@ -204,7 +204,7 @@ export default function SettingsHome() {
                     ItemSeparatorComponent={() =>{ return <View className="mt-1"/>}}
                 />
             </BottomDrawer>
-            </View>
-        </TouchableWithoutFeedback>
+        </View>
+    </TouchableWithoutFeedback>
     )
 }

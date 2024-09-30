@@ -1,4 +1,4 @@
-import { StyleProp, ViewStyle } from "react-native"
+import { DimensionValue, StyleProp, ViewStyle } from "react-native"
 import { CartItem } from "./Products"
 
 type sizes = 'sm' | 'md' | 'lg'
@@ -28,8 +28,10 @@ export type MainWrapperProps = {
 }
 
 export type SettignsWrapperProps = {
-  header: string
   children: React.ReactNode
+  header: string
+  rightIcon?: IconNames
+  onPressRightIcon?: () => void
   onBack?: () => void
 }
 
@@ -97,6 +99,7 @@ export type BtnProps = {
   label?: string
   iconColor?: string
   disabled?: boolean
+  className?: string
   wrapperClasses?: string
   outlined?: boolean
   iconWidth?: number
@@ -266,6 +269,8 @@ export enum IconNames {
   cancel = 'cancel',
   delete = 'delete',
   logout = 'logout',
+  settings = 'settings',
+  editPencil = 'editPencil',
 }
 
 export type IconProps = {
@@ -412,6 +417,16 @@ export type InputProps = {
 export type SeparatorProps = {
   label?: string
   barWidth?: number
+}
+
+export type TextAreaProps = {
+  value: string
+  placeHolder: string
+  maxCharacters?: number
+  maxLines?: number
+  height?: DimensionValue
+  disableNewLine?: boolean
+  onChangeText: (text: string) => void
 }
 
 export type UploadImage = {
