@@ -177,7 +177,7 @@ export const BtnDetailed = (props: BtnDetailedProps) => {
       )}
       {props.label && (
         <View style={labelStyles}>
-          <Label type={props.fontType || FontTypes.FLabel} label={props.label} />
+          <Label type={props.fontType || FontTypes.FLabel} label={props.label} color={props.labelColor} />
         </View>
       )}
       {props.rightIcon && (

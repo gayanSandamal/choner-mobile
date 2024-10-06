@@ -107,3 +107,10 @@ export function parseToInterestCardProps(data: any): InterestCardData {
     voteCount: data.votes.length
   }
 }
+
+export const escapePercent = (url: string) => {
+  return url.replace(/%/g, '__PERCENT__')
+}
+export const unescapePercent = (url: string) => {
+  return url.replace(/__PERCENT__/g, '%')
+}

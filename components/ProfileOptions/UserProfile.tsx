@@ -1,10 +1,10 @@
 import { Colors } from "@/constants/Colors"
 import { ActivityIndicator, FlatList, Keyboard, ScrollView, StyleSheet, TouchableWithoutFeedback, View } from "react-native"
 import { Avatar } from "../Base/Avatar"
-import { FontTypes, IconNames, InputSizes } from "@/types/Components"
+import { FontTypes, IconNames, InputSizes, JustifyContent } from "@/types/Components"
 import { useUser } from "@/contexts/userContext"
 import Label from "../Base/Label"
-import { Btn } from "../Base/Button"
+import { Btn, BtnDetailed } from "../Base/Button"
 import React, { useState } from "react"
 import { TextArea } from "../Base/TextArea"
 import { useSetUser } from "@/hooks/mutate/useMutateUser"
@@ -21,7 +21,8 @@ const styles = StyleSheet.create({
     wrapper: {flex: 1, alignItems: 'center'},
     avatarWrapper: {flexDirection: 'row', width: '100%', justifyContent: 'space-evenly', alignItems: 'center', marginTop: 10, marginBottom: 10},
     avatar: { marginTop: 20, backgroundColor: '#F7971E' },
-    bioButtons: {flexDirection: 'row', width: '100%', marginTop: 10}
+    bioButtons: {flexDirection: 'row', width: '100%', marginTop: 10},
+    listTypeSelect: {width: 70, height: 36, paddingHorizontal: 10, borderRadius: 15, backgroundColor: Colors.dark['primary-material-1'] + '5A', borderWidth: 0}
 })
 
 export default function UserProfile () {
@@ -41,34 +42,45 @@ export default function UserProfile () {
     return  (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <FlatList
+            className="mt-3"
             data={[{}]}
             scrollEnabled={true}
-            renderItem={() => {
-            return (
-                <>
-                    <Bio />
-                    <FlatList
-                        data={interests}
-                        renderItem={({ item }) => {
-                        const parsedItem = parseToInterestCardProps(item)
-                        return (
-                            <View className='mb-4'>
-                            <InterestCard data={parsedItem} />
+            nestedScrollEnabled={true}
+            showsVerticalScrollIndicator={false}
+            ListHeaderComponent={<Bio />}
+            renderItem={() => (<></>)}
+            ListFooterComponent={
+                <FlatList
+                    data={interests}
+                    scrollEnabled={true}
+                    nestedScrollEnabled={true}
+                    showsVerticalScrollIndicator={false}
+                    ListHeaderComponent={
+                        <>
+                            <Label label="Activity" type={FontTypes.FTitle3Bold} />
+                            <View className="flex flex-row mt-4 mb-4">
+                                <BtnDetailed wrapperStyle={styles.listTypeSelect} labelAlign={JustifyContent.center} fontType={FontTypes.FLabel} label={"Post"} labelColor={Colors.dark['primary-material-1']} onPress={() => {}} />
                             </View>
-                        )
-                        }}
-                        ListEmptyComponent={() => {
-                        return <>
-                            {isFetching && !interests && <ActivityIndicator color={Colors.light.white} className='mt-20' size={40} />}
                         </>
-                        }}
-                        refreshing={refreshing}
-                        onRefresh={onRefresh}
-                        keyExtractor={(item, index) => `${item?.id}-${index}`}
-                    />
-                </>
-                )
-            }}
+                    }
+                    renderItem={({ item }) => {
+                    const parsedItem = parseToInterestCardProps(item)
+                    return (
+                        <View className='mb-4'>
+                        <InterestCard data={parsedItem} navigationPath="/interest" />
+                        </View>
+                    )
+                    }}
+                    ListEmptyComponent={() => {
+                    return <>
+                        {isFetching && !interests && <ActivityIndicator color={Colors.light.white} className='mt-20' size={40} />}
+                    </>
+                    }}
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                    keyExtractor={(item, index) => `${item?.id}-${index}`}
+                />
+            }
         />
     </TouchableWithoutFeedback>)
 }

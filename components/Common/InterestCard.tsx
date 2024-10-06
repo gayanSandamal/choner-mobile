@@ -5,25 +5,28 @@ import { FontTypes, IconNames, InputSizes, InterestCardProps } from "@/types/Com
 import { Colors } from "@/constants/Colors"
 import { Btn, CharmBtn } from "../Base/Button"
 import Icon from "../Base/Icon"
-import { postCreateTimeToDate } from "@/utils/commonUtils"
+import { escapePercent, postCreateTimeToDate } from "@/utils/commonUtils"
 import { router } from "expo-router"
 
 const styles = StyleSheet.create({
   wrapper: { padding: 12, borderRadius: 16,  backgroundColor: Colors.dark.darkText, borderColor: Colors.dark['soundcloud-gdr-1'], borderWidth: 1 },
 })
 
-export const InterestCard = ({data, disabled, classNames}: InterestCardProps) => {
+export const InterestCard = ({data, disabled, classNames, navigationPath}: InterestCardProps) => {
 
   const navigateToInterest = () => {
     !disabled && router.push({
-      pathname: '/interests/interest-view',
+      pathname: navigationPath || '/interests/interest-view',
       params: {
         data: JSON.stringify({
           id: data.id,
           title: data.title,
           description: data.description,
-          createdUser: JSON.stringify(data.createdUser),
-          createdAt: JSON.stringify(data.createdAt),
+          createdUser: {
+            ...data.createdUser,
+            profileImageUrl: escapePercent(data?.createdUser?.profileImageUrl || '')
+          },
+          createdAt: data.createdAt,
           voteCount: data.voteCount,
         })
       },

@@ -55,6 +55,7 @@ export type BtnDetailedProps = {
   label: string,
   labelAlign?: JustifyContent.center | JustifyContent.left | JustifyContent.right
   fontType?: FontTypes
+  labelColor?: string
   disabled?: boolean
   leftIcon?: {name: string, size?: number, color?: string, viewbox?: string, classNames?: string},
   rightIcon?: {name: string, size?: number, color?: string, viewbox?: string, classNames?: string},
@@ -424,6 +425,7 @@ export type InterestCardProps = {
   data: InterestCardData
   disabled?: boolean
   classNames?: string
+  navigationPath?: string
 }
 
 export type SignUpScreenProps = {

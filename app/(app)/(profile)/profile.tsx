@@ -1,4 +1,3 @@
-import { Spacer } from "@/components/Base/Spacer"
 import UserProfile from "@/components/ProfileOptions/UserProfile"
 import { SettingsWrapper } from "@/components/Wrappers/SettingsWrapper"
 import { IconNames } from "@/types/Components"
