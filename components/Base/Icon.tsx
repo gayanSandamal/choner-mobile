@@ -46,13 +46,16 @@ const getIcon = (props: { color: string, name: string }) => {
         [IconNames.delete]: <Icons.IconDelete fill={color} />,
         [IconNames.settings]: <Icons.IconSettings fill={color} />,
         [IconNames.editPencil]: <Icons.IconEditPencil fill={color} />,
+        [IconNames.checkBox]: <Icons.IconCheckBox fill={color} />,
+        [IconNames.checkCircle]: <Icons.IconCheckCircle fill={color} />,
+        [IconNames.addCircle]: <Icons.IconAddCircle fill={color} />,
     };
 
     return iconMap[name];
 };
 
 const Icon = (props: IconProps) => {
-    const { color = Colors.dark.background, name = IconNames.bell, size = InputSizes.md, width = 24, height = 24 } = props
+    const { color = Colors.dark.background, name = IconNames.bell, size = InputSizes.md, width = 24, height = 24, viewBox, classNames } = props
     const styles = () => {
         if (size === InputSizes.sm) {
             return {
@@ -73,7 +76,7 @@ const Icon = (props: IconProps) => {
         }
     }
     return (
-        <Svg width={width} height={height} style={{ transform: [{ scale: styles().scale }] }}>
+        <Svg className={classNames} width={width} height={height} viewBox={viewBox} style={{ transform: [{ scale: styles().scale }] }}>
             {getIcon({ color, name })}
         </Svg>
     )

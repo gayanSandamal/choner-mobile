@@ -1,5 +1,6 @@
 import { router, Tabs } from 'expo-router';
 import React from 'react';
+import { StyleSheet } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
@@ -7,6 +8,27 @@ import { TabType } from '@/types/Components';
 import Header from '@/components/Common/Header';
 import { commonStyles } from '@/assets/styles/common';
 import { tabs } from '@/constants/NavigationTabs';
+
+const styles = StyleSheet.create({
+  tab: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingTop: 0,
+    marginHorizontal: 12,
+    marginBottom: 5,
+    paddingBottom: 0,
+    alignItems: 'center',
+    alignContent: 'center',
+    justifyContent: 'center',
+    borderColor: 'black',
+    borderRadius: 20,
+    borderTopColor: Colors.dark.grey,
+    height: 60,
+    backgroundColor: Colors.dark.grey,
+  }
+})
 
 export default function TabLayout() {
   return (
@@ -18,22 +40,7 @@ export default function TabLayout() {
           headerShown: false,
           tabBarShowLabel: false,
           tabBarStyle: {
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            paddingTop: 0,
-            marginHorizontal: 12,
-            marginBottom: 5,
-            paddingBottom: 0,
-            alignItems: 'center',
-            alignContent: 'center',
-            justifyContent: 'center',
-            borderColor: 'black',
-            borderRadius: 20,
-            borderTopColor: Colors.dark.grey,
-            height: 60,
-            backgroundColor: Colors.dark.grey,
+            ...styles.tab,
             ...commonStyles['shadow-md']
           }
         }}>

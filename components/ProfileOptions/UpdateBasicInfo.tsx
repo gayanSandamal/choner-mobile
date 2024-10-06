@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Input } from "../Base/Input"
-import { View, StyleSheet, FlatList, Text, TouchableOpacity, Modal, TouchableWithoutFeedback, Pressable, Keyboard, ScrollView} from "react-native"
+import { View, StyleSheet, FlatList, Text, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from "react-native"
 import { Btn, BtnDetailed } from "../Base/Button"
 import { FontSizes, IconNames, InputSizes, UploadImage } from "@/types/Components"
 import { Colors } from "@/constants/Colors"

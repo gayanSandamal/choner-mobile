@@ -7,6 +7,7 @@ import { Text, View, TouchableOpacity, ScrollView, StyleSheet, ActivityIndicator
 import Icon from './Icon';
 import Label from './Label';
 import { Spacer } from './Spacer';
+import { opacity } from 'react-native-reanimated/lib/typescript/reanimated2/Colors';
 
 const styles = StyleSheet.create({
   btnDetailedWrapper: {width: '100%', paddingHorizontal: 8, height: 43, borderRadius: 10, marginBottom: 10, borderWidth: 1, borderColor: Colors.dark['grey-shade-3'], flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}
@@ -18,7 +19,7 @@ const iconSizes = (size = InputSizes.md) => {
   }
 }
 export const CharmBtn = (props: CharmBtnProps) => {
-  const { color = Colors.dark.background, children, icon = IconNames.bell, onPress, frame = true, size, bgColor } = props;
+  const { color = Colors.dark.background, children, icon = IconNames.bell, onPress, frame = true, size, bgColor, clear, disabled } = props;
   const styles = () => {
     const charmBtnSizes = () => {
       let specificSizes
@@ -59,8 +60,8 @@ export const CharmBtn = (props: CharmBtnProps) => {
     }
   }
   return (
-    <TouchableOpacity onPress={onPress}>
-      <View style={styles().charmBtnStyles as any} className={frame ? 'shadow-sm' : ''}>
+    <TouchableOpacity style={{opacity: disabled ? 0.6 : 1}} onPress={() => !disabled && onPress && onPress()}>
+      <View style={!clear ? styles().charmBtnStyles as any : {}} className={frame ? 'shadow-sm' : ''}>
         <Icon color={color} name={icon} size={styles().charmBtnStyles.iconSize} />
         {children}
       </View>
@@ -110,8 +111,8 @@ export const Btn = (props: BtnProps) => {
   const buttonCore = () =>
     <View className={`flex flex-row items-center justify-center shadow-sm ${block && 'w-full'} ${className}`} style={[btnStyles, props.style]}>
       {icon && !isLoading && <Icon color={color} name={icon} size={iconSizes(size).iconSize} width={iconWidth} height={iconHeight} />}
-      {isLoading && <ActivityIndicator color={color} size={24} />}
-      <Label {...{ label, color }} containerStyles={{ fontWeight: textMode ? 400 : 600, marginLeft: icon ? 12 : 0, marginRight: 4 }} />
+      {isLoading && <ActivityIndicator style={{marginRight: !icon ? 4 : 0}} color={color} size={24} />}
+      <Label {...{ label, color }} containerStyles={{ fontWeight: textMode ? 400 : 600, marginLeft: icon ? 12 : 0, marginRight: icon ? 4 : 0 }} />
     </View>
   return (
     link ? <Link href={link} className={`flex flex-row items-center justify-center ${block && 'w-full'} ${wrapperClasses}`} disabled={disabled}>{buttonCore()}</Link> : <TouchableOpacity className={`flex flex-row items-center justify-center ${block && 'w-full'} ${wrapperClasses}`} disabled={disabled || isLoading} onPress={onPress}>{buttonCore()}</TouchableOpacity>
@@ -170,19 +171,19 @@ export const BtnDetailed = (props: BtnDetailedProps) => {
     >
       {props.leftIcon && (
         <>
-          <Icon name={props.leftIcon.name} size={props.leftIcon.size} color={props.leftIcon.color} />
+          <Icon classNames={props.leftIcon.classNames} name={props.leftIcon.name} size={props.leftIcon.size} color={props.leftIcon.color} viewBox={props.leftIcon.viewbox} />
           <Spacer width={10} />
         </>
       )}
       {props.label && (
         <View style={labelStyles}>
-          <Label type={FontTypes.FLabel} label={props.label} />
+          <Label type={props.fontType || FontTypes.FLabel} label={props.label} />
         </View>
       )}
       {props.rightIcon && (
         <>
           <Spacer width={10} />
-          <Icon name={props.rightIcon.name} width={props.rightIcon.size} height={props.rightIcon.size} color={props.rightIcon.color} />
+          <Icon classNames={props.rightIcon.classNames} name={props.rightIcon.name} width={props.rightIcon.size} height={props.rightIcon.size} color={props.rightIcon.color} viewBox={props.rightIcon.viewbox} />
         </>
       )}
     </TouchableOpacity>

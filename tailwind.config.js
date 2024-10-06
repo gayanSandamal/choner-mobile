@@ -12,6 +12,9 @@ module.exports = {
         '128': '32rem',
       }
     },
+    colors: {
+      grey: '#2C3E50',
+    }
   },
   plugins: [],
 }
