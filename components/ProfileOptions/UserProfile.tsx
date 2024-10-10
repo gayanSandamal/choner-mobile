@@ -59,7 +59,7 @@ export default function UserProfile () {
                         <>
                             <Label label="Activity" type={FontTypes.FTitle3Bold} />
                             <View className="flex flex-row mt-4 mb-4">
-                                <BtnDetailed wrapperStyle={styles.listTypeSelect} labelAlign={JustifyContent.center} fontType={FontTypes.FLabel} label={"Post"} labelColor={Colors.dark['primary-material-1']} onPress={() => {}} />
+                                <BtnDetailed wrapperStyle={styles.listTypeSelect} labelAlign={JustifyContent.center} fontType={FontTypes.FLabel} label={"Interests"} labelColor={Colors.dark['primary-material-1']} onPress={() => {}} />
                             </View>
                         </>
                     }
