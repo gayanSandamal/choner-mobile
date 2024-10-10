@@ -156,6 +156,12 @@ const PublishInterestPost = (props: PublishInterestPostProps) => {
 
   const { interest, interestDesc } = interestData
 
+  const minTime = () => {
+    const currentDate = new Date()
+    currentDate.setHours(currentDate.getHours() + 1)
+    return currentDate
+  }
+
   return (
     <>
       <TextArea disabled={isCreatingPost} disableNewLine height={50} maxLines={2} maxCharacters={90} value={interest} placeHolder={"what is your interest?"} onChangeText={(text) => setInterestData((prev) => ({ ...prev, interest: text }))} />
@@ -169,7 +175,7 @@ const PublishInterestPost = (props: PublishInterestPostProps) => {
           <Btn isLoading={isCreatingPost} disabled={isCreatingPost || !isPostPublishable} className="pt-[2px] pb-[2px]" label="Publish" icon={IconNames.send} onPress={onCreatePost} />
         </View>
       </View>
-      <DateTimePickerModal isVisible={showDatePicker} mode="datetime" date={dateTime || new Date()} minimumDate={new Date()} onConfirm={handleConfirm} onCancel={hideDatePicker} />
+      <DateTimePickerModal isVisible={showDatePicker} mode="datetime" date={dateTime || new Date()} minimumDate={minTime()} onConfirm={handleConfirm} onCancel={hideDatePicker} />
     </>
   )
 }
