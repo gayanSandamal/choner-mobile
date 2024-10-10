@@ -375,6 +375,7 @@ export type PostTypesProps = {
   onPress: (item: PostTypeProps) => void
   onClosePress?: () => void
 }
+
 export type PostProps = {
   postType: PostType.community | PostType.interest
   postHeaderData: PostHeaderProps
@@ -382,6 +383,17 @@ export type PostProps = {
   actionBarData?: ActionBarProps
   onPostTypePress: (item: PostTypeProps) => void
 }
+
+export type PostModalProps = {
+  postType: PostType
+  showModal: boolean
+  postHeaderData: PostHeaderProps
+  actionBarData?: ActionBarProps
+  postParams?: any
+  onCancel: () => void
+  setShowModal: (show: boolean) => void
+}
+
 export type PostHeaderProps = {
   icon: string
   title: string
@@ -426,6 +438,7 @@ export type InterestCardProps = {
   disabled?: boolean
   classNames?: string
   navigationPath?: string
+  onOptionPress: () => void
 }
 
 export type SignUpScreenProps = {

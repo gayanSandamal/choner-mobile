@@ -1,7 +1,7 @@
 import { Colors } from "@/constants/Colors"
 import { ActivityIndicator, FlatList, Keyboard, ScrollView, StyleSheet, TouchableWithoutFeedback, View } from "react-native"
 import { Avatar } from "../Base/Avatar"
-import { FontTypes, IconNames, InputSizes, JustifyContent } from "@/types/Components"
+import { FontTypes, IconNames, InputSizes, JustifyContent, PostType } from "@/types/Components"
 import { useUser } from "@/contexts/userContext"
 import Label from "../Base/Label"
 import { Btn, BtnDetailed } from "../Base/Button"
@@ -16,6 +16,7 @@ import { useFetchInterestPosts } from "@/hooks/get/useFetchInterestPosts"
 import { parseToInterestCardProps } from "@/utils/commonUtils"
 import { InterestCard } from "../Common/InterestCard"
 import { Spacer } from "../Base/Spacer"
+import { PostModal } from "../Post/Post"
 
 const styles = StyleSheet.create({
     wrapper: {flex: 1, alignItems: 'center'},
@@ -29,6 +30,7 @@ export default function UserProfile () {
     const uid = useAuthUserId()
 
     const [refreshing, setRefreching] = useState<boolean>(false)
+    const [showUpdateInterest, setShowUpdateInterest] = useState<boolean>(false)
   
     const {data: interests, isFetching, refetch} = useFetchInterestPosts(uid || '', !!uid)
 
@@ -47,13 +49,24 @@ export default function UserProfile () {
             scrollEnabled={true}
             nestedScrollEnabled={true}
             showsVerticalScrollIndicator={false}
-            ListHeaderComponent={<Bio />}
-            renderItem={() => (<></>)}
+            ListHeaderComponent={
+                <PostModal
+                    postType={PostType.interest}
+                    showModal={showUpdateInterest}
+                    postParams={{
+                        edit: true
+                    }}
+                    postHeaderData={{
+                        icon: IconNames.addPost,
+                        title: 'Edit this interest'
+                    }}
+                    onCancel={() => setShowUpdateInterest(false)}
+                    setShowModal={setShowUpdateInterest}               />
+            }
+            renderItem={() => (<Bio />)}
             ListFooterComponent={
                 <FlatList
-                    data={interests}
-                    scrollEnabled={true}
-                    nestedScrollEnabled={true}
+                    data={interests} 
                     showsVerticalScrollIndicator={false}
                     ListHeaderComponent={
                         <>
@@ -67,7 +80,7 @@ export default function UserProfile () {
                     const parsedItem = parseToInterestCardProps(item)
                     return (
                         <View className='mb-4'>
-                        <InterestCard data={parsedItem} navigationPath="/interest" />
+                            <InterestCard data={parsedItem} navigationPath="/interest" onOptionPress={() => setShowUpdateInterest(true)} />
                         </View>
                     )
                     }}

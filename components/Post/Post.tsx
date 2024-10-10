@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, TouchableOpacity, View } from "react-native"
 import Label from "../Base/Label"
-import { ActionBarProps, FontTypes, IconNames, InputSizes, PostHeaderProps, PostProps, PostType, PostTypeProps, PostTypesProps } from "@/types/Components"
+import { ActionBarProps, FontTypes, IconNames, InputSizes, PostHeaderProps, PostModalProps, PostProps, PostType, PostTypeProps, PostTypesProps } from "@/types/Components"
 import { Colors } from "@/constants/Colors"
 import React, { useCallback, useEffect, useState } from "react"
 import Icon from "../Base/Icon"
@@ -86,6 +86,7 @@ const PostWrapperComponent = (props: PostWrapperComponentProps) => {
 }
 
 type PublishInterestPostProps = {
+  edit?: boolean
   onSuccess: () => void
 }
  
@@ -164,6 +165,14 @@ const PublishInterestPost = (props: PublishInterestPostProps) => {
   )
 }
 
+export const PostModal = (props: PostModalProps) => {
+  return (<Modal customModal showModal={props.showModal} setShowModal={props.setShowModal}>
+    <PostWrapperComponent actionBarData={props.actionBarData} postHeaderData={props.postHeaderData} onCancel={props.onCancel}>          
+      {props.postType === PostType.interest && <PublishInterestPost onSuccess={props.onCancel} />}
+    </PostWrapperComponent>
+  </Modal>)
+}
+
 export const Post = (props: PostProps) => {
   const { postType, actionBarData, postHeaderData } = props
   const [showAddPost, setShowAddInterst] = useState<boolean>(false)
@@ -185,11 +194,7 @@ export const Post = (props: PostProps) => {
   return (
     <View className="mt-3 mb-4">
       <ActionBar {...{ ...actionBarData }} active={false} onPress={onPostActionBarPress} />
-      <Modal customModal showModal={showAddPost} setShowModal={setShowAddInterst}>
-        <PostWrapperComponent actionBarData={actionBarData} postHeaderData={postHeaderData} onCancel={onCancel}>          
-          {postType === PostType.interest && <PublishInterestPost onSuccess={onCancel} />}
-        </PostWrapperComponent>
-      </Modal>
+      <PostModal postType={postType} showModal={showAddPost} postHeaderData={postHeaderData} setShowModal={setShowAddInterst} onCancel={onCancel} />
     </View>
   )
 }

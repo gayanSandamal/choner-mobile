@@ -95,7 +95,7 @@ export default function InterestsScreen() {
           const parsedItem = parseToInterestCardProps(item)
           return (
             <View className='mb-4'>
-              <InterestCard data={parsedItem} />
+              <InterestCard data={parsedItem} onOptionPress={() => {}} />
             </View>
           )
         }}

@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   wrapper: { padding: 12, borderRadius: 16,  backgroundColor: Colors.dark.darkText, borderColor: Colors.dark['soundcloud-gdr-1'], borderWidth: 1 },
 })
 
-export const InterestCard = ({data, disabled, classNames, navigationPath}: InterestCardProps) => {
+export const InterestCard = ({data, disabled, classNames, navigationPath, onOptionPress}: InterestCardProps) => {
 
   const navigateToInterest = () => {
     !disabled && router.push({
@@ -56,7 +56,7 @@ export const InterestCard = ({data, disabled, classNames, navigationPath}: Inter
           <Label label={`|  ${data.voteCount}`} type={FontTypes.FLabel} classNames='ml-1' />
         </View>
       </View>
-      <CharmBtn icon={IconNames.options} onPress={() => { }} size={InputSizes.md} frame={true} />
+      <CharmBtn icon={IconNames.options} onPress={onOptionPress} size={InputSizes.md} frame={true} />
     </View>
   </TouchableOpacity>
 }
