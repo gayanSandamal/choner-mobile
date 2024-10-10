@@ -55,8 +55,6 @@ export const formatDateToCustomString = (date: Date) => {
   const [day, yearWithTime] = formattedDate.split(', ')
   const [year, time] = yearWithTime.split(' at ')
 
-  console.log(`day ${day}, year ${year}, time ${time}`);
-
   return `${time?.trim()} on ${day}, ${year}`
 }
 

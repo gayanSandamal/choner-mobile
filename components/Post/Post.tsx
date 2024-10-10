@@ -142,8 +142,6 @@ const PublishInterestPost = (props: PublishInterestPostProps) => {
       ...(dateTime && isScheduled && { scheduledAt: dateTime?.toISOString() })
     } as CreateInterestProps
 
-    console.log(interestPostData);
-
 
     canCreate && createPost(interestPostData)
   }
