@@ -54,9 +54,11 @@ export type BtnLinkProps = {
 export type BtnDetailedProps = {
   label: string,
   labelAlign?: JustifyContent.center | JustifyContent.left | JustifyContent.right
+  fontType?: FontTypes
+  labelColor?: string
   disabled?: boolean
-  leftIcon?: {name: string, size?: number, color?: string},
-  rightIcon?: {name: string, size?: number, color?: string},
+  leftIcon?: {name: string, size?: number, color?: string, viewbox?: string, classNames?: string},
+  rightIcon?: {name: string, size?: number, color?: string, viewbox?: string, classNames?: string},
   wrapperStyle?: ViewStyle
   leftIconStyle?: ViewStyle
   centerIconStyle?: ViewStyle
@@ -91,9 +93,10 @@ type ButtonProps = {
   children?: React.ReactNode
 }
 
-export type CharmBtnProps = {
-  frame?: boolean
-} & ButtonProps
+export interface CharmBtnProps extends BtnProps{
+  frame?: boolean,
+  clear?: boolean,
+}
 
 export type BtnProps = {
   label?: string
@@ -126,6 +129,7 @@ export type SearchProps = {
 export type ModalProps = {
   showModal: boolean
   children: React.ReactNode
+  customModal?: boolean
   setShowModal: (show: boolean) => void
 }
 
@@ -140,6 +144,14 @@ export type NumberInput = {
   initialValue: number
   onChange: (value: number) => void
   size?: sizes
+}
+
+export type CheckBoxProps = {
+  isChecked: boolean
+  classNames?: string
+  size?: InputSize
+  disabled?: boolean
+  onPress: (checked: boolean) => void
 }
 
 export type ChipsProps = {
@@ -189,7 +201,8 @@ export enum FontSizes {
   FTitle3 = 16,
   FLabel = 14,
   FP = 12,
-  FSmall = 10
+  FSmall = 10,
+  FSmallest = 9.5
 }
 
 export enum FontTypes {
@@ -207,10 +220,11 @@ export enum FontTypes {
   FLabel = 'label',
   FLabelBold = 'label-bold',
   FP = 'p',
-  FSmall = 'small'
+  FSmall = 'small',
+  FSmallest = 'FSmallest'
 }
 
-export type FontType = FontTypes.FDisplay1 | FontTypes.FDisplay2 | FontTypes.FDisplay3 | FontTypes.FDisplay4 | FontTypes.FDisplay5 | FontTypes.FDisplay6 | FontTypes.FTitle1 | FontTypes.FTitle1Bold | FontTypes.FTitle2 | FontTypes.FTitle3 | FontTypes.FTitle3Bold | FontTypes.FLabel | FontTypes.FP | FontTypes.FSmall | FontTypes.FLabelBold
+export type FontType = FontTypes.FDisplay1 | FontTypes.FDisplay2 | FontTypes.FDisplay3 | FontTypes.FDisplay4 | FontTypes.FDisplay5 | FontTypes.FDisplay6 | FontTypes.FTitle1 | FontTypes.FTitle1Bold | FontTypes.FTitle2 | FontTypes.FTitle3 | FontTypes.FTitle3Bold | FontTypes.FLabel | FontTypes.FP | FontTypes.FSmall | FontTypes.FLabelBold | FontTypes.FSmallest
 
 export enum FontColors {
   'light' = 'light',
@@ -271,11 +285,21 @@ export enum IconNames {
   logout = 'logout',
   settings = 'settings',
   editPencil = 'editPencil',
+  checkBox = 'checkBox',
+  checkCircle = 'checkCircle',
+  addCircle = 'addCircle'
+}
+
+export enum PostType {
+  interest = 'interest',
+  community = 'community'
 }
 
 export type IconProps = {
   color?: string
   name: string
+  classNames?: string
+  viewBox?: string
   size?: InputSize
   width?: number
   height?: number
@@ -352,25 +376,21 @@ export type PostTypesProps = {
   onClosePress?: () => void
 }
 export type PostProps = {
+  postType: PostType.community | PostType.interest
+  postHeaderData: PostHeaderProps
   list?: PostTypeProps[]
   actionBarData?: ActionBarProps
-  publishPostData?: PublishPostProps
   onPostTypePress: (item: PostTypeProps) => void
 }
-export type PublishPostProps = {
-  icon?: string
-  title?: string
-  placeholder?: string
-  enableScheduling?: boolean
-  onCancelPublish?: () => void
-  onPublish?: (content: string) => void
-  cancelButtonProps?: BtnProps
-  submitButtonProps?: BtnProps
+export type PostHeaderProps = {
+  icon: string
+  title: string
+  onCancel?: () => void
 }
 
 export type PostTypeProps = {
   subtitle?: string
-} & PublishPostProps
+} & PostHeaderProps
 
 export type Circle = {
   id: number,
@@ -385,12 +405,27 @@ export type PostedByProps = {
   img?: string
 }
 
-export type InterestCardProps = {
-  id: number
+export type InterestCardData = {
+  id: string
   title: string
-  subtitle: string
-  postedBy: PostedByProps
-  interestedCount: number
+  description: string
+  createdUser:{
+    uid: string,
+    displayName: string,
+    profileImageUrl?: string
+  }
+  createdAt:{
+    _seconds: number,
+    _nanoseconds: number
+  }
+  voteCount: number
+}
+
+export type InterestCardProps = {
+  data: InterestCardData
+  disabled?: boolean
+  classNames?: string
+  navigationPath?: string
 }
 
 export type SignUpScreenProps = {
@@ -422,10 +457,12 @@ export type SeparatorProps = {
 export type TextAreaProps = {
   value: string
   placeHolder: string
+  disabled?: boolean
   maxCharacters?: number
   maxLines?: number
   height?: DimensionValue
   disableNewLine?: boolean
+  clasName?: string
   onChangeText: (text: string) => void
 }
 

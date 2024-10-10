@@ -26,6 +26,7 @@ const fontStyleBasics = (type: FontType) => {
         [FontTypes.FLabelBold]: { fontSize: FontSizes.FLabel, fontWeight: '500' },
         [FontTypes.FSmall]: { fontSize: FontSizes.FSmall, fontWeight: '400' },
         [FontTypes.FP]: { fontSize: FontSizes.FP, fontWeight: '400' },
+        [FontTypes.FSmallest]: { fontSize: FontSizes.FSmallest, fontWeight: '400' },
     }
     
     return fontStyles[type]

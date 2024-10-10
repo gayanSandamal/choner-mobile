@@ -9,7 +9,7 @@ import { Colors } from "@/constants/Colors";
 const styles = StyleSheet.create({
     wrapper: { flexDirection: 'row', width: 'auto', justifyContent: 'flex-start', alignItems: 'center'},
     leftButtonWrapper: { width: 35, justifyContent: 'center', overflow: 'visible' },
-    rightButtonWrapper: {marginLeft: 'auto', marginRight: 0, marginTop: 5, width: 35, justifyContent: 'center', overflow: 'visible' }
+    rightButtonWrapper: {marginLeft: 'auto', marginRight: 0, marginTop: 1}
 })
 
 type NavigateBackProps = {
@@ -27,9 +27,9 @@ export default function NavigateBack(props: NavigateBackProps) {
             </View>
             <Spacer width={15} />
             <Label type={FontTypes.FTitle3Bold} label={props.label} />
-            {props.rightIcon && <TouchableOpacity style={styles.rightButtonWrapper} onPress={props.onPressRightIcon}>
-                <Icon color={Colors.light.white} name={props.rightIcon} size={InputSizes.lg}/>
-            </TouchableOpacity>}
+            {props.rightIcon && <View style={styles.rightButtonWrapper}>
+                <CharmBtn clear icon={props.rightIcon} onPress={props.onPressRightIcon} size={InputSizes.lg} frame={true} />
+            </View>}
         </View>
     )
 }

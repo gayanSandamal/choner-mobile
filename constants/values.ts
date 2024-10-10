@@ -6,9 +6,13 @@ export const enum Screens {
 }
 
 export const enum QueryKeys {
-    USER = 'user'
+    USER = 'user',
+    INTERESTS = 'interests'
 }
 
 export const DURATIONS = {
+    SECOND: 1000,
+    ONE_MINUTE: 1000 * 60,
+    FIVE_MINUTES: 1000 * 60 * 10,
     DAY: 86400000
 }
