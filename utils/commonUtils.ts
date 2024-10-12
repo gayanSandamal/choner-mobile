@@ -45,16 +45,17 @@ export const formatDateToCustomString = (date: Date) => {
   const options: Intl.DateTimeFormatOptions = {
     hour: 'numeric',
     minute: 'numeric',
-    hour12: true,
+    hour12: false,
     month: 'short',
     day: '2-digit',
     year: 'numeric',
   }
 
   const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date)
-  const [day, year, time] = formattedDate.split(', ')
+  const [day, yearWithTime] = formattedDate.split(', ')
+  const [year, time] = yearWithTime.split(' at ')
 
-  return `${time.trim()} on ${day}, ${year}`
+  return `${time?.trim()} on ${day}, ${year}`
 }
 
 export const postCreateTimeToDate = (createdAt: {_seconds: number, _nanoseconds: number}) => {

@@ -20,11 +20,11 @@ export const getInterests = async () => {
 }
 
 // Create interest post
-type CreateInterestProps = {
+export type CreateInterestProps = {
     uid: string
     title: string
     description: string
-    scheduledAt: string
+    scheduledAt?: string
 }
 
 export const createInterest = async ({uid, title, description, scheduledAt}: CreateInterestProps) => {
