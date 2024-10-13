@@ -41,21 +41,42 @@ export const getBlobFromUri = async (uri: string) => {
   return blob
 }
 
-export const formatDateToCustomString = (date: Date) => {
-  const options: Intl.DateTimeFormatOptions = {
-    hour: 'numeric',
-    minute: 'numeric',
-    hour12: true,
-    month: 'short',
-    day: '2-digit',
-    year: 'numeric',
-  }
+const options: Intl.DateTimeFormatOptions = {
+  hour: 'numeric',
+  minute: 'numeric',
+  hour12: true,
+  month: 'short',
+  day: '2-digit',
+  year: 'numeric',
+}
 
+export const formatDateToCustomString = (date: Date) => {
   const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date)
   const [day, year, time] = formattedDate.split(', ')
 
-  return `${time.trim()} on ${day}, ${year}`
+  return `${time} on ${day}, ${year}`
 }
+
+export const timeDataToLocalString  = (timeAt: {_seconds: number, _nanoseconds: number}) => {
+  if (!timeAt?._seconds) return
+  const milliseconds = timeAt._seconds * 1000 + Math.floor(timeAt._nanoseconds / 1000000);
+  return new Date(milliseconds);
+}
+
+export const isDayOld = (timeAt: { _seconds: number; _nanoseconds: number }) => {
+  if (!timeAt?._seconds) return
+
+  const milliseconds = timeAt._seconds * 1000 + Math.floor(timeAt._nanoseconds / 1000000);
+  
+  const timeDate = new Date(milliseconds);
+  const currentTime = new Date();
+  
+  const diffMilliseconds = currentTime.getTime() - timeDate.getTime();
+  const diffDays = diffMilliseconds / (1000 * 60 * 60 * 24);
+  
+  return diffDays >= 1;
+};
+
 
 export const postCreateTimeToDate = (createdAt: {_seconds: number, _nanoseconds: number}) => {
   const milliseconds = createdAt._seconds * 1000 + Math.floor(createdAt._nanoseconds / 1000000);
@@ -104,6 +125,11 @@ export function parseToInterestCardProps(data: any): InterestCardData {
       _seconds: data.createdAt._seconds,
       _nanoseconds: data.createdAt._nanoseconds
     },
+    scheduledAt: {
+      _seconds: data?.scheduledAt?._seconds,
+      _nanoseconds: data?.scheduledAt?._nanoseconds
+    },
+    visibility: data.visibility,
     voteCount: data.votes.length
   }
 }

@@ -295,6 +295,11 @@ export enum PostType {
   community = 'community'
 }
 
+export enum PostVisibility {
+  scheduled = "scheduled",
+  public = "public"
+}
+
 export type IconProps = {
   color?: string
   name: string
@@ -376,11 +381,21 @@ export type PostTypesProps = {
   onClosePress?: () => void
 }
 
+
+export type PostWrapperComponentProps = {
+  postHeaderData: PostHeaderProps
+  children: React.ReactNode
+  actionBarData?: ActionBarProps
+  onCancel: () => void
+}
+
 export type PostProps = {
   postType: PostType.community | PostType.interest
   postHeaderData: PostHeaderProps
   list?: PostTypeProps[]
+  showModal?: boolean
   actionBarData?: ActionBarProps
+  postParams?: InterestPostParams
   onPostTypePress: (item: PostTypeProps) => void
 }
 
@@ -389,7 +404,7 @@ export type PostModalProps = {
   showModal: boolean
   postHeaderData: PostHeaderProps
   actionBarData?: ActionBarProps
-  postParams?: any
+  postParams?: InterestPostParams
   onCancel: () => void
   setShowModal: (show: boolean) => void
 }
@@ -403,6 +418,20 @@ export type PostHeaderProps = {
 export type PostTypeProps = {
   subtitle?: string
 } & PostHeaderProps
+
+export type InterestPostParams = {
+  id: string
+  interest: string
+  interestDesc: string
+  scheduledAt: {_nanoseconds: number, _seconds: number}
+  visibility: "public" | "scheduled"
+}
+
+export type PublishInterestPostProps = {
+  edit?: boolean
+  postParams?: InterestPostParams
+  onSuccess: () => void
+}
 
 export type Circle = {
   id: number,
@@ -430,15 +459,22 @@ export type InterestCardData = {
     _seconds: number,
     _nanoseconds: number
   }
+  scheduledAt: {_nanoseconds: number, _seconds: number}
+  visibility: "public" | "scheduled"
   voteCount: number
+  isOwner?: boolean
 }
 
 export type InterestCardProps = {
   data: InterestCardData
+  showOptionInterest?: string
   disabled?: boolean
   classNames?: string
   navigationPath?: string
+  isOwner?: boolean
   onOptionPress: () => void
+  onDelete?: () => void
+  setShowOptionInterest?: (show: string) => void
 }
 
 export type SignUpScreenProps = {
