@@ -16,13 +16,6 @@ export const getInterests = async (props: GetInterstsProps) => {
 
     const uid = JSON.parse(session)?.uid
 
-    console.log('hre', {
-        data: {
-            ...(props.isUser && {uid}),
-            ...(props.lastPostId && {lastVisible: props.lastPostId})
-        }
-    })
-
     return axios.post('/getPaginatedInterests', {
         data: {
             ...(props.isUser && {uid}),

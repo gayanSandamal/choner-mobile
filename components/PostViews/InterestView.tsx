@@ -32,8 +32,6 @@ export default function InterestView() {
       }
       setPostData(decodedInterest)
   }, [data])
-
-  console.log(postData)
   
   const onCloseModal = () => {
     setInterestPostData(null)
