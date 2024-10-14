@@ -7,7 +7,8 @@ export const enum Screens {
 
 export const enum QueryKeys {
     USER = 'user',
-    INTERESTS = 'interests'
+    INTERESTS = 'interests',
+    USER_INTERESTS = 'userInterests'
 }
 
 export const DURATIONS = {

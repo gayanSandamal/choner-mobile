@@ -2,13 +2,13 @@ import { BtnDetailed } from '@/components/Base/Button'
 import { Spacer } from '@/components/Base/Spacer'
 import { Circle } from '@/components/Common/Circle'
 import { InterestCard } from '@/components/Common/InterestCard'
-import { Post } from '@/components/Post/Post'
+import { ActionBar, Post, PostModal } from '@/components/Post/Post'
 import { Colors } from '@/constants/Colors'
 import { useFetchInterestPosts } from '@/hooks/get/useFetchInterestPosts'
 import { useAuthUserId } from '@/hooks/useAuthUser'
-import { Circle as CircleType, IconNames, PostType, PostTypeProps } from '@/types/Components'
+import { Circle as CircleType, IconNames, InterestPostParams, PostType, PostTypeProps } from '@/types/Components'
 import { parseToInterestCardProps } from '@/utils/commonUtils'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FlatList, View, StyleSheet, ActivityIndicator } from 'react-native'
 
 const styles = StyleSheet.create({
@@ -42,21 +42,20 @@ const tempCircles: CircleType[] = [
   },
 ]
 
-export default function InterestsScreen() {
+export default function InterestsListScreen() {
   const uid = useAuthUserId()
 
   const [circles, setCircles] = useState<CircleType[]>([])
   const [refreshing, setRefreching] = useState<boolean>(false)
+  const [interestPostData, setInterestPostData] = useState<InterestPostParams | null>(null)
+  const [showOptionInterest, setShowOptionInterest] = useState<string>('')
+  const [showCreateInterest, setShowCreateInterest] = useState<boolean>(false)
 
-  const {data: interests, isFetching, refetch} = useFetchInterestPosts(uid || '', !!uid)
+  const {data: interests, isFetching, refetch, fetchNextPage} = useFetchInterestPosts(false, uid || '', !!uid)
 
   useEffect(() => {
     setCircles(tempCircles)
   }, [])
-
-  const onPostTypePress = (item: PostTypeProps) => {
-    alert(item)
-  }
 
   const onRefresh = async () => {
     setRefreching(true)
@@ -65,20 +64,36 @@ export default function InterestsScreen() {
     })
   }
 
+  const onCloseModal = () => {
+    showCreateInterest && setShowCreateInterest(false)
+    setInterestPostData(null)
+    setShowOptionInterest('')
+  }
+
   return (
       <FlatList
         className='px-3 bg-grey'
         data={interests}
         ListHeaderComponent={
           <>
-            <Post
+            <ActionBar title='Hey, any interests on your mind..?' active={false} onPress={() => setShowCreateInterest(true)} />
+            <PostModal
               postType={PostType.interest}
-              onPostTypePress={onPostTypePress}
+              showModal={showCreateInterest || !!interestPostData}
+              postParams={interestPostData ? {
+                id: interestPostData.id,
+                interest: interestPostData.interest,
+                interestDesc: interestPostData.interestDesc,
+                scheduledAt: interestPostData.scheduledAt,
+                visibility: interestPostData.visibility
+              }: undefined}
               postHeaderData={{
                 icon: IconNames.addPost,
-                title: 'Publish an interest'
+                title: showCreateInterest? 'Publish an interest': 'Edit this interest'
               }}
-              actionBarData={{ title: 'Hey, any interests on your mind..?' }}
+              actionBarData={{ title: showCreateInterest? 'Hey, any interests on your mind..?': 'Hey, want to update your interest..?' }}
+              onCancel={onCloseModal}
+              setShowModal={onCloseModal}
             />
             <FlatList
               data={circles}
@@ -95,7 +110,7 @@ export default function InterestsScreen() {
           const parsedItem = parseToInterestCardProps(item)
           return (
             <View className='mb-4'>
-              <InterestCard data={parsedItem} />
+              <InterestCard isOwner={parsedItem.createdUser.uid === uid} data={parsedItem} showOptionInterest={showOptionInterest} onOptionPress={() => setInterestPostData({id: parsedItem.id, interest: parsedItem.title, interestDesc: parsedItem.description, scheduledAt: parsedItem.scheduledAt, visibility: parsedItem.visibility})} setShowOptionInterest={setShowOptionInterest}  />
             </View>
           )
         }}
@@ -106,6 +121,8 @@ export default function InterestsScreen() {
           </>
         }}
         refreshing={refreshing}
+        onEndReachedThreshold={0.5}
+        onEndReached={() => fetchNextPage()}
         onRefresh={onRefresh}
         keyExtractor={(item, index) => `${item?.id}-${index}`}
       />

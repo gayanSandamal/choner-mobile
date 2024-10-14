@@ -287,12 +287,18 @@ export enum IconNames {
   editPencil = 'editPencil',
   checkBox = 'checkBox',
   checkCircle = 'checkCircle',
-  addCircle = 'addCircle'
+  addCircle = 'addCircle',
+  report = 'report'
 }
 
 export enum PostType {
   interest = 'interest',
   community = 'community'
+}
+
+export enum PostVisibility {
+  scheduled = "scheduled",
+  public = "public"
 }
 
 export type IconProps = {
@@ -375,13 +381,35 @@ export type PostTypesProps = {
   onPress: (item: PostTypeProps) => void
   onClosePress?: () => void
 }
+
+
+export type PostWrapperComponentProps = {
+  postHeaderData: PostHeaderProps
+  children: React.ReactNode
+  actionBarData?: ActionBarProps
+  onCancel: () => void
+}
+
 export type PostProps = {
   postType: PostType.community | PostType.interest
   postHeaderData: PostHeaderProps
   list?: PostTypeProps[]
+  showModal?: boolean
   actionBarData?: ActionBarProps
+  postParams?: InterestPostParams
   onPostTypePress: (item: PostTypeProps) => void
 }
+
+export type PostModalProps = {
+  postType: PostType
+  showModal: boolean
+  postHeaderData: PostHeaderProps
+  actionBarData?: ActionBarProps
+  postParams?: InterestPostParams
+  onCancel: () => void
+  setShowModal: (show: boolean) => void
+}
+
 export type PostHeaderProps = {
   icon: string
   title: string
@@ -391,6 +419,20 @@ export type PostHeaderProps = {
 export type PostTypeProps = {
   subtitle?: string
 } & PostHeaderProps
+
+export type InterestPostParams = {
+  id: string
+  interest: string
+  interestDesc: string
+  scheduledAt: {_nanoseconds: number, _seconds: number}
+  visibility: "public" | "scheduled"
+}
+
+export type PublishInterestPostProps = {
+  edit?: boolean
+  postParams?: InterestPostParams
+  onSuccess: () => void
+}
 
 export type Circle = {
   id: number,
@@ -418,14 +460,22 @@ export type InterestCardData = {
     _seconds: number,
     _nanoseconds: number
   }
+  scheduledAt: {_nanoseconds: number, _seconds: number}
+  visibility: "public" | "scheduled"
   voteCount: number
+  isOwner?: boolean
 }
 
 export type InterestCardProps = {
   data: InterestCardData
+  showOptionInterest?: string
   disabled?: boolean
   classNames?: string
   navigationPath?: string
+  isOwner?: boolean
+  onOptionPress: () => void
+  onDelete?: () => void
+  setShowOptionInterest?: (show: string) => void
 }
 
 export type SignUpScreenProps = {
