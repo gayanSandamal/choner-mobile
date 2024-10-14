@@ -26,11 +26,7 @@ export default function UserProfile () {
     const [interestPostData, setInterestPostData] = useState<InterestPostParams | null>(null)
     const [showOptionInterest, setShowOptionInterest] = useState<string>('')
 
-    const {data: interests, isFetching, refetch, fetchNextPage} = useFetchInterestPosts(true, uid || '', false)
-
-    useEffect(() => {
-        refetch()
-    }, [])
+    const {data: interests, isFetching, refetch, fetchNextPage} = useFetchInterestPosts(true, uid || '', !!uid)
 
     const onRefresh = async () => {
         setRefreching(true)

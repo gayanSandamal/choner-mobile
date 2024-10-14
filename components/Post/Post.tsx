@@ -92,7 +92,7 @@ const PublishInterestPost = (props: PublishInterestPostProps) => {
   const [isPostPublishable, setIsPostPublishable] = useState(false)
 
   const { mutate: createPost, isPending: isCreatingPost } = useCreateInteresPost(() => onSuccess(), () => {})
-  const { mutate: updatePost, isPending: isUpdatingPost } = useUpdateInteresPost(() => onSuccess(), (e) => {})
+  const { mutate: updatePost, isPending: isUpdatingPost } = useUpdateInteresPost(() => onSuccess(), (e) => {console.timeLog(JSON.stringify(e))})
 
   useEffect(() => {
     !props?.postParams && setDateTime(new Date())

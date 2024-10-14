@@ -14,6 +14,12 @@ export const useCreateInteresPost = (onSuccess: () => void, onError: (error: Err
               ? isoDateTimeToSecond(data?.data?.result?.data?.scheduledAt)
               : undefined
 
+              if(parsedScheduledTime) {
+                queryClient.invalidateQueries({queryKey: [QueryKeys.USER_INTERESTS, variables.uid]})
+                onSuccess()
+                return
+              }
+
               const newInterest = {
                ...data?.data?.result?.data,
                id: data?.data?.result?.id,
@@ -42,17 +48,25 @@ export const useUpdateInteresPost = (onSuccess: () => void, onError: (error: Err
                ? isoDateTimeToSecond(data?.data?.result?.data?.scheduledAt)
                : undefined
 
+               
+              if(parsedScheduledTime) {
+                queryClient.invalidateQueries({queryKey: [QueryKeys.USER_INTERESTS, variables.uid]})
+                onSuccess()
+                return
+              }
+
                const updatedInterest = {
                 ...data?.data?.result?.data,
                 id: data?.data?.result?.id,
                 scheduledAt: parsedScheduledTime,
               }
 
-
-              // queryClient.setQueryData([QueryKeys.INTERESTS, variables.uid], (cachedData: any) => {
-              //   if (!cachedData) return cachedData;
-              //   return addOrUpdateInterestInCache(cachedData, updatedInterest)
-              // })
+              queryClient.setQueryData([QueryKeys.INTERESTS, variables.uid], (cachedData: any) => {
+                if (!cachedData) return cachedData;
+                return addOrUpdateInterestInCache(cachedData, updatedInterest)
+              })
+              
+              queryClient.invalidateQueries({queryKey: [QueryKeys.USER_INTERESTS, variables.uid]})
             }
             onSuccess()
         },

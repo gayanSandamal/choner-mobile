@@ -287,7 +287,8 @@ export enum IconNames {
   editPencil = 'editPencil',
   checkBox = 'checkBox',
   checkCircle = 'checkCircle',
-  addCircle = 'addCircle'
+  addCircle = 'addCircle',
+  report = 'report'
 }
 
 export enum PostType {

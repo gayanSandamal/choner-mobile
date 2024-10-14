@@ -1,4 +1,5 @@
 import { InterestCardData, InterestCardProps, PostedByProps } from "@/types/Components";
+import { Platform } from "react-native";
 
 export const matchOnlyLetters = (text: string) => {
     const regex = /^\p{L}+$/u
@@ -44,7 +45,7 @@ export const getBlobFromUri = async (uri: string) => {
 const options: Intl.DateTimeFormatOptions = {
   hour: 'numeric',
   minute: 'numeric',
-  hour12: true,
+  hour12: false,
   month: 'short',
   day: '2-digit',
   year: 'numeric',
@@ -52,9 +53,15 @@ const options: Intl.DateTimeFormatOptions = {
 
 export const formatDateToCustomString = (date: Date) => {
   const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date)
-  const [day, year, time] = formattedDate.split(', ')
+  if( Platform.OS === 'android') {
+    const [day, year, time] = formattedDate.split(', ')
+    return `${time} on ${day}, ${year}`
+  }
 
-  return `${time} on ${day}, ${year}`
+  const [day, yearWithTime] = formattedDate.split(', ')
+  const [year, time] = yearWithTime.split(' at ')
+
+  return `${time?.trim()} on ${day}, ${year}`
 }
 
 export const timeDataToLocalString  = (timeAt: {_seconds: number, _nanoseconds: number}) => {
@@ -90,7 +97,7 @@ export const postCreateTimeToDate = (createdAt: {_seconds: number, _nanoseconds:
   const isYesterday = date.toDateString() === yesterday.toDateString();
 
   if (isToday) {
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
   } else if (isYesterday) {
     return 'Yesterday';
   } else {
