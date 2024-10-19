@@ -7,7 +7,6 @@ import { Text, View, TouchableOpacity, ScrollView, StyleSheet, ActivityIndicator
 import Icon from './Icon';
 import Label from './Label';
 import { Spacer } from './Spacer';
-import { opacity } from 'react-native-reanimated/lib/typescript/reanimated2/Colors';
 
 const styles = StyleSheet.create({
   btnDetailedWrapper: {width: '100%', paddingHorizontal: 8, height: 43, borderRadius: 10, marginBottom: 10, borderWidth: 1, borderColor: Colors.dark['grey-shade-3'], flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}

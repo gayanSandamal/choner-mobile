@@ -2,19 +2,19 @@ import { useRef, useState } from 'react'
 import { ref, uploadBytesResumable, getDownloadURL, StorageError } from 'firebase/storage'
 import { UploadImage } from '@/types/Components'
 import { storage } from '@/firebaseConfig'
-import { User } from '@/types/User'
 
 export const useUploadImage = (
     onSuccess?: (uri: string) => void,
     onError?: (error: StorageError) => void
 ) => {
     const progress = useRef(0)
+    const url = useRef<string | null>(null)
 
     const [isUploading, setIsUploading] = useState(false)
   
-    const uploadImage = async (image: UploadImage | null, user: User | null) => {
-      if (image?.blob && user) {
-        const storageRef = ref(storage, `users/${image.name}`)
+    const uploadImage = async (image: UploadImage | null, storagePath: string) => {
+      if (image?.blob) {
+        const storageRef = ref(storage, `${storagePath}${image.name}`)
         const uploadTask = uploadBytesResumable(storageRef, image.blob)
   
         setIsUploading(true)
@@ -35,6 +35,7 @@ export const useUploadImage = (
             async () => {
               try {
                 const imageUrl = await getDownloadURL(uploadTask.snapshot.ref)
+                url.current = imageUrl
                 onSuccess && onSuccess(imageUrl)
                 setIsUploading(false)
                 progress.current = 0
@@ -51,5 +52,6 @@ export const useUploadImage = (
     }
   
     const progressState = progress.current
-    return { isUploading, progressState, uploadImage }
+    const imageUrl = url.current
+    return { imageUrl, isUploading, progressState, uploadImage }
   }

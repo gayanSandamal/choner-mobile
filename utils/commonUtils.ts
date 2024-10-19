@@ -1,5 +1,7 @@
-import { InterestCardData, InterestCardProps, PostedByProps } from "@/types/Components";
+import { InterestCardData } from "@/types/Components";
 import { Platform } from "react-native";
+import * as ImagePicker from "expo-image-picker"
+import * as MediaLibrary from 'expo-media-library'
 
 export const matchOnlyLetters = (text: string) => {
     const regex = /^\p{L}+$/u
@@ -64,8 +66,8 @@ export const formatDateToCustomString = (date: Date) => {
   return `${time?.trim()} on ${day}, ${year}`
 }
 
-export const timeDataToLocalString  = (timeAt: {_seconds: number, _nanoseconds: number}) => {
-  if (!timeAt?._seconds) return
+export const timeDataToLocalString  = (timeAt: {_seconds: number, _nanoseconds: number}): Date | null => {
+  if (!timeAt?._seconds) return null
   const milliseconds = timeAt._seconds * 1000 + Math.floor(timeAt._nanoseconds / 1000000);
   return new Date(milliseconds);
 }
@@ -144,6 +146,64 @@ export function parseToInterestCardProps(data: any): InterestCardData {
 export const escapePercent = (url: string) => {
   return url.replace(/%/g, '__PERCENT__')
 }
+
 export const unescapePercent = (url: string) => {
   return url.replace(/__PERCENT__/g, '%')
+}
+
+export const minTime = () => {
+  const currentDate = new Date()
+  currentDate.setHours(currentDate.getHours() + 1)
+  return currentDate
+}
+
+const setImageData = async (image: ImagePicker.ImagePickerResult, id: string) => {
+  const imageUri = image?.assets?.[0].uri || ''
+  const imageType = image?.assets?.[0]?.fileName?.split('.').slice(-1)[0] || 'jpg'
+  const imageBlob = await getBlobFromUri(imageUri)
+
+  return {
+    uri: imageUri,
+    name: `${id}.${imageType}`,
+    type: imageType,
+    blob: imageBlob as Blob,
+  }
+}
+
+export const pickImage = async (id: string) => {
+  const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+  })
+
+  if (!result.canceled) {
+    const data = await setImageData(result, id)
+    if (data) {
+      return data
+    }
+  }
+
+  return null
+}
+
+export const captureAndPickImage = async (id: string) => {
+  await ImagePicker.requestCameraPermissionsAsync()
+  await MediaLibrary.requestPermissionsAsync()
+  const result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+  })
+
+  if (!result.canceled) {
+    const data = await setImageData(result, id)
+    if (data) {
+      return data
+    }
+  }
+
+  return null
 }

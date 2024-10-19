@@ -5,7 +5,7 @@ import { FontSizes, TextAreaProps } from "@/types/Components"
 const maxLines = 6
 
 const styles = StyleSheet.create({
-    wrapper: {width: '100%', borderRadius: 10, borderWidth: 1, borderColor: Colors.dark['grey-shade-3'], paddingHorizontal: 10, paddingVertical: 8, color: Colors.dark.text, fontSize: FontSizes.FLabel, textAlign: 'left' },
+    wrapper: {width: '100%', borderRadius: 10, borderWidth: 1, borderColor: Colors.dark['grey-shade-2'], paddingHorizontal: 10, paddingVertical: 8, color: Colors.dark.text, fontSize: FontSizes.FLabel, textAlign: 'left' },
 })
 
 export const TextArea = (props: TextAreaProps) => {

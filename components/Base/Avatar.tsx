@@ -65,7 +65,7 @@ export const Avatar = (props: AvatarProps) => {
                 source={img}
                 placeholder={{ blurhash }}
                 contentFit="cover"
-                transition={1000}
+                transition={0}
             />
         </Pressable>
     );

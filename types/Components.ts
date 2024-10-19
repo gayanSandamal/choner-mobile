@@ -288,7 +288,8 @@ export enum IconNames {
   checkBox = 'checkBox',
   checkCircle = 'checkCircle',
   addCircle = 'addCircle',
-  report = 'report'
+  report = 'report',
+  image = 'image',
 }
 
 export enum PostType {
@@ -382,11 +383,24 @@ export type PostTypesProps = {
   onClosePress?: () => void
 }
 
+export type PostBottomActionsProps = {
+  isScheduled: boolean
+  dateTime: Date | null
+  showDatePicker: boolean
+  isPostPublishable: boolean
+  isLoading: boolean
+  postTypeUpdate: boolean
+  onPressMutate: () => void
+  handleConfirm: (date: Date) => void
+  hideDatePicker: () => void
+  setShowDatePicker: (state: boolean) => void
+  setIsScheduled: (state: boolean) => void
+}
 
 export type PostWrapperComponentProps = {
-  postHeaderData: PostHeaderProps
   children: React.ReactNode
   actionBarData?: ActionBarProps
+  postHeaderData?: PostHeaderProps
   onCancel: () => void
 }
 
@@ -400,12 +414,18 @@ export type PostProps = {
   onPostTypePress: (item: PostTypeProps) => void
 }
 
+export type CommunityPostTypeModalProps = {
+  showModal: boolean
+  postParams?: CommunityPostParams
+  setShowModal: (show: boolean) => void
+}
+
 export type PostModalProps = {
   postType: PostType
   showModal: boolean
-  postHeaderData: PostHeaderProps
+  postHeaderData?: PostHeaderProps
   actionBarData?: ActionBarProps
-  postParams?: InterestPostParams
+  postParams?: InterestPostParams | CommunityPostParams
   onCancel: () => void
   setShowModal: (show: boolean) => void
 }
@@ -427,11 +447,34 @@ export type InterestPostParams = {
   scheduledAt: {_nanoseconds: number, _seconds: number}
   visibility: "public" | "scheduled"
 }
+export enum CommunityPostCategory {
+  POST = 'post',
+  QUESTION = 'question',
+}
+
+export type CommunityPostParams = {
+  id: string
+  imageUrl: string
+  description: string
+  type: CommunityPostCategory.POST | CommunityPostCategory.QUESTION
+  scheduledAt: {_nanoseconds: number, _seconds: number}
+  visibility: "public" | "scheduled"
+}
 
 export type PublishInterestPostProps = {
   edit?: boolean
   postParams?: InterestPostParams
+  postHeaderData?: PostHeaderProps
+  actionBarData?: ActionBarProps
   onSuccess: () => void
+}
+
+export type PublishCommunityPostProps = {
+  edit?: boolean
+  postParams?: CommunityPostParams
+  actionBarData?: ActionBarProps
+  onSuccess: () => void
+  onClose: (close: boolean) => void
 }
 
 export type Circle = {

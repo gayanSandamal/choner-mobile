@@ -1,4 +1,3 @@
-import { User } from "@/types/User"
 import { getAxios } from "@/utils/AxiosUtils"
 import * as SecureStore from 'expo-secure-store'
 
@@ -16,7 +15,9 @@ export const getInterests = async (props: GetInterstsProps) => {
 
     const uid = JSON.parse(session)?.uid
 
-    return axios.post('/getPaginatedInterests', {
+    const url = props.isUser? '/getPaginatedUserSpecificInterests': '/getPaginatedInterests'
+
+    return axios.post(url, {
         data: {
             ...(props.isUser && {uid}),
             ...(props.lastPostId && {lastVisible: props.lastPostId})
