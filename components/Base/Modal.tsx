@@ -3,7 +3,7 @@ import { ModalProps } from '@/types/Components';
 import { Colors } from '@/constants/Colors';
 
 const styles = StyleSheet.create({
-  modalWrapper: {width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.7)'},
+  modalWrapper: {width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.9)'},
   customModalWrapper: {width: '100%', height: '100%', alignItems: 'center', backgroundColor: 'rgba(15, 32, 40, 0.7)'},
   modalContentWrapper: {backgroundColor: Colors.dark.disabled, borderRadius: 8, padding: 20, width: '90%', height: 'auto'},
 });

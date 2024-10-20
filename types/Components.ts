@@ -454,8 +454,8 @@ export enum CommunityPostCategory {
 
 export type CommunityPostParams = {
   id: string
-  imageUrl: string
-  description: string
+  imageUrls: ImageSizes
+  title: string
   type: CommunityPostCategory.POST | CommunityPostCategory.QUESTION
   scheduledAt: {_nanoseconds: number, _seconds: number}
   visibility: "public" | "scheduled"
@@ -509,6 +509,43 @@ export type InterestCardData = {
   isOwner?: boolean
 }
 
+export type ImageSizes = {
+  sm?: string,
+  md?: string,
+  lg?: string
+}
+
+export type CommunityCardData = {
+  id: string
+  title: string
+  type: string
+  imageUrls: ImageSizes
+  createdUser:{
+    uid: string,
+    displayName: string,
+    profileImageUrl?: string
+  }
+  createdAt:{
+    _seconds: number,
+    _nanoseconds: number
+  }
+  scheduledAt: {_nanoseconds: number, _seconds: number}
+  visibility: "public" | "scheduled"
+  voteCount: number
+  isOwner?: boolean
+}
+
+export type PostUserItemProps = {
+  userName: string
+  createdAt: {
+      _seconds: number
+      _nanoseconds: number
+  }
+  imageUrl?: string
+  classNames?: string
+  fullWidth?: boolean
+}
+
 export type InterestCardProps = {
   data: InterestCardData
   showOptionInterest?: string
@@ -519,6 +556,19 @@ export type InterestCardProps = {
   onOptionPress: () => void
   onDelete?: () => void
   setShowOptionInterest?: (show: string) => void
+}
+
+export type CommunityPostCardProps = {
+  title: string
+  createdUser: {
+      displayName: string
+      profileImageUrl?: string
+  }
+  createdAt: {
+      _seconds: number
+      _nanoseconds: number
+  }
+  image?: string
 }
 
 export type SignUpScreenProps = {

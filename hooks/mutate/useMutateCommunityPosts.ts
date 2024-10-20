@@ -15,7 +15,7 @@ export const useCreateCommunityPost = (onSuccess: () => void, onError: (error: E
               : undefined
 
               if(parsedScheduledTime) {
-                queryClient.invalidateQueries({queryKey: [QueryKeys.USER_COMMUNITY, variables.uid]})
+                queryClient.invalidateQueries({queryKey: [QueryKeys.USER_COMMUNITY, variables.type, variables.uid]})
                 onSuccess()
                 return
               }
@@ -26,13 +26,13 @@ export const useCreateCommunityPost = (onSuccess: () => void, onError: (error: E
                scheduledAt: parsedScheduledTime,
               }
 
-              queryClient.setQueryData([QueryKeys.COMMUNITY, variables.uid], (cachedData: any) => {
+              queryClient.setQueryData([QueryKeys.COMMUNITY, variables.type, variables.uid], (cachedData: any) => {
                 if (!cachedData) return cachedData;
                 return addOrUpdateCommunityInCache(cachedData, newCommunity)
               })
-              queryClient.invalidateQueries({queryKey: [QueryKeys.USER_COMMUNITY, variables.uid]})
+              queryClient.invalidateQueries({queryKey: [QueryKeys.USER_COMMUNITY, variables.type, variables.uid]})
+              onSuccess()
             }
-            onSuccess()
         },
         onError,
     })
@@ -40,9 +40,9 @@ export const useCreateCommunityPost = (onSuccess: () => void, onError: (error: E
 
 const addOrUpdateCommunityInCache = (cachedData: any, newCommunity: any) => {
   const updatedPages = cachedData.pages.map((page: any, pageIndex: number) => {
-    const existingIndex = page.data.result.community.findIndex((community: any) => community.id === newCommunity.id);
+    const existingIndex = page.data.result.communityPosts.findIndex((community: any) => community.id === newCommunity.id);
     if (existingIndex !== -1) {
-      const updatedCommunity = [...page.data.result.community];
+      const updatedCommunity = [...page.data.result.communityPosts];
       updatedCommunity[existingIndex] = newCommunity;
       return {
         ...page,
@@ -50,7 +50,7 @@ const addOrUpdateCommunityInCache = (cachedData: any, newCommunity: any) => {
           ...page.data,
           result: {
             ...page.data.result,
-            community: updatedCommunity,
+            communityPosts: updatedCommunity,
           },
         },
       };
@@ -59,7 +59,7 @@ const addOrUpdateCommunityInCache = (cachedData: any, newCommunity: any) => {
   })
 
   const isUpdated = updatedPages.some((page: any) =>
-    page.data.result.community.some((community: any) => community.id === newCommunity.id)
+    page.data.result.communityPosts.some((community: any) => community.id === newCommunity.id)
   )
 
   if (!isUpdated && updatedPages.length > 0) {
@@ -69,7 +69,7 @@ const addOrUpdateCommunityInCache = (cachedData: any, newCommunity: any) => {
         ...updatedPages[0].data,
         result: {
           ...updatedPages[0].data.result,
-          community: [newCommunity, ...updatedPages[0].data.result.community],
+          communityPosts: [newCommunity, ...updatedPages[0].data.result.communityPosts],
         },
       },
     }

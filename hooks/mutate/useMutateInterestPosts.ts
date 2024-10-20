@@ -91,8 +91,8 @@ export const useDeleteInteresPost = (onSuccess: () => void, onError: (error: Err
               const updatedPages = updatePageOnDelete(cachedData, variables.id)
               return { ...cachedData, pages: updatedPages }
             })
+            onSuccess()
           }
-          onSuccess()
       },
       onError,
   })

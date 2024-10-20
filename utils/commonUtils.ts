@@ -1,7 +1,8 @@
-import { InterestCardData } from "@/types/Components";
+import { CommunityCardData, InterestCardData } from "@/types/Components";
 import { Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker"
 import * as MediaLibrary from 'expo-media-library'
+import { BLURHASH } from "@/constants/values";
 
 export const matchOnlyLetters = (text: string) => {
     const regex = /^\p{L}+$/u
@@ -143,12 +144,44 @@ export function parseToInterestCardProps(data: any): InterestCardData {
   }
 }
 
+export function parseToCommunityCardProps(data: any): CommunityCardData {
+  return {
+    id: data.id,
+    title: data.title,
+    type: data.type,
+    imageUrls: {
+      sm: data?.imageUrls?.sm,
+      md: data?.imageUrls?.md,
+      lg: data?.imageUrls?.lg,
+    },
+    createdUser: {
+      uid: data.createdUser.uid,
+      displayName: data.createdUser.displayName,
+      profileImageUrl: data.createdUser.profileImageUrl
+    },
+    createdAt: {
+      _seconds: data.createdAt._seconds,
+      _nanoseconds: data.createdAt._nanoseconds
+    },
+    scheduledAt: {
+      _seconds: data?.scheduledAt?._seconds,
+      _nanoseconds: data?.scheduledAt?._nanoseconds
+    },
+    visibility: data.visibility,
+    voteCount: data.votes.length
+  }
+}
+
 export const escapePercent = (url: string) => {
   return url.replace(/%/g, '__PERCENT__')
 }
 
 export const unescapePercent = (url: string) => {
   return url.replace(/__PERCENT__/g, '%')
+}
+
+export const updateImageWithSize = (uri: string, type: string, size: string) => {
+  return uri.replace(`.${type}`, size)
 }
 
 export const minTime = () => {
@@ -206,4 +239,14 @@ export const captureAndPickImage = async (id: string) => {
   }
 
   return null
+}
+
+export const getRandomBlurHash = () => {
+  const randomIndex = Math.floor(Math.random() * BLURHASH.length)
+  return BLURHASH[randomIndex]
+}
+
+export const truncateText = (text: string, maxLength: number) => {
+  if (text.length <= maxLength) return text;
+  return text.substring(0, maxLength) + '...';
 }

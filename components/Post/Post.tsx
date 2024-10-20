@@ -11,17 +11,15 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Checkbox from "../Base/CheckBox"
 import { useAuthUserId } from "@/hooks/useAuthUser"
 import { useCreateInteresPost, useUpdateInteresPost } from "@/hooks/mutate/useMutateInterestPosts"
-import { captureAndPickImage, formatDateToCustomString, getBlobFromUri, minTime, pickImage, timeDataToLocalString } from "@/utils/commonUtils"
+import { captureAndPickImage, formatDateToCustomString, minTime, pickImage, timeDataToLocalString, updateImageWithSize } from "@/utils/commonUtils"
 import { CreateInterestProps, UpdateInterestProps } from "@/api/interestPostApi"
 import { ImagePickerBottomDrawer } from "../Common/ImagePickerBottomDrawer"
-import * as ImagePicker from "expo-image-picker"
-import * as MediaLibrary from 'expo-media-library'
 import { Image } from "expo-image"
 import { randomUUID as uuid } from "expo-crypto"
 import { useCreateCommunityPost } from "@/hooks/mutate/useMutateCommunityPosts"
 import { CreateCommunityPostProps } from "@/api/communityPostApi"
 import { useUploadImage } from "@/hooks/mutate/useMutateImage"
-import { StoragePaths } from "@/constants/values"
+import { CommunityPostTypes, ImageSizes, StoragePaths } from "@/constants/values"
 
 const styles = StyleSheet.create({
   checkbox: {
@@ -190,9 +188,7 @@ const PublishInterestPost = (props: PublishInterestPostProps) => {
   )
 }
 
-export const PublishCommunityPost = (props: PublishCommunityPostProps) => {
-  const postTypes = ['post', 'question']
-  
+export const PublishCommunityPost = (props: PublishCommunityPostProps) => {  
   const uid = useAuthUserId()
 
   const [selectedType, setSelectedType] = useState<string | null>(props.postParams?.type || null)
@@ -205,7 +201,14 @@ export const PublishCommunityPost = (props: PublishCommunityPostProps) => {
   const [isUploading, setIsUploading] = useState<boolean>(false)
 
   const {uploadImage} = useUploadImage((uri) => onSuccessImageUpload(uri), () => {})
-  const {mutate: createPost, isPending: isCreatingPost} = useCreateCommunityPost(() => onSuccessCreatePost(), () => {setIsUploading(false)})
+  const {mutate: createPost} = useCreateCommunityPost(() => onSuccessCreatePost(), (e) => setIsUploading(false))
+
+  useEffect(() => {
+    
+    return () => {
+      props.onClose(true)
+    }
+  }, [])
 
   const hideDatePicker = useCallback(() => {
     setShowDatePicker(false)
@@ -219,19 +222,19 @@ export const PublishCommunityPost = (props: PublishCommunityPostProps) => {
 
   const onSuccessCreatePost = () => {
     setIsUploading(false)
-    props.onSuccess()
+    props.onClose(true)
   }
 
   const setPostHeaderData = (): PostHeaderProps => {
     return {
-      icon: selectedType === postTypes[0]? IconNames.addPost: IconNames.qanda,
-      title: !props.postParams && selectedType === postTypes[0]?
+      icon: selectedType === CommunityPostTypes[0]? IconNames.addPost: IconNames.qanda,
+      title: !props.postParams && selectedType === CommunityPostTypes[0]?
         'Publish a Post'
-        : !props.postParams && selectedType === postTypes[1]?
+        : !props.postParams && selectedType === CommunityPostTypes[1]?
           'Ask a question'
-          : props.postParams && selectedType === postTypes[0]?
+          : props.postParams && selectedType === CommunityPostTypes[0]?
             'Update post'
-            : props.postParams && selectedType === postTypes[1]?
+            : props.postParams && selectedType === CommunityPostTypes[1]?
               'Update question': '',
       onCancel: () => props.onClose(true),
     }
@@ -255,7 +258,7 @@ export const PublishCommunityPost = (props: PublishCommunityPostProps) => {
     setIsUploading(true)
 
     if (image?.blob) {
-      await uploadImage(image, selectedType === postTypes[0]? StoragePaths.COMMUNITY_POST: StoragePaths.COMMUNITY_QUESTION)
+      await uploadImage(image, selectedType === CommunityPostTypes[0]? StoragePaths.COMMUNITY_POST: StoragePaths.COMMUNITY_QUESTION)
       return
     }
 
@@ -267,11 +270,19 @@ export const PublishCommunityPost = (props: PublishCommunityPostProps) => {
   }
 
   const setCreatePostData = (imageUrl?: string) => {
+
+      //imageStatus: 'update' || 'deleted',
     const communityPostData = {
       uid,
       title,
       type: selectedType,
-      imageUrl,
+      ...(imageUrl && image?.type && { 
+          imageUrls: {
+            sm: updateImageWithSize(imageUrl, image?.type, ImageSizes.SM),
+            md: updateImageWithSize(imageUrl, image?.type, ImageSizes.MD),
+            lg: updateImageWithSize(imageUrl, image?.type, ImageSizes.LG)
+          }
+        }),
       ...(dateTime && isScheduled && { scheduledAt: dateTime?.toISOString() })
     } as CreateCommunityPostProps
 
@@ -297,22 +308,10 @@ export const PublishCommunityPost = (props: PublishCommunityPostProps) => {
                 </>
               )}
               {image && (
-                <Image
-                  style={{width: '100%', height: '100%'}}
-                  source={image.uri}
-                  contentFit="cover"
-                  transition={500}
-              />
+                <Image style={{width: '100%', height: '100%'}} source={image.uri} contentFit="cover" transition={500} />
               )}
             </TouchableOpacity>
-            <TextArea
-              disabled={isUploading}
-              clasName="mt-[10px]"
-              height={100}
-              maxCharacters={300}
-              value={title}
-              placeHolder={selectedType === postTypes[0]? "Enter your thoughts...": "What's your problem? we can help you :)"}
-              onChangeText={setTtile}
+            <TextArea disabled={isUploading} clasName="mt-[10px]" height={100} maxCharacters={300} value={title} placeHolder={selectedType === CommunityPostTypes[0]? "Enter your thoughts...": "What's your problem? we can help you :)"} onChangeText={setTtile}
             />
             <PostBottomActions
               isScheduled={isScheduled}
@@ -331,9 +330,9 @@ export const PublishCommunityPost = (props: PublishCommunityPostProps) => {
         )}
         {!props.postParams && (
           <>
-            {selectedType !== postTypes[0] && (
+            {selectedType !== CommunityPostTypes[0] && (
               <>
-                <TouchableOpacity style={styles.communityTypeBtn}  onPress={() => setSelectedType(postTypes[0])} >
+                <TouchableOpacity style={styles.communityTypeBtn}  onPress={() => setSelectedType(CommunityPostTypes[0])} >
                   <Icon name={IconNames.addPost} color={Colors.dark['grey-shade-4']} />
                   <View className="ml-2">
                     <Label classNames="mb-1" label="Publish post" color={Colors.dark['grey-shade-4']} />
@@ -343,9 +342,9 @@ export const PublishCommunityPost = (props: PublishCommunityPostProps) => {
                 <TouchableOpacity activeOpacity={1}  className="w-full h-4" />
               </>
             )}
-            {selectedType !== postTypes[1] && (
+            {selectedType !== CommunityPostTypes[1] && (
               <>
-                <TouchableOpacity style={styles.communityTypeBtn} onPress={() => setSelectedType(postTypes[1])}>
+                <TouchableOpacity style={styles.communityTypeBtn} onPress={() => setSelectedType(CommunityPostTypes[1])}>
                   <Icon name={IconNames.qanda} color={Colors.dark['grey-shade-4']} />
                   <View className="ml-2">
                     <Label classNames="mb-1" label="Need an answer?" color={Colors.dark['grey-shade-4']} />
