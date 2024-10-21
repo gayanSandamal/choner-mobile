@@ -1,11 +1,8 @@
 import { Colors } from '@/constants/Colors';
+import { BLURHASH } from '@/constants/values';
 import { AvatarProps, InputSize, InputSizes } from '@/types/Components';
 import { Image } from 'expo-image';
-import { Pressable, StyleSheet, View } from 'react-native';
-
-const blurhash =
-    '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
-
+import { Pressable, StyleSheet } from 'react-native';
 
 const getSize = (size: InputSize) => {
     let dimentions = {
@@ -55,6 +52,7 @@ const getSize = (size: InputSize) => {
 const dummyImgUrl = 'https://media.licdn.com/dms/image/D5603AQHSXcO7ppl6WA/profile-displayphoto-shrink_400_400/0/1718211361174?e=1724889600&v=beta&t=23Did5ziv00-uQIhIvA2_i7BpNwAV1YXI3ob8RKIrEU'
 
 export const Avatar = (props: AvatarProps) => {
+    const blurhash = BLURHASH[0]
     const { containerStyles, img = dummyImgUrl, size = InputSizes.md, bgColor = Colors.dark.background } = props
     const wrapperDimensions = getSize(size).wrapper
     const imgDimensions = getSize(size).img
@@ -65,7 +63,7 @@ export const Avatar = (props: AvatarProps) => {
                 source={img}
                 placeholder={{ blurhash }}
                 contentFit="cover"
-                transition={1000}
+                transition={0}
             />
         </Pressable>
     );

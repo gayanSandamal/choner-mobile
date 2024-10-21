@@ -2,7 +2,7 @@ import { BtnDetailed } from '@/components/Base/Button'
 import { Spacer } from '@/components/Base/Spacer'
 import { Circle } from '@/components/Common/Circle'
 import { InterestCard } from '@/components/Common/InterestCard'
-import { ActionBar, Post, PostModal } from '@/components/Post/Post'
+import { ActionBar, PostModal } from '@/components/Post/Post'
 import { Colors } from '@/constants/Colors'
 import { useFetchInterestPosts } from '@/hooks/get/useFetchInterestPosts'
 import { useAuthUserId } from '@/hooks/useAuthUser'
@@ -71,30 +71,14 @@ export default function InterestsListScreen() {
   }
 
   return (
+    <View className='bg-grey h-full'>
       <FlatList
         className='px-3 bg-grey'
         data={interests}
+        showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <>
             <ActionBar title='Hey, any interests on your mind..?' active={false} onPress={() => setShowCreateInterest(true)} />
-            <PostModal
-              postType={PostType.interest}
-              showModal={showCreateInterest || !!interestPostData}
-              postParams={interestPostData ? {
-                id: interestPostData.id,
-                interest: interestPostData.interest,
-                interestDesc: interestPostData.interestDesc,
-                scheduledAt: interestPostData.scheduledAt,
-                visibility: interestPostData.visibility
-              }: undefined}
-              postHeaderData={{
-                icon: IconNames.addPost,
-                title: showCreateInterest? 'Publish an interest': 'Edit this interest'
-              }}
-              actionBarData={{ title: showCreateInterest? 'Hey, any interests on your mind..?': 'Hey, want to update your interest..?' }}
-              onCancel={onCloseModal}
-              setShowModal={onCloseModal}
-            />
             <FlatList
               data={circles}
               renderItem={({ item }) => <Circle {...item} />}
@@ -126,5 +110,24 @@ export default function InterestsListScreen() {
         onRefresh={onRefresh}
         keyExtractor={(item, index) => `${item?.id}-${index}`}
       />
+      <PostModal
+        postType={PostType.interest}
+        showModal={showCreateInterest || !!interestPostData}
+        postParams={interestPostData ? {
+          id: interestPostData.id,
+          interest: interestPostData.interest,
+          interestDesc: interestPostData.interestDesc,
+          scheduledAt: interestPostData.scheduledAt,
+          visibility: interestPostData.visibility
+        }: undefined}
+        postHeaderData={{
+          icon: IconNames.addPost,
+          title: showCreateInterest? 'Publish an interest': 'Edit this interest'
+        }}
+        actionBarData={{ title: showCreateInterest? 'Hey, any interests on your mind..?': 'Hey, want to update your interest..?' }}
+        onCancel={onCloseModal}
+        setShowModal={onCloseModal}
+      />
+    </View>
   )
 }

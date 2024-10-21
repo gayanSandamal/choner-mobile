@@ -50,6 +50,7 @@ const getIcon = (props: { color: string, name: string }) => {
         [IconNames.checkCircle]: <Icons.IconCheckCircle fill={color} />,
         [IconNames.addCircle]: <Icons.IconAddCircle fill={color} />,
         [IconNames.report]: <Icons.IconReport fill={color} />,
+        [IconNames.image]: <Icons.IconImage fill={color} />,
     };
 
     return iconMap[name];
@@ -69,6 +70,10 @@ const Icon = (props: IconProps) => {
         } else if (size === InputSizes.lg) {
             return {
                 scale: 1.2
+            }
+        } else if (size === InputSizes.xl) {
+            return {
+                scale: 1.6
             }
         } else {
             return {

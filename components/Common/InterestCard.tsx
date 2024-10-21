@@ -10,6 +10,7 @@ import { router } from "expo-router"
 import { useDeleteInteresPost } from "@/hooks/mutate/useMutateInterestPosts"
 import { useState } from "react"
 import Modal from "../Base/Modal"
+import { PostUserItem } from "./PostUserItem"
 
 const styles = StyleSheet.create({
   wrapper: { position: 'relative', padding: 12, borderRadius: 16,  backgroundColor: Colors.dark.darkText, borderColor: Colors.dark['soundcloud-gdr-1'], borderWidth: 1 },
@@ -55,13 +56,8 @@ export const InterestCard = ({isOwner, data, disabled, classNames, navigationPat
     <>
       <TouchableOpacity className={classNames} activeOpacity={disabled ? 1 : 0.5} style={styles.wrapper} onPress={navigateToInterest}>
         <View className='flex flex-row items-top'>
-          <View className='flex flex-row items-center' style={{borderRightColor: Colors.light.white, borderRightWidth: 1}}>
-            <Avatar containerStyles={{ marginRight: 8 }} size={InputSizes.sm} img={data.createdUser.profileImageUrl || undefined} />
-            <View className='flex mr-1'>
-              <Label type={FontTypes.FP} label={data.createdUser.displayName} classNames='mb-1 w-[70px]' numberOfLines={1} ellipsizeMode="tail" />
-              <Label color={Colors.dark['grey-shade-3']} type={FontTypes.FSmall} label={postCreateTimeToDate(data.createdAt)} />
-            </View>
-          </View>
+          <PostUserItem imageUrl={data.createdUser.profileImageUrl || undefined} userName={data.createdUser.displayName} createdAt={data.createdAt} />
+          <View style={{backgroundColor: Colors.light.white, width: 1, height: '100%'}} />
           <Label type={FontTypes.FTitle3Bold} label={data.title} classNames='ml-2 mt-[-4px] w-100' numberOfLines={3} containerStyles={{ flexShrink: 1 }} />
         </View>
         <View className='flex flex-row my-4'>

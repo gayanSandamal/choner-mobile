@@ -14,7 +14,8 @@ import * as ImagePicker from "expo-image-picker"
 import * as MediaLibrary from 'expo-media-library'
 import Icon from "../Base/Icon"
 import { useUploadImage } from "@/hooks/mutate/useMutateImage"
-import BottomDrawer from "../Base/BottomDrawer"
+import { ImagePickerBottomDrawer } from "../Common/ImagePickerBottomDrawer"
+import { StoragePaths } from "@/constants/values"
 
 const styles = StyleSheet.create({
     avatarWrapper: {marginLeft: 'auto', marginRight: 'auto'},
@@ -34,8 +35,6 @@ const imagePromptText = [{icon: IconNames.camera, text: 'Take a photo'}, {icon: 
 export default function SettingsHome() {
     const {user} = useUser()
 
-    const {uploadImage} = useUploadImage((uri) => updateUserWithImage(uri), (e) => onUploadImageError(e))
-
     const [firstName, setFirstName] = useState<string>(user?.displayName?.split(' ')?.[0] || '')
     const [lastName, setLastName] = useState<string>(user?.displayName?.split(' ')?.[1] || '')
     const [selectedProfession, setSeletedProfession] = useState<string | null>(user?.professionalIn || null)
@@ -45,6 +44,7 @@ export default function SettingsHome() {
     const [showDrawer, setShowDrawer] = useState<boolean>(false)
 
     const {mutate: updateUser} = useSetUser(() => onSuccess(), () => onError())
+    const {uploadImage} = useUploadImage((uri) => updateUserWithImage(uri), (e) => onUploadImageError(e))
 
     const checkAndSetFirstName = (text: string) => {
         if (isUpdating) return
@@ -60,7 +60,7 @@ export default function SettingsHome() {
         setIsupdating(true)  
 
         if (user && image?.blob) {
-            await uploadImage(image, user)
+            await uploadImage(image, StoragePaths.USER)
         }
         
         user && !image?.blob && updateUser(commonUploadData())
@@ -188,22 +188,8 @@ export default function SettingsHome() {
             <View className="ml-0.5 mr-0.5 flex-row justify-between">
                 <Btn outlined disabled={isUpdating} onPress={() => router.back()} icon={IconNames.cancel} size={InputSizes.lg} color={Colors.dark['green-shade-1']} label="CANCEL" />
                 <Btn isLoading={isUpdating} disabled={isUpdating} onPress={onSave} icon={IconNames.save} size={InputSizes.lg} backgroundColor={Colors.dark['green-shade-1']} label="SAVE" />
-            </View>       
-            <BottomDrawer showModal={showDrawer} setShowModal={setShowDrawer}>
-                <FlatList
-                    data={imagePromptText}
-                    keyExtractor={(item) => `${item.text}`}
-                    renderItem={({ item, index }) => (
-                        <BtnDetailed
-                            label={item.text} 
-                            leftIcon={{name: item.icon, color: Colors.light.white}}
-                            wrapperStyle={{borderWidth: 0, borderBottomWidth: 1, borderRadius: 0}}
-                            onPress={() => onPressImagePickItem(index)}
-                        />
-                    )}
-                    ItemSeparatorComponent={() =>{ return <View className="mt-1"/>}}
-                />
-            </BottomDrawer>
+            </View>
+            <ImagePickerBottomDrawer showDrawer={showDrawer} setShowDrawer={setShowDrawer} onPressImagePickItem={onPressImagePickItem} />
         </View>
     </TouchableWithoutFeedback>
     )
