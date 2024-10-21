@@ -102,7 +102,7 @@ export type BtnProps = {
   label?: string
   iconColor?: string
   disabled?: boolean
-  className?: string
+  classNames?: string
   wrapperClasses?: string
   outlined?: boolean
   iconWidth?: number
@@ -290,6 +290,7 @@ export enum IconNames {
   addCircle = 'addCircle',
   report = 'report',
   image = 'image',
+  timer = 'timer'
 }
 
 export enum PostType {
@@ -548,6 +549,7 @@ export type PostUserItemProps = {
 
 export type InterestCardProps = {
   data: InterestCardData
+  scheduled?: boolean
   showOptionInterest?: string
   disabled?: boolean
   classNames?: string
@@ -568,6 +570,7 @@ export type CommunityPostCardProps = {
       _seconds: number
       _nanoseconds: number
   }
+  scheduled?: boolean
   image?: string
 }
 

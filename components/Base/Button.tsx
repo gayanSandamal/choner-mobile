@@ -54,22 +54,21 @@ export const CharmBtn = (props: CharmBtnProps) => {
           backgroundColor: `${Colors.dark['grey-shade-4']}1A`,
         } : null),
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        opacity: disabled ? 0.6 : 1,
       }
     }
   }
   return (
-    <TouchableOpacity style={{opacity: disabled ? 0.6 : 1}} onPress={() => !disabled && onPress && onPress()}>
-      <View style={!clear ? styles().charmBtnStyles as any : {}} className={frame ? 'shadow-sm' : ''}>
-        <Icon color={color} name={icon} size={styles().charmBtnStyles.iconSize} />
-        {children}
-      </View>
+    <TouchableOpacity className={props.classNames} style={!clear ? styles().charmBtnStyles as any : {}} onPress={() => !disabled && onPress && onPress()}>
+      <Icon color={color} name={icon} size={styles().charmBtnStyles.iconSize} />
+      {children}
     </TouchableOpacity>
   )
 }
 
 export const Btn = (props: BtnProps) => {
-  const { color = Colors.dark.background, icon, link, onPress, label = 'Save', bgColor = props.backgroundColor || Colors.dark['soundcloud-gdr-1'], disabled = false, isLoading = false, wrapperClasses, outlined, size = InputSizes.md, iconWidth, iconHeight, block, textMode = false, className = '' } = props;
+  const { color = Colors.dark.background, icon, link, onPress, label = 'Save', bgColor = props.backgroundColor || Colors.dark['soundcloud-gdr-1'], disabled = false, isLoading = false, wrapperClasses, outlined, size = InputSizes.md, iconWidth, iconHeight, block, textMode = false, classNames = '' } = props;
 
   const btnSizes = () => {
     if (size === InputSizes.sm) {
@@ -108,7 +107,7 @@ export const Btn = (props: BtnProps) => {
     ...btnSizes(),
   }
   const buttonCore = () =>
-    <View className={`flex flex-row items-center justify-center shadow-sm ${block && 'w-full'} ${className}`} style={[btnStyles, props.style]}>
+    <View className={`flex flex-row items-center justify-center shadow-sm ${block && 'w-full'} ${classNames}`} style={[btnStyles, props.style]}>
       {icon && !isLoading && <Icon color={color} name={icon} size={iconSizes(size).iconSize} width={iconWidth} height={iconHeight} />}
       {isLoading && <ActivityIndicator style={{marginRight: !icon ? 4 : 0}} color={color} size={24} />}
       <Label {...{ label, color }} containerStyles={{ fontWeight: textMode ? 400 : 600, marginLeft: icon ? 12 : 0, marginRight: icon ? 4 : 0 }} />

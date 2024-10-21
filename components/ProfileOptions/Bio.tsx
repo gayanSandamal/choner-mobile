@@ -71,10 +71,10 @@ export const Bio = () => {
                     label={user?.bio || ''}
                 />}
                 {showEditBio && <TextArea disableNewLine height={104} value={newBio} maxLines={6} maxCharacters={320} placeHolder={'Add a bio here...'} onChangeText={setNewBio} />}
-                {!showEditBio && <Btn wrapperClasses={noDiscription ? "" : "ml-[auto]"} className="pt-[4px] pb-[4px]" outlined onPress={() => setShowEditBio(true)} icon={IconNames.editPencil} size={InputSizes.md} color={Colors.dark['primary-shade-2']} label={noDiscription ? "ADD BIO" : "EDIT BIO"} />}
+                {!showEditBio && <Btn wrapperClasses={noDiscription ? "" : "ml-[auto]"} classNames="pt-[4px] pb-[4px]" outlined onPress={() => setShowEditBio(true)} icon={IconNames.editPencil} size={InputSizes.md} color={Colors.dark['primary-shade-2']} label={noDiscription ? "ADD BIO" : "EDIT BIO"} />}
                 {showEditBio && <View style={styles.bioButtons}>
                     <Btn disabled={isUpdatingUser} wrapperClasses="ml-[auto]" outlined onPress={onCancel} size={InputSizes.md} color={Colors.dark['grey-shade-3']} label="CANCEL" />
-                    <Btn isLoading={isUpdatingUser} wrapperClasses="ml-[10px]" className={isUpdatingUser ? "pt-[4px] pb-[4px]" : ""} onPress={onSaveBio} size={InputSizes.md} backgroundColor={Colors.dark['green-shade-1']} label="SAVE" />    
+                    <Btn isLoading={isUpdatingUser} wrapperClasses="ml-[10px]" classNames={isUpdatingUser ? "pt-[4px] pb-[4px]" : ""} onPress={onSaveBio} size={InputSizes.md} backgroundColor={Colors.dark['green-shade-1']} label="SAVE" />    
                 </View>}
             </>}
         </View>

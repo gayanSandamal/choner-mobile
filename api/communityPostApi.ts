@@ -1,3 +1,4 @@
+import { POST_VISIBILITY } from "@/constants/values"
 import { ImageSizes } from "@/types/Components"
 import { getAxios } from "@/utils/AxiosUtils"
 import * as SecureStore from 'expo-secure-store'
@@ -18,20 +19,45 @@ export const createCommunityPost = async ({uid, title, type, imageUrls, schedule
     return axios.post('/createCommunityPost', { data })
 }
 
-// Get user community posts
+// Get community posts
 type GetCommunityProps = {
-    uid: string
     type: string
-    isUser?: boolean
     lastPostId?: string
 }
 export const getCommunityPosts = async (props: GetCommunityProps) => {
-    const url = props.isUser? '/getPaginatedUserSpecificCommunityPost': '/getPaginatedCommunityPost'
 
-    return axios.post(url, {
+    return axios.post('/getPaginatedCommunityPost', {
         data: {
             type: props.type,
-            ...(props.isUser && {uid: props.uid}),
+            ...(props.lastPostId && {lastVisible: props.lastPostId})
+        }
+    })
+}
+
+// Get user community posts
+type GetUserCommunityProps = {
+    visibility: string
+    uid: string
+    type: string
+    lastPostId?: string
+}
+
+export const getUserCommunityPosts = async (props: GetUserCommunityProps) => {
+
+    const data = axios.post('/getPaginatedUserSpecificCommunityPosts', {
+        data: {
+            type: props.type,
+            uid: props.uid,
+            visibility: props.visibility,
+            ...(props.lastPostId && {lastVisible: props.lastPostId})
+        }
+    })
+
+    return axios.post('/getPaginatedUserSpecificCommunityPosts', {
+        data: {
+            type: props.type,
+            uid: props.uid,
+            visibility: props.visibility,
             ...(props.lastPostId && {lastVisible: props.lastPostId})
         }
     })

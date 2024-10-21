@@ -1,5 +1,5 @@
 import { createInterest, deleteInterest, updateInterest } from "@/api/interestPostApi"
-import { QueryKeys } from "@/constants/values"
+import { POST_VISIBILITY, QueryKeys } from "@/constants/values"
 import { isoDateTimeToSecond } from "@/utils/commonUtils"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
@@ -8,29 +8,57 @@ export const useCreateInteresPost = (onSuccess: () => void, onError: (error: Err
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: createInterest,
-        onSuccess(data, variables) {
+        async onSuccess(data, variables) {
             if (data?.status === 200) {                
               const parsedScheduledTime = data?.data?.result?.data?.scheduledAt
               ? isoDateTimeToSecond(data?.data?.result?.data?.scheduledAt)
               : undefined
 
+              
+              const newInterest = {
+                ...data?.data?.result?.data,
+                id: data?.data?.result?.id,
+                scheduledAt: parsedScheduledTime,
+               }
+
               if(parsedScheduledTime) {
-                queryClient.invalidateQueries({queryKey: [QueryKeys.USER_INTERESTS, variables.uid]})
+                const existUserCache = await queryClient.getQueryData([QueryKeys.USER_INTERESTS, POST_VISIBILITY.SCHEDULED, variables.uid])
+  
+                if (!existUserCache) {
+                  await queryClient.invalidateQueries({queryKey: [QueryKeys.USER_INTERESTS, POST_VISIBILITY.SCHEDULED, variables.uid]})
+                } else {
+                  await queryClient.setQueryData([QueryKeys.USER_INTERESTS, POST_VISIBILITY.SCHEDULED, variables.uid], (cachedData: any) => {
+                    if (!cachedData) return cachedData;
+                    return addOrUpdateInterestInCache(cachedData, newInterest)
+                  })
+                }
                 onSuccess()
                 return
               }
 
-              const newInterest = {
-               ...data?.data?.result?.data,
-               id: data?.data?.result?.id,
-               scheduledAt: parsedScheduledTime,
+              const existUserCache = await queryClient.getQueryData([QueryKeys.USER_INTERESTS, POST_VISIBILITY.PUBLIC, variables.uid])
+
+              if (!existUserCache) {
+                await queryClient.invalidateQueries({queryKey: [QueryKeys.USER_INTERESTS, POST_VISIBILITY.PUBLIC, variables.uid]})
+              } else {
+                await queryClient.setQueryData([QueryKeys.USER_INTERESTS, POST_VISIBILITY.PUBLIC, variables.uid], (cachedData: any) => {
+                  if (!cachedData) return cachedData;
+                  return addOrUpdateInterestInCache(cachedData, newInterest)
+                })
+              }
+              
+              const existingCache = await queryClient.getQueryData([QueryKeys.INTERESTS, variables.uid])
+
+              if (!existingCache) {
+                await queryClient.invalidateQueries({queryKey: [QueryKeys.INTERESTS, variables.uid]})
+                onSuccess()
+                return
               }
 
-              queryClient.setQueryData([QueryKeys.INTERESTS, variables.uid], (cachedData: any) => {
+              await queryClient.setQueryData([QueryKeys.INTERESTS, variables.uid], (cachedData: any) => {
                 if (!cachedData) return cachedData;
                 return addOrUpdateInterestInCache(cachedData, newInterest)
               })
-              queryClient.invalidateQueries({queryKey: [QueryKeys.USER_INTERESTS, variables.uid]})
             }
             onSuccess()
         },
@@ -42,15 +70,17 @@ export const useUpdateInteresPost = (onSuccess: () => void, onError: (error: Err
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: updateInterest,
-        onSuccess(data, variables) {
+        async onSuccess(data, variables) {
             if (data?.status === 200) {
               const parsedScheduledTime = data?.data?.result?.data?.scheduledAt
                ? isoDateTimeToSecond(data?.data?.result?.data?.scheduledAt)
                : undefined
-
                
               if(parsedScheduledTime) {
-                queryClient.invalidateQueries({queryKey: [QueryKeys.USER_INTERESTS, variables.uid]})
+                await queryClient.setQueryData([QueryKeys.USER_INTERESTS, POST_VISIBILITY.SCHEDULED, variables.uid], (cachedData: any) => {
+                  if (!cachedData) return cachedData;
+                  return addOrUpdateInterestInCache(cachedData, updatedInterest)
+                })
                 onSuccess()
                 return
               }
@@ -61,12 +91,15 @@ export const useUpdateInteresPost = (onSuccess: () => void, onError: (error: Err
                 scheduledAt: parsedScheduledTime,
               }
 
-              queryClient.setQueryData([QueryKeys.INTERESTS, variables.uid], (cachedData: any) => {
+              await queryClient.setQueryData([QueryKeys.INTERESTS, variables.uid], (cachedData: any) => {
                 if (!cachedData) return cachedData;
                 return addOrUpdateInterestInCache(cachedData, updatedInterest)
               })
               
-              queryClient.invalidateQueries({queryKey: [QueryKeys.USER_INTERESTS, variables.uid]})
+              await queryClient.setQueryData([QueryKeys.USER_INTERESTS, POST_VISIBILITY.PUBLIC, variables.uid], (cachedData: any) => {
+                if (!cachedData) return cachedData;
+                return addOrUpdateInterestInCache(cachedData, updatedInterest)
+              })
             }
             onSuccess()
         },
@@ -78,15 +111,15 @@ export const useDeleteInteresPost = (onSuccess: () => void, onError: (error: Err
   const queryClient = useQueryClient()
   return useMutation({
       mutationFn: deleteInterest,
-      onSuccess(data, variables) {
+      async onSuccess(data, variables) {
           if (data?.status === 200) {
-            queryClient.setQueryData([QueryKeys.INTERESTS, variables.uid], (cachedData: any) => {
+            await queryClient.setQueryData([QueryKeys.INTERESTS, variables.uid], (cachedData: any) => {
               if (!cachedData) return cachedData
               const updatedPages = updatePageOnDelete(cachedData, variables.id)
               return { ...cachedData, pages: updatedPages }
             })
 
-            queryClient.setQueryData([QueryKeys.USER_INTERESTS, variables.uid], (cachedData: any) => {
+            await queryClient.setQueryData([QueryKeys.USER_INTERESTS, variables.uid], (cachedData: any) => {
               if (!cachedData) return cachedData
               const updatedPages = updatePageOnDelete(cachedData, variables.id)
               return { ...cachedData, pages: updatedPages }
