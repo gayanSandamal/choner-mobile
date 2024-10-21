@@ -30,8 +30,9 @@ const styles = StyleSheet.create({
   label: {
     margin: 8,
   },
+  removeImage: {position: 'absolute', bottom: 10, right: 10, padding: 6, borderRadius: 8, backgroundColor: Colors.dark['grey-transparent']},
   communityTypeBtn: {width: '100%', paddingHorizontal: 8, height: 50, borderRadius: 10, borderWidth: 1, borderColor: Colors.dark['grey-shade-4'], flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start'},
-  imagePicker: {width: '100%', aspectRatio: 1, borderRadius: 10, borderStyle: 'dashed', borderWidth: 1, borderColor: Colors.dark["grey-shade-2"], alignItems: 'center', justifyContent: 'center', overflow: 'hidden'}
+  imagePicker: {position: 'relative', width: '100%', borderRadius: 10, borderStyle: 'dashed', borderWidth: 1, borderColor: Colors.dark["grey-shade-2"], alignItems: 'center', justifyContent: 'center', overflow: 'hidden'}
 })
 
 export const ActionBar = (props: ActionBarProps) => {
@@ -300,7 +301,7 @@ export const PublishCommunityPost = (props: PublishCommunityPostProps) => {
         {!selectedType && <TouchableOpacity activeOpacity={1} className="w-full h-4" />}
         {selectedType && (
           <PostWrapperComponent postHeaderData={setPostHeaderData()} onCancel={() => props.onClose(true)}>
-            <TouchableOpacity disabled={isUploading} style={styles.imagePicker} onPress={() => setShowDrawer(true)}>
+            <TouchableOpacity disabled={isUploading} style={{...styles.imagePicker, aspectRatio: !!image? 1: 2 }} onPress={() => setShowDrawer(true)}>
               {!image &&(
                 <>
                   <Icon name={IconNames.image} size={InputSizes.xl} />
@@ -310,6 +311,9 @@ export const PublishCommunityPost = (props: PublishCommunityPostProps) => {
               {image && (
                 <Image style={{width: '100%', height: '100%'}} source={image.uri} contentFit="cover" transition={500} />
               )}
+              {image && <TouchableOpacity disabled={isUploading} style={styles.removeImage} onPress={() => setImage(null)}>
+                <Icon name={IconNames.delete} />
+              </TouchableOpacity>}
             </TouchableOpacity>
             <TextArea disabled={isUploading} clasName="mt-[10px]" height={100} maxCharacters={300} value={title} placeHolder={selectedType === CommunityPostTypes[0]? "Enter your thoughts...": "What's your problem? we can help you :)"} onChangeText={setTtile}
             />

@@ -28,6 +28,10 @@ export default function UserProfile () {
 
     const {data: interests, isFetching, refetch, fetchNextPage} = useFetchInterestPosts(true, uid || '', !!uid)
 
+    useEffect(() => {
+        !interests && uid && refetch()
+    }, [])
+
     const onRefresh = async () => {
         setRefreching(true)
         await refetch().then((f) => {
