@@ -56,7 +56,7 @@ const PostBottomActions = (props: PostBottomActionsProps) => {
             <Checkbox classNames="mr-2" isChecked={props.isScheduled} onPress={(state) => props.isScheduled ? props.setIsScheduled(state) : props.setShowDatePicker(true)} />
             <Label type={FontTypes.FSmall} label={scheduledText()} color={Colors.dark['grey-shade-3']} containerStyles={{ fontWeight: 400, textAlign: 'right' }} />
           </Pressable>
-          <Btn isLoading={props.isLoading} disabled={props.isLoading || !props.isPostPublishable} className="pt-[2px] pb-[2px]" label={!!props.postTypeUpdate ? 'Update' : 'Publish'} icon={IconNames.send} onPress={props.onPressMutate} />
+          <Btn isLoading={props.isLoading} disabled={props.isLoading || !props.isPostPublishable} classNames="pt-[2px] pb-[2px]" label={!!props.postTypeUpdate ? 'Update' : 'Publish'} icon={IconNames.send} onPress={props.onPressMutate} />
         </View>
       </View>
       <DateTimePickerModal isVisible={props.showDatePicker} mode="datetime" date={props.dateTime || new Date()} minimumDate={minTime()} onConfirm={props.handleConfirm} onCancel={props.hideDatePicker} />

@@ -1,5 +1,5 @@
 import { createCommunityPost } from "@/api/communityPostApi"
-import { QueryKeys } from "@/constants/values"
+import { POST_VISIBILITY, QueryKeys } from "@/constants/values"
 import { isoDateTimeToSecond } from "@/utils/commonUtils"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
@@ -8,17 +8,11 @@ export const useCreateCommunityPost = (onSuccess: () => void, onError: (error: E
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: createCommunityPost,
-        onSuccess(data, variables) {
-            if (data?.status === 200) {                
+        async onSuccess(data, variables) {
+            if (data?.status === 200) {
               const parsedScheduledTime = data?.data?.result?.data?.scheduledAt
               ? isoDateTimeToSecond(data?.data?.result?.data?.scheduledAt)
               : undefined
-
-              if(parsedScheduledTime) {
-                queryClient.invalidateQueries({queryKey: [QueryKeys.USER_COMMUNITY, variables.type, variables.uid]})
-                onSuccess()
-                return
-              }
 
               const newCommunity = {
                ...data?.data?.result?.data,
@@ -26,11 +20,44 @@ export const useCreateCommunityPost = (onSuccess: () => void, onError: (error: E
                scheduledAt: parsedScheduledTime,
               }
 
-              queryClient.setQueryData([QueryKeys.COMMUNITY, variables.type, variables.uid], (cachedData: any) => {
+              if(parsedScheduledTime) {
+                const existUserCache = await queryClient.getQueryData([QueryKeys.USER_COMMUNITY, variables.type, POST_VISIBILITY.SCHEDULED, variables.uid])
+  
+                if (!existUserCache) {
+                  await queryClient.invalidateQueries({queryKey: [QueryKeys.USER_COMMUNITY, variables.type, POST_VISIBILITY.SCHEDULED, variables.uid]})
+                } else {
+                  await queryClient.setQueryData([QueryKeys.USER_COMMUNITY, variables.type, POST_VISIBILITY.SCHEDULED, variables.uid], (cachedData: any) => {
+                    if (!cachedData) return cachedData;
+                    return addOrUpdateCommunityInCache(cachedData, newCommunity)
+                  })
+                }
+                onSuccess()
+                return
+              }
+
+              const existUserCache = await queryClient.getQueryData([QueryKeys.USER_COMMUNITY, variables.type, POST_VISIBILITY.PUBLIC, variables.uid])
+
+              if (!existUserCache) {
+                await queryClient.invalidateQueries({queryKey: [QueryKeys.USER_COMMUNITY, variables.type, POST_VISIBILITY.PUBLIC, variables.uid]})
+              } else {
+                await queryClient.setQueryData([QueryKeys.USER_COMMUNITY, variables.type, POST_VISIBILITY.PUBLIC, variables.uid], (cachedData: any) => {
+                  if (!cachedData) return cachedData;
+                  return addOrUpdateCommunityInCache(cachedData, newCommunity)
+                })
+              }
+
+              const existingCache = await queryClient.getQueryData([QueryKeys.COMMUNITY, variables.type, variables.uid])
+
+              if (!existingCache) {
+                await queryClient.invalidateQueries({queryKey: [QueryKeys.COMMUNITY, variables.type, variables.uid]})
+                onSuccess()
+                return
+              }
+
+              await queryClient.setQueryData([QueryKeys.COMMUNITY, variables.type, variables.uid], (cachedData: any) => {
                 if (!cachedData) return cachedData;
                 return addOrUpdateCommunityInCache(cachedData, newCommunity)
               })
-              queryClient.invalidateQueries({queryKey: [QueryKeys.USER_COMMUNITY, variables.type, variables.uid]})
               onSuccess()
             }
         },

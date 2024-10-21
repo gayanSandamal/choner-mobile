@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   optionListButton: {borderWidth: 0, width: '100%', height: 30, marginBottom: 0, padding: 0, paddingLeft: 8, marginVertical: 6, backgroundColor: 'transparent'},
 })
 
-export const InterestCard = ({isOwner, data, disabled, classNames, navigationPath, showOptionInterest, setShowOptionInterest, onOptionPress, onDelete}: InterestCardProps) => {
+export const InterestCard = ({isOwner, data, disabled, classNames, navigationPath, showOptionInterest, scheduled, setShowOptionInterest, onOptionPress, onDelete}: InterestCardProps) => {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false)
 
   const {mutate: deletePost, isPending: isDeleting} = useDeleteInteresPost(() => onDelete && onDelete(), () => {})
@@ -54,7 +54,7 @@ export const InterestCard = ({isOwner, data, disabled, classNames, navigationPat
 
   return (
     <>
-      <TouchableOpacity className={classNames} activeOpacity={disabled ? 1 : 0.5} style={styles.wrapper} onPress={navigateToInterest}>
+      <TouchableOpacity className={classNames} activeOpacity={disabled ? 1 : 0.5} style={{...styles.wrapper, ...(scheduled && {opacity: 0.5})}} onPress={navigateToInterest}>
         <View className='flex flex-row items-top'>
           <PostUserItem imageUrl={data.createdUser.profileImageUrl || undefined} userName={data.createdUser.displayName} createdAt={data.createdAt} />
           <View style={{backgroundColor: Colors.light.white, width: 1, height: '100%'}} />
@@ -66,8 +66,8 @@ export const InterestCard = ({isOwner, data, disabled, classNames, navigationPat
         </View>
         <View className='flex flex-row items-center justify-between'>
           <View className='flex flex-row items-center'>
-            <Btn icon={IconNames.interests} label="Interested" size={InputSizes.sm} outlined />
-            <View className='flex-row items-center ml-2'>
+            {!isOwner && <Btn classNames="mr-2" icon={IconNames.interests} label="Interested" size={InputSizes.sm} outlined />}
+            <View className='flex-row items-center'>
               <Icon name={IconNames.interestsFill} size={InputSizes.sm} />
               <Label label={`|  ${data.voteCount}`} type={FontTypes.FLabel} classNames='ml-1' />
             </View>
@@ -86,6 +86,9 @@ export const InterestCard = ({isOwner, data, disabled, classNames, navigationPat
           </View>
         )}
       </TouchableOpacity>
+      {scheduled && <View className="absolute right-2.5 top-2.5">
+        <Icon name={IconNames.timer} size={InputSizes.md} color={Colors.dark["primary-material-1"]}/>
+      </View>}
       <Modal showModal={showDeleteModal} setShowModal={setShowDeleteModal}>
         <Label type={FontTypes.FTitle1} label={'Want to detete this interest post?'} />
         <Label classNames="mt-5" type={FontTypes.FLabelBold} label={'Post data will be permanently removed!'} />
