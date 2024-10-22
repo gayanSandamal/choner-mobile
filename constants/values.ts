@@ -20,6 +20,11 @@ export const DURATIONS = {
     DAY: 86400000
 }
 
+export const POST_VISIBILITY = {
+    PUBLIC: 'public',
+    SCHEDULED: 'scheduled',
+}
+
 export const enum StoragePaths {
     USER = 'users/',
     COMMUNITY_POST = 'community/posts/',

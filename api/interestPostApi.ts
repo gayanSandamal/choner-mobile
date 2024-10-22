@@ -1,3 +1,4 @@
+import { POST_VISIBILITY } from "@/constants/values"
 import { getAxios } from "@/utils/AxiosUtils"
 import * as SecureStore from 'expo-secure-store'
 
@@ -5,21 +6,34 @@ const axios = getAxios(true)
 
 // Get user interest posts
 type GetInterstsProps = {
-    isUser?: boolean
     lastPostId?: string
 }
+
 export const getInterests = async (props: GetInterstsProps) => {
+    return axios.post('/getPaginatedInterests', {
+        data: {
+            ...(props.lastPostId && {lastVisible: props.lastPostId})
+        }
+    })
+}
+
+// Get user interest posts
+type GetUserInterstsProps = {
+    visibility: string
+    lastPostId?: string
+}
+
+export const getUserInterests = async (props: GetUserInterstsProps) => {
     const session = await SecureStore.getItemAsync('session')
 
     if (!session) return null
 
     const uid = JSON.parse(session)?.uid
 
-    const url = props.isUser? '/getPaginatedUserSpecificInterests': '/getPaginatedInterests'
-
-    return axios.post(url, {
+    return axios.post('/getPaginatedUserSpecificInterests', {
         data: {
-            ...(props.isUser && {uid}),
+            uid,
+            visibility: props.visibility,
             ...(props.lastPostId && {lastVisible: props.lastPostId})
         }
     })

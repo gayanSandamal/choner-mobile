@@ -51,7 +51,7 @@ export default function InterestsListScreen() {
   const [showOptionInterest, setShowOptionInterest] = useState<string>('')
   const [showCreateInterest, setShowCreateInterest] = useState<boolean>(false)
 
-  const {data: interests, isFetching, refetch, fetchNextPage} = useFetchInterestPosts(false, uid || '', !!uid)
+  const {data: interests, isFetching, refetch, fetchNextPage} = useFetchInterestPosts(uid || '', !!uid)
 
   useEffect(() => {
     setCircles(tempCircles)
