@@ -75,7 +75,7 @@ export const InterestCard = ({isOwner, data, disabled, classNames, navigationPat
           </View>
           <CharmBtn icon={IconNames.options} onPress={() => setShowOptionInterest && setShowOptionInterest(data.id)} size={InputSizes.md} frame={true} />
         </View>
-        <PostOptions show={showOptionInterest === data.id} isOwner={!!isOwner} postVisibility={data.visibility} onUpdate={onOptionPress} onDelete={() => setShowDeleteModal(true)} />
+        <PostOptions show={showOptionInterest === data.id} isOwner={!!isOwner} bottom={-1} right={-1} postVisibility={data.visibility} onUpdate={onOptionPress} onDelete={() => setShowDeleteModal(true)} />
       </TouchableOpacity>
       {scheduled && <View className="absolute right-2.5 top-2.5">
         <Icon name={IconNames.timer} size={InputSizes.md} color={Colors.dark["primary-material-1"]}/>

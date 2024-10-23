@@ -18,7 +18,8 @@ import { useRouteInfo } from 'expo-router/build/hooks'
 
 const styles = StyleSheet.create({
   imageSmall: {width: '100%', aspectRatio: 1.5, borderRadius: 10, borderWidth: 3, marginTop: 10, borderColor: Colors.dark['grey-shade-3']},
-  btnDetailedWrapper: {width: 120, height: 34, backgroundColor: Colors.dark['soundcloud-gdr-1'], borderRadius: 20, borderColor: Colors.dark['soundcloud-gdr-1'], paddingLeft: 15, paddingRight: 12, marginBottom: 0}
+  btnDetailedWrapper: {width: 120, height: 34, backgroundColor: Colors.dark['soundcloud-gdr-1'], borderRadius: 20, borderColor: Colors.dark['soundcloud-gdr-1'], paddingLeft: 15, paddingRight: 12, marginBottom: 0},
+  optionBtnWrapper: { position: 'absolute', height: 10, width: 120, right: 0, zIndex: 1}
 })
 
 export default function CommunityView() {
@@ -65,6 +66,9 @@ export default function CommunityView() {
   const setOptionMenuY = () => {
     if (buttonPosition) {
       if (buttonPosition?.y < 200) {
+        if (postData?.isOwner) {
+          return 80
+        }
         return 75
       } else {
         if (routeInfo.pathname === '/community-post') {
@@ -78,7 +82,7 @@ export default function CommunityView() {
   }
 
   const onSuccessUpdate = (data: CommunityCardData) => {
-    setPostData(data)
+    setPostData({...data, isOwner: postData?.isOwner})
   }
 
   if (!postData) {
@@ -108,17 +112,17 @@ export default function CommunityView() {
         onSuccess={onSuccessUpdate}
       />
       <ScrollView showsVerticalScrollIndicator={false} onTouchEnd={() => showOptions && setShowOptions(false)}>
-        {showOptions && (
-          <View style={{ position: 'absolute', top: setOptionMenuY(), right: 0, zIndex: 1}}>
-            <PostOptions show={showOptions} styles={{bottom: 0, right: 0}} isOwner={!!postData?.isOwner} postVisibility={postData.visibility} onUpdate={() => setShowUpdate(true)} onDelete={() => setShowDeleteModal(true)} />
-          </View>
-        )}
         {postData.imageUrls.md && <Image source={postData?.imageUrls?.md} style={styles.imageSmall} contentFit={"cover"} placeholder={{ blurhash: BLURHASH[3] }} />}
         <Label classNames='mt-[10px]' type={FontTypes.FLabel} label={postData.title} color={Colors.dark['grey-shade-4']} />
         <View className='w-[100%] mt-[10px] flex flex-row justify-between' ref={optionsButtonRef} onLayout={measureButtonPosition}>
           <PostUserItem width={'max-w-[180px]'} userName={postData.createdUser.displayName} createdAt={postData.createdAt} />
           <BtnDetailed wrapperStyle={styles.btnDetailedWrapper} label={'FOLLOW'} fontType={FontTypes.FLabel} labelAlign={JustifyContent.center} leftIcon={{name: IconNames.plus, classNames: 'mt-[8px]'}} onPress={() => {}} />
           <CharmBtn frame icon={IconNames.options} onPress={() => setShowOptions(true)} size={InputSizes.md} />
+          {showOptions && (
+            <View style={styles.optionBtnWrapper}>
+              <PostOptions show={showOptions} isOwner={!!postData?.isOwner} bottom={0} right={0} postVisibility={postData.visibility} onUpdate={() => setShowUpdate(true)} onDelete={() => setShowDeleteModal(true)} />
+            </View>
+          )}
         </View>
         <FlatList
           data={[{}]}

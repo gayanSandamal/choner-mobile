@@ -592,7 +592,8 @@ export type PostOptionsProps = {
   show: boolean
   isOwner: boolean
   postVisibility: string
-  styles?: ViewStyle
+  bottom?: number
+  right?: number
   onUpdate: () => void
   onDelete: () => void
 }

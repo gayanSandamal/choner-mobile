@@ -67,11 +67,13 @@ export type UpdateCommunityPostProps = {
     uid: string
     title: string
     type: string
+    imageStatus?: string
+    imageUrls?: ImageSizes
     scheduledAt?: string
 }
 
-export const updateCommunityPost = async ({id, uid, title, scheduledAt}: UpdateCommunityPostProps) => {
-    const data = { id, uid, title, scheduledAt }
+export const updateCommunityPost = async ({id, uid, title, imageStatus, imageUrls, scheduledAt}: UpdateCommunityPostProps) => {
+    const data = { id, uid, title, imageStatus, imageUrls, scheduledAt }
     return axios.post('/updateCommunityPost', { data: data })
 }
 

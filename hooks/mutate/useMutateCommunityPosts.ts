@@ -72,7 +72,6 @@ export const useUpdateCommunityPost = (onSuccess: (data: CommunityCardData) => v
       mutationFn: updateCommunityPost,
       async onSuccess(data, variables) {
           if (data?.status === 200) {
-            console.log(JSON.stringify(data))
             const parsedScheduledTime = data?.data?.result?.data?.scheduledAt
             ? isoDateTimeToSecond(data?.data?.result?.data?.scheduledAt)
             : undefined
