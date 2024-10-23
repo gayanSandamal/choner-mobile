@@ -1,4 +1,3 @@
-import { POST_VISIBILITY } from "@/constants/values"
 import { getAxios } from "@/utils/AxiosUtils"
 import * as SecureStore from 'expo-secure-store'
 

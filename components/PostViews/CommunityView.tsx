@@ -1,12 +1,11 @@
 import { Btn, BtnDetailed, CharmBtn } from '@/components/Base/Button'
 import Label from '@/components/Base/Label'
-import { InterestCard } from '@/components/Common/InterestCard'
 import { Colors } from '@/constants/Colors'
-import { CommunityCardData, CommunityPostCategory, CommunityPostParams, FontTypes, IconNames, InputSizes, InterestCardData, InterestPostParams, JustifyContent, PostType } from '@/types/Components'
+import { CommunityCardData, CommunityPostCategory, FontTypes, IconNames, InputSizes, JustifyContent, PostType } from '@/types/Components'
 import { unescapePercent } from '@/utils/commonUtils'
 import {router, useLocalSearchParams } from 'expo-router'
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { View, StyleSheet, ActivityIndicator, FlatList, TouchableWithoutFeedback, ScrollView, LayoutRectangle, Pressable } from 'react-native'
+import { useEffect, useRef, useState } from 'react'
+import { View, StyleSheet, ActivityIndicator, FlatList, ScrollView, LayoutRectangle } from 'react-native'
 import { PostModal } from '../Post/Post'
 import { BLURHASH, CommunityPostTypes } from '@/constants/values'
 import { Image } from 'expo-image'
@@ -61,24 +60,6 @@ export default function CommunityView() {
     optionsButtonRef.current?.measure((x, y, width, height, pageX, pageY) => {
       setButtonPosition({ x: pageX, y: pageY, width, height })
     })
-  }
-  
-  const setOptionMenuY = () => {
-    if (buttonPosition) {
-      if (buttonPosition?.y < 200) {
-        if (postData?.isOwner) {
-          return 80
-        }
-        return 75
-      } else {
-        if (routeInfo.pathname === '/community-post') {
-          return buttonPosition?.y - 65
-        }
-        return buttonPosition?.y - 120
-      } 
-    } else {
-      return 100
-    }
   }
 
   const onSuccessUpdate = (data: CommunityCardData) => {
