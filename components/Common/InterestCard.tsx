@@ -11,6 +11,7 @@ import { useDeleteInteresPost } from "@/hooks/mutate/useMutateInterestPosts"
 import { useState } from "react"
 import Modal from "../Base/Modal"
 import { PostUserItem } from "./PostUserItem"
+import { PostOptions } from "./PostOptions"
 
 const styles = StyleSheet.create({
   wrapper: { position: 'relative', padding: 12, borderRadius: 16,  backgroundColor: Colors.dark.darkText, borderColor: Colors.dark['soundcloud-gdr-1'], borderWidth: 1 },
@@ -74,17 +75,7 @@ export const InterestCard = ({isOwner, data, disabled, classNames, navigationPat
           </View>
           <CharmBtn icon={IconNames.options} onPress={() => setShowOptionInterest && setShowOptionInterest(data.id)} size={InputSizes.md} frame={true} />
         </View>
-        {showOptionInterest === data.id && (
-          <View style={styles.optionList}>
-            {isOwner? <>
-              {data.visibility !== PostVisibility.public && <>
-                  <BtnDetailed label="Update" leftIcon={{name: IconNames.editPencil}} wrapperStyle={styles.optionListButton} onPress={onOptionPress} />
-                </>
-              }
-              <BtnDetailed label="Delete" leftIcon={{name: IconNames.delete}} wrapperStyle={styles.optionListButton} onPress={() => setShowDeleteModal(true)} />
-            </>: <BtnDetailed label="Report" leftIcon={{name: IconNames.report}} wrapperStyle={styles.optionListButton} onPress={() => {}} />}
-          </View>
-        )}
+        <PostOptions show={showOptionInterest === data.id} isOwner={!!isOwner} bottom={-1} right={-1} postVisibility={data.visibility} onUpdate={onOptionPress} onDelete={() => setShowDeleteModal(true)} />
       </TouchableOpacity>
       {scheduled && <View className="absolute right-2.5 top-2.5">
         <Icon name={IconNames.timer} size={InputSizes.md} color={Colors.dark["primary-material-1"]}/>
@@ -94,7 +85,7 @@ export const InterestCard = ({isOwner, data, disabled, classNames, navigationPat
         <Label classNames="mt-5" type={FontTypes.FLabelBold} label={'Post data will be permanently removed!'} />
         <View className="mt-10 ml-0.5 mr-0.5 flex-row justify-between">
           <Btn outlined disabled={isDeleting} onPress={() => setShowDeleteModal(false)} icon={IconNames.cancel} size={InputSizes.md} color={Colors.light.white} label="Cancel" />
-          <Btn isLoading={isDeleting} disabled={isDeleting} onPress={() => deletePost({uid: data.createdUser.uid, id: data.id})} icon={IconNames.save} size={InputSizes.md} backgroundColor={Colors.dark.red} label="Yes, Delete" />
+          <Btn isLoading={isDeleting} disabled={isDeleting} onPress={() => deletePost({uid: data.createdUser.uid, id: data.id, visibility: data.visibility})} icon={IconNames.save} size={InputSizes.md} backgroundColor={Colors.dark.red} label="Yes, Delete" />
         </View>
       </Modal>
     </>

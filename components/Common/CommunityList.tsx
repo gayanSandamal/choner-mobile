@@ -1,6 +1,7 @@
 import { FlatList, View, StyleSheet } from "react-native"
 import { CommunityPostCard } from "./CommunityPostCard"
 import { parseToCommunityCardProps } from "@/utils/commonUtils"
+import { CommunityListProps } from "@/types/Components"
 
 const styles = StyleSheet.create({
     wrapper: {flexDirection: 'row', width: '100%'},
@@ -10,35 +11,31 @@ const styles = StyleSheet.create({
     listTypeSelectBtn2: {width: 96, height: 36, paddingHorizontal: 10, marginRight: 15, borderRadius: 15, borderWidth: 0}
   })
 
-type CommunityListProps = {
-    communityPostList1: any
-    communityPostList2: any
-    scheduled?: boolean
-}
-
-export const CommunityList = ({communityPostList1, communityPostList2, scheduled}: CommunityListProps) => {
+export const CommunityList = ({uid, communityPostList1, communityPostList2, scheduled, navigationPath}: CommunityListProps) => {
 
     return (
         <View style={styles.wrapper}>
             <FlatList
+                removeClippedSubviews={true}
                 style={styles.postListLeft}
                 data={communityPostList1}
                 scrollEnabled={false}
                 showsVerticalScrollIndicator={false}
-                renderItem={({item}) => {
+                renderItem={({item, index}) => {
                     const parsedData = parseToCommunityCardProps(item)
-                    return <CommunityPostCard scheduled={scheduled} image={parsedData.imageUrls.sm} title={parsedData.title} createdUser={parsedData.createdUser} createdAt={parsedData.createdAt} />
+                    return <CommunityPostCard data={parsedData} isOwner={parsedData.createdUser.uid === uid} scheduled={scheduled} image={parsedData.imageUrls.sm} title={parsedData.title} createdUser={parsedData.createdUser} createdAt={parsedData.createdAt} navigationPath={navigationPath} />
                 }}
                 keyExtractor={(item, index) => `${item?.id}-${index}-1`}
             />
             <FlatList
+                removeClippedSubviews={true}
                 style={styles.postListRight}
                 data={communityPostList2}
                 scrollEnabled={false}
                 showsVerticalScrollIndicator={false}
                 renderItem={({item}) => {
                     const parsedData = parseToCommunityCardProps(item)
-                    return <CommunityPostCard scheduled={scheduled} image={parsedData.imageUrls.sm} title={parsedData.title} createdUser={parsedData.createdUser} createdAt={parsedData.createdAt} />
+                    return <CommunityPostCard data={parsedData} isOwner={parsedData.createdUser.uid === uid} scheduled={scheduled} image={parsedData.imageUrls.sm} title={parsedData.title} createdUser={parsedData.createdUser} createdAt={parsedData.createdAt} navigationPath={navigationPath} />
                 }}
                 keyExtractor={(item, index) => `${item?.id}-${index}-2`}
             />

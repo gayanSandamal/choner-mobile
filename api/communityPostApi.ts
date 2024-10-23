@@ -1,7 +1,5 @@
-import { POST_VISIBILITY } from "@/constants/values"
 import { ImageSizes } from "@/types/Components"
 import { getAxios } from "@/utils/AxiosUtils"
-import * as SecureStore from 'expo-secure-store'
 
 const axios = getAxios(true)
 
@@ -61,4 +59,32 @@ export const getUserCommunityPosts = async (props: GetUserCommunityProps) => {
             ...(props.lastPostId && {lastVisible: props.lastPostId})
         }
     })
+}
+
+// Update community post
+export type UpdateCommunityPostProps = {
+    id: string
+    uid: string
+    title: string
+    type: string
+    imageStatus?: string
+    imageUrls?: ImageSizes
+    scheduledAt?: string
+}
+
+export const updateCommunityPost = async ({id, uid, title, imageStatus, imageUrls, scheduledAt}: UpdateCommunityPostProps) => {
+    const data = { id, uid, title, imageStatus, imageUrls, scheduledAt }
+    return axios.post('/updateCommunityPost', { data: data })
+}
+
+// Delete Interest post
+export type DeleteCommunityPostProps = {
+    id: string
+    uid: string
+    type: string
+    visibility: string
+}
+
+export const deleteCommunityPost = async ({id}: DeleteCommunityPostProps) => {
+    return axios.post('/deleteCommunityPost', { data: { id } })
 }

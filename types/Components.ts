@@ -290,7 +290,8 @@ export enum IconNames {
   addCircle = 'addCircle',
   report = 'report',
   image = 'image',
-  timer = 'timer'
+  timer = 'timer',
+  plus = 'plus'
 }
 
 export enum PostType {
@@ -428,6 +429,7 @@ export type PostModalProps = {
   actionBarData?: ActionBarProps
   postParams?: InterestPostParams | CommunityPostParams
   onCancel: () => void
+  onSuccess?: (data: CommunityCardData) => void
   setShowModal: (show: boolean) => void
 }
 
@@ -445,7 +447,7 @@ export type InterestPostParams = {
   id: string
   interest: string
   interestDesc: string
-  scheduledAt: {_nanoseconds: number, _seconds: number}
+  scheduledAt: {_nanoseconds: number, _seconds: number} | undefined
   visibility: "public" | "scheduled"
 }
 export enum CommunityPostCategory {
@@ -458,7 +460,7 @@ export type CommunityPostParams = {
   imageUrls: ImageSizes
   title: string
   type: CommunityPostCategory.POST | CommunityPostCategory.QUESTION
-  scheduledAt: {_nanoseconds: number, _seconds: number}
+  scheduledAt: {_nanoseconds: number, _seconds: number}  | undefined
   visibility: "public" | "scheduled"
 }
 
@@ -474,7 +476,7 @@ export type PublishCommunityPostProps = {
   edit?: boolean
   postParams?: CommunityPostParams
   actionBarData?: ActionBarProps
-  onSuccess: () => void
+  onSuccess: (data: CommunityCardData) => void
   onClose: (close: boolean) => void
 }
 
@@ -504,7 +506,7 @@ export type InterestCardData = {
     _seconds: number,
     _nanoseconds: number
   }
-  scheduledAt: {_nanoseconds: number, _seconds: number}
+  scheduledAt: {_nanoseconds: number, _seconds: number} | undefined
   visibility: "public" | "scheduled"
   voteCount: number
   isOwner?: boolean
@@ -530,7 +532,7 @@ export type CommunityCardData = {
     _seconds: number,
     _nanoseconds: number
   }
-  scheduledAt: {_nanoseconds: number, _seconds: number}
+  scheduledAt: {_nanoseconds: number, _seconds: number} | undefined
   visibility: "public" | "scheduled"
   voteCount: number
   isOwner?: boolean
@@ -544,6 +546,7 @@ export type PostUserItemProps = {
   }
   imageUrl?: string
   classNames?: string
+  width?: string
   fullWidth?: boolean
 }
 
@@ -560,7 +563,16 @@ export type InterestCardProps = {
   setShowOptionInterest?: (show: string) => void
 }
 
+export type CommunityListProps = {
+  uid: string
+  communityPostList1: any
+  communityPostList2: any
+  navigationPath?: string
+  scheduled?: boolean
+}
+
 export type CommunityPostCardProps = {
+  data: CommunityCardData
   title: string
   createdUser: {
       displayName: string
@@ -569,9 +581,21 @@ export type CommunityPostCardProps = {
   createdAt: {
       _seconds: number
       _nanoseconds: number
-  }
+  } | undefined
   scheduled?: boolean
   image?: string
+  isOwner?: boolean
+  navigationPath?: string
+}
+
+export type PostOptionsProps = {
+  show: boolean
+  isOwner: boolean
+  postVisibility: string
+  bottom?: number
+  right?: number
+  onUpdate: () => void
+  onDelete: () => void
 }
 
 export type SignUpScreenProps = {
