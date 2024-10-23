@@ -9,12 +9,11 @@ export const useCreateInteresPost = (onSuccess: () => void, onError: (error: Err
     return useMutation({
         mutationFn: createInterest,
         async onSuccess(data, variables) {
-            if (data?.status === 200) {                
+            if (data?.status === 200) {
               const parsedScheduledTime = data?.data?.result?.data?.scheduledAt
               ? isoDateTimeToSecond(data?.data?.result?.data?.scheduledAt)
               : undefined
 
-              
               const newInterest = {
                 ...data?.data?.result?.data,
                 id: data?.data?.result?.id,
@@ -73,9 +72,15 @@ export const useUpdateInteresPost = (onSuccess: () => void, onError: (error: Err
         async onSuccess(data, variables) {
             if (data?.status === 200) {
               const parsedScheduledTime = data?.data?.result?.data?.scheduledAt
-               ? isoDateTimeToSecond(data?.data?.result?.data?.scheduledAt)
-               : undefined
-               
+              ? isoDateTimeToSecond(data?.data?.result?.data?.scheduledAt)
+              : undefined
+
+              const updatedInterest = {
+                ...data?.data?.result?.data,
+                id: data?.data?.result?.id,
+                scheduledAt: parsedScheduledTime,
+              }
+
               if(parsedScheduledTime) {
                 await queryClient.setQueryData([QueryKeys.USER_INTERESTS, POST_VISIBILITY.SCHEDULED, variables.uid], (cachedData: any) => {
                   if (!cachedData) return cachedData;
@@ -83,12 +88,6 @@ export const useUpdateInteresPost = (onSuccess: () => void, onError: (error: Err
                 })
                 onSuccess()
                 return
-              }
-
-               const updatedInterest = {
-                ...data?.data?.result?.data,
-                id: data?.data?.result?.id,
-                scheduledAt: parsedScheduledTime,
               }
 
               await queryClient.setQueryData([QueryKeys.INTERESTS, variables.uid], (cachedData: any) => {
@@ -113,13 +112,18 @@ export const useDeleteInteresPost = (onSuccess: () => void, onError: (error: Err
       mutationFn: deleteInterest,
       async onSuccess(data, variables) {
           if (data?.status === 200) {
-            await queryClient.setQueryData([QueryKeys.INTERESTS, variables.uid], (cachedData: any) => {
+            await queryClient.setQueryData([QueryKeys.USER_INTERESTS, variables.visibility, variables.uid], (cachedData: any) => {
               if (!cachedData) return cachedData
               const updatedPages = updatePageOnDelete(cachedData, variables.id)
               return { ...cachedData, pages: updatedPages }
             })
 
-            await queryClient.setQueryData([QueryKeys.USER_INTERESTS, variables.uid], (cachedData: any) => {
+            if (variables.visibility === POST_VISIBILITY.SCHEDULED) {
+              onSuccess()
+              return
+            }
+
+            await queryClient.setQueryData([QueryKeys.INTERESTS, variables.uid], (cachedData: any) => {
               if (!cachedData) return cachedData
               const updatedPages = updatePageOnDelete(cachedData, variables.id)
               return { ...cachedData, pages: updatedPages }

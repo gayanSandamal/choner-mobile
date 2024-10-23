@@ -120,6 +120,7 @@ export default function UserProfile () {
             data={tabs?.tab === tabNames[2]? interests: communityPosts? [{}]: []}
             scrollEnabled={true}
             nestedScrollEnabled={true}
+            removeClippedSubviews={true}
             showsVerticalScrollIndicator={false}
             ListHeaderComponent={
                 <>
@@ -153,14 +154,14 @@ export default function UserProfile () {
                     </View>
                 </>
             }
-            renderItem={({ item }) => {
+            renderItem={({ item, index }) => {
                 if (tabs?.tab !== tabNames[2]) {
-                    return <CommunityList scheduled={tabs?.visibility === POST_VISIBILITY.SCHEDULED} communityPostList1={communityPostList1} communityPostList2={communityPostList2} />
+                    return <CommunityList uid={uid || ''} scheduled={tabs?.visibility === POST_VISIBILITY.SCHEDULED} communityPostList1={communityPostList1} communityPostList2={communityPostList2} navigationPath="/community-post" />
                 } else {
                     const parsedItem = parseToInterestCardProps(item)
                     return (
                         <View className='mb-4'>
-                            <InterestCard scheduled={tabs?.visibility === POST_VISIBILITY.SCHEDULED} isOwner={parsedItem.createdUser.uid === uid} data={parsedItem} showOptionInterest={showOptionInterest} navigationPath="/interest" onOptionPress={() => setInterestPostData({id: parsedItem.id, interest: parsedItem.title, interestDesc: parsedItem.description, scheduledAt: parsedItem.scheduledAt, visibility: parsedItem.visibility})} setShowOptionInterest={setShowOptionInterest} />
+                            <InterestCard scheduled={tabs?.visibility === POST_VISIBILITY.SCHEDULED} isOwner={parsedItem.createdUser.uid === uid} data={parsedItem} showOptionInterest={showOptionInterest} navigationPath="/interest" onOptionPress={() => setInterestPostData({id: parsedItem.id, interest: parsedItem.title, interestDesc: parsedItem.description, scheduledAt: parsedItem?.scheduledAt, visibility: parsedItem.visibility})} setShowOptionInterest={setShowOptionInterest} />
                         </View>
                     )
                 }

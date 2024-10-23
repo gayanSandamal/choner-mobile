@@ -2,7 +2,7 @@ import { CommunityCardData, InterestCardData } from "@/types/Components";
 import { Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker"
 import * as MediaLibrary from 'expo-media-library'
-import { BLURHASH } from "@/constants/values";
+import { BLURHASH, POST_VISIBILITY } from "@/constants/values";
 
 export const matchOnlyLetters = (text: string) => {
     const regex = /^\p{L}+$/u
@@ -89,7 +89,7 @@ export const isDayOld = (timeAt: { _seconds: number; _nanoseconds: number }) => 
 
 
 export const postCreateTimeToDate = (createdAt: {_seconds: number, _nanoseconds: number}) => {
-  const milliseconds = createdAt._seconds * 1000 + Math.floor(createdAt._nanoseconds / 1000000);
+  const milliseconds = createdAt?._seconds * 1000 + Math.floor(createdAt?._nanoseconds / 1000000);
   const date = new Date(milliseconds);
 
   const today = new Date();
@@ -132,15 +132,15 @@ export function parseToInterestCardProps(data: any): InterestCardData {
       profileImageUrl: data.createdUser.profileImageUrl
     },
     createdAt: {
-      _seconds: data.createdAt._seconds,
-      _nanoseconds: data.createdAt._nanoseconds
+      _seconds: data.createdAt?._seconds,
+      _nanoseconds: data.createdAt?._nanoseconds
     },
-    scheduledAt: {
+    scheduledAt: data?.scheduledAt?._seconds? {
       _seconds: data?.scheduledAt?._seconds,
       _nanoseconds: data?.scheduledAt?._nanoseconds
-    },
+    }: !!data?.scheduledAt? isoDateTimeToSecond(data?.scheduledAt): undefined,
     visibility: data.visibility,
-    voteCount: data.votes.length
+    voteCount: data?.votes?.length
   }
 }
 
@@ -163,10 +163,10 @@ export function parseToCommunityCardProps(data: any): CommunityCardData {
       _seconds: data.createdAt._seconds,
       _nanoseconds: data.createdAt._nanoseconds
     },
-    scheduledAt: {
+    scheduledAt: data?.scheduledAt?._seconds? {
       _seconds: data?.scheduledAt?._seconds,
       _nanoseconds: data?.scheduledAt?._nanoseconds
-    },
+    }: !!data?.scheduledAt? isoDateTimeToSecond(data?.scheduledAt): undefined,
     visibility: data.visibility,
     voteCount: data.votes.length
   }

@@ -69,6 +69,7 @@ export const updateInterest = async ({id, uid, title, description, scheduledAt}:
 export type DeleteInterestProps = {
     id: string
     uid: string
+    visibility: string
 }
 
 // Delete Interest post

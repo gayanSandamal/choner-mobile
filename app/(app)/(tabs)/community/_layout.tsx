@@ -6,6 +6,7 @@ export default function communityPostsLayout() {
         <TabSelectorProvider>
             <Stack screenOptions={{ headerShown: false }}>
                 <Stack.Screen name='index' />
+                <Stack.Screen name='community-view' />
             </Stack>
         </TabSelectorProvider>
     )

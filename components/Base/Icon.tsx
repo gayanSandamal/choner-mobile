@@ -52,6 +52,7 @@ const getIcon = (props: { color: string, name: string }) => {
         [IconNames.report]: <Icons.IconReport fill={color} />,
         [IconNames.image]: <Icons.IconImage fill={color} />,
         [IconNames.timer]: <Icons.IconTimer fill={color} />,
+        [IconNames.plus]: <Icons.IconPlus fill={color} />,
     };
 
     return iconMap[name];

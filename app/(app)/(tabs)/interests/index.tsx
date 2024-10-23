@@ -75,6 +75,7 @@ export default function InterestsListScreen() {
       <FlatList
         className='px-3 bg-grey'
         data={interests}
+        removeClippedSubviews={true}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <>

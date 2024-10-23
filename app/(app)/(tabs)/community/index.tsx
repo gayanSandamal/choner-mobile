@@ -80,6 +80,7 @@ export default function CommunityScreen() {
       <FlatList
         className='px-3 bg-grey'
         data={[{}]}
+        removeClippedSubviews={true}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <>
@@ -91,7 +92,7 @@ export default function CommunityScreen() {
             {fetchingPosts && !communityPosts && <ActivityIndicator color={Colors.light.white} className='mt-20 mr-auto ml-auto' size={40} />}
           </>
         }
-        renderItem={({}) => (<CommunityList communityPostList1={communityPostList1} communityPostList2={communityPostList2} />)}
+        renderItem={({}) => (<CommunityList uid={uid || ''} communityPostList1={communityPostList1} communityPostList2={communityPostList2} />)}
         ListFooterComponent={<Spacer height={60} />}
         refreshing={refreshing}
         onEndReachedThreshold={0.5}
