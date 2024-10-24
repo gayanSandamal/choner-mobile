@@ -11,6 +11,7 @@ import { POST_VISIBILITY } from "@/constants/values"
 import { useUpdateComment } from "@/hooks/mutate/useMutateComments"
 
 const styles = StyleSheet.create({
+  commentUser: {borderTopWidth: 1, borderTopColor: Colors.dark['grey-shade-3'], width: '100%', paddingVertical: 10},
     commnetInput: {width: '100%', height: 70, borderRadius: 10, borderWidth: 1, borderColor: Colors.dark['grey-shade-3'], paddingHorizontal: 10, paddingVertical: 8, color: Colors.dark.text, fontSize: FontSizes.FLabel, textAlign: 'left' },
     cancelBtn: {width: 115, height: 35, marginEnd: 0, marginTop: 10, backgroundColor: Colors.dark.red, borderRadius: 20, borderColor: Colors.dark.red, paddingLeft: 12, paddingRight: 10, marginBottom: 0},
     btnDetailedWrapper: {width: 130, height: 35, marginEnd: 0, marginStart: 'auto', marginTop: 10, backgroundColor: Colors.dark['soundcloud-gdr-1'], borderRadius: 20, borderColor: Colors.dark['soundcloud-gdr-1'], paddingLeft: 9, paddingRight: 10, marginBottom: 0},
@@ -70,7 +71,7 @@ export const CommentsList = (props: ChatListProps) => {
 
     return (
       <>
-        <View style={{borderTopWidth: 1, borderTopColor: Colors.dark['grey-shade-3'], width: '100%', paddingVertical: 10}}>
+        <View style={styles.commentUser}>
           <Label classNames='mt-1 mb-3' label='Comments' type={FontTypes.FLabel} />
           <PostUserItem useRNImage width={'max-w-[250px]'} imageUrl={props.user?.profileImageUrl} userName={props.user?.displayName || ''} />
           <View className="pb-3" />
