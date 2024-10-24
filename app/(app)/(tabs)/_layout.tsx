@@ -11,7 +11,7 @@ import { tabs } from '@/constants/NavigationTabs';
 
 const styles = StyleSheet.create({
   tab: {
-    position: 'absolute',
+    position: 'static',
     bottom: 0,
     left: 0,
     right: 0,
@@ -41,7 +41,7 @@ export default function TabLayout() {
           tabBarShowLabel: false,
           tabBarStyle: {
             ...styles.tab,
-            ...commonStyles['shadow-md']
+            ...commonStyles['shadow-md'],
           }
         }}>
         {tabs.map((tab: TabType, key) => {

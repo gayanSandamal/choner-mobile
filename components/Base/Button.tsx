@@ -169,7 +169,9 @@ export const BtnDetailed = (props: BtnDetailedProps) => {
     >
       {props.leftIcon && (
         <>
-          <Icon classNames={props.leftIcon.classNames} name={props.leftIcon.name} size={props.leftIcon.size} color={props.leftIcon.color} viewBox={props.leftIcon.viewbox} />
+          {props.isLoading ?
+            <ActivityIndicator style={{marginRight: 0}} color={props.labelColor || Colors.light.white} size={24} />
+            : <Icon classNames={props.leftIcon.classNames} name={props.leftIcon.name} size={props.leftIcon.size} color={props.leftIcon.color} viewBox={props.leftIcon.viewbox} />}
           <Spacer width={10} />
         </>
       )}
