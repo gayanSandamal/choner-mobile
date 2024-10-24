@@ -36,11 +36,7 @@ export const useUpdateComment = (onSuccess: () => void, onError: (error: Error) 
       mutationFn: updateComments,
       async onSuccess(data, variables) {
           if (data?.status === 200) {
-
-            const updatedComment = {
-              ...data?.data?.result?.data,
-              id: data?.data?.result?.id,
-            }
+            const updatedComment = data?.data?.result?.data
 
             await queryClient.setQueryData([QueryKeys.COMMENTS, variables.postId, variables.type, variables.uid], (cachedData: any) => {
               if (!cachedData) return cachedData;

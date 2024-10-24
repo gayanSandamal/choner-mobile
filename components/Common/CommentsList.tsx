@@ -12,6 +12,7 @@ import { useUpdateComment } from "@/hooks/mutate/useMutateComments"
 
 const styles = StyleSheet.create({
     commnetInput: {width: '100%', height: 70, borderRadius: 10, borderWidth: 1, borderColor: Colors.dark['grey-shade-3'], paddingHorizontal: 10, paddingVertical: 8, color: Colors.dark.text, fontSize: FontSizes.FLabel, textAlign: 'left' },
+    cancelBtn: {width: 115, height: 35, marginEnd: 0, marginTop: 10, backgroundColor: Colors.dark.red, borderRadius: 20, borderColor: Colors.dark.red, paddingLeft: 12, paddingRight: 10, marginBottom: 0},
     btnDetailedWrapper: {width: 130, height: 35, marginEnd: 0, marginStart: 'auto', marginTop: 10, backgroundColor: Colors.dark['soundcloud-gdr-1'], borderRadius: 20, borderColor: Colors.dark['soundcloud-gdr-1'], paddingLeft: 9, paddingRight: 10, marginBottom: 0},
     optionBtnWrapper: { position: 'absolute', height: 10, width: 120, right: 0, zIndex: 1},
     listHeaderLine: {borderStyle: 'dashed', width: '100%', borderWidth: 1, borderColor: Colors.dark['grey-shade-2']},
@@ -29,30 +30,36 @@ export const CommentsList = (props: ChatListProps) => {
     const [showOptions, setShowOptions] = useState<string | null>(null)
     const [updatingCommentData, setUpdatingCommentData] = useState<SelectedComment | null>(null)
 
-    const {mutate: updateComment, isPending: updatingComment} = useUpdateComment(() => onUpdate(), () => onUpdate())
+    const {mutate: updateComment, isPending: updatingComment} = useUpdateComment(() => onUpdateCommnet(), () => onUpdateCommnet())
 
-    const onUpdate = () => {
+    const onUpdateCommnet = () => {
       setShowOptions(null)
       setUpdatingCommentData(null)
     }
+    
     const onCommentUpdate = () => {
-      // showOptions && updateComment({
-      //   uid: props.uid,
-      //   postId: showOptions?.postId,
-      //   commentId: showOptions?.commentId,
-      //   type: props.postType,
-      //   comment: props.commentText
-      // })
+      updatingCommentData && updateComment({
+        uid: props.uid,
+        postId: updatingCommentData?.postId,
+        commentId: updatingCommentData?.commentId,
+        type: props.postType,
+        comment: props.commentText
+      })
     }
 
     const onCommentOrReply = () => {
-      if (props.commentText?.trim() !== '') return
+      if (props.commentText?.trim() === '') return
 
-      if (!showOptions) {
+      if (!updatingCommentData) {
         props.onAddComment()
       } else {
         onCommentUpdate()
       }
+    }
+
+    const onCancelUpdateComment = () => {
+      props.setCommentText('')
+      setUpdatingCommentData(null)
     }
 
     const onOptionUpdatePress = (commentId: string, postId: string, comment: string) => {
@@ -69,7 +76,10 @@ export const CommentsList = (props: ChatListProps) => {
           <View className="pb-3" />
           <TextInput multiline ref={inputRef} textAlignVertical="top" value={props.commentText} editable={!props.addingComment || !updatingComment} maxLength={1000} style={styles.commnetInput} onChangeText={props.setCommentText} placeholder='Your thoughts...' placeholderTextColor={Colors.dark['grey-shade-3']}
         />
-          <BtnDetailed isLoading={props.addingComment || updatingComment} disabled={props.addingComment || updatingComment} wrapperStyle={styles.btnDetailedWrapper} label={!!updatingCommentData?.comment ? 'UPDATE': 'COMMENT'} fontType={FontTypes.FLabel} labelAlign={JustifyContent.center} leftIcon={{name: IconNames.send}} onPress={onCommentOrReply} />
+        <View className="flex flex-row w-full">
+        {updatingCommentData?.commentId && <BtnDetailed disabled={updatingComment} wrapperStyle={styles.cancelBtn} label={'CENCEL'} fontType={FontTypes.FLabel} labelAlign={JustifyContent.center} leftIcon={{name: IconNames.cancel}} onPress={onCancelUpdateComment} />}
+        <BtnDetailed isLoading={props.addingComment || updatingComment} disabled={props.addingComment || updatingComment} wrapperStyle={styles.btnDetailedWrapper} label={!!updatingCommentData?.comment ? 'UPDATE': 'COMMENT'} fontType={FontTypes.FLabel} labelAlign={JustifyContent.center} leftIcon={{name: IconNames.send}} onPress={onCommentOrReply} />
+        </View>
         </View>
         <FlatList
           data={props.comments}
@@ -103,8 +113,4 @@ export const CommentsList = (props: ChatListProps) => {
         />
       </>
     )
-}
-
-function usestate<T>(): [any, any] {
-    throw new Error("Function not implemented.")
 }
