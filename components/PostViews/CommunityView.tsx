@@ -7,7 +7,7 @@ import {router, useLocalSearchParams } from 'expo-router'
 import { useCallback, useEffect, useState } from 'react'
 import { View, StyleSheet, ActivityIndicator, ScrollView, RefreshControl } from 'react-native'
 import { PostModal } from '../Post/Post'
-import { BLURHASH, CommunityPostTypes, POST_VISIBILITY } from '@/constants/values'
+import { BLURHASH, CommunityPostTypes, POST_VISIBILITY, QueryKeys } from '@/constants/values'
 import { Image as ExpoImage } from 'expo-image'
 import { PostUserItem } from '../Common/PostUserItem'
 import { PostOptions } from '../Common/PostOptions'
@@ -18,16 +18,20 @@ import { useUser } from '@/contexts/userContext'
 import { useCreateComment } from '@/hooks/mutate/useMutateComments'
 import { useFetchCommemnts } from '@/hooks/get/useFetchComments'
 import { CommentsList } from '../Common/CommentsList'
+import { useQueryClient } from '@tanstack/react-query'
 
 const styles = StyleSheet.create({
   imageSmall: {width: '100%', aspectRatio: 1.5, borderRadius: 10, borderWidth: 3, marginTop: 10, borderColor: Colors.dark['grey-shade-3']},
   btnDetailedWrapper: {width: 130, height: 35, marginEnd: 0, marginStart: 'auto', marginTop: 10, backgroundColor: Colors.dark['soundcloud-gdr-1'], borderRadius: 20, borderColor: Colors.dark['soundcloud-gdr-1'], paddingLeft: 9, paddingRight: 10, marginBottom: 0},
-  optionBtnWrapper: { position: 'absolute', height: 10, width: 120, right: 0, zIndex: 1}
+  optionBtnWrapper: { position: 'absolute', height: 10, width: 120, right: 0, zIndex: 1},
+  commentsSelerator: {borderTopWidth: 1, borderTopColor: Colors.dark['grey-shade-3'], width: '100%'}
 })
 
 export default function CommunityView() {
   const {user} = useUser()
   const  {data}  = useLocalSearchParams()
+
+  const queryClient = useQueryClient()
 
   const [postData, setPostData] = useState<CommunityCardData | null>(null)
   const [showOptions, setShowOptions] = useState<boolean>(false)
@@ -74,7 +78,11 @@ export default function CommunityView() {
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true)
-    await refetchComments()
+    await refetchComments().then(() => {
+      try {
+        queryClient.invalidateQueries({queryKey: [QueryKeys.REPLIES, postData?.id]})
+      } catch (e) {}
+    })
     setRefreshing(false)
   }, [refetchComments])
 
@@ -120,6 +128,7 @@ export default function CommunityView() {
             </View>
           )}
         </View>
+        <View style={styles.commentsSelerator} />
         
         {postData.visibility === POST_VISIBILITY.PUBLIC && (
           <CommentsList

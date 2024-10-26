@@ -6,7 +6,7 @@ import { Colors } from '@/constants/Colors';
 import { Style } from 'nativewind/dist/style-sheet/runtime';
 
 const styles = StyleSheet.create({
-    underlineText: {borderBottomWidth: 1, borderBottomColor: Colors.light.white, paddingBottom: 2, alignSelf: 'flex-start'}
+    underlineText: {borderBottomWidth: 1, borderBottomColor: Colors.light.white, alignSelf: 'flex-start'}
 })
 
 const fontStyleBasics = (type: FontType) => {
