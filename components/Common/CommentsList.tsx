@@ -2,13 +2,14 @@ import { parseToCommentProps } from "@/utils/commonUtils"
 import { ActivityIndicator, FlatList, View, StyleSheet, TextInput } from "react-native"
 import { PostUserItem } from "./PostUserItem"
 import { BtnDetailed, CharmBtn } from "../Base/Button"
-import { ChatListProps, FontSizes, FontTypes, IconNames, InputSizes, JustifyContent } from "@/types/Components"
+import { ChatListProps, CommentType, FontSizes, FontTypes, IconNames, InputSizes, JustifyContent } from "@/types/Components"
 import { Colors } from "@/constants/Colors"
 import Label from "../Base/Label"
 import { PostOptions } from "./PostOptions"
 import { useRef, useState } from "react"
 import { POST_VISIBILITY } from "@/constants/values"
 import { useUpdateComment } from "@/hooks/mutate/useMutateComments"
+import { CommentInput } from "./CommentInput"
 
 const styles = StyleSheet.create({
   commentUser: {borderTopWidth: 1, borderTopColor: Colors.dark['grey-shade-3'], width: '100%', paddingVertical: 10},
@@ -27,13 +28,14 @@ type SelectedComment = {
 }
 
 export const CommentsList = (props: ChatListProps) => {
-    const inputRef = useRef<TextInput | null>(null)
+    const commentInputRef = useRef<TextInput | null>(null)
     const [showOptions, setShowOptions] = useState<string | null>(null)
     const [updatingCommentData, setUpdatingCommentData] = useState<SelectedComment | null>(null)
 
     const {mutate: updateComment, isPending: updatingComment} = useUpdateComment(() => onUpdateCommnet(), () => onUpdateCommnet())
 
     const onUpdateCommnet = () => {
+      props.setCommentText('')
       setShowOptions(null)
       setUpdatingCommentData(null)
     }
@@ -66,22 +68,12 @@ export const CommentsList = (props: ChatListProps) => {
     const onOptionUpdatePress = (commentId: string, postId: string, comment: string) => {
       setUpdatingCommentData({commentId, postId, comment})
       props.setCommentText(comment)
-      inputRef.current?.focus()
+      commentInputRef.current?.focus()
     }
 
     return (
       <>
-        <View style={styles.commentUser}>
-          <Label classNames='mt-1 mb-3' label='Comments' type={FontTypes.FLabel} />
-          <PostUserItem useRNImage width={'max-w-[250px]'} imageUrl={props.user?.profileImageUrl} userName={props.user?.displayName || ''} />
-          <View className="pb-3" />
-          <TextInput multiline ref={inputRef} textAlignVertical="top" value={props.commentText} editable={!props.addingComment || !updatingComment} maxLength={1000} style={styles.commnetInput} onChangeText={props.setCommentText} placeholder='Your thoughts...' placeholderTextColor={Colors.dark['grey-shade-3']}
-        />
-        <View className="flex flex-row w-full">
-        {updatingCommentData?.commentId && <BtnDetailed disabled={updatingComment} wrapperStyle={styles.cancelBtn} label={'CENCEL'} fontType={FontTypes.FLabel} labelAlign={JustifyContent.center} leftIcon={{name: IconNames.cancel}} onPress={onCancelUpdateComment} />}
-        <BtnDetailed isLoading={props.addingComment || updatingComment} disabled={props.addingComment || updatingComment} wrapperStyle={styles.btnDetailedWrapper} label={!!updatingCommentData?.comment ? 'UPDATE': 'COMMENT'} fontType={FontTypes.FLabel} labelAlign={JustifyContent.center} leftIcon={{name: IconNames.send}} onPress={onCommentOrReply} />
-        </View>
-        </View>
+        <CommentInput ref={commentInputRef} user={props.user} text={props.commentText} isDisabled={props.addingComment || updatingComment} isUpdating={updatingComment} commentType={!!updatingCommentData?.commentId? CommentType.UPDATE: CommentType.COMMENT} onTextChange={props.setCommentText} onSubmit={onCommentOrReply} onCancelUpdate={onCancelUpdateComment} />
         <FlatList
           data={props.comments}
           extraData={props.comments}
@@ -101,7 +93,7 @@ export const CommentsList = (props: ChatListProps) => {
                   <CharmBtn frame={false} icon={IconNames.options} onPress={() => setShowOptions(comment.id)} size={InputSizes.md} />
                   {showOptions === comment.id && (
                     <View style={styles.optionBtnWrapper}>
-                      <PostOptions show={showOptions === comment.id} isOwner={props.uid === props.postCreatedUserId || props.uid === comment.createdUser.uid} bottom={0} right={0} postVisibility={POST_VISIBILITY.SCHEDULED} onUpdate={() => onOptionUpdatePress(comment.id, comment.postId, comment.comment)} onDelete={() => {}} />
+                      <PostOptions show={showOptions === comment.id} isOwner={props.uid === props.postCreatedUserId || props.uid === comment.createdUser.uid} bottom={0} right={0} postVisibility={props.uid === comment.createdUser.uid? POST_VISIBILITY.SCHEDULED: POST_VISIBILITY.PUBLIC} onUpdate={() => onOptionUpdatePress(comment.id, comment.postId, comment.comment)} onDelete={() => {}} />
                     </View>
                   )}
                 </View>

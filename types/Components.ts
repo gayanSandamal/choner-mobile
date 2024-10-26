@@ -306,6 +306,12 @@ export enum PostVisibility {
   public = "public"
 }
 
+export enum CommentType {
+  COMMENT = 'COMMENT',
+  REPLY = 'REPLY',
+  UPDATE = 'UPDATE'
+}
+
 export type IconProps = {
   color?: string
   name: string
@@ -678,6 +684,18 @@ export type TextAreaProps = {
   autoFocus?: boolean
   styles?: ViewStyle
   onChangeText: (text: string) => void
+}
+
+export type CommentInputProps = {
+  ref: React.LegacyRef<TextInput> | undefined
+  user: User | null
+  text: string
+  isDisabled: boolean
+  isUpdating: boolean
+  commentType: 'COMMENT' | 'REPLY' | 'UPDATE'
+  onTextChange: (text: string) => void
+  onSubmit: () => void
+  onCancelUpdate: () => void
 }
 
 export type UploadImage = {

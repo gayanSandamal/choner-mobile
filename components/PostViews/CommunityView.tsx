@@ -37,7 +37,7 @@ export default function CommunityView() {
   const [refreshing, setRefreshing] = useState<boolean>(false)
 
   const {mutate: deletePost, isPending: deletingPost} = useDeleteCommunityPost(() => router.back(), () => {})
-  const {mutate: addComment, isPending: addingComment} = useCreateComment(() => {}, () => {})
+  const {mutate: addComment, isPending: addingComment} = useCreateComment(() => setCommentText(''), () => {})
   const {data: comments, isFetching: fetchingComments, refetch : refetchComments} = useFetchCommemnts(postData?.id || '', user?.uid || '', postData?.type === CommunityPostTypes[0]? 'communityPost': 'communityQuestion', !!postData && !!user && postData.visibility === POST_VISIBILITY.PUBLIC)
 
   useEffect(() => {
