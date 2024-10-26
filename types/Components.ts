@@ -555,6 +555,22 @@ export type CommentData = {
   isOwner?: boolean
 }
 
+export type ReplyData = {
+  id: string
+  commentId: string
+  comment: string
+  createdUser:{
+    uid: string,
+    displayName: string,
+    profileImageUrl?: string
+  }
+  createdAt:{
+    _seconds: number,
+    _nanoseconds: number
+  }
+  isOwner?: boolean
+}
+
 export type CommunityCardData = {
   id: string
   title: string

@@ -40,3 +40,16 @@ export const updateComments = async ({commentId, comment, type}: UpdateCommentPr
     const data = { commentId, comment, type }
     return axios.post('/updateComment', { data })
 }
+
+// Get Replies
+export type GetRepliesProps = {
+    postId: string
+    commentId: string
+    type: string
+    lastVisible: any
+}
+
+export const getReplies = async ({postId, commentId, type, lastVisible}: GetRepliesProps) => {
+    const data = { postId, commentId, type, lastVisible }
+    return axios.post('/getReplies', { data })
+}

@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     cancelBtn: {width: 115, height: 35, marginEnd: 0, marginTop: 10, backgroundColor: Colors.dark.red, borderRadius: 20, borderColor: Colors.dark.red, paddingLeft: 12, paddingRight: 10, marginBottom: 0},
     btnDetailedWrapper: {width: 130, height: 35, marginEnd: 0, marginStart: 'auto', marginTop: 10, backgroundColor: Colors.dark['soundcloud-gdr-1'], borderRadius: 20, borderColor: Colors.dark['soundcloud-gdr-1'], paddingLeft: 9, paddingRight: 10, marginBottom: 0},
     optionBtnWrapper: { position: 'absolute', height: 10, width: 120, right: 0, zIndex: 1},
-    listHeaderLine: {borderStyle: 'dashed', width: '100%', borderWidth: 1, borderColor: Colors.dark['grey-shade-2']},
+    listHeaderLine: { width: '100%', borderWidth: 1, borderColor: Colors.dark['grey-shade-2']},
     chatWrapper: {width: '100%', paddingBottom: 10, borderBottomWidth: 1, borderBottomColor: Colors.dark['grey-shade-2']}
 })
 
@@ -57,7 +57,13 @@ const CommentItem = (props: CommentItemProps) => {
   )
 }
 
-const Replies = () => {
+type RepliesProps = {
+  uid: string
+  commentId: string
+  postCreatedUserId: string
+}
+
+const Replies = (props: RepliesProps) => {
   const [showOptions, setShowOptions] = useState<string | null>(null)
   return (
     <FlatList
@@ -69,7 +75,7 @@ const Replies = () => {
       windowSize={2}
       onTouchEnd={() => showOptions && setShowOptions(null)}
       keyExtractor={(_, index) => `item-${index}`}
-      renderItem={({items}) => <></>}
+      renderItem={({items}) => <View></View>}
     />
   )
 }

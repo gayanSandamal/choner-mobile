@@ -1,4 +1,4 @@
-import { CommentData, CommunityCardData, InterestCardData } from "@/types/Components";
+import { CommentData, CommunityCardData, InterestCardData, ReplyData } from "@/types/Components";
 import { Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker"
 import * as MediaLibrary from 'expo-media-library'
@@ -176,6 +176,23 @@ export function parseToCommentProps(data: any): CommentData {
   return {
     id: data.id,
     postId: data.postId,
+    createdUser: {
+      uid: data.createdBy.uid,
+      displayName: data.createdBy.displayName,
+      profileImageUrl: data.createdBy.profileImageUrl
+    },
+    createdAt: {
+      _seconds: data.createdAt._seconds,
+      _nanoseconds: data.createdAt._nanoseconds
+    },
+    comment: data.comment,
+  }
+}
+
+export function parseToReplyProps(data: any): ReplyData {
+  return {
+    id: data.id,
+    commentId: data.commentId,
     createdUser: {
       uid: data.createdBy.uid,
       displayName: data.createdBy.displayName,
