@@ -11,6 +11,8 @@ export const enum QueryKeys {
     USER_INTERESTS = 'userInterests',
     COMMUNITY = 'community',
     USER_COMMUNITY = 'userCommunity',
+    COMMENTS = 'comments',
+    REPLIES = 'replies'
 }
 
 export const DURATIONS = {

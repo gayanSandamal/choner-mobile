@@ -1,5 +1,6 @@
-import { DimensionValue, StyleProp, ViewStyle } from "react-native"
+import { DimensionValue, ImageStyle, StyleProp, TextInput, ViewStyle } from "react-native"
 import { CartItem } from "./Products"
+import { User } from "./User"
 
 type sizes = 'sm' | 'md' | 'lg'
 
@@ -53,6 +54,7 @@ export type BtnLinkProps = {
 
 export type BtnDetailedProps = {
   label: string,
+  isLoading?: boolean,
   labelAlign?: JustifyContent.center | JustifyContent.left | JustifyContent.right
   fontType?: FontTypes
   labelColor?: string
@@ -112,6 +114,7 @@ export type BtnProps = {
   backgroundColor?: string
   style?: StyleProp<ViewStyle>
   isLoading?: boolean
+  fontStyle?: string
 } & ButtonProps
 
 export type BtnGroupProps = {
@@ -304,6 +307,12 @@ export enum PostVisibility {
   public = "public"
 }
 
+export enum CommentType {
+  COMMENT = 'COMMENT',
+  REPLY = 'REPLY',
+  UPDATE = 'UPDATE'
+}
+
 export type IconProps = {
   color?: string
   name: string
@@ -450,6 +459,7 @@ export type InterestPostParams = {
   scheduledAt: {_nanoseconds: number, _seconds: number} | undefined
   visibility: "public" | "scheduled"
 }
+
 export enum CommunityPostCategory {
   POST = 'post',
   QUESTION = 'question',
@@ -462,6 +472,11 @@ export type CommunityPostParams = {
   type: CommunityPostCategory.POST | CommunityPostCategory.QUESTION
   scheduledAt: {_nanoseconds: number, _seconds: number}  | undefined
   visibility: "public" | "scheduled"
+}
+
+export type SelectedCommentParams = {
+  commentId: string
+  replyId?: string
 }
 
 export type PublishInterestPostProps = {
@@ -493,6 +508,11 @@ export type PostedByProps = {
   img?: string
 }
 
+export type CreatedAt = {
+  _seconds: number,
+  _nanoseconds: number
+}
+
 export type InterestCardData = {
   id: string
   title: string
@@ -518,6 +538,39 @@ export type ImageSizes = {
   lg?: string
 }
 
+
+export type CommentData = {
+  id: string
+  postId: string
+  comment: string
+  createdUser:{
+    uid: string,
+    displayName: string,
+    profileImageUrl?: string
+  }
+  createdAt:{
+    _seconds: number,
+    _nanoseconds: number
+  }
+  isOwner?: boolean
+}
+
+export type ReplyData = {
+  id: string
+  commentId: string
+  comment: string
+  createdUser:{
+    uid: string,
+    displayName: string,
+    profileImageUrl?: string
+  }
+  createdAt:{
+    _seconds: number,
+    _nanoseconds: number
+  }
+  isOwner?: boolean
+}
+
 export type CommunityCardData = {
   id: string
   title: string
@@ -540,13 +593,15 @@ export type CommunityCardData = {
 
 export type PostUserItemProps = {
   userName: string
-  createdAt: {
+  createdAt?: {
       _seconds: number
       _nanoseconds: number
   }
   imageUrl?: string
   classNames?: string
   width?: string
+  useRNImage?: boolean
+  stylesForINimage?: ImageStyle
   fullWidth?: boolean
 }
 
@@ -598,6 +653,19 @@ export type PostOptionsProps = {
   onDelete: () => void
 }
 
+export type ChatListProps = {
+  comments: any
+  uid: string
+  postCreatedUserId: string
+  idFetching: boolean
+  commentText: string
+  addingComment: boolean
+  user: User | null
+  postType: string
+  setCommentText: (text: string) => void
+  onAddComment: () => void
+}
+
 export type SignUpScreenProps = {
   onSetActiveScreen: (screen: string) => void
 }
@@ -627,13 +695,28 @@ export type SeparatorProps = {
 export type TextAreaProps = {
   value: string
   placeHolder: string
+  ref?: React.LegacyRef<TextInput> | undefined
   disabled?: boolean
   maxCharacters?: number
   maxLines?: number
   height?: DimensionValue
   disableNewLine?: boolean
   clasName?: string
+  hideTab? : boolean
+  autoFocus?: boolean
+  styles?: ViewStyle
   onChangeText: (text: string) => void
+}
+
+export type CommentInputProps = {
+  user: User | null
+  text: string
+  isDisabled: boolean
+  isUpdating: boolean
+  commentType: 'COMMENT' | 'REPLY' | 'UPDATE'
+  onTextChange: (text: string) => void
+  onSubmit: () => void
+  onCancelUpdate: () => void
 }
 
 export type UploadImage = {

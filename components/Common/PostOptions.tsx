@@ -4,7 +4,7 @@ import { IconNames, PostOptionsProps, PostVisibility } from "@/types/Components"
 import { Colors } from "@/constants/Colors"
 
 const styles = StyleSheet.create({
-  optionList: { borderWidth: 1, width: 120, borderRadius: 10, paddingBottom: 6, borderColor: Colors.light.white, position: 'absolute', backgroundColor:Colors.dark.darkText },
+  optionList: { zIndex: 2, borderWidth: 1, width: 120, borderRadius: 10, paddingBottom: 6, borderColor: Colors.light.white, position: 'absolute', backgroundColor:Colors.dark.darkText },
   optionListButton: {borderWidth: 0, width: '100%', height: 30, marginBottom: 0, padding: 0, paddingLeft: 8, marginVertical: 6, backgroundColor: 'transparent'},
 })
 

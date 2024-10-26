@@ -26,12 +26,14 @@ export const TextArea = (props: TextAreaProps) => {
     return (
         <TextInput
             multiline
+            autoFocus={props.autoFocus}
+            ref={props.ref}
             className={props.clasName}
             editable={!props.disabled}
             numberOfLines={props.maxLines}
             textAlignVertical="top"
             maxLength={props.maxCharacters}
-            style={[styles.wrapper, {height: props.height || 'auto'}]}
+            style={[styles.wrapper, props.styles, {height: props.height || 'auto'}]}
             onChangeText={onChangeText}
             placeholder={props.placeHolder}
             placeholderTextColor={Colors.dark['grey-shade-3']}
