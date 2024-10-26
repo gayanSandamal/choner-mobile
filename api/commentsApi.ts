@@ -41,15 +41,43 @@ export const updateComments = async ({commentId, comment, type}: UpdateCommentPr
     return axios.post('/updateComment', { data })
 }
 
+// Create Comment
+export type CreateReplyProps = {
+    uid: string
+    postId: string
+    commentId: string
+    reply: string
+    type: string
+}
+
+export const createReply = async ({reply, commentId, type}: CreateReplyProps) => {
+    const data = { reply, commentId, type }
+    return axios.post('/createReply', { data })
+}
+
+// Update Reply
+export type UpdateReplyProps = {
+    uid: string
+    commentId: string
+    replyId: string
+    type: string
+    reply: string
+    postId: string
+}
+
+export const updateReply = async ({commentId, replyId, reply, type}: UpdateReplyProps) => {
+    const data = { commentId, replyId, reply, type }
+    return axios.post('/updateReply', { data })
+}
+
 // Get Replies
 export type GetRepliesProps = {
-    postId: string
     commentId: string
     type: string
     lastVisible: any
 }
 
-export const getReplies = async ({postId, commentId, type, lastVisible}: GetRepliesProps) => {
-    const data = { postId, commentId, type, lastVisible }
+export const getReplies = async ({commentId, type, lastVisible}: GetRepliesProps) => {
+    const data = { commentId, type, lastVisible }
     return axios.post('/getReplies', { data })
 }

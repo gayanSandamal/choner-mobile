@@ -558,7 +558,7 @@ export type CommentData = {
 export type ReplyData = {
   id: string
   commentId: string
-  comment: string
+  reply: string
   createdUser:{
     uid: string,
     displayName: string,
@@ -714,6 +714,9 @@ export type CommentInputProps = {
   isDisabled: boolean
   isUpdating: boolean
   commentType: 'COMMENT' | 'REPLY' | 'UPDATE'
+  headerText?: string
+  placeholder?: string
+  hideUser?: boolean
   onTextChange: (text: string) => void
   onSubmit: () => void
   onCancelUpdate: () => void

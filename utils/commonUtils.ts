@@ -202,7 +202,7 @@ export function parseToReplyProps(data: any): ReplyData {
       _seconds: data.createdAt._seconds,
       _nanoseconds: data.createdAt._nanoseconds
     },
-    comment: data.comment,
+    reply: data.reply,
   }
 }
 

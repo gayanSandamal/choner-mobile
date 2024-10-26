@@ -12,15 +12,19 @@ import { useFetchCommemnts } from '@/hooks/get/useFetchComments'
 import { useUser } from '@/contexts/userContext'
 import { useCreateComment } from '@/hooks/mutate/useMutateComments'
 import { CommentsList } from '../Common/CommentsList'
-import { POST_VISIBILITY } from '@/constants/values'
+import { POST_VISIBILITY, QueryKeys } from '@/constants/values'
+import { useQueryClient } from '@tanstack/react-query'
 
 const styles = StyleSheet.create({
-  btnDetailedWrapper: {width: 140, backgroundColor: Colors.dark['soundcloud-gdr-1'], borderRadius: 20, borderColor: Colors.dark['soundcloud-gdr-1'], paddingLeft: 15, paddingRight: 12, marginBottom: 0}
+  btnDetailedWrapper: {width: 140, backgroundColor: Colors.dark['soundcloud-gdr-1'], borderRadius: 20, borderColor: Colors.dark['soundcloud-gdr-1'], paddingLeft: 15, paddingRight: 12, marginBottom: 0},
+  commentsSelerator: {borderTopWidth: 1, borderTopColor: Colors.dark['grey-shade-3'], width: '100%'}
 })
 
 export default function InterestView() {
   const {user} = useUser()
   const  {data}  = useLocalSearchParams()
+
+  const queryClient = useQueryClient()
 
   const [postData, setPostData] = useState<InterestCardData | null>(null)
   const [interestPostData, setInterestPostData] = useState<InterestPostParams | null>(null)
@@ -58,7 +62,11 @@ export default function InterestView() {
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true)
-    await refetchComments()
+    await refetchComments().then(() => {
+      try {
+        queryClient.invalidateQueries({queryKey: [QueryKeys.REPLIES, postData?.id]})
+      } catch (e) {}
+    })
     setRefreshing(false)
   }, [refetchComments])
 
@@ -92,6 +100,7 @@ export default function InterestView() {
             <Label label=''/>
             <BtnDetailed wrapperStyle={styles.btnDetailedWrapper} label={'Form circle'} fontType={FontTypes.FLabelBold} labelAlign={JustifyContent.center} rightIcon={{name: IconNames.addCircle, classNames: 'mt-[3px]'}} onPress={() => {}} />
         </View>
+        <View style={styles.commentsSelerator} />
 
         {postData.visibility === POST_VISIBILITY.PUBLIC && (
           <CommentsList
