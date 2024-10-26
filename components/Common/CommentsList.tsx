@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     btnDetailedWrapper: {width: 130, height: 35, marginEnd: 0, marginStart: 'auto', marginTop: 10, backgroundColor: Colors.dark['soundcloud-gdr-1'], borderRadius: 20, borderColor: Colors.dark['soundcloud-gdr-1'], paddingLeft: 9, paddingRight: 10, marginBottom: 0},
     optionBtnWrapper: { position: 'absolute', height: 10, width: 120, right: 0, zIndex: 3},
     listHeaderLine: { borderStyle: 'dashed', paddingTop: 10, width: '100%', borderBottomWidth: 1, borderColor: Colors.dark['grey-shade-2']},
-    chatWrapper: {width: '100%', height: 'auto'},
+    chatWrapper: {width: '100%', height: 'auto', zIndex: 1},
     chatItemBottomLine: {width: '100%', paddingBottom: 10, borderBottomWidth: 1, borderBottomColor: Colors.dark['grey-shade-2'], zIndex: 0}
 })
 
@@ -186,7 +186,7 @@ type CommentProps = {
 const Comment = (props: CommentProps) => {
   const commentReplyInputRef = useRef<TextInput | null>(null)
   const [replyText, setReplyText] = useState<string>('')
-  const [showReplies, setShowReplies] = useState<boolean>(false)
+  const [showReplies, setShowReplies] = useState<boolean>(true)
 
   const {mutate: createReply, isPending: addingReply} = useCreateReply(() => onSuccessReply(), () => {})
 
