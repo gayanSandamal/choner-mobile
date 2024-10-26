@@ -110,7 +110,7 @@ export const Btn = (props: BtnProps) => {
     <View className={`flex flex-row items-center justify-center shadow-sm ${block && 'w-full'} ${classNames}`} style={[btnStyles, props.style]}>
       {icon && !isLoading && <Icon color={color} name={icon} size={iconSizes(size).iconSize} width={iconWidth} height={iconHeight} />}
       {isLoading && <ActivityIndicator style={{marginRight: !icon ? 4 : 0}} color={color} size={24} />}
-      <Label {...{ label, color }} containerStyles={{ fontWeight: textMode ? 400 : 600, marginLeft: icon ? 12 : 0, marginRight: icon ? 4 : 0 }} />
+      <Label {...{ label, color }} containerStyles={{ fontWeight: textMode ? 400 : 600, marginLeft: icon ? 12 : 0, marginRight: icon ? 4 : 0, ...(props.fontStyle && {borderBottomWidth: 0.7, borderBottomColor: color}) }} />
     </View>
   return (
     link ? <Link href={link} className={`flex flex-row items-center justify-center ${block && 'w-full'} ${wrapperClasses}`} disabled={disabled}>{buttonCore()}</Link> : <TouchableOpacity className={`flex flex-row items-center justify-center ${block && 'w-full'} ${wrapperClasses}`} disabled={disabled || isLoading} onPress={onPress}>{buttonCore()}</TouchableOpacity>

@@ -114,6 +114,7 @@ export type BtnProps = {
   backgroundColor?: string
   style?: StyleProp<ViewStyle>
   isLoading?: boolean
+  fontStyle?: string
 } & ButtonProps
 
 export type BtnGroupProps = {
@@ -507,6 +508,11 @@ export type PostedByProps = {
   img?: string
 }
 
+export type CreatedAt = {
+  _seconds: number,
+  _nanoseconds: number
+}
+
 export type InterestCardData = {
   id: string
   title: string
@@ -687,7 +693,6 @@ export type TextAreaProps = {
 }
 
 export type CommentInputProps = {
-  ref: React.LegacyRef<TextInput> | undefined
   user: User | null
   text: string
   isDisabled: boolean
