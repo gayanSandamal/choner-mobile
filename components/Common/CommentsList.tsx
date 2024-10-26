@@ -40,7 +40,7 @@ type CommentItemProps = {
 const CommentItem = (props: CommentItemProps) => {
   return (
     <View style={styles.chatWrapper}>
-      <View className='w-[100%] mt-[10px] mb-[10px] flex flex-row justify-between'>
+      <View className='w-[100%] mt-[10px] mb-[10px] flex flex-row justify-between' style={{ zIndex: 1 }}>
         <PostUserItem width={'max-w-[250px]'} imageUrl={props.comment.createdUser.profileImageUrl} userName={props.comment.createdUser.displayName} createdAt={props.comment.createdAt} />
         <CharmBtn frame={false} icon={IconNames.options} onPress={props.setShowOptions} size={InputSizes.md} />
         {props.showOptions === props.comment.id && (
