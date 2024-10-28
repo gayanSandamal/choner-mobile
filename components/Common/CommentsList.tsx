@@ -186,13 +186,14 @@ type CommentProps = {
 const Comment = (props: CommentProps) => {
   const commentReplyInputRef = useRef<TextInput | null>(null)
   const [replyText, setReplyText] = useState<string>('')
-  const [showReplies, setShowReplies] = useState<boolean>(true)
+  const [showReplies, setShowReplies] = useState<boolean>(false)
 
   const {mutate: createReply, isPending: addingReply} = useCreateReply(() => onSuccessReply(), () => {})
 
   const onSuccessReply = () => {
     props.setReplyingComment(null)
     setReplyText('')
+    setShowReplies(true)
   }
 
   const onSelectReply = () => {

@@ -7,7 +7,7 @@ import { useAuthUserId } from '@/hooks/useAuthUser'
 import { Spacer } from '@/components/Base/Spacer'
 import { Colors } from '@/constants/Colors'
 import { CommunityPostTypes } from '@/constants/values'
-import { BtnDetailed } from '@/components/Base/Button'
+import { Btn, BtnDetailed } from '@/components/Base/Button'
 import { useTabSelector } from '@/contexts/tabSelectorContext'
 import { CommunityList } from '@/components/Common/CommunityList'
 
@@ -66,13 +66,13 @@ export default function CommunityScreen() {
     showPostTypeSelect && setShowPostTypeSelect(false)
     setCommunityPostData(null)
   }
-
-  const setHeaderButtonColor = (index: number) => {
-    return tabs?.tab === CommunityPostTypes[index]? Colors.dark['primary-material-1'] + '3A': Colors.dark['grey-shade-3'] + '2A'
+ 
+  const setHeaderButtonBackgroundColor = (index: number) => {
+    return tabs?.tab === CommunityPostTypes[index]? Colors.dark['soundcloud-gdr-1']: undefined
   }
 
   const setHeaderButtonTextColor = (index: number) => {
-    return tabs?.tab === CommunityPostTypes[index]? Colors.dark['primary-material-1']: Colors.dark['grey-shade-2']
+    return tabs?.tab !== CommunityPostTypes[index]? Colors.dark['soundcloud-gdr-1']: undefined
   }
 
   return (
@@ -86,8 +86,8 @@ export default function CommunityScreen() {
           <>
             <ActionBar title='Hey, any interests on your mind..?' active={false} onPress={() => setShowPostTypeSelect(true)} />
             <View className="flex flex-row mb-2">
-              <BtnDetailed wrapperStyle={{...styles.listTypeSelectBtn1, backgroundColor: setHeaderButtonColor(0)}} labelAlign={JustifyContent.center} fontType={FontTypes.FLabel} label={"Posts"} labelColor={setHeaderButtonTextColor(0)} onPress={() => setTabs({tab: CommunityPostTypes[0]})} />
-              <BtnDetailed wrapperStyle={{...styles.listTypeSelectBtn2, backgroundColor: setHeaderButtonColor(1)}} labelAlign={JustifyContent.center} fontType={FontTypes.FLabel} label={"Questions"} labelColor={setHeaderButtonTextColor(1)} onPress={() => setTabs({tab: CommunityPostTypes[1]})} />
+              <Btn outlined={!!setHeaderButtonTextColor(0)} label="POSTS" color={setHeaderButtonTextColor(0)} backgroundColor={setHeaderButtonBackgroundColor(0)} wrapperClasses='mr-2 mb-2' classNames={`${!setHeaderButtonTextColor(0)? 'px-[10px]': 'px-[9px]'}`} onPress={() => setTabs({tab: CommunityPostTypes[0]})} />
+              <Btn outlined={!!setHeaderButtonTextColor(1)} label="QUESTIONS" color={setHeaderButtonTextColor(1)} backgroundColor={setHeaderButtonBackgroundColor(1)} wrapperClasses='mr-2 mb-2' classNames={`${!setHeaderButtonTextColor(1)? 'px-[10px]': 'px-[9px]'}`} onPress={() => setTabs({tab: CommunityPostTypes[1]})} />
             </View>
             {fetchingPosts && !communityPosts && <ActivityIndicator color={Colors.light.white} className='mt-20 mr-auto ml-auto' size={40} />}
           </>
