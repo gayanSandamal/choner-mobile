@@ -144,13 +144,13 @@ export default function UserProfile () {
                     />
                     <Bio />
                     <Label label="Activity" type={FontTypes.FTitle3Bold} />
-                    <View className="flex flex-row mt-4 mb-4" >
-                        <Btn outlined={!!setHeaderButtonTextColor(0)} label="POSTS" color={setHeaderButtonTextColor(0)} backgroundColor={setHeaderButtonBackgroundColor(0)} wrapperClasses='mr-2 mb-[1px]' classNames={`${!setHeaderButtonTextColor(0)? 'px-[10px]': 'px-[9px]'}`} onPress={() => setSelectdTab(0)} />
-                        <Btn outlined={!!setHeaderButtonTextColor(1)} label="QUESTIONS" color={setHeaderButtonTextColor(1)} backgroundColor={setHeaderButtonBackgroundColor(1)} wrapperClasses='mr-2 mb-[1px]' classNames={`${!setHeaderButtonTextColor(1)? 'px-[10px]': 'px-[9px]'}`} onPress={() => setSelectdTab(1)} />
-                        <Btn outlined={!!setHeaderButtonTextColor(2)} label="INTERESTS" color={setHeaderButtonTextColor(2)} backgroundColor={setHeaderButtonBackgroundColor(2)} wrapperClasses='mr-2 mb-[1px]' classNames={`${!setHeaderButtonTextColor(2)? 'px-[10px]': 'px-[9px]'}`} onPress={() => setSelectdTab(2)} />
-                        <View className="mt-[2px] mr-0 ml-auto">
-                            <CharmBtn icon={IconNames.timer} color={tabs?.visibility === POST_VISIBILITY.SCHEDULED? Colors.dark["primary-material-1"]: Colors.light.white} onPress={setVisibility} size={InputSizes.md} frame={true} />
+                    <View className="flex items-center flex-row justify-between items-center mt-4 mb-4" >
+                        <View className="flex flex-row">
+                            <Btn outlined={!!setHeaderButtonTextColor(0)} label="POSTS" color={setHeaderButtonTextColor(0)} backgroundColor={setHeaderButtonBackgroundColor(0)} wrapperClasses='mr-2 mb-[1px]' classNames={`${!setHeaderButtonTextColor(0)? 'px-[10px]': 'px-[9px]'}`} onPress={() => setSelectdTab(0)} />
+                            <Btn outlined={!!setHeaderButtonTextColor(1)} label="QUESTIONS" color={setHeaderButtonTextColor(1)} backgroundColor={setHeaderButtonBackgroundColor(1)} wrapperClasses='mr-2 mb-[1px]' classNames={`${!setHeaderButtonTextColor(1)? 'px-[10px]': 'px-[9px]'}`} onPress={() => setSelectdTab(1)} />
+                            <Btn outlined={!!setHeaderButtonTextColor(2)} label="INTERESTS" color={setHeaderButtonTextColor(2)} backgroundColor={setHeaderButtonBackgroundColor(2)} wrapperClasses='mr-2 mb-[1px]' classNames={`${!setHeaderButtonTextColor(2)? 'px-[10px]': 'px-[9px]'}`} onPress={() => setSelectdTab(2)} />
                         </View>
+                        <CharmBtn icon={IconNames.timer} color={tabs?.visibility === POST_VISIBILITY.SCHEDULED? Colors.dark["primary-material-1"]: Colors.light.white} onPress={setVisibility} size={InputSizes.md} frame={true} />
                     </View>
                 </>
             }
