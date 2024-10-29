@@ -57,7 +57,7 @@ export default function ChallengesScreen() {
 
       <View className="w-full mt-[10px] mb-[25px]">
         <ImageBackground source={{ uri: imageUrls[1] }} resizeMode="cover" style={styles.cardWrapper}>
-          <View style={{ backgroundColor: '#0000006A', paddingVertical: 5, paddingHorizontal: 16, height: '100%' }}>
+          <View className='pt-5 pl-4' style={{ backgroundColor: '#0000006A', height: '100%' }}>
             <Label containerStyles={{ fontSize: 20, letterSpacing: 3, fontWeight: '700' }} color={Colors.dark.main} label="ON-GOING" />
             <Label containerStyles={{ fontSize: 20, letterSpacing: 3, fontWeight: '700' }} color={Colors.dark.main} label="CHALLENGES" />
           </View>
@@ -70,7 +70,7 @@ export default function ChallengesScreen() {
       <View className="w-full mb-[25px]">
         <ImageBackground source={{ uri: imageUrls[3] }} resizeMode="cover" style={styles.cardWrapperWide}>
           <View style={{ backgroundColor: '#0000006A', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-            <Label containerStyles={{ fontSize: 32, letterSpacing: 3, fontWeight: '700' }} color={Colors.dark['soundcloud-gdr-1']} label="CHOSEN ONE" />
+            <Label classNames='pb-7' containerStyles={{ fontSize: 32, letterSpacing: 3, fontWeight: '700' }} color={Colors.dark['soundcloud-gdr-1']} label="CHOSEN ONE" />
           </View>
           <View style={styles.bottomBtnWrapper}>
             <BtnDetailed label="Find Yours" fontType={FontTypes.FTitle3} labelAlign={JustifyContent.center} wrapperStyle={styles.buttonMedium} onPress={() => {}} />
@@ -81,7 +81,7 @@ export default function ChallengesScreen() {
       <View className="w-full mb-[20px]">
         <ImageBackground source={{ uri: imageUrls[2] }} resizeMode="cover" style={styles.cardWrapperWide}>
           <View style={{ backgroundColor: '#0000006A', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-            <Label containerStyles={{ fontSize: 24, letterSpacing: 3, fontWeight: '700' }} color={Colors.light.white} label="THE RESISTANCE" />
+            <Label classNames='pb-5' containerStyles={{ fontSize: 24, letterSpacing: 3, fontWeight: '700' }} color={Colors.light.white} label="THE RESISTANCE" />
           </View>
           <View style={styles.bottomBtnWrapper}>
             <BtnDetailed label="Can You Resist?" fontType={FontTypes.FTitle3} labelAlign={JustifyContent.center} wrapperStyle={styles.buttonLarge} onPress={() => {}} />
