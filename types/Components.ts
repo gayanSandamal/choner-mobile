@@ -114,7 +114,8 @@ export type BtnProps = {
   backgroundColor?: string
   style?: StyleProp<ViewStyle>
   isLoading?: boolean
-  fontStyle?: string
+  fontStyle?: ContainerStyles
+  fontType?: FontType
 } & ButtonProps
 
 export type BtnGroupProps = {
@@ -294,7 +295,12 @@ export enum IconNames {
   report = 'report',
   image = 'image',
   timer = 'timer',
-  plus = 'plus'
+  plus = 'plus',
+  bicepsFilled = 'bicepsFilled',
+  xp = 'xp',
+  reward = 'reward',
+  planet = 'planet',
+  badge = 'badge'
 }
 
 export enum PostType {

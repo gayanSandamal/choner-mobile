@@ -6,7 +6,8 @@ import { Colors } from "@/constants/Colors";
 
 const styles = StyleSheet.create({
   background: {
-    width: '100%'
+    width: '100%',
+    overflow: 'hidden'
   },
   foreground: {
     flex: 1,
