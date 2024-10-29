@@ -14,6 +14,7 @@ import { useTabSelector } from "@/contexts/tabSelectorContext"
 import { CommunityPostTypes, POST_VISIBILITY } from "@/constants/values"
 import { useFetchUserCommunityPosts } from "@/hooks/get/useFetchCommunityPosts"
 import { CommunityList } from "../Common/CommunityList"
+import { UserStatus } from "../Common/UserStatus"
 
 const tabNames = [ 'Posts', 'Questions', 'Interests',]
 
@@ -143,6 +144,8 @@ export default function UserProfile () {
                         setShowModal={onCloseModal}
                     />
                     <Bio />
+                    <Label classNames="mt-2 mb-3" label="Owerview" type={FontTypes.FTitle3Bold} />
+                    <UserStatus />
                     <Label label="Activity" type={FontTypes.FTitle3Bold} />
                     <View className="flex items-center flex-row justify-between items-center mt-4 mb-4" >
                         <View className="flex flex-row">

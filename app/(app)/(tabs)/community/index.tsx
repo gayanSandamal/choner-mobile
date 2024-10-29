@@ -1,23 +1,15 @@
 import { useEffect, useMemo, useState } from 'react'
 import { ActivityIndicator, FlatList, StyleSheet, View} from 'react-native'
-import { CommunityPostParams, FontTypes, JustifyContent, PostType } from '@/types/Components'
+import { CommunityPostParams, PostType } from '@/types/Components'
 import { ActionBar, PostModal } from '@/components/Post/Post'
 import { useFetchCommunityPosts } from '@/hooks/get/useFetchCommunityPosts'
 import { useAuthUserId } from '@/hooks/useAuthUser'
 import { Spacer } from '@/components/Base/Spacer'
 import { Colors } from '@/constants/Colors'
 import { CommunityPostTypes } from '@/constants/values'
-import { Btn, BtnDetailed } from '@/components/Base/Button'
+import { Btn } from '@/components/Base/Button'
 import { useTabSelector } from '@/contexts/tabSelectorContext'
 import { CommunityList } from '@/components/Common/CommunityList'
-
-const styles = StyleSheet.create({
-  wrapper: {flexDirection: 'row', width: '100%'},
-  postListLeft: {flex: 1, marginRight: 5},
-  postListRight: {flex: 1, marginLeft: 5},
-  listTypeSelectBtn1: {width: 70, height: 36, paddingHorizontal: 10, marginRight: 10, borderRadius: 15, borderWidth: 0},
-  listTypeSelectBtn2: {width: 96, height: 36, paddingHorizontal: 10, marginRight: 10, borderRadius: 15, borderWidth: 0}
-})
 
 export default function CommunityScreen() {
   const uid = useAuthUserId()
