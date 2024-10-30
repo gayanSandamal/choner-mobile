@@ -486,8 +486,7 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
         <View className="flex flex-row items-center w-full pb-3">
           <Switch
             trackColor={{false: Colors.dark["primary-shade-3"], true: Colors.dark["soundcloud-gdr-1"]}}
-            thumbColor={Colors.light.white}
-            ios_backgroundColor={'yellow'}
+            thumbColor={Colors.dark["grey-shade-4"]}
             onValueChange={setJoinEnyone}
             value={joinAnyone}
             style={{padding: 0, marginTop: -5}}  
