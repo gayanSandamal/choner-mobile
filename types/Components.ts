@@ -73,7 +73,8 @@ export enum InputSizes {
   'sm',
   'md',
   'lg',
-  'xl'
+  'xl',
+  'tab'
 }
 
 export enum JustifyContent {
@@ -82,7 +83,7 @@ export enum JustifyContent {
   'right'
 }
 
-export type InputSize = InputSizes.xs | InputSizes.sm | InputSizes.md | InputSizes.lg | InputSizes.xl
+export type InputSize = InputSizes.xs | InputSizes.sm | InputSizes.md | InputSizes.lg | InputSizes.xl | InputSizes.tab
 
 type ButtonProps = {
   bgColor?: string
@@ -300,12 +301,18 @@ export enum IconNames {
   xp = 'xp',
   reward = 'reward',
   planet = 'planet',
-  badge = 'badge'
+  badge = 'badge',
+  virtual = 'virtual',
+  onLocation = 'onLocation',
+  exclamation = 'exclamation',
+  location = 'location',
+  join = 'join'
 }
 
 export enum PostType {
   interest = 'interest',
-  community = 'community'
+  community = 'community',
+  challenge = 'challenge'
 }
 
 export enum PostVisibility {
@@ -442,7 +449,7 @@ export type PostModalProps = {
   showModal: boolean
   postHeaderData?: PostHeaderProps
   actionBarData?: ActionBarProps
-  postParams?: InterestPostParams | CommunityPostParams
+  postParams?: InterestPostParams | CommunityPostParams | ChallengePostParams
   onCancel: () => void
   onSuccess?: (data: CommunityCardData) => void
   setShowModal: (show: boolean) => void
@@ -480,6 +487,21 @@ export type CommunityPostParams = {
   visibility: "public" | "scheduled"
 }
 
+export enum ChallengePostCategory {
+  VERTUAL = 'virtual',
+  ON_LOCATION = 'onLocaion'
+}
+
+export type ChallengePostParams = {
+  id: string
+  title: string
+  type: ChallengePostCategory.VERTUAL | ChallengePostCategory.ON_LOCATION
+  challengeAt: {_nanoseconds: number, _seconds: number}  | undefined
+  participation: string
+  location?: string
+  allowAnyone?: boolean
+}
+
 export type SelectedCommentParams = {
   commentId: string
   replyId?: string
@@ -499,6 +521,14 @@ export type PublishCommunityPostProps = {
   actionBarData?: ActionBarProps
   onSuccess: (data: CommunityCardData) => void
   onClose: (close: boolean) => void
+}
+
+export type PublishChallengePostProps = {
+  edit?: boolean
+  postParams?: ChallengePostParams
+  postHeaderData?: PostHeaderProps
+  actionBarData?: ActionBarProps
+  onSuccess: () => void
 }
 
 export type Circle = {
@@ -597,6 +627,27 @@ export type CommunityCardData = {
   isOwner?: boolean
 }
 
+export type ChallengeCardData = {
+  id: string
+  description: string
+  type: string
+  createdUser:{
+    uid: string,
+    displayName: string,
+    profileImageUrl?: string
+  }
+  createdAt:{
+    _seconds: number,
+    _nanoseconds: number
+  }
+  challengedAt: {_nanoseconds: number, _seconds: number} | undefined
+  joinedCount?: number
+  participation: string
+  location?: string
+  allowAnyone?: boolean
+  isOwner?: boolean
+}
+
 export type PostUserItemProps = {
   userName: string
   createdAt?: {
@@ -687,6 +738,7 @@ export type InputProps = {
   type?: InputType
   fontSize?: FontSizes
   icon?: string
+  iconColor?: string
   iconRight?: string
   secureTextEntry?: boolean
   onChange?: (text: string) => void

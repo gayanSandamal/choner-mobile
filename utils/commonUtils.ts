@@ -2,7 +2,8 @@ import { CommentData, CommunityCardData, InterestCardData, ReplyData } from "@/t
 import { Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker"
 import * as MediaLibrary from 'expo-media-library'
-import { BLURHASH, POST_VISIBILITY } from "@/constants/values";
+import { BLURHASH } from "@/constants/values";
+import { Colors } from "@/constants/Colors";
 
 export const matchOnlyLetters = (text: string) => {
     const regex = /^\p{L}+$/u
@@ -283,4 +284,12 @@ export const getRandomBlurHash = () => {
 export const truncateText = (text: string, maxLength: number) => {
   if (text.length <= maxLength) return text;
   return text.substring(0, maxLength) + '...';
+}
+
+export const setBtnBackgroundColor = (condition: boolean) => {
+  return condition? Colors.dark['soundcloud-gdr-1']: undefined
+}
+
+export const setBtnOutlineColor = (condition: boolean) => {
+  return condition? Colors.dark["primary-shade-2"]: undefined
 }

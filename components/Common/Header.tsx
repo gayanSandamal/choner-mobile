@@ -30,6 +30,12 @@ const hasSearch = (pathname: string) => {
 const getTabTitle = (pathname: string) => {
     if (pathname === '/') {
         return 'choner'
+    } else if (pathname.startsWith('/interests')) {
+        return 'Interests'
+    } else if (pathname.startsWith('/community')) {
+        return 'Community'
+    } else if (pathname.endsWith('/on-going-challenges')) {
+        return 'On-Going Challenges'
     } else {
         return tabs.find((tab: TabType) => `/${tab.name}` === pathname)?.title
     }

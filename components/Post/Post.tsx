@@ -1,6 +1,6 @@
-import { Pressable, StyleSheet, TouchableOpacity, View, ScrollView } from "react-native"
+import { Pressable, StyleSheet, TouchableOpacity, View, ScrollView, Switch } from "react-native"
 import Label from "../Base/Label"
-import { ActionBarProps, CommunityCardData, CommunityPostParams, FontTypes, IconNames, InputSizes, InterestPostParams, PostBottomActionsProps, PostHeaderProps, PostModalProps, PostType, PostWrapperComponentProps, PublishCommunityPostProps, PublishInterestPostProps, UploadImage } from "@/types/Components"
+import { ActionBarProps, ChallengePostCategory, ChallengePostParams, CommunityCardData, CommunityPostParams, FontSizes, FontTypes, IconNames, InputSizes, InterestPostParams, PostBottomActionsProps, PostHeaderProps, PostModalProps, PostType, PostWrapperComponentProps, PublishChallengePostProps, PublishCommunityPostProps, PublishInterestPostProps, UploadImage } from "@/types/Components"
 import { Colors } from "@/constants/Colors"
 import React, { useCallback, useEffect, useState } from "react"
 import Icon from "../Base/Icon"
@@ -11,7 +11,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Checkbox from "../Base/CheckBox"
 import { useAuthUserId } from "@/hooks/useAuthUser"
 import { useCreateInteresPost, useUpdateInteresPost } from "@/hooks/mutate/useMutateInterestPosts"
-import { captureAndPickImage, formatDateToCustomString, minTime, pickImage, timeDataToLocalString, updateImageWithSize } from "@/utils/commonUtils"
+import { captureAndPickImage, formatDateToCustomString, minTime, pickImage, setBtnBackgroundColor, setBtnOutlineColor, timeDataToLocalString, updateImageWithSize } from "@/utils/commonUtils"
 import { CreateInterestProps, UpdateInterestProps } from "@/api/interestPostApi"
 import { ImagePickerBottomDrawer } from "../Common/ImagePickerBottomDrawer"
 import { Image } from "expo-image"
@@ -20,6 +20,7 @@ import { useCreateCommunityPost, useUpdateCommunityPost } from "@/hooks/mutate/u
 import { CreateCommunityPostProps, UpdateCommunityPostProps } from "@/api/communityPostApi"
 import { useUploadImage } from "@/hooks/mutate/useMutateImage"
 import { CommunityPostTypes, ImageSizes, StoragePaths } from "@/constants/values"
+import { Input } from "../Base/Input"
 
 const styles = StyleSheet.create({
   checkbox: {
@@ -32,13 +33,14 @@ const styles = StyleSheet.create({
   },
   removeImage: {position: 'absolute', bottom: 10, right: 10, padding: 6, borderRadius: 8, backgroundColor: Colors.dark['grey-transparent']},
   communityTypeBtn: {width: '100%', paddingHorizontal: 8, height: 50, borderRadius: 10, borderWidth: 1, borderColor: Colors.dark['grey-shade-4'], flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start'},
-  imagePicker: {position: 'relative', width: '100%', borderRadius: 10, borderStyle: 'dashed', borderWidth: 1, borderColor: Colors.dark["grey-shade-2"], alignItems: 'center', justifyContent: 'center', overflow: 'hidden'}
+  imagePicker: {position: 'relative', width: '100%', borderRadius: 10, borderStyle: 'dashed', borderWidth: 1, borderColor: Colors.dark["grey-shade-2"], alignItems: 'center', justifyContent: 'center', overflow: 'hidden'},
+  bottomBorder: {borderBottomWidth: 1, borderColor: Colors.dark["grey-shade-2"]}
 })
 
 export const ActionBar = (props: ActionBarProps) => {
   const { active = false, onPress, title } = props
   return (
-    <Pressable onPress={onPress} className={`py-3 px-5 mt-3 mb-4 rounded-3xl border`} style={{ backgroundColor: Colors.dark.darkText, width: '100%', paddingHorizontal: 10, borderColor: active ? Colors.dark['soundcloud-gdr-1'] : Colors.dark.darkText }}>
+    <Pressable onPress={onPress} className={`py-3 px-5 mt-3 mb-4 ml-0 mr-0 rounded-3xl border`} style={{ backgroundColor: Colors.dark.darkText, width: '100%', paddingHorizontal: 10, borderColor: active ? Colors.dark['soundcloud-gdr-1'] : Colors.dark.darkText }}>
       <Label containerStyles={{ fontWeight: 400 }} type={FontTypes.FTitle3} label={title} />
     </Pressable>
   )
@@ -56,7 +58,7 @@ const PostBottomActions = (props: PostBottomActionsProps) => {
             <Checkbox classNames="mr-2" isChecked={props.isScheduled} onPress={(state) => props.isScheduled ? props.setIsScheduled(state) : props.setShowDatePicker(true)} />
             <Label type={FontTypes.FSmall} label={scheduledText()} color={Colors.dark['grey-shade-3']} containerStyles={{ fontWeight: 400, textAlign: 'right' }} />
           </Pressable>
-          <Btn isLoading={props.isLoading} disabled={props.isLoading || !props.isPostPublishable} classNames="pt-[2px] pb-[2px]" label={!!props.postTypeUpdate ? 'Update' : 'Publish'} icon={IconNames.send} onPress={props.onPressMutate} />
+          <Btn isLoading={props.isLoading} disabled={props.isLoading || !props.isPostPublishable} size={InputSizes.tab} fontType={FontTypes.FLabelBold} label={!!props.postTypeUpdate ? 'UPDATE' : 'PUBLISH'} icon={IconNames.send} onPress={props.onPressMutate} />
         </View>
       </View>
       <DateTimePickerModal isVisible={props.showDatePicker} mode="datetime" date={props.dateTime || new Date()} minimumDate={minTime()} onConfirm={props.handleConfirm} onCancel={props.hideDatePicker} />
@@ -71,7 +73,7 @@ const PostWrapperComponent = (props: PostWrapperComponentProps) => {
         <View className="flex flex-row items-center mb-3 w-full">
           <View className="flex flex-row items-center">
             <Icon name={props?.postHeaderData?.icon || ''} size={InputSizes.md} />
-            <Label classNames="ml-2" type={FontTypes.FLabel} containerStyles={{ fontWeight: 600 }} label={props?.postHeaderData?.title} />
+            <Label classNames="ml-2" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label={props?.postHeaderData?.title} />
           </View>
           <View className="ml-[auto]">
             <CharmBtn clear icon={IconNames.cancel} onPress={props.onCancel} size={InputSizes.sm} frame={true} />
@@ -421,13 +423,101 @@ const checkImageStatus = (image: UploadImage | null, initialImageUri: string | u
   )
 }
 
+const PublishChallengePost = (props: PublishChallengePostProps) => {
+  const peopleCountOption = ['small', 'medium', 'large']
+
+  const [description, setDescription] = useState<string>('')
+  const [type, setType] = useState<String>(ChallengePostCategory.VERTUAL)
+  const [date, setDate] = useState<Date | null>(null)
+  const [showDatePicker, setShowDatePicker] = useState<boolean>(false)
+  const [location, setLocation] = useState<string>('')
+  const [peopleCount, setPeopleCount] = useState<string>(peopleCountOption[0])
+  const [joinAnyone, setJoinEnyone] = useState<boolean>(false)
+
+  const scheduledText = () => {
+    return !!date ? `Challenge at ${formatDateToCustomString(date)}` : 'Challenge at?'
+  }
+
+  const hideDatePicker = useCallback(() => {
+    setShowDatePicker(false)
+  }, [])
+
+  const handleConfirm = useCallback((date: Date) => {
+    hideDatePicker()
+    setDate(date)
+  }, [showDatePicker])
+
+  return (
+    <View className="pl-[10px] pr-[10px] pt-[75px] w-full h-full">
+      <ActionBar {...{ ...props.actionBarData }} active={true} onPress={() => { }} />
+      <PostWrapperComponent postHeaderData={props.postHeaderData} onCancel={props.onSuccess}>
+        <TextArea disabled={false} clasName="mt-[10px]" height={100} maxCharacters={2000} value={description} placeHolder={"Let’s challenge others..."} onChangeText={setDescription} />
+        
+        <Label classNames="mt-3 mb-3" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label='Challenge type' />
+        <View className="flex flex-row items-center w-full pb-3">
+          <Btn outlined={type !== ChallengePostCategory.VERTUAL} size={InputSizes.tab} color={setBtnOutlineColor(type !== ChallengePostCategory.VERTUAL)} backgroundColor={setBtnBackgroundColor(type === ChallengePostCategory.VERTUAL)} icon={IconNames.virtual} label="VIRTUAL" wrapperClasses="mr-3" fontType={FontTypes.FLabelBold} onPress={() => setType(ChallengePostCategory.VERTUAL)}/>
+          <Btn outlined={type !== ChallengePostCategory.ON_LOCATION} size={InputSizes.tab} color={setBtnOutlineColor(type !== ChallengePostCategory.ON_LOCATION)} backgroundColor={setBtnBackgroundColor(type === ChallengePostCategory.ON_LOCATION)} icon={IconNames.onLocation} label="ON LOCATION" fontType={FontTypes.FLabelBold} onPress={() => setType(ChallengePostCategory.ON_LOCATION)}/>
+        </View>
+        <View className="flex flex-row items-center w-full pb-3" style={styles.bottomBorder}>
+          <Icon name={IconNames.exclamation} color={Colors.dark["grey-shade-2"]}/>
+          {type === ChallengePostCategory.VERTUAL? (
+            <Label classNames="ml-2 w-[90%]" color={Colors.dark["grey-shade-2"]} containerStyles={{fontStyle: 'italic'}} label="Virtual challenge lets participants join remotely from anywhere" />
+          ): (
+            <Label classNames="ml-2 w-[90%]" color={Colors.dark["grey-shade-2"]} containerStyles={{fontStyle: 'italic'}}  label="This requires participants to be physically present" />
+          )}
+        </View>
+
+        <Label classNames="mt-3 mb-3" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label={`Challenge time${type !== ChallengePostCategory.VERTUAL? ' & location': ''}`} />
+        {type !== ChallengePostCategory.VERTUAL && <Input classNames='mb-5' placeholder={'CHALLENGE LOCATION'} icon={IconNames.location} fontSize={FontSizes.FLabel}containerStyles={{height: 50}} value={location} onChange={setLocation} />}
+        <View className="flex flex-row justify-between w-full pb-3" style={styles.bottomBorder}>
+          <Pressable className="flex flex-row items-center justify-between" onPress={() => setShowDatePicker(true)}>
+            <Checkbox classNames="mr-2" isChecked={!!date} onPress={() => !!date ? setDate(null) : setShowDatePicker(true)} />
+            <Label label={scheduledText()} type={FontTypes.FLabel} color={Colors.dark['grey-shade-3']} />
+          </Pressable>
+        </View>
+
+        <Label classNames="mt-3 mb-3" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label='Challenge time & location' />
+        <View className="flex flex-row items-center w-full pb-3">
+          <Btn outlined={peopleCount !== peopleCountOption[0]} size={InputSizes.tab} color={setBtnOutlineColor(peopleCount !== peopleCountOption[0])} backgroundColor={setBtnBackgroundColor(peopleCount === peopleCountOption[0])} label="2 - 5" wrapperClasses="mr-3" fontType={FontTypes.FLabelBold} onPress={() => setPeopleCount(peopleCountOption[0])}/>
+          <Btn outlined={peopleCount !== peopleCountOption[1]} size={InputSizes.tab} color={setBtnOutlineColor(peopleCount !== peopleCountOption[1])} backgroundColor={setBtnBackgroundColor(peopleCount === peopleCountOption[1])} label="6 - 10" wrapperClasses="mr-3" fontType={FontTypes.FLabelBold} onPress={() => setPeopleCount(peopleCountOption[1])}/>
+          <Btn outlined={peopleCount !== peopleCountOption[2]} size={InputSizes.tab} color={setBtnOutlineColor(peopleCount !== peopleCountOption[2])} backgroundColor={setBtnBackgroundColor(peopleCount === peopleCountOption[2])} label="11 - 30" fontType={FontTypes.FLabelBold} onPress={() => setPeopleCount(peopleCountOption[2 ])}/>
+        </View>
+        
+        <View className="flex flex-row items-center w-full pb-3">
+          <Switch
+            trackColor={{false: Colors.dark["primary-shade-3"], true: Colors.dark["soundcloud-gdr-1"]}}
+            thumbColor={Colors.light.white}
+            ios_backgroundColor={'yellow'}
+            onValueChange={setJoinEnyone}
+            value={joinAnyone}
+            style={{padding: 0, marginTop: -5}}  
+          />
+          <Label classNames="pb-1 ml-1" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label='Allow anyone to join' />
+        </View>  
+        <View className="flex flex-row items-center w-full pb-3 mt-[-10px]" style={styles.bottomBorder}>
+          <Icon name={IconNames.exclamation} color={Colors.dark["grey-shade-2"]}/>
+          <Label classNames="ml-2 w-[90%]" color={Colors.dark["grey-shade-2"]} containerStyles={{fontStyle: 'italic'}} label="Participation is the allowed group size for the challenge" />
+        </View>
+
+        <Btn isLoading={false} disabled={false} size={InputSizes.tab} fontType={FontTypes.FLabelBold} wrapperClasses="ml-[auto] mt-3" label={!!props.postParams ? 'UPDATE' : 'PUBLISH'} icon={IconNames.send} onPress={() => {}} />
+      </PostWrapperComponent>
+      <DateTimePickerModal isVisible={showDatePicker} mode="datetime" date={date || new Date()} minimumDate={minTime()} onConfirm={handleConfirm} onCancel={hideDatePicker} />
+    </View>
+  )
+}
+
 export const PostModal = (props: PostModalProps) => {
   return (
     <Modal customModal showModal={props.showModal} setShowModal={props.setShowModal}>
       {props.postType === PostType.interest && (
-            <PublishInterestPost postHeaderData={props.postHeaderData} actionBarData={props.actionBarData} postParams={props.postParams as InterestPostParams} onSuccess={props.onCancel} />
+        <PublishInterestPost postHeaderData={props.postHeaderData} actionBarData={props.actionBarData} postParams={props.postParams as InterestPostParams} onSuccess={props.onCancel} />
+      )}
+      {props.postType === PostType.community && (
+        <PublishCommunityPost postParams={props.postParams as CommunityPostParams} actionBarData={props.actionBarData} onSuccess={(data) => props.onSuccess?.(data)} onClose={props.onCancel} />
+      )}
+      {props.postType === PostType.challenge && (
+        <PublishChallengePost postHeaderData={props.postHeaderData} actionBarData={props.actionBarData} postParams={props.postParams as ChallengePostParams} onSuccess={props.onCancel} />
       )}  
-      {props.postType === PostType.community && <PublishCommunityPost postParams={props.postParams as CommunityPostParams} actionBarData={props.actionBarData} onSuccess={(data) => props.onSuccess?.(data)} onClose={props.onCancel} />}
     </Modal>
   )
 }

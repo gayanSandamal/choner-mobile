@@ -8,7 +8,7 @@ export const Input = (props: InputProps) => {
     const { value, placeholder, icon, iconRight, classNames, containerStyles, secureTextEntry = false, onChange, onPressIconRight } = props
     return (
         <View className={`shadow-sm flex flex-row items-center ${classNames}`} style={[{ backgroundColor: Colors.dark['fied-bg-idle'], height: 60, width: '100%', borderRadius: 30, paddingHorizontal: 20 }, ...(containerStyles ? [containerStyles] : [])]}>
-            {icon && <Icon name={icon} size={InputSizes.md} color={Colors.dark['primary-shade-3']} />}
+            {icon && <Icon name={icon} size={InputSizes.md} color={props.iconColor || Colors.dark['primary-shade-3']} />}
             <TextInput
                 style={{ flex: 1, padding: 10, color: Colors.dark.text, fontSize: props.fontSize || FontSizes.FP }}
                 onChangeText={onChange}

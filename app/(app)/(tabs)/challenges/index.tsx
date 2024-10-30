@@ -3,6 +3,7 @@ import Label from '@/components/Base/Label'
 import { UserStatus } from '@/components/Common/UserStatus'
 import { Colors } from '@/constants/Colors'
 import { FontTypes, IconNames, JustifyContent } from '@/types/Components'
+import { router } from 'expo-router'
 import { ScrollView, ImageBackground, StyleSheet, View, Image, ViewStyle } from 'react-native'
 
 const baseCard: ViewStyle = {
@@ -62,7 +63,7 @@ export default function ChallengesScreen() {
             <Label containerStyles={{ fontSize: 20, letterSpacing: 3, fontWeight: '700' }} color={Colors.dark.main} label="CHALLENGES" />
           </View>
           <View style={styles.bottomBtnWrapper}>
-            <BtnDetailed label="Explore" fontType={FontTypes.FTitle3} labelAlign={JustifyContent.center} wrapperStyle={styles.buttonSmall} onPress={() => {}} />
+            <BtnDetailed label="Explore" fontType={FontTypes.FTitle3} labelAlign={JustifyContent.center} wrapperStyle={styles.buttonSmall} onPress={() => router.navigate('challenges/on-going-challenges')} />
           </View>
         </ImageBackground>
       </View>
