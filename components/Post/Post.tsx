@@ -19,7 +19,7 @@ import { randomUUID as uuid } from "expo-crypto"
 import { useCreateCommunityPost, useUpdateCommunityPost } from "@/hooks/mutate/useMutateCommunityPosts"
 import { CreateCommunityPostProps, UpdateCommunityPostProps } from "@/api/communityPostApi"
 import { useUploadImage } from "@/hooks/mutate/useMutateImage"
-import { CommunityPostTypes, ImageSizes, StoragePaths } from "@/constants/values"
+import { CommunityPostTypes, ImageSizes, peopleCountOption, StoragePaths } from "@/constants/values"
 import { Input } from "../Base/Input"
 
 const styles = StyleSheet.create({
@@ -424,86 +424,96 @@ const checkImageStatus = (image: UploadImage | null, initialImageUri: string | u
 }
 
 const PublishChallengePost = (props: PublishChallengePostProps) => {
-  const peopleCountOption = ['small', 'medium', 'large']
-
-  const [description, setDescription] = useState<string>('')
-  const [type, setType] = useState<String>(ChallengePostCategory.VERTUAL)
+  const [description, setDescription] = useState('')
+  const [type, setType] = useState(ChallengePostCategory.VIRTUAL)
   const [date, setDate] = useState<Date | null>(null)
-  const [showDatePicker, setShowDatePicker] = useState<boolean>(false)
-  const [location, setLocation] = useState<string>('')
-  const [peopleCount, setPeopleCount] = useState<string>(peopleCountOption[0])
-  const [joinAnyone, setJoinEnyone] = useState<boolean>(false)
+  const [showDatePicker, setShowDatePicker] = useState(false)
+  const [location, setLocation] = useState('')
+  const [peopleCount, setPeopleCount] = useState(peopleCountOption[0])
+  const [joinAnyone, setJoinAnyone] = useState(false)
 
-  const scheduledText = () => {
-    return !!date ? `Challenge at ${formatDateToCustomString(date)}` : 'Challenge at?'
-  }
+  const scheduledText = date ? `Challenge at ${formatDateToCustomString(date)}` : 'Challenge at?'
 
-  const hideDatePicker = useCallback(() => {
-    setShowDatePicker(false)
-  }, [])
-
-  const handleConfirm = useCallback((date: Date) => {
-    hideDatePicker()
-    setDate(date)
-  }, [showDatePicker])
+  const toggleType = (selectedType: ChallengePostCategory) => setType(selectedType)
+  const updatePeopleCount = (countOption: any) => setPeopleCount(countOption)
 
   return (
     <View className="pl-[10px] pr-[10px] pt-[75px] w-full h-full">
-      <ActionBar {...{ ...props.actionBarData }} active={true} onPress={() => { }} />
-      <PostWrapperComponent postHeaderData={props.postHeaderData} onCancel={props.onSuccess}>
-        <TextArea disabled={false} clasName="mt-[10px]" height={100} maxCharacters={2000} value={description} placeHolder={"Let’s challenge others..."} onChangeText={setDescription} />
-        
-        <Label classNames="mt-3 mb-3" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label='Challenge type' />
-        <View className="flex flex-row items-center w-full pb-3">
-          <Btn outlined={type !== ChallengePostCategory.VERTUAL} size={InputSizes.tab} color={setBtnOutlineColor(type !== ChallengePostCategory.VERTUAL)} backgroundColor={setBtnBackgroundColor(type === ChallengePostCategory.VERTUAL)} icon={IconNames.virtual} label="VIRTUAL" wrapperClasses="mr-3" fontType={FontTypes.FLabelBold} onPress={() => setType(ChallengePostCategory.VERTUAL)}/>
-          <Btn outlined={type !== ChallengePostCategory.ON_LOCATION} size={InputSizes.tab} color={setBtnOutlineColor(type !== ChallengePostCategory.ON_LOCATION)} backgroundColor={setBtnBackgroundColor(type === ChallengePostCategory.ON_LOCATION)} icon={IconNames.onLocation} label="ON LOCATION" fontType={FontTypes.FLabelBold} onPress={() => setType(ChallengePostCategory.ON_LOCATION)}/>
-        </View>
-        <View className="flex flex-row items-center w-full pb-3" style={styles.bottomBorder}>
-          <Icon name={IconNames.exclamation} color={Colors.dark["grey-shade-2"]}/>
-          {type === ChallengePostCategory.VERTUAL? (
-            <Label classNames="ml-2 w-[90%]" color={Colors.dark["grey-shade-2"]} containerStyles={{fontStyle: 'italic'}} label="Virtual challenge lets participants join remotely from anywhere" />
-          ): (
-            <Label classNames="ml-2 w-[90%]" color={Colors.dark["grey-shade-2"]} containerStyles={{fontStyle: 'italic'}}  label="This requires participants to be physically present" />
+      <ActionBar {...props.actionBarData} active onPress={() => {}} />
+      <ScrollView className="w-full" showsVerticalScrollIndicator={false}>
+        <PostWrapperComponent postHeaderData={props.postHeaderData} onCancel={props.onSuccess}>
+          <TextArea disabled={false} clasName="mt-[10px]" height={100} maxCharacters={2000} value={description} placeHolder="Let’s challenge others..." onChangeText={setDescription} />
+
+          <Label classNames="mt-3 mb-3" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label="Challenge type" />
+          <View className="flex flex-row items-center w-full pb-3">
+            {[ChallengePostCategory.VIRTUAL, ChallengePostCategory.ON_LOCATION].map((category) => (
+              <Btn
+                key={category}
+                outlined={type !== category}
+                size={InputSizes.tab}
+                color={setBtnOutlineColor(type !== category)}
+                backgroundColor={setBtnBackgroundColor(type === category)}
+                icon={category === ChallengePostCategory.VIRTUAL ? IconNames.virtual : IconNames.onLocation}
+                label={category === ChallengePostCategory.VIRTUAL ? "VIRTUAL" : "ON LOCATION"}
+                wrapperClasses="mr-2"
+                fontType={FontTypes.FLabelBold}
+                onPress={() => toggleType(category)}
+              />
+            ))}
+          </View>
+
+          <View className="flex flex-row items-center w-full pb-3" style={styles.bottomBorder}>
+            <Icon name={IconNames.exclamation} color={Colors.dark["grey-shade-2"]} />
+            <Label classNames="ml-2 w-[90%]" color={Colors.dark["grey-shade-2"]} containerStyles={{ fontStyle: 'italic' }} label={type === ChallengePostCategory.VIRTUAL? "Virtual challenge lets participants join remotely from anywhere": "This requires participants to be physically present"}/>
+          </View>
+
+          <Label classNames="mt-3 mb-3" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label={`Challenge time${type !== ChallengePostCategory.VIRTUAL ? ' & location' : ''}`}/>
+          {type !== ChallengePostCategory.VIRTUAL && (
+            <Input classNames="mb-5" placeholder="CHALLENGE LOCATION" icon={IconNames.location} fontSize={FontSizes.FLabel} containerStyles={{ height: 50 }} value={location} onChange={setLocation}/>
           )}
-        </View>
+          <View className="flex flex-row justify-between w-full pb-3" style={styles.bottomBorder}>
+            <Pressable className="flex flex-row items-center" onPress={() => setShowDatePicker(true)}>
+              <Checkbox classNames="mr-3" isChecked={!!date} onPress={() => (date ? setDate(null) : setShowDatePicker(true))} />
+              <Label label={scheduledText} type={FontTypes.FLabel} color={Colors.dark['grey-shade-3']} />
+            </Pressable>
+          </View>
 
-        <Label classNames="mt-3 mb-3" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label={`Challenge time${type !== ChallengePostCategory.VERTUAL? ' & location': ''}`} />
-        {type !== ChallengePostCategory.VERTUAL && <Input classNames='mb-5' placeholder={'CHALLENGE LOCATION'} icon={IconNames.location} fontSize={FontSizes.FLabel}containerStyles={{height: 50}} value={location} onChange={setLocation} />}
-        <View className="flex flex-row justify-between w-full pb-3" style={styles.bottomBorder}>
-          <Pressable className="flex flex-row items-center justify-between" onPress={() => setShowDatePicker(true)}>
-            <Checkbox classNames="mr-2" isChecked={!!date} onPress={() => !!date ? setDate(null) : setShowDatePicker(true)} />
-            <Label label={scheduledText()} type={FontTypes.FLabel} color={Colors.dark['grey-shade-3']} />
-          </Pressable>
-        </View>
+          <Label classNames="mt-3 mb-3" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label="Challenge participants" />
+          <View className="flex flex-row items-center w-full pb-4">
+            {peopleCountOption.map((countOption, index) => (
+              <Btn
+                key={index}
+                outlined={peopleCount !== countOption}
+                size={InputSizes.tab}
+                color={setBtnOutlineColor(peopleCount !== countOption)}
+                backgroundColor={setBtnBackgroundColor(peopleCount === countOption)}
+                label={countOption.label}
+                wrapperClasses="mr-2"
+                fontType={FontTypes.FLabelBold}
+                onPress={() => updatePeopleCount(countOption)}
+              />
+            ))}
+          </View>
 
-        <Label classNames="mt-3 mb-3" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label='Challenge time & location' />
-        <View className="flex flex-row items-center w-full pb-3">
-          <Btn outlined={peopleCount !== peopleCountOption[0]} size={InputSizes.tab} color={setBtnOutlineColor(peopleCount !== peopleCountOption[0])} backgroundColor={setBtnBackgroundColor(peopleCount === peopleCountOption[0])} label="2 - 5" wrapperClasses="mr-3" fontType={FontTypes.FLabelBold} onPress={() => setPeopleCount(peopleCountOption[0])}/>
-          <Btn outlined={peopleCount !== peopleCountOption[1]} size={InputSizes.tab} color={setBtnOutlineColor(peopleCount !== peopleCountOption[1])} backgroundColor={setBtnBackgroundColor(peopleCount === peopleCountOption[1])} label="6 - 10" wrapperClasses="mr-3" fontType={FontTypes.FLabelBold} onPress={() => setPeopleCount(peopleCountOption[1])}/>
-          <Btn outlined={peopleCount !== peopleCountOption[2]} size={InputSizes.tab} color={setBtnOutlineColor(peopleCount !== peopleCountOption[2])} backgroundColor={setBtnBackgroundColor(peopleCount === peopleCountOption[2])} label="11 - 30" fontType={FontTypes.FLabelBold} onPress={() => setPeopleCount(peopleCountOption[2 ])}/>
-        </View>
-        
-        <View className="flex flex-row items-center w-full pb-3">
-          <Switch
-            trackColor={{false: Colors.dark["primary-shade-3"], true: Colors.dark["soundcloud-gdr-1"]}}
-            thumbColor={Colors.dark["grey-shade-4"]}
-            onValueChange={setJoinEnyone}
-            value={joinAnyone}
-            style={{padding: 0, marginTop: -5}}  
-          />
-          <Label classNames="pb-1 ml-1" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label='Allow anyone to join' />
-        </View>  
-        <View className="flex flex-row items-center w-full pb-3 mt-[-10px]" style={styles.bottomBorder}>
-          <Icon name={IconNames.exclamation} color={Colors.dark["grey-shade-2"]}/>
-          <Label classNames="ml-2 w-[90%]" color={Colors.dark["grey-shade-2"]} containerStyles={{fontStyle: 'italic'}} label="Participation is the allowed group size for the challenge" />
-        </View>
+          <View className="flex flex-row items-center w-full pb-4">
+            <Switch value={joinAnyone} style={{ padding: 0, marginTop: -5 }} trackColor={{ false: Colors.dark["primary-shade-3"], true: Colors.dark["soundcloud-gdr-1"] }} thumbColor={Colors.dark["grey-shade-4"]} onValueChange={setJoinAnyone}/>
+            <Label classNames="pb-1" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label="Allow anyone to join" />
+          </View>
 
-        <Btn isLoading={false} disabled={false} size={InputSizes.tab} fontType={FontTypes.FLabelBold} wrapperClasses="ml-[auto] mt-3" label={!!props.postParams ? 'UPDATE' : 'PUBLISH'} icon={IconNames.send} onPress={() => {}} />
-      </PostWrapperComponent>
-      <DateTimePickerModal isVisible={showDatePicker} mode="datetime" date={date || new Date()} minimumDate={minTime()} onConfirm={handleConfirm} onCancel={hideDatePicker} />
+          <View className="flex flex-row items-center w-full pb-3 mt-[-10px]" style={styles.bottomBorder}>
+            <Icon name={IconNames.exclamation} color={Colors.dark["grey-shade-2"]} />
+            <Label classNames="ml-2 w-[90%]" color={Colors.dark["grey-shade-2"]} containerStyles={{ fontStyle: 'italic' }} label="Participation is limited by group size" />
+          </View>
+
+          <Btn isLoading={false} disabled={false} size={InputSizes.tab} fontType={FontTypes.FLabelBold} wrapperClasses="ml-[auto] mt-3" label={props.postParams ? 'UPDATE' : 'PUBLISH'} icon={IconNames.send} onPress={() => {}} />
+        </PostWrapperComponent>
+        <View className="mb-20" />
+      </ScrollView>
+      <DateTimePickerModal isVisible={showDatePicker} mode="datetime" date={date || new Date()} minimumDate={minTime()} onConfirm={(d) => { setDate(d); setShowDatePicker(false); }} onCancel={() => setShowDatePicker(false)} />
     </View>
   )
 }
+
 
 export const PostModal = (props: PostModalProps) => {
   return (

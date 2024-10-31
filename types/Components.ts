@@ -488,14 +488,14 @@ export type CommunityPostParams = {
 }
 
 export enum ChallengePostCategory {
-  VERTUAL = 'virtual',
+  VIRTUAL = 'virtual',
   ON_LOCATION = 'onLocaion'
 }
 
 export type ChallengePostParams = {
   id: string
   title: string
-  type: ChallengePostCategory.VERTUAL | ChallengePostCategory.ON_LOCATION
+  type: ChallengePostCategory.VIRTUAL | ChallengePostCategory.ON_LOCATION
   challengeAt: {_nanoseconds: number, _seconds: number}  | undefined
   participation: string
   location?: string
