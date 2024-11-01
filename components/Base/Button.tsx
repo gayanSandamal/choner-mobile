@@ -70,7 +70,6 @@ export const CharmBtn = (props: CharmBtnProps) => {
 export const Btn = (props: BtnProps) => {
   const { color = Colors.dark.background, icon, link, onPress, label = 'Save', bgColor = props.backgroundColor || Colors.dark['soundcloud-gdr-1'], disabled = false, isLoading = false, wrapperClasses, outlined, size = InputSizes.md, iconWidth, iconHeight, block, textMode = false, classNames = '' } = props;
 
-  
   const btnSizes = () => {
     if (size === InputSizes.sm) {
       return {
@@ -86,13 +85,6 @@ export const Btn = (props: BtnProps) => {
         minHeight: 30,
         ...(!textMode && {paddingHorizontal:  outlined ? 14: 15})
       }
-    } else if (size === InputSizes.tab) {
-      return {
-        borderRadius: 30,
-        paddingVertical: outlined ? 5: 6,
-        minHeight: 30,
-        ...(!textMode && {paddingHorizontal:  outlined ? 10: 11})
-      }
     } else if (size === InputSizes.lg) {
       return {
         borderRadius: 60,
@@ -107,7 +99,10 @@ export const Btn = (props: BtnProps) => {
       borderColor: color,
       borderWidth: 1
     } : 
-      !textMode && {backgroundColor: bgColor}
+      !textMode && {
+        backgroundColor: bgColor,
+        borderWidth: 0
+      }
     ),
     ...(disabled && {
       opacity: 0.7

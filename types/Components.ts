@@ -83,7 +83,7 @@ export enum JustifyContent {
   'right'
 }
 
-export type InputSize = InputSizes.xs | InputSizes.sm | InputSizes.md | InputSizes.lg | InputSizes.xl | InputSizes.tab
+export type InputSize = InputSizes.xs | InputSizes.sm | InputSizes.md | InputSizes.lg | InputSizes.xl
 
 type ButtonProps = {
   bgColor?: string

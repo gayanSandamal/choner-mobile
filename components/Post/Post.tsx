@@ -58,7 +58,7 @@ const PostBottomActions = (props: PostBottomActionsProps) => {
             <Checkbox classNames="mr-2" isChecked={props.isScheduled} onPress={(state) => props.isScheduled ? props.setIsScheduled(state) : props.setShowDatePicker(true)} />
             <Label type={FontTypes.FSmall} label={scheduledText()} color={Colors.dark['grey-shade-3']} containerStyles={{ fontWeight: 400, textAlign: 'right' }} />
           </Pressable>
-          <Btn isLoading={props.isLoading} disabled={props.isLoading || !props.isPostPublishable} size={InputSizes.tab} fontType={FontTypes.FLabelBold} label={!!props.postTypeUpdate ? 'UPDATE' : 'PUBLISH'} icon={IconNames.send} onPress={props.onPressMutate} />
+          <Btn isLoading={props.isLoading} disabled={props.isLoading || !props.isPostPublishable} size={InputSizes.md} fontType={FontTypes.FLabelBold} label={!!props.postTypeUpdate ? 'UPDATE' : 'PUBLISH'} icon={IconNames.send} onPress={props.onPressMutate} />
         </View>
       </View>
       <DateTimePickerModal isVisible={props.showDatePicker} mode="datetime" date={props.dateTime || new Date()} minimumDate={minTime()} onConfirm={props.handleConfirm} onCancel={props.hideDatePicker} />
@@ -442,7 +442,7 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
       <ActionBar {...props.actionBarData} active onPress={() => {}} />
       <ScrollView className="w-full" showsVerticalScrollIndicator={false}>
         <PostWrapperComponent postHeaderData={props.postHeaderData} onCancel={props.onSuccess}>
-          <TextArea disabled={false} clasName="mt-[10px]" height={100} maxCharacters={2000} value={description} placeHolder="Let’s challenge others..." onChangeText={setDescription} />
+          <TextArea disabled={false} clasName="mt-[10px]" height={100} maxCharacters={2000} value={description} placeHolder="Ex: 30 pushups in 30 seconds challenge" onChangeText={setDescription} />
 
           <Label classNames="mt-3 mb-3" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label="Challenge type" />
           <View className="flex flex-row items-center w-full pb-3">
@@ -450,12 +450,12 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
               <Btn
                 key={category}
                 outlined={type !== category}
-                size={InputSizes.tab}
+                size={InputSizes.sm}
                 color={setBtnOutlineColor(type !== category)}
                 backgroundColor={setBtnBackgroundColor(type === category)}
                 icon={category === ChallengePostCategory.VIRTUAL ? IconNames.virtual : IconNames.onLocation}
                 label={category === ChallengePostCategory.VIRTUAL ? "VIRTUAL" : "ON LOCATION"}
-                wrapperClasses="mr-2"
+                wrapperClasses="mr-3"
                 fontType={FontTypes.FLabelBold}
                 onPress={() => toggleType(category)}
               />
@@ -484,11 +484,11 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
               <Btn
                 key={index}
                 outlined={peopleCount !== countOption}
-                size={InputSizes.tab}
+                size={InputSizes.md}
                 color={setBtnOutlineColor(peopleCount !== countOption)}
                 backgroundColor={setBtnBackgroundColor(peopleCount === countOption)}
                 label={countOption.label}
-                wrapperClasses="mr-2"
+                wrapperClasses="mr-3"
                 fontType={FontTypes.FLabelBold}
                 onPress={() => updatePeopleCount(countOption)}
               />
@@ -497,7 +497,7 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
 
           <View className="flex flex-row items-center w-full pb-4">
             <Switch value={joinAnyone} style={{ padding: 0, marginTop: -5 }} trackColor={{ false: Colors.dark["primary-shade-3"], true: Colors.dark["soundcloud-gdr-1"] }} thumbColor={Colors.dark["grey-shade-4"]} onValueChange={setJoinAnyone}/>
-            <Label classNames="pb-1" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label="Allow anyone to join" />
+            <Label classNames="pb-1 ml-2" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label="Allow anyone to join" />
           </View>
 
           <View className="flex flex-row items-center w-full pb-3 mt-[-10px]" style={styles.bottomBorder}>
@@ -505,7 +505,7 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
             <Label classNames="ml-2 w-[90%]" color={Colors.dark["grey-shade-2"]} containerStyles={{ fontStyle: 'italic' }} label="Participation is limited by group size" />
           </View>
 
-          <Btn isLoading={false} disabled={false} size={InputSizes.tab} fontType={FontTypes.FLabelBold} wrapperClasses="ml-[auto] mt-3" label={props.postParams ? 'UPDATE' : 'PUBLISH'} icon={IconNames.send} onPress={() => {}} />
+          <Btn isLoading={false} disabled={false} size={InputSizes.md} fontType={FontTypes.FLabelBold} wrapperClasses="ml-[auto] mt-3" label={props.postParams ? 'UPDATE' : 'PUBLISH'} icon={IconNames.send} onPress={() => {}} />
         </PostWrapperComponent>
         <View className="mb-20" />
       </ScrollView>
