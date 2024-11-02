@@ -714,7 +714,7 @@ export enum ChallengeState {
 export enum UserChallengeStatus {
   NOT_JOINED = 'not-joined',
   PENDING_REQUEST = 'pending-request',
-  JOINED = 'JOINED',
+  JOINED = 'joined',
   COMPLETED = 'completed',
   NOT_COMPLETED = 'not-completed',
   PENDING_COMPLETE_CONFIRM = 'pending-complete-confirm',
