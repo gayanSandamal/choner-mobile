@@ -306,7 +306,8 @@ export enum IconNames {
   onLocation = 'onLocation',
   exclamation = 'exclamation',
   location = 'location',
-  join = 'join'
+  join = 'join',
+  active = 'active'
 }
 
 export enum PostType {
@@ -660,6 +661,10 @@ export type PostUserItemProps = {
   useRNImage?: boolean
   stylesForINimage?: ImageStyle
   fullWidth?: boolean
+  dateProps?: {
+    newLineDate?: boolean
+    clipeDate?: boolean
+  }
 }
 
 export type InterestCardProps = {
@@ -698,6 +703,46 @@ export type CommunityPostCardProps = {
   image?: string
   isOwner?: boolean
   navigationPath?: string
+}
+
+export enum ChallengeState {
+  SCHEDULED = 'scheduled',
+  ONGOING = 'ongoing',
+  ENDED = 'ended'
+}
+
+export enum UserChallengeStatus {
+  NOT_JOINED = 'not-joined',
+  PENDING_REQUEST = 'pending-request',
+  JOINED = 'JOINED',
+  COMPLETED = 'completed',
+  NOT_COMPLETED = 'not-completed',
+  PENDING_COMPLETE_CONFIRM = 'pending-complete-confirm',
+  COMPLETE_CONFIRMED = 'complete-confirmed'
+}
+ 
+export type ChallengePostCardProps = {
+  id: string,
+  yourStatus: UserChallengeStatus.NOT_JOINED | UserChallengeStatus.PENDING_REQUEST | UserChallengeStatus.JOINED | UserChallengeStatus.COMPLETED | UserChallengeStatus.NOT_COMPLETED | UserChallengeStatus.PENDING_COMPLETE_CONFIRM | UserChallengeStatus.COMPLETE_CONFIRMED,
+  challengeState: ChallengeState.SCHEDULED | ChallengeState.ONGOING | ChallengeState.ENDED,
+  type: string,
+  participantLimit: string,
+  description: string,
+  location: string,
+  createdAt: {
+      _nanoseconds: number,
+      _seconds: number,
+  },
+  challengeAt: {
+      _nanoseconds: number,
+      _seconds: number,
+  },
+  createdUser: {
+      uid: string,
+      displayName: string,
+      profileImageUrl?: string
+  }
+  ParticipantLimitReached?: boolean
 }
 
 export type PostOptionsProps = {

@@ -467,10 +467,8 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
             <Label classNames="ml-2 w-[90%]" color={Colors.dark["grey-shade-2"]} containerStyles={{ fontStyle: 'italic' }} label={type === ChallengePostCategory.VIRTUAL? "Virtual challenge lets participants join remotely from anywhere": "This requires participants to be physically present"}/>
           </View>
 
-          <Label classNames="mt-3 mb-3" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label={`Challenge time${type !== ChallengePostCategory.VIRTUAL ? ' & location' : ''}`}/>
-          {type !== ChallengePostCategory.VIRTUAL && (
-            <Input classNames="mb-5" placeholder="CHALLENGE LOCATION" icon={IconNames.location} fontSize={FontSizes.FLabel} containerStyles={{ height: 50 }} value={location} onChange={setLocation}/>
-          )}
+          <Label classNames="mt-3 mb-3" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label={`Challenge time & location${type !== ChallengePostCategory.VIRTUAL ? '*' : ''}`}/>
+          <Input classNames="mb-5" placeholder="CHALLENGE LOCATION" icon={IconNames.location} fontSize={FontSizes.FLabel} containerStyles={{ height: 50 }} value={location} onChange={setLocation}/>
           <View className="flex flex-row justify-between w-full pb-3" style={styles.bottomBorder}>
             <Pressable className="flex flex-row items-center" onPress={() => setShowDatePicker(true)}>
               <Checkbox classNames="mr-3" isChecked={!!date} onPress={() => (date ? setDate(null) : setShowDatePicker(true))} />
@@ -484,7 +482,7 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
               <Btn
                 key={index}
                 outlined={peopleCount !== countOption}
-                size={InputSizes.md}
+                size={InputSizes.sm}
                 color={setBtnOutlineColor(peopleCount !== countOption)}
                 backgroundColor={setBtnBackgroundColor(peopleCount === countOption)}
                 label={countOption.label}

@@ -63,6 +63,7 @@ const getIcon = (props: { color: string, name: string }) => {
         [IconNames.exclamation]: <Icons.IconExclamation fill={color} />,
         [IconNames.location]: <Icons.IconLocation fill={color} />,
         [IconNames.join]: <Icons.IconJoin fill={color} />,
+        [IconNames.active]: <Icons.IconActive fill={color} />,
     };
 
     return iconMap[name];
