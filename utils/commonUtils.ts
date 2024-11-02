@@ -2,7 +2,8 @@ import { CommentData, CommunityCardData, InterestCardData, ReplyData } from "@/t
 import { Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker"
 import * as MediaLibrary from 'expo-media-library'
-import { BLURHASH, POST_VISIBILITY } from "@/constants/values";
+import { BLURHASH } from "@/constants/values";
+import { Colors } from "@/constants/Colors";
 
 export const matchOnlyLetters = (text: string) => {
     const regex = /^\p{L}+$/u
@@ -88,7 +89,7 @@ export const isDayOld = (timeAt: { _seconds: number; _nanoseconds: number }) => 
 };
 
 
-export const postCreateTimeToDate = (createdAt: {_seconds: number, _nanoseconds: number}) => {
+export const postCreateTimeToDate = (createdAt: {_seconds: number, _nanoseconds: number}, clipeDate?: boolean, newLineDate?: boolean) => {
   const milliseconds = createdAt?._seconds * 1000 + Math.floor(createdAt?._nanoseconds / 1000000);
   const date = new Date(milliseconds);
 
@@ -104,7 +105,21 @@ export const postCreateTimeToDate = (createdAt: {_seconds: number, _nanoseconds:
   } else if (isYesterday) {
     return 'Yesterday';
   } else {
-    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const dateTime = date.toLocaleDateString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false, month: 'long', day: 'numeric' }).split(',')
+    const dayArr = dateTime[0].split(' ')
+    if (clipeDate) {
+      return dateTime[1] + ', ' + dayArr[1] + ' ' + dayArr[0].substring(0,3)
+    }
+
+    if (newLineDate && !clipeDate) {
+      return dateTime[1] + ',\n' + dayArr[1] + ' ' + dayArr[0]
+    }
+
+    if (newLineDate && clipeDate) {
+      return dateTime[1] + ',\n' + dayArr[1] + ' ' + dayArr[0].substring(0,3)
+    }
+
+    return dateTime[1] + ', ' + dayArr[1] + ' ' + dayArr[0]
   }
 }
 
@@ -284,3 +299,13 @@ export const truncateText = (text: string, maxLength: number) => {
   if (text.length <= maxLength) return text;
   return text.substring(0, maxLength) + '...';
 }
+
+export const setBtnBackgroundColor = (condition: boolean) => {
+  return condition? Colors.dark['soundcloud-gdr-1']: undefined
+}
+
+export const setBtnOutlineColor = (condition: boolean) => {
+  return condition? Colors.dark["primary-shade-2"]: undefined
+}
+
+export const capitalize = (s: string) => s ? String(s[0]).toUpperCase() + String(s).slice(1): ''

@@ -73,7 +73,8 @@ export enum InputSizes {
   'sm',
   'md',
   'lg',
-  'xl'
+  'xl',
+  'tab'
 }
 
 export enum JustifyContent {
@@ -300,12 +301,19 @@ export enum IconNames {
   xp = 'xp',
   reward = 'reward',
   planet = 'planet',
-  badge = 'badge'
+  badge = 'badge',
+  virtual = 'virtual',
+  onLocation = 'onLocation',
+  exclamation = 'exclamation',
+  location = 'location',
+  join = 'join',
+  active = 'active'
 }
 
 export enum PostType {
   interest = 'interest',
-  community = 'community'
+  community = 'community',
+  challenge = 'challenge'
 }
 
 export enum PostVisibility {
@@ -442,7 +450,7 @@ export type PostModalProps = {
   showModal: boolean
   postHeaderData?: PostHeaderProps
   actionBarData?: ActionBarProps
-  postParams?: InterestPostParams | CommunityPostParams
+  postParams?: InterestPostParams | CommunityPostParams | ChallengePostParams
   onCancel: () => void
   onSuccess?: (data: CommunityCardData) => void
   setShowModal: (show: boolean) => void
@@ -480,6 +488,21 @@ export type CommunityPostParams = {
   visibility: "public" | "scheduled"
 }
 
+export enum ChallengePostCategory {
+  VIRTUAL = 'virtual',
+  ON_LOCATION = 'onLocaion'
+}
+
+export type ChallengePostParams = {
+  id: string
+  title: string
+  type: ChallengePostCategory.VIRTUAL | ChallengePostCategory.ON_LOCATION
+  challengeAt: {_nanoseconds: number, _seconds: number}  | undefined
+  participation: string
+  location?: string
+  allowAnyone?: boolean
+}
+
 export type SelectedCommentParams = {
   commentId: string
   replyId?: string
@@ -499,6 +522,14 @@ export type PublishCommunityPostProps = {
   actionBarData?: ActionBarProps
   onSuccess: (data: CommunityCardData) => void
   onClose: (close: boolean) => void
+}
+
+export type PublishChallengePostProps = {
+  edit?: boolean
+  postParams?: ChallengePostParams
+  postHeaderData?: PostHeaderProps
+  actionBarData?: ActionBarProps
+  onSuccess: () => void
 }
 
 export type Circle = {
@@ -597,6 +628,27 @@ export type CommunityCardData = {
   isOwner?: boolean
 }
 
+export type ChallengeCardData = {
+  id: string
+  description: string
+  type: string
+  createdUser:{
+    uid: string,
+    displayName: string,
+    profileImageUrl?: string
+  }
+  createdAt:{
+    _seconds: number,
+    _nanoseconds: number
+  }
+  challengedAt: {_nanoseconds: number, _seconds: number} | undefined
+  joinedCount?: number
+  participation: string
+  location?: string
+  allowAnyone?: boolean
+  isOwner?: boolean
+}
+
 export type PostUserItemProps = {
   userName: string
   createdAt?: {
@@ -609,6 +661,10 @@ export type PostUserItemProps = {
   useRNImage?: boolean
   stylesForINimage?: ImageStyle
   fullWidth?: boolean
+  dateProps?: {
+    newLineDate?: boolean
+    clipeDate?: boolean
+  }
 }
 
 export type InterestCardProps = {
@@ -649,6 +705,46 @@ export type CommunityPostCardProps = {
   navigationPath?: string
 }
 
+export enum ChallengeState {
+  SCHEDULED = 'scheduled',
+  ONGOING = 'ongoing',
+  ENDED = 'ended'
+}
+
+export enum UserChallengeStatus {
+  NOT_JOINED = 'not-joined',
+  PENDING_REQUEST = 'pending-request',
+  JOINED = 'joined',
+  COMPLETED = 'completed',
+  NOT_COMPLETED = 'not-completed',
+  PENDING_COMPLETE_CONFIRM = 'pending-complete-confirm',
+  COMPLETE_CONFIRMED = 'complete-confirmed'
+}
+ 
+export type ChallengePostCardProps = {
+  id: string,
+  yourStatus: UserChallengeStatus.NOT_JOINED | UserChallengeStatus.PENDING_REQUEST | UserChallengeStatus.JOINED | UserChallengeStatus.COMPLETED | UserChallengeStatus.NOT_COMPLETED | UserChallengeStatus.PENDING_COMPLETE_CONFIRM | UserChallengeStatus.COMPLETE_CONFIRMED,
+  challengeState: ChallengeState.SCHEDULED | ChallengeState.ONGOING | ChallengeState.ENDED,
+  type: string,
+  participantLimit: string,
+  description: string,
+  location: string,
+  createdAt: {
+      _nanoseconds: number,
+      _seconds: number,
+  },
+  challengeAt: {
+      _nanoseconds: number,
+      _seconds: number,
+  },
+  createdUser: {
+      uid: string,
+      displayName: string,
+      profileImageUrl?: string
+  }
+  ParticipantLimitReached?: boolean
+}
+
 export type PostOptionsProps = {
   show: boolean
   isOwner: boolean
@@ -687,6 +783,7 @@ export type InputProps = {
   type?: InputType
   fontSize?: FontSizes
   icon?: string
+  iconColor?: string
   iconRight?: string
   secureTextEntry?: boolean
   onChange?: (text: string) => void

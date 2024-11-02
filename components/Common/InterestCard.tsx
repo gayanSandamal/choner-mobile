@@ -1,11 +1,10 @@
-import { TouchableOpacity, View, StyleSheet, FlatList, ActivityIndicator } from "react-native"
-import { Avatar } from "../Base/Avatar"
+import { TouchableOpacity, View, StyleSheet } from "react-native"
 import Label from "../Base/Label"
-import { FontTypes, IconNames, InputSizes, InterestCardProps, PostVisibility } from "@/types/Components"
+import { FontTypes, IconNames, InputSizes, InterestCardProps } from "@/types/Components"
 import { Colors } from "@/constants/Colors"
-import { Btn, BtnDetailed, CharmBtn } from "../Base/Button"
+import { Btn, CharmBtn } from "../Base/Button"
 import Icon from "../Base/Icon"
-import { escapePercent, postCreateTimeToDate } from "@/utils/commonUtils"
+import { escapePercent } from "@/utils/commonUtils"
 import { router } from "expo-router"
 import { useDeleteInteresPost } from "@/hooks/mutate/useMutateInterestPosts"
 import { useState } from "react"
@@ -57,7 +56,7 @@ export const InterestCard = ({isOwner, data, disabled, classNames, navigationPat
     <>
       <TouchableOpacity className={classNames} activeOpacity={disabled ? 1 : 0.5} style={{...styles.wrapper, ...(scheduled && {opacity: 0.5})}} onPress={navigateToInterest}>
         <View className='flex flex-row items-top'>
-          <PostUserItem imageUrl={data.createdUser.profileImageUrl || undefined} userName={data.createdUser.displayName} createdAt={data.createdAt} />
+          <PostUserItem imageUrl={data.createdUser.profileImageUrl || undefined} userName={data.createdUser.displayName} createdAt={data.createdAt} dateProps={{newLineDate: true}} />
           <View style={{backgroundColor: Colors.light.white, width: 1, height: '100%'}} />
           <Label type={FontTypes.FTitle3Bold} label={data.title} classNames='ml-2 mt-[-4px] w-100' numberOfLines={3} containerStyles={{ flexShrink: 1 }} />
         </View>

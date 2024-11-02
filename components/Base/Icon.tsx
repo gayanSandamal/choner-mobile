@@ -58,6 +58,12 @@ const getIcon = (props: { color: string, name: string }) => {
         [IconNames.reward]: <Icons.IconReward fill={color} />,
         [IconNames.planet]: <Icons.IconPlanet fill={color} />,
         [IconNames.badge]: <Icons.IconBadge fill={color} />,
+        [IconNames.virtual]: <Icons.IconVirtual fill={color} />,
+        [IconNames.onLocation]: <Icons.IconOnLocation fill={color} />,
+        [IconNames.exclamation]: <Icons.IconExclamation fill={color} />,
+        [IconNames.location]: <Icons.IconLocation fill={color} />,
+        [IconNames.join]: <Icons.IconJoin fill={color} />,
+        [IconNames.active]: <Icons.IconActive fill={color} />,
     };
 
     return iconMap[name];

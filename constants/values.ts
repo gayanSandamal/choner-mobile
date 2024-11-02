@@ -54,3 +54,18 @@ export const BLURHASH = [
 ]
 
 export const CommunityPostTypes = ['post', 'question']
+
+export const peopleCountOption = [
+    {
+        label: '2 - 5',
+        value: 1
+    },
+    {
+        label: '6 - 10',
+        value: 2
+    },
+    {
+        label: '11 - 30',
+        value: 3
+    }
+]

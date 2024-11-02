@@ -76,21 +76,21 @@ export const Btn = (props: BtnProps) => {
         borderRadius: 22,
         paddingVertical: outlined ? 1: 3,
         minHeight: 22,
-        ...(!textMode && {paddingHorizontal: 8})
+        ...(!textMode && {paddingHorizontal: outlined ? 7: 8})
       }
     } else if (size === InputSizes.md) {
       return {
         borderRadius: 30,
         paddingVertical: outlined ? 5: 7,
         minHeight: 30,
-        ...(!textMode && {paddingHorizontal: 15})
+        ...(!textMode && {paddingHorizontal:  outlined ? 14: 15})
       }
     } else if (size === InputSizes.lg) {
       return {
         borderRadius: 60,
         paddingVertical: outlined ? 10: 12,
         minHeight: 60,
-        ...(!textMode && {paddingHorizontal: 30})
+        ...(!textMode && {paddingHorizontal:  outlined ? 29: 30})
       }
     }
   }
@@ -99,7 +99,10 @@ export const Btn = (props: BtnProps) => {
       borderColor: color,
       borderWidth: 1
     } : 
-      !textMode && {backgroundColor: bgColor}
+      !textMode && {
+        backgroundColor: bgColor,
+        borderWidth: 0
+      }
     ),
     ...(disabled && {
       opacity: 0.7
@@ -110,7 +113,7 @@ export const Btn = (props: BtnProps) => {
     <View className={`flex flex-row items-center justify-center shadow-sm ${block && 'w-full'} ${classNames}`} style={[btnStyles, props.style]}>
       {icon && !isLoading && <Icon color={color} name={icon} size={iconSizes(size).iconSize} width={iconWidth} height={iconHeight} />}
       {isLoading && <ActivityIndicator style={{marginRight: !icon ? 4 : 0}} color={color} size={24} />}
-      <Label {...{ label, color }} type={props.fontType} containerStyles={{ fontWeight: textMode ? 400 : 600, marginLeft: icon ? 12 : 0, marginRight: icon ? 4 : 0, ...(props.fontStyle && {borderBottomWidth: 0.7, borderBottomColor: color}) }} />
+      <Label {...{ label, color }} type={props.fontType} containerStyles={{ ...(!props.fontType && {fontWeight: textMode ? 400 : 600}), marginLeft: icon ? 8 : 0, marginRight: icon ? 4 : 0, ...(props.fontStyle && {borderBottomWidth: 0.7, borderBottomColor: color}) }} />
     </View>
   return (
     link ? <Link href={link} className={`flex flex-row items-center justify-center ${block && 'w-full'} ${wrapperClasses}`} disabled={disabled}>{buttonCore()}</Link> : <TouchableOpacity className={`flex flex-row items-center justify-center ${block && 'w-full'} ${wrapperClasses}`} disabled={disabled || isLoading} onPress={onPress}>{buttonCore()}</TouchableOpacity>
