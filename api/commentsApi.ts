@@ -12,7 +12,7 @@ export type CreateCommentProps = {
 
 export const createComments = async ({postId, comment, type}: CreateCommentProps) => {
     const data = { postId, comment, type }
-    return axios.post('/createComment', { data })
+    return axios.post('/createCommentHandler', { data })
 }
 
 // Get Comments
@@ -24,7 +24,7 @@ export type GetCommentProps = {
 
 export const getComments = async ({postId, type, lastVisible}: GetCommentProps) => {
     const data = { postId, type, lastVisible }
-    return axios.post('/getComments', { data })
+    return axios.post('/getCommentsHandler', { data })
 }
 
 // Update Comments
@@ -38,7 +38,7 @@ export type UpdateCommentProps = {
 
 export const updateComments = async ({commentId, comment, type}: UpdateCommentProps) => {
     const data = { commentId, comment, type }
-    return axios.post('/updateComment', { data })
+    return axios.post('/updateCommentHandler', { data })
 }
 
 // Create Comment
@@ -52,7 +52,7 @@ export type CreateReplyProps = {
 
 export const createReply = async ({reply, commentId, type}: CreateReplyProps) => {
     const data = { reply, commentId, type }
-    return axios.post('/createReply', { data })
+    return axios.post('/createReplyHandler', { data })
 }
 
 // Update Reply
@@ -67,7 +67,7 @@ export type UpdateReplyProps = {
 
 export const updateReply = async ({commentId, replyId, reply, type}: UpdateReplyProps) => {
     const data = { commentId, replyId, reply, type }
-    return axios.post('/updateReply', { data })
+    return axios.post('/updateReplyHandler', { data })
 }
 
 // Get Replies
@@ -79,5 +79,5 @@ export type GetRepliesProps = {
 
 export const getReplies = async ({commentId, type, lastVisible}: GetRepliesProps) => {
     const data = { commentId, type, lastVisible }
-    return axios.post('/getReplies', { data })
+    return axios.post('/getRepliesHandler', { data })
 }

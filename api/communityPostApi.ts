@@ -14,7 +14,7 @@ export type CreateCommunityPostProps = {
 
 export const createCommunityPost = async ({uid, title, type, imageUrls, scheduledAt}: CreateCommunityPostProps) => {
     const data = { uid, title, type, imageUrls, scheduledAt }
-    return axios.post('/createCommunityPost', { data })
+    return axios.post('/createCommunityPostHandler', { data })
 }
 
 // Get community posts
@@ -24,7 +24,7 @@ type GetCommunityProps = {
 }
 export const getCommunityPosts = async (props: GetCommunityProps) => {
 
-    return axios.post('/getPaginatedCommunityPost', {
+    return axios.post('/getPaginatedCommunityPostsHandler', {
         data: {
             type: props.type,
             ...(props.lastPostId && {lastVisible: props.lastPostId})
@@ -42,7 +42,7 @@ type GetUserCommunityProps = {
 
 export const getUserCommunityPosts = async (props: GetUserCommunityProps) => {
 
-    const data = axios.post('/getPaginatedUserSpecificCommunityPosts', {
+    const data = axios.post('/getPaginatedUserSpecificCommunityPostsHandler', {
         data: {
             type: props.type,
             uid: props.uid,
@@ -51,7 +51,7 @@ export const getUserCommunityPosts = async (props: GetUserCommunityProps) => {
         }
     })
 
-    return axios.post('/getPaginatedUserSpecificCommunityPosts', {
+    return axios.post('/getPaginatedUserSpecificCommunityPostsHandler', {
         data: {
             type: props.type,
             uid: props.uid,
@@ -74,7 +74,7 @@ export type UpdateCommunityPostProps = {
 
 export const updateCommunityPost = async ({id, uid, title, imageStatus, imageUrls, scheduledAt}: UpdateCommunityPostProps) => {
     const data = { id, uid, title, imageStatus, imageUrls, scheduledAt }
-    return axios.post('/updateCommunityPost', { data: data })
+    return axios.post('/updateCommunityPostHandler', { data: data })
 }
 
 // Delete Interest post
@@ -86,5 +86,5 @@ export type DeleteCommunityPostProps = {
 }
 
 export const deleteCommunityPost = async ({id}: DeleteCommunityPostProps) => {
-    return axios.post('/deleteCommunityPost', { data: { id } })
+    return axios.post('/deleteCommunityPostHandler', { data: { id } })
 }

@@ -11,7 +11,7 @@ export const getUser = async () => {
 
     const uid = JSON.parse(session)?.uid
 
-    return axios.post(`/getUser`, {
+    return axios.post(`/getUserHandler`, {
         data: {
             uid: uid
         }
@@ -42,7 +42,7 @@ export const setUser = async ({displayName, profileImageUrl, professionalIn, bio
         ...(bio !== undefined && { bio })
       }
 
-    return axios.post(`/setUser`, { data })
+    return axios.post(`/setUserHandler`, { data })
 }
 
 // Delete user
@@ -51,7 +51,7 @@ type DeleteUserProps = {
 }
 
 export const deleteUser = async (props: DeleteUserProps) => {
-    return axios.post(`/deleteUser`, {
+    return axios.post(`/deleteUserHandler`, {
         data: {
             uid: props.userId 
         }

@@ -9,7 +9,7 @@ type GetInterstsProps = {
 }
 
 export const getInterests = async (props: GetInterstsProps) => {
-    return axios.post('/getPaginatedInterests', {
+    return axios.post('/getPaginatedInterestsHandler', {
         data: {
             ...(props.lastPostId && {lastVisible: props.lastPostId})
         }
@@ -29,7 +29,7 @@ export const getUserInterests = async (props: GetUserInterstsProps) => {
 
     const uid = JSON.parse(session)?.uid
 
-    return axios.post('/getPaginatedUserSpecificInterests', {
+    return axios.post('/getPaginatedUserSpecificInterestsHandler', {
         data: {
             uid,
             visibility: props.visibility,
@@ -48,7 +48,7 @@ export type CreateInterestProps = {
 
 export const createInterest = async ({uid, title, description, scheduledAt}: CreateInterestProps) => {
     const data = { uid, title, description, scheduledAt }
-    return axios.post('/createInterest', { data })
+    return axios.post('/createInterestHandler', { data })
 }
 
 // Update interest post
@@ -62,7 +62,7 @@ export type UpdateInterestProps = {
 
 export const updateInterest = async ({id, uid, title, description, scheduledAt}: UpdateInterestProps) => {
     const data = { id, uid, title, description, scheduledAt }
-    return axios.post('/updateInterest', { data: data })
+    return axios.post('/updateInterestHandler', { data: data })
 }
 
 export type DeleteInterestProps = {
@@ -73,5 +73,5 @@ export type DeleteInterestProps = {
 
 // Delete Interest post
 export const deleteInterest = async ({id}: DeleteInterestProps) => {
-    return axios.post('/deleteInterest', { data: { id } })
+    return axios.post('/deleteInterestHandler', { data: { id } })
 }
