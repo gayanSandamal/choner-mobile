@@ -12,10 +12,10 @@ import { FlatList, View } from "react-native"
 const posts: ChallengePostCardProps[] = [
     {
         id: 'post-0',
-        yourStatus: UserChallengeStatus.NOT_JOINED,
+        participantStatus: UserChallengeStatus.NOT_JOINED,
         challengeState: ChallengeState.SCHEDULED,
-        type: 'vertual',
-        participantLimit: '5 - 10',
+        type: 'virtual',
+        participationRangeId: 1,
         description: '2 hour continuous cycling challenge',
         location: '47 W 13th St, New York, NY 10011, USA',
         createdAt: {
@@ -31,13 +31,13 @@ const posts: ChallengePostCardProps[] = [
             displayName: 'Nisal Pathmila Perera',
             profileImageUrl: ''
         },
-        ParticipantLimitReached: false
+        participantLimitReached: false
     },{
         id: 'post-0',
-        yourStatus: UserChallengeStatus.COMPLETED,
+        participantStatus: UserChallengeStatus.COMPLETED,
         challengeState: ChallengeState.SCHEDULED,
-        type: 'vertual',
-        participantLimit: '5 - 10',
+        type: 'virtual',
+        participationRangeId: 2,
         description: '2 hour continuous cycling challenge',
         location: '47 W 13th St, New York, NY 10011, USA',
         createdAt: {
@@ -53,14 +53,14 @@ const posts: ChallengePostCardProps[] = [
             displayName: 'Nisal Pathmila Perera',
             profileImageUrl: ''
         },
-        ParticipantLimitReached: false
+        participantLimitReached: false
     },
     {
         id: 'post-1',
-        yourStatus: UserChallengeStatus.JOINED,
+        participantStatus: UserChallengeStatus.JOINED,
         challengeState: ChallengeState.SCHEDULED,
         type: 'vertual',
-        participantLimit: '5 - 10',
+        participationRangeId: 2,
         description: '2 hour continuous cycling challenge',
         location: '47 W 13th St, New York, NY 10011, USA',
         createdAt: {
@@ -76,14 +76,14 @@ const posts: ChallengePostCardProps[] = [
             displayName: 'Nisal Pathmila Perera',
             profileImageUrl: ''
         },
-        ParticipantLimitReached: true
+        participantLimitReached: true
     },
     {
         id: 'post-2',
-        yourStatus: UserChallengeStatus.NOT_JOINED,
+        participantStatus: UserChallengeStatus.NOT_JOINED,
         challengeState: ChallengeState.ONGOING,
         type: 'vertual',
-        participantLimit: '5 - 10',
+        participationRangeId: 3,
         description: '2 hour continuous cycling challenge',
         location: '47 W 13th St, New York, NY 10011, USA',
         createdAt: {
@@ -99,14 +99,14 @@ const posts: ChallengePostCardProps[] = [
             displayName: 'Nisal Pathmila Perera',
             profileImageUrl: ''
         },
-        ParticipantLimitReached: true
+        participantLimitReached: true
     },
     {
         id: 'post-3',
-        yourStatus: UserChallengeStatus.JOINED,
+        participantStatus: UserChallengeStatus.JOINED,
         challengeState: ChallengeState.ONGOING,
         type: 'vertual',
-        participantLimit: '5 - 10',
+        participationRangeId: 2,
         description: '2 hour continuous cycling challenge',
         location: '47 W 13th St, New York, NY 10011, USA',
         createdAt: {
@@ -122,30 +122,6 @@ const posts: ChallengePostCardProps[] = [
             displayName: 'Nisal Pathmila Perera',
             profileImageUrl: ''
         },
-        ParticipantLimitReached: false
-    },
-    {
-        id: 'post-4',
-        yourStatus: UserChallengeStatus.JOINED,
-        challengeState: ChallengeState.ENDED,
-        type: 'vertual',
-        participantLimit: '5 - 10',
-        description: '2 hour continuous cycling challenge',
-        location: '47 W 13th St, New York, NY 10011, USA',
-        createdAt: {
-            _nanoseconds: 86840000,
-            _seconds: 98493744,
-        },
-        challengeAt: {
-            _nanoseconds: 997965443839,
-            _seconds: 1050030455,
-        },
-        createdUser: {
-            uid: 'uid',
-            displayName: 'Nisal Pathmila Perera',
-            profileImageUrl: ''
-        },
-        ParticipantLimitReached: false
     }
 ]
 

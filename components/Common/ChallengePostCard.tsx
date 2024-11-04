@@ -6,6 +6,7 @@ import Icon from "../Base/Icon"
 import { postCreateTimeToDate } from "@/utils/commonUtils"
 import { Btn } from "../Base/Button"
 import { Colors } from "@/constants/Colors"
+import { peopleCountOption } from "@/constants/values"
 
 const styles = StyleSheet.create({
     wrapper: { borderWidth: 1, borderRadius: 20, borderColor: Colors.dark.main, width: '100%', backgroundColor: Colors.dark.darkText },
@@ -20,8 +21,8 @@ export const ChallengePostCard = ({item}: ChallengePostCardTypes) => {
     const isScheduled = item.challengeState === ChallengeState.SCHEDULED
     const isOngoing = item.challengeState === ChallengeState.ONGOING
     const isEnded = item.challengeState === ChallengeState.ENDED
-    const showJoinButton = item.yourStatus === UserChallengeStatus.NOT_JOINED
-    const isLimitReached = item.ParticipantLimitReached
+    const showJoinButton = item.participantStatus === UserChallengeStatus.NOT_JOINED
+    const isLimitReached = item.participantLimitReached
 
     return (
         <View className="py-[16px] pl-[16px] pr-[8px]" style={{...styles.wrapper, ...(isOngoing && {borderColor: Colors.dark["green-shade-1"]})}}>
@@ -66,14 +67,14 @@ export const ChallengePostCard = ({item}: ChallengePostCardTypes) => {
                 <View className="mr-3" />
                 <View style={{flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', marginTop: 4}}>
                     <View className="flex flex-row items-center px-[10px]" style={styles.infoItem}>
-                        <Icon name={ChallengePostCategory.VIRTUAL ? IconNames.virtual : IconNames.onLocation} color={Colors.dark["primary-material-1"]} classNames="mr-1.5" />
-                        <Label containerStyles={{ fontSize: 16, fontWeight: 400 }} color={Colors.dark["primary-material-1"]} label={ChallengePostCategory.VIRTUAL ? 'Virtual' : 'On Location'} ellipsizeMode="tail" numberOfLines={1} />
+                        <Icon name={item.type === ChallengePostCategory.VIRTUAL ? IconNames.virtual : IconNames.onLocation} color={Colors.dark["primary-material-1"]} classNames="mr-1.5" />
+                        <Label containerStyles={{ fontSize: 16, fontWeight: 400 }} color={Colors.dark["primary-material-1"]} label={item.type === ChallengePostCategory.VIRTUAL ? 'Virtual' : 'On Location'} ellipsizeMode="tail" numberOfLines={1} />
                     </View>
-                    {item?.participantLimit && (
+                    {item?.participationRangeId && (
                         <>
                             <View className="mr-3" />
-                            <View className="flex flex-row items-center px-[10px]" style={{...styles.infoItem, ...(item?.ParticipantLimitReached && {backgroundColor: Colors.dark["grey-shade-3"] + '2A'})}}>
-                                <Label containerStyles={{ fontSize: 16, fontWeight: 400 }} color={isLimitReached? Colors.dark["grey-shade-2"] : Colors.dark["primary-material-1"]} label={item.participantLimit + (isLimitReached? ' (Maxed)': '')} ellipsizeMode="tail" numberOfLines={1} />
+                            <View className="flex flex-row items-center px-[10px]" style={{...styles.infoItem, ...(item?.participantLimitReached && {backgroundColor: Colors.dark["grey-shade-3"] + '2A'})}}>
+                                <Label containerStyles={{ fontSize: 16, fontWeight: 400 }} color={isLimitReached? Colors.dark["grey-shade-2"] : Colors.dark["primary-material-1"]} label={peopleCountOption[(item.participationRangeId - 1)].label + (isLimitReached? ' (Maxed)': '')} ellipsizeMode="tail" numberOfLines={1} />
                             </View>
                         </>
                     )}
