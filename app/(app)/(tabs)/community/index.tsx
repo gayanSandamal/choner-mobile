@@ -76,7 +76,7 @@ export default function CommunityScreen() {
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <>
-            <ActionBar title='Hey, any interests on your mind..?' active={false} onPress={() => setShowPostTypeSelect(true)} />
+            <ActionBar title='Share your story...' active={false} onPress={() => setShowPostTypeSelect(true)} />
             <View className="flex flex-row mb-2">
               <Btn size={InputSizes.md} outlined={!!setHeaderButtonTextColor(0)} label="POSTS" color={setHeaderButtonTextColor(0)} backgroundColor={setHeaderButtonBackgroundColor(0)} wrapperClasses='mr-2 mb-2' onPress={() => setTabs({tab: CommunityPostTypes[0]})} />
               <Btn size={InputSizes.md} outlined={!!setHeaderButtonTextColor(1)} label="QUESTIONS" color={setHeaderButtonTextColor(1)} backgroundColor={setHeaderButtonBackgroundColor(1)} wrapperClasses='mr-2 mb-2' onPress={() => setTabs({tab: CommunityPostTypes[1]})} />

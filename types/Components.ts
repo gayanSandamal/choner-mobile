@@ -490,7 +490,7 @@ export type CommunityPostParams = {
 
 export enum ChallengePostCategory {
   VIRTUAL = 'virtual',
-  ON_LOCATION = 'onLocaion'
+  ON_LOCATION = 'on-locaion'
 }
 
 export type ChallengePostParams = {
@@ -723,10 +723,10 @@ export enum UserChallengeStatus {
  
 export type ChallengePostCardProps = {
   id: string,
-  yourStatus: UserChallengeStatus.NOT_JOINED | UserChallengeStatus.PENDING_REQUEST | UserChallengeStatus.JOINED | UserChallengeStatus.COMPLETED | UserChallengeStatus.NOT_COMPLETED | UserChallengeStatus.PENDING_COMPLETE_CONFIRM | UserChallengeStatus.COMPLETE_CONFIRMED,
+  participantStatus: UserChallengeStatus.NOT_JOINED | UserChallengeStatus.PENDING_REQUEST | UserChallengeStatus.JOINED | UserChallengeStatus.COMPLETED | UserChallengeStatus.NOT_COMPLETED | UserChallengeStatus.PENDING_COMPLETE_CONFIRM | UserChallengeStatus.COMPLETE_CONFIRMED,
   challengeState: ChallengeState.SCHEDULED | ChallengeState.ONGOING | ChallengeState.ENDED,
   type: string,
-  participantLimit: string,
+  participationRangeId: number,
   description: string,
   location: string,
   createdAt: {
@@ -742,7 +742,7 @@ export type ChallengePostCardProps = {
       displayName: string,
       profileImageUrl?: string
   }
-  ParticipantLimitReached?: boolean
+  participantLimitReached?: boolean
 }
 
 export type PostOptionsProps = {
