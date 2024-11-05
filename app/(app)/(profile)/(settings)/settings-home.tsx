@@ -62,7 +62,7 @@ export default function SettingsHome() {
         renderItem={({ item }) => (
           <BtnDetailed
             leftIcon={{name: item.icon}}
-            rightIcon={!item.hideRightIcon ? {name: IconNames.chevronMiniRight, size: 10}: undefined}
+            rightIcon={!item.hideRightIcon ? {name: IconNames.chevronMiniRight}: undefined}
             label={item.label}
             onPress={() => item.hideRightIcon ? onLogOut() : router.navigate(item.route)}
           />

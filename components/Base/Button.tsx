@@ -173,14 +173,14 @@ export const BtnDetailed = (props: BtnDetailedProps) => {
       {props.leftIcon && (
         <>
           {props.isLoading ?
-            <ActivityIndicator style={{marginRight: 0}} color={props.labelColor || Colors.light.white} size={24} />
+            <ActivityIndicator style={{marginRight: 0}} color={props.labelColor || Colors.light.white} size={props.loaderSize || 24} />
             : <Icon classNames={props.leftIcon.classNames} name={props.leftIcon.name} size={props.leftIcon.size} color={props.leftIcon.color} viewBox={props.leftIcon.viewbox} />}
           <Spacer width={10} />
         </>
       )}
       {props.label && (
         <View style={labelStyles}>
-          <Label type={props.fontType || FontTypes.FLabel} label={props.label} color={props.labelColor} />
+          <Label type={props.fontType || FontTypes.FLabel} label={props.label} color={props.labelColor} containerStyles={props.labelStyle} />
         </View>
       )}
       {props.rightIcon && (

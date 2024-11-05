@@ -15,13 +15,14 @@ const styles = StyleSheet.create({
 type NavigateBackProps = {
     label: string
     rightIcon?: IconNames
+    classNames?: string
     onPressRightIcon?: () => void
     navigate: () => void
 }
 
 export default function NavigateBack(props: NavigateBackProps) {
     return (
-        <View style={styles.wrapper}>
+        <View className={props.classNames} style={styles.wrapper}>
             <View style={styles.leftButtonWrapper}>
                 <CharmBtn icon={IconNames.chevronLeft} onPress={() => props.navigate()} size={InputSizes.md} frame={true} />
             </View>
