@@ -1,5 +1,3 @@
-
-
 import React, { useState } from "react"
 import { Modal, ScrollView, StyleSheet, View } from "react-native"
 import NavigateBack from "./NavigateBack"
