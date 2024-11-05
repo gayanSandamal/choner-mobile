@@ -25,14 +25,29 @@ type SurveyPageProps = {
 }
 
 const SurveyPage = (props: SurveyPageProps) => {
+
+    const removeOption = (option: { id: string, description: string }, index: number) => {
+        props.surveyPage.type?.mutiSelect &&
+        props.selectedOption?.optionIds &&
+        props.selectedOption?.optionIds?.length > 1 &&
+        props.setSelectedOption({ pageId: props.surveyPage.id, optionIds: props.selectedOption?.optionIds?.filter((id) => id !== option.id) })
+    }
+
+    const addOption = (option: { id: string, description: string }, index: number) => {
+        props.setSelectedOption({
+            pageId: props.surveyPage.id,
+            optionIds: props.surveyPage.type?.mutiSelect? [...(props.selectedOption?.optionIds || []), option.id] : [option.id]
+        })
+    }
+
     return (
         <ScrollView className="px-3">
             <Label classNames="mt-5 mb-1" type={FontTypes.FTitle3Bold} label={props.surveyPage.description} />
-            {props.surveyPage?.options?.map((option, index) =>
-                props.selectedOption?.optionId === option.id ? (
-                    <BtnDetailed key={index} leftIcon={{ name: IconNames.circleCheck, color: Colors.dark["soundcloud-gdr-1"], viewbox: "0 0 21 21" }} wrapperStyle={styles.selectedOption} label={`${index + 1}. ${option.description}`} labelStyle={{ fontStyle: "italic" }} onPress={() => {props.setSelectedOption({ pageId: props.surveyPage.id })}} />
+            {props.surveyPage?.options?.length > 0 && props.surveyPage?.options?.map((option, index) =>
+                props.selectedOption?.optionIds?.find((id) => id === option.id)? (
+                    <BtnDetailed key={index} leftIcon={{ name: IconNames.circleCheck, color: Colors.dark["soundcloud-gdr-1"], viewbox: "0 0 21 21" }} wrapperStyle={styles.selectedOption} label={`${index + 1}. ${option.description}`} labelStyle={{ fontStyle: "italic" }} onPress={() => removeOption(option, index)} />
                 ) : (
-                    <BtnDetailed key={index} leftIcon={{ name: IconNames.checkCircle, color: Colors.dark["grey-shade-3"], viewbox: "0 0 21 21" }} wrapperStyle={styles.notSelectedOption} label={`${index + 1}. ${option.description}`} labelStyle={{ fontStyle: "italic" }} onPress={() => props.setSelectedOption({ pageId: props.surveyPage.id, optionId: option.id })} />
+                    <BtnDetailed key={index} leftIcon={{ name: IconNames.checkCircle, color: Colors.dark["grey-shade-3"], viewbox: "0 0 21 21" }} wrapperStyle={styles.notSelectedOption} label={`${index + 1}. ${option.description}`} labelStyle={{ fontStyle: "italic" }} onPress={() => addOption(option, index)} />
                 )
             )}
             <View className="w-full h-3"/>
@@ -50,11 +65,6 @@ export const SurveyModal = (props: SurveyModalProps) => {
     const [selectedOptions, setSelectedOptions] = useState<CompletedForm[]>(props.surveyData.completedForms)
     const [index, setIndex] = useState<number>(0)
 
-    const removeSelectedOption = (option: CompletedForm) => {
-        const newOptions = selectedOptions.filter((item) => item.pageId !== option.pageId)
-        setSelectedOptions(newOptions)
-    }
-
     const addSelectedOption = (option: CompletedForm) => {
         setSelectedOptions((prevOptions) => {
             const existingOptionIndex = prevOptions.findIndex(item => item.pageId === option.pageId)
@@ -68,14 +78,6 @@ export const SurveyModal = (props: SurveyModalProps) => {
             }
         })
     }
-    
-    const optionAddOrRemove = (option: CompletedForm) => {
-        if (option?.optionId) {
-            addSelectedOption(option)
-        } else {
-            // removeSelectedOption(option)
-        }
-    }
 
     const routes = props.surveyData.pages.map((page, idx) => ({
         key: `tab-${idx}`,
@@ -86,11 +88,11 @@ export const SurveyModal = (props: SurveyModalProps) => {
         const pageIndex = parseInt(route.key.split("-")[1])
         const options = selectedOptions.filter((option) => option.pageId === props.surveyData.pages[pageIndex].id)?.[0] || []
         return (
-            <SurveyPage selectedOption={options} surveyPage={props.surveyData.pages[pageIndex]} setSelectedOption={optionAddOrRemove} setShowForm={props.setShowForm} />
+            <SurveyPage selectedOption={options} surveyPage={props.surveyData.pages[pageIndex]} setSelectedOption={addSelectedOption} setShowForm={props.setShowForm} />
         )
     }
 
-    const selectedOptionsCount = selectedOptions.filter((option) => !!option?.optionId).length
+    const selectedOptionsCount = selectedOptions.filter((option) => !!option?.optionIds).length
     
     const progress = selectedOptionsCount / props.surveyData.pages.length * 100
 

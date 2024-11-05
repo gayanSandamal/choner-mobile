@@ -232,8 +232,6 @@ export const CommentsList = (props: ChatListProps) => {
     const [updatingCommentData, setUpdatingCommentData] = useState<SelectedComment | null>(null)
     const [replyingComment, setReplyingComment] = useState<SelectedComment | null>(null)
 
-    console.log(props.comments)
-
     const {mutate: updateComment, isPending: updatingComment} = useUpdateComment(() => onUpdateCommnet(), () => onUpdateCommnet())
 
     const onUpdateCommnet = () => {

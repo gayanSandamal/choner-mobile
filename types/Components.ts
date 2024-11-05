@@ -834,15 +834,19 @@ export type UploadImage = {
   blob?: Blob
 }
 
- export type SurveyPageData = {
+export type SurveyPageData = {
   id: string
   description: string
   options: { id: string, description: string }[]
+  type: {
+    mutiSelect?: boolean
+    textMultiLine?: boolean
+  }
 }
 
 export type CompletedForm = {
   pageId: string
-  optionId?: string
+  optionIds?: string[]
 }
 
 export type SurveyData = {

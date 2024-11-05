@@ -14,7 +14,11 @@ const surveyData: SurveyData = {
   completedForms: [
     {
       pageId: `1`,
-      optionId: `2`
+      optionIds: [`2`]
+    },
+    {
+      pageId: `2`,
+      optionIds: [`2`, `1`]
     }
   ],
   pages: [
@@ -42,7 +46,8 @@ const surveyData: SurveyData = {
           id: `5`,
           description: 'Very poor sleep: Less than 4 hours'
         },
-      ]
+      ],
+      type: {}
     },
     {
       id: `2`,
@@ -68,7 +73,8 @@ const surveyData: SurveyData = {
           id: `5`,
           description: 'Very poor sleep: Less than 4 hours 2'
         },
-      ]
+      ],
+      type: { mutiSelect: true}
     }
   ]
 }
