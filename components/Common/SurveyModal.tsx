@@ -27,7 +27,7 @@ type SurveyPageProps = {
 const SurveyPage = (props: SurveyPageProps) => {
 
     const removeOption = (option: { id: string, description: string }, index: number) => {
-        props.surveyPage.type?.mutiSelect &&
+        props.surveyPage.type?.multiSelect &&
         props.selectedOption?.optionIds &&
         props.selectedOption?.optionIds?.length > 1 &&
         props.setSelectedOption({ pageId: props.surveyPage.id, optionIds: props.selectedOption?.optionIds?.filter((id) => id !== option.id) })
@@ -36,7 +36,7 @@ const SurveyPage = (props: SurveyPageProps) => {
     const addOption = (option: { id: string, description: string }, index: number) => {
         props.setSelectedOption({
             pageId: props.surveyPage.id,
-            optionIds: props.surveyPage.type?.mutiSelect? [...(props.selectedOption?.optionIds || []), option.id] : [option.id]
+            optionIds: props.surveyPage.type?.multiSelect? [...(props.selectedOption?.optionIds || []), option.id] : [option.id]
         })
     }
 

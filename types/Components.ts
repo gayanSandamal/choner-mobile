@@ -839,8 +839,8 @@ export type SurveyPageData = {
   description: string
   options: { id: string, description: string }[]
   type: {
-    mutiSelect?: boolean
-    textMultiLine?: boolean
+    multiSelect?: boolean
+    textMultiline?: boolean
   }
 }
 

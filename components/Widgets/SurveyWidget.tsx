@@ -74,7 +74,7 @@ const surveyData: SurveyData = {
           description: 'Very poor sleep: Less than 4 hours 2'
         },
       ],
-      type: { mutiSelect: true}
+      type: { multiSelect: true}
     }
   ]
 }
