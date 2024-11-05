@@ -48,7 +48,7 @@ export default function AccountSettings() {
                 renderItem={({ item }) => (
                     <BtnDetailed
                         leftIcon={{name: item.icon}}
-                        rightIcon={!item.hideRightIcon ? {name: IconNames.chevronMiniRight, size: 10}: undefined}
+                        rightIcon={!item.hideRightIcon ? {name: IconNames.chevronMiniRight}: undefined}
                         label={item.label}
                         onPress={() => item.label === 'Delete account' && setShowDeleteModal(true)}
                     />

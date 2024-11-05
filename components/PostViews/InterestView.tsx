@@ -32,7 +32,7 @@ export default function InterestView() {
   const [commentText, setCommentText] = useState<string>('')
   const [refreshing, setRefreshing] = useState<boolean>(false)
 
-  const {mutate: addComment, isPending: addingComment} = useCreateComment(() => {}, () => {})
+  const {mutate: addComment, isPending: addingComment} = useCreateComment(() => setCommentText(''), () => {})
   const {data: comments, isFetching: fetchingComments, refetch : refetchComments} = useFetchCommemnts(postData?.id || '', user?.uid || '', 'interestsPost', !!postData && !!user && postData.visibility === POST_VISIBILITY.PUBLIC)
 
   useEffect(() => {

@@ -85,8 +85,8 @@ type CommentBottomItemsProps = {
 const CommentBottomItems = (props: CommentBottomItemsProps) => {
   return (
     <View className="flex flex-row pt-[5px] justify-between">
-      <Btn wrapperClasses='text-center mt-0.5' link='' fontStyle='underline' size={InputSizes.sm} textMode color={Colors.dark['grey-shade-4']} label={props.isShowingReplies? 'Hide replies': 'Show replies'} onPress={props.setShowReplies} />
-      <Btn wrapperClasses='text-center ml-auto mt-0.5' link='' fontStyle='underline' size={InputSizes.sm} textMode color={Colors.dark['grey-shade-4']} label={props.isReplying? "Close" :"Reply"} onPress={props.onReply} />
+      <Btn wrapperClasses='text-center mt-0.5' link='' fontStyle={{fontStyle: 'underline'}} size={InputSizes.sm} textMode color={Colors.dark['grey-shade-4']} label={props.isShowingReplies? 'Hide replies': 'Show replies'} onPress={props.setShowReplies} />
+      <Btn wrapperClasses='text-center ml-auto mt-0.5' link='' fontStyle={{fontStyle: 'underline'}} size={InputSizes.sm} textMode color={Colors.dark['grey-shade-4']} label={props.isReplying? "Close" :"Reply"} onPress={props.onReply} />
     </View>
   )
 }
@@ -231,6 +231,8 @@ export const CommentsList = (props: ChatListProps) => {
     const [showOptions, setShowOptions] = useState<OptionView | null>(null)
     const [updatingCommentData, setUpdatingCommentData] = useState<SelectedComment | null>(null)
     const [replyingComment, setReplyingComment] = useState<SelectedComment | null>(null)
+
+    console.log(props.comments)
 
     const {mutate: updateComment, isPending: updatingComment} = useUpdateComment(() => onUpdateCommnet(), () => onUpdateCommnet())
 

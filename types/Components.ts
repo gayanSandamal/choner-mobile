@@ -62,9 +62,8 @@ export type BtnDetailedProps = {
   leftIcon?: {name: string, size?: number, color?: string, viewbox?: string, classNames?: string},
   rightIcon?: {name: string, size?: number, color?: string, viewbox?: string, classNames?: string},
   wrapperStyle?: ViewStyle
-  leftIconStyle?: ViewStyle
-  centerIconStyle?: ViewStyle
-  rightIconStyle?: ViewStyle
+  labelStyle?: ContainerStyles
+  loaderSize?: number
   onPress: () => void
 }
 
@@ -281,6 +280,7 @@ export enum IconNames {
   lock = 'lock',
   personAdd = 'personAdd',
   chevronMiniRight = 'chevronMiniRight',
+  chevronMiniLeft = 'chevronMiniLeft',
   save = 'save',
   down = 'down',
   camera = 'camera',
@@ -307,7 +307,9 @@ export enum IconNames {
   exclamation = 'exclamation',
   location = 'location',
   join = 'join',
-  active = 'active'
+  active = 'active',
+  circleCheck = 'circleCheck',
+  survey = 'survey'
 }
 
 export enum PostType {
@@ -830,4 +832,21 @@ export type UploadImage = {
   name?: string
   type?: string
   blob?: Blob
+}
+
+ export type SurveyPageData = {
+  id: string
+  description: string
+  options: { id: string, description: string }[]
+}
+
+export type CompletedForm = {
+  pageId: string
+  optionId?: string
+}
+
+export type SurveyData = {
+  title: string
+  completedForms: CompletedForm[]
+  pages: SurveyPageData[]
 }

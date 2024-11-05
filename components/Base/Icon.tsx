@@ -37,6 +37,7 @@ const getIcon = (props: { color: string, name: string }) => {
         [IconNames.lock]: <Icons.IconLock fill={color} />,
         [IconNames.personAdd]: <Icons.IconPersonAdd fill={color} />,
         [IconNames.chevronMiniRight]: <Icons.IconChevronMiniRight fill={color} />,
+        [IconNames.chevronMiniLeft]: <Icons.IconChevronMiniLeft fill={color} />,
         [IconNames.save]: <Icons.IconSave fill={color} />,
         [IconNames.down]: <Icons.IconDown fill={color} />,
         [IconNames.camera]: <Icons.IconCamera fill={color} />,
@@ -64,6 +65,8 @@ const getIcon = (props: { color: string, name: string }) => {
         [IconNames.location]: <Icons.IconLocation fill={color} />,
         [IconNames.join]: <Icons.IconJoin fill={color} />,
         [IconNames.active]: <Icons.IconActive fill={color} />,
+        [IconNames.circleCheck]: <Icons.IconCircleCheck fill={color} />,
+        [IconNames.survey]: <Icons.IconSurvey fill={color} />,
     };
 
     return iconMap[name];
