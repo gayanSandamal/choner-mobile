@@ -80,16 +80,7 @@ const surveyData: SurveyData = {
 }
 
 const SurveyWidget = () => {
-  const [surveyStatus, setSurveyStatus] = useState<number[]>([])
   const [showForm, setShowForm] = useState<boolean>(false)
-
-  const widthAndHeight = 100
-  const sliceColor = [Colors.dark['primary-material-1'], Colors.dark.background]
-
-  useEffect(() => {
-    const fill = 60
-    setSurveyStatus([fill, 100 - fill])
-  }, [])
 
   return (
     <>
