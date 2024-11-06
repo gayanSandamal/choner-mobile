@@ -129,7 +129,7 @@ const posts: ChallengePostCardProps[] = [
     }
 ]
 
-export const ChallegeScreenTabs = ['ALL', 'JOINED', 'COMPLETED']
+export const ChallegeScreenTabs = ['ALL', 'JOINED']
 
 const OnGoingChallengesScreen = () => {
     const uid = useAuthUserId()
