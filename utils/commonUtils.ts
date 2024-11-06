@@ -1,4 +1,4 @@
-import { CommentData, CommunityCardData, InterestCardData, ReplyData } from "@/types/Components";
+import { ChallengePostCardProps, CommentData, CommunityCardData, InterestCardData, ReplyData } from "@/types/Components";
 import { Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker"
 import * as MediaLibrary from 'expo-media-library'
@@ -187,6 +187,33 @@ export function parseToCommunityCardProps(data: any): CommunityCardData {
   }
 }
 
+export function parseToChallengeCardProps(data: any): ChallengePostCardProps {
+  return {
+    id: data.id,
+    description: data.description,
+    type: data.type,
+    participantStatus: data.participantStatus,
+    challengeState: data.challengeState,
+    participationRangeId: data.participationRangeId,
+    location: data.location,
+    createdUser: {
+      uid: data.createdUser.uid,
+      displayName: data.createdUser.displayName,
+      profileImageUrl: data.createdUser.profileImageUrl
+    },
+    createdAt: {
+      _seconds: data.createdAt._seconds,
+      _nanoseconds: data.createdAt._nanoseconds
+    },
+    challengeAt: {
+      _seconds: data?.challengeAt?._seconds,
+      _nanoseconds: data?.challengeAt?._nanoseconds
+    },
+    allowAnyone: data.allowAnyone,
+    participantLimitReached: data.participantLimitReached
+  }
+}
+
 export function parseToCommentProps(data: any): CommentData {
   return {
     id: data.id,
@@ -309,3 +336,46 @@ export const setBtnOutlineColor = (condition: boolean) => {
 }
 
 export const capitalize = (s: string) => s ? String(s[0]).toUpperCase() + String(s).slice(1): ''
+
+export const addOrUpdateItemsInCache = (cachedData: any, newComment: any, key: string) => {
+  const updatedPages = cachedData.pages.map((page: any) => {
+    const existingIndex = page.data.result?.[key].findIndex((comment: any) => comment.id === newComment.id);
+    if (existingIndex !== -1) {
+      const updatedComments = [...page.data.result?.[key]]
+      updatedComments[existingIndex] = newComment
+      return {
+        ...page,
+        data: {
+          ...page.data,
+          result: {
+            ...page.data.result,
+            [key]: updatedComments,
+          },
+        },
+      };
+    }
+    return page
+  })
+
+  const isUpdated = updatedPages.some((page: any) =>
+    page.data.result?.[key].some((comment: any) => comment.id === newComment.id)
+  )
+
+  if (!isUpdated && updatedPages.length > 0) {
+    updatedPages[0] = {
+      ...updatedPages[0],
+      data: {
+        ...updatedPages[0].data,
+        result: {
+          ...updatedPages[0].data.result,
+          [key]: [newComment, ...updatedPages[0].data.result?.[key]],
+        },
+      },
+    }
+  }
+
+  return {
+    ...cachedData,
+    pages: updatedPages,
+  }
+}

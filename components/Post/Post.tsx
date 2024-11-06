@@ -1,6 +1,6 @@
-import { Pressable, StyleSheet, TouchableOpacity, View, ScrollView, Switch } from "react-native"
+import { Pressable, StyleSheet, TouchableOpacity, View, ScrollView, Switch, Text } from "react-native"
 import Label from "../Base/Label"
-import { ActionBarProps, ChallengePostCategory, ChallengePostParams, CommunityCardData, CommunityPostParams, FontSizes, FontTypes, IconNames, InputSizes, InterestPostParams, PostBottomActionsProps, PostHeaderProps, PostModalProps, PostType, PostWrapperComponentProps, PublishChallengePostProps, PublishCommunityPostProps, PublishInterestPostProps, UploadImage } from "@/types/Components"
+import { ActionBarProps, ChallengePostCategory, ChallengePostParams, ChallengeState, CommunityCardData, CommunityPostParams, FontSizes, FontTypes, IconNames, InputSizes, InterestPostParams, PostBottomActionsProps, PostHeaderProps, PostModalProps, PostType, PostWrapperComponentProps, PublishChallengePostProps, PublishCommunityPostProps, PublishInterestPostProps, UploadImage, UserChallengeStatus } from "@/types/Components"
 import { Colors } from "@/constants/Colors"
 import React, { useCallback, useEffect, useState } from "react"
 import Icon from "../Base/Icon"
@@ -21,6 +21,7 @@ import { CreateCommunityPostProps, UpdateCommunityPostProps } from "@/api/commun
 import { useUploadImage } from "@/hooks/mutate/useMutateImage"
 import { CommunityPostTypes, ImageSizes, peopleCountOption, StoragePaths } from "@/constants/values"
 import { Input } from "../Base/Input"
+import { useCreateChallengePost } from "@/hooks/mutate/useMutateChallengePosts"
 
 const styles = StyleSheet.create({
   checkbox: {
@@ -424,13 +425,31 @@ const checkImageStatus = (image: UploadImage | null, initialImageUri: string | u
 }
 
 const PublishChallengePost = (props: PublishChallengePostProps) => {
+  const uid = useAuthUserId()
+
   const [description, setDescription] = useState('')
-  const [type, setType] = useState(ChallengePostCategory.VIRTUAL)
+  const [type, setType] = useState(ChallengePostCategory.ON_LOCATION)
   const [date, setDate] = useState<Date | null>(null)
   const [showDatePicker, setShowDatePicker] = useState(false)
   const [location, setLocation] = useState('')
   const [peopleCount, setPeopleCount] = useState(peopleCountOption[0])
   const [joinAnyone, setJoinAnyone] = useState(false)
+
+  const {mutate: createChallenge, isPending: creatingPost} = useCreateChallengePost(() => props.onSuccess(), () => {})
+
+  const onCreateChallenge = () => {
+    uid && description?.trim() !== '' && location?.trim() !== '' && !!date && createChallenge({
+      uid,
+      participantStatus: UserChallengeStatus.JOINED,
+      challengeState: ChallengeState.SCHEDULED,
+      type,
+      participationRangeId: peopleCount.value,
+      description,
+      location,
+      challengeAt: date?.toISOString() || '',
+      joinAnyone
+    })
+  }
 
   const scheduledText = date ? `Challenge at ${formatDateToCustomString(date)}` : 'Challenge at?'
 
@@ -442,10 +461,12 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
       <ActionBar {...props.actionBarData} active onPress={() => {}} />
       <ScrollView className="w-full" showsVerticalScrollIndicator={false}>
         <PostWrapperComponent postHeaderData={props.postHeaderData} onCancel={props.onSuccess}>
-          <TextArea disabled={false} clasName="mt-[10px]" height={100} maxCharacters={2000} value={description} placeHolder="Ex: 30 pushups in 30 seconds challenge" onChangeText={setDescription} />
+          <TextArea disabled={false} clasName="mt-[10px]" height={100} maxCharacters={2000} value={description} placeHolder="Ex: 30 pushups in 30 seconds" onChangeText={setDescription} />
 
-          <Label classNames="mt-3 mb-3" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label="Challenge type" />
-          <View className="flex flex-row items-center w-full pb-3">
+          {/* <Label  type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label='{`'Challenge type' /> */}
+          <Text className="mt-3 mb-3" style={{fontSize: 14, fontWeight: 400, color: Colors.dark["grey-shade-3"]}}>Challenges are <Text style={{textDecorationLine: 'underline', fontWeight: 500}}>on location</Text> events</Text>
+
+          {/* <View className="flex flex-row items-center w-full pb-3">
             {[ChallengePostCategory.VIRTUAL, ChallengePostCategory.ON_LOCATION].map((category) => (
               <Btn
                 key={category}
@@ -460,7 +481,7 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
                 onPress={() => toggleType(category)}
               />
             ))}
-          </View>
+          </View> */}
 
           <View className="flex flex-row items-center w-full pb-3" style={styles.bottomBorder}>
             <Icon name={IconNames.exclamation} color={Colors.dark["grey-shade-2"]} />
@@ -503,7 +524,7 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
             <Label classNames="ml-2 w-[90%]" color={Colors.dark["grey-shade-2"]} containerStyles={{ fontStyle: 'italic' }} label="Participation is limited by group size" />
           </View>
 
-          <Btn isLoading={false} disabled={false} size={InputSizes.md} fontType={FontTypes.FLabelBold} wrapperClasses="ml-[auto] mt-3" label={props.postParams ? 'UPDATE' : 'PUBLISH'} icon={IconNames.send} onPress={() => {}} />
+          <Btn isLoading={creatingPost} disabled={creatingPost} size={InputSizes.md} fontType={FontTypes.FLabelBold} wrapperClasses="ml-[auto] mt-3" label={props.postParams ? 'UPDATE' : 'PUBLISH'} icon={IconNames.send} onPress={onCreateChallenge} />
         </PostWrapperComponent>
         <View className="mb-20" />
       </ScrollView>

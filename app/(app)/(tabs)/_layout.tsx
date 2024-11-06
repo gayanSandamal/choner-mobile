@@ -11,10 +11,11 @@ import { tabs } from '@/constants/NavigationTabs';
 
 const styles = StyleSheet.create({
   tab: {
-    position: 'static',
+    position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
+    height: 60,
     paddingTop: 0,
     marginHorizontal: 12,
     marginBottom: 5,
@@ -25,7 +26,6 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderRadius: 20,
     borderTopColor: Colors.dark.grey,
-    height: 60,
     backgroundColor: Colors.dark.grey,
   }
 })

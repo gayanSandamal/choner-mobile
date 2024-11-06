@@ -630,27 +630,6 @@ export type CommunityCardData = {
   isOwner?: boolean
 }
 
-export type ChallengeCardData = {
-  id: string
-  description: string
-  type: string
-  createdUser:{
-    uid: string,
-    displayName: string,
-    profileImageUrl?: string
-  }
-  createdAt:{
-    _seconds: number,
-    _nanoseconds: number
-  }
-  challengedAt: {_nanoseconds: number, _seconds: number} | undefined
-  joinedCount?: number
-  participation: string
-  location?: string
-  allowAnyone?: boolean
-  isOwner?: boolean
-}
-
 export type PostUserItemProps = {
   userName: string
   createdAt?: {
@@ -744,6 +723,8 @@ export type ChallengePostCardProps = {
       displayName: string,
       profileImageUrl?: string
   }
+  allowAnyone?: boolean
+  isOwner?: boolean
   participantLimitReached?: boolean
 }
 
