@@ -3,131 +3,13 @@ import { ChallengePostCard } from "@/components/Common/ChallengePostCard"
 import { ActionBar, PostModal } from "@/components/Post/Post"
 import { Colors } from "@/constants/Colors"
 import { useTabSelector } from "@/contexts/tabSelectorContext"
-import { useUser } from "@/contexts/userContext"
 import { useFetchChallengePosts } from "@/hooks/get/useFetchChallengePosts"
 import { useAuthUserId } from "@/hooks/useAuthUser"
-import { ChallengePostCardProps, ChallengeState, IconNames, InputSizes, PostType, UserChallengeStatus } from "@/types/Components"
+import { IconNames, InputSizes, PostType } from "@/types/Components"
 import { parseToChallengeCardProps } from "@/utils/commonUtils"
 import { router } from "expo-router"
 import { useEffect, useState } from "react"
-import { ActivityIndicator, FlatList, ScrollView, View } from "react-native"
-
-// Dummy data
-const posts: ChallengePostCardProps[] = [
-    {
-        id: 'post-0',
-        participantStatus: UserChallengeStatus.NOT_JOINED,
-        challengeState: ChallengeState.SCHEDULED,
-        type: 'virtual',
-        participationRangeId: 1,
-        description: '2 hour continuous cycling challenge',
-        location: '47 W 13th St, New York, NY 10011, USA',
-        createdAt: {
-            _nanoseconds: 86840000,
-            _seconds: 98493744,
-        },
-        challengeAt: {
-            _nanoseconds: 997965443839,
-            _seconds: 1050030455,
-        },
-        createdUser: {
-            uid: 'uid',
-            displayName: 'Nisal Pathmila Perera',
-            profileImageUrl: ''
-        },
-        participantLimitReached: false
-    },{
-        id: 'post-0',
-        participantStatus: UserChallengeStatus.COMPLETED,
-        challengeState: ChallengeState.SCHEDULED,
-        type: 'virtual',
-        participationRangeId: 2,
-        description: '2 hour continuous cycling challenge',
-        location: '47 W 13th St, New York, NY 10011, USA',
-        createdAt: {
-            _nanoseconds: 86840000,
-            _seconds: 98493744,
-        },
-        challengeAt: {
-            _nanoseconds: 997965443839,
-            _seconds: 1050030455,
-        },
-        createdUser: {
-            uid: 'uid',
-            displayName: 'Nisal Pathmila Perera',
-            profileImageUrl: ''
-        },
-        participantLimitReached: false
-    },
-    {
-        id: 'post-1',
-        participantStatus: UserChallengeStatus.JOINED,
-        challengeState: ChallengeState.SCHEDULED,
-        type: 'on-locaion',
-        participationRangeId: 2,
-        description: '2 hour continuous cycling challenge',
-        location: '47 W 13th St, New York, NY 10011, USA',
-        createdAt: {
-            _nanoseconds: 86840000,
-            _seconds: 98493744,
-        },
-        challengeAt: {
-            _nanoseconds: 997965443839,
-            _seconds: 1050030455,
-        },
-        createdUser: {
-            uid: 'uid',
-            displayName: 'Nisal Pathmila Perera',
-            profileImageUrl: ''
-        },
-        participantLimitReached: true
-    },
-    {
-        id: 'post-2',
-        participantStatus: UserChallengeStatus.NOT_JOINED,
-        challengeState: ChallengeState.ONGOING,
-        type: 'virtual',
-        participationRangeId: 3,
-        description: '2 hour continuous cycling challenge',
-        location: '47 W 13th St, New York, NY 10011, USA',
-        createdAt: {
-            _nanoseconds: 86840000,
-            _seconds: 98493744,
-        },
-        challengeAt: {
-            _nanoseconds: 997965443839,
-            _seconds: 1050030455,
-        },
-        createdUser: {
-            uid: 'uid',
-            displayName: 'Nisal Pathmila Perera',
-            profileImageUrl: ''
-        },
-        participantLimitReached: true
-    },
-    {
-        id: 'post-3',
-        participantStatus: UserChallengeStatus.JOINED,
-        challengeState: ChallengeState.ONGOING,
-        type: 'on-locaion',
-        participationRangeId: 2,
-        description: '2 hour continuous cycling challenge',
-        location: '47 W 13th St, New York, NY 10011, USA',
-        createdAt: {
-            _nanoseconds: 86840000,
-            _seconds: 98493744,
-        },
-        challengeAt: {
-            _nanoseconds: 997965443839,
-            _seconds: 1050030455,
-        },
-        createdUser: {
-            uid: 'uid',
-            displayName: 'Nisal Pathmila Perera',
-            profileImageUrl: ''
-        },
-    }
-]
+import { ActivityIndicator, FlatList, View } from "react-native"
 
 export const ChallegeScreenTabs = ['ALL', 'JOINED']
 
