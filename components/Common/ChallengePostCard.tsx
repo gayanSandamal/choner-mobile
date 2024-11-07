@@ -34,7 +34,7 @@ export const ChallengePostCard = ({item, uid}: ChallengePostCardTypes) => {
         <View className="py-[16px] pl-[16px]" style={{...styles.wrapper, ...(isOngoing && {borderColor: Colors.dark["green-shade-1"]})}}>
 
             <View className="flex flex-row items-center">
-                <PostUserItem imageUrl={item.createdUser?.profileImageUrl} userName={item.createdUser.displayName} width="w-[80px]" createdAt={item.createdAt} dateProps={{ clipeDate: true }} />
+                <PostUserItem imageUrl={item.createdBy?.profileImageUrl} userName={item.createdBy.displayName} width="w-[80px]" createdAt={item.createdAt} dateProps={{ clipeDate: true }} />
                 <View style={styles.titleDivider} />
                 <View style={{ flex: 1, marginRight: 8 }}>
                     <Label type={FontTypes.FTitle3Bold} color={Colors.light.white} label={item.description} ellipsizeMode="tail" numberOfLines={1} />

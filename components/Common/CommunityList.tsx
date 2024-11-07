@@ -23,7 +23,7 @@ export const CommunityList = ({uid, communityPostList1, communityPostList2, sche
                 showsVerticalScrollIndicator={false}
                 renderItem={({item, index}) => {
                     const parsedData = parseToCommunityCardProps(item)
-                    return <CommunityPostCard data={parsedData} isOwner={parsedData.createdUser.uid === uid} scheduled={scheduled} image={parsedData.imageUrls.sm} title={parsedData.title} createdUser={parsedData.createdUser} createdAt={parsedData.createdAt} navigationPath={navigationPath} />
+                    return <CommunityPostCard data={parsedData} isOwner={parsedData.createdBy.uid === uid} scheduled={scheduled} image={parsedData.imageUrls.sm} title={parsedData.title} createdBy={parsedData.createdBy} createdAt={parsedData.createdAt} navigationPath={navigationPath} />
                 }}
                 keyExtractor={(item, index) => `${item?.id}-${index}-1`}
             />
@@ -35,7 +35,7 @@ export const CommunityList = ({uid, communityPostList1, communityPostList2, sche
                 showsVerticalScrollIndicator={false}
                 renderItem={({item}) => {
                     const parsedData = parseToCommunityCardProps(item)
-                    return <CommunityPostCard data={parsedData} isOwner={parsedData.createdUser.uid === uid} scheduled={scheduled} image={parsedData.imageUrls.sm} title={parsedData.title} createdUser={parsedData.createdUser} createdAt={parsedData.createdAt} navigationPath={navigationPath} />
+                    return <CommunityPostCard data={parsedData} isOwner={parsedData.createdBy.uid === uid} scheduled={scheduled} image={parsedData.imageUrls.sm} title={parsedData.title} createdBy={parsedData.createdBy} createdAt={parsedData.createdAt} navigationPath={navigationPath} />
                 }}
                 keyExtractor={(item, index) => `${item?.id}-${index}-2`}
             />

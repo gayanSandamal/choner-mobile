@@ -559,12 +559,12 @@ export type InterestCardData = {
   id: string
   title: string
   description: string
-  createdUser:{
+  createdBy: {
     uid: string,
     displayName: string,
     profileImageUrl?: string
   }
-  createdAt:{
+  createdAt: {
     _seconds: number,
     _nanoseconds: number
   }
@@ -585,12 +585,12 @@ export type CommentData = {
   id: string
   postId: string
   comment: string
-  createdUser:{
+  createdBy: {
     uid: string,
     displayName: string,
     profileImageUrl?: string
   }
-  createdAt:{
+  createdAt: {
     _seconds: number,
     _nanoseconds: number
   }
@@ -601,12 +601,12 @@ export type ReplyData = {
   id: string
   commentId: string
   reply: string
-  createdUser:{
+  createdBy: {
     uid: string,
     displayName: string,
     profileImageUrl?: string
   }
-  createdAt:{
+  createdAt: {
     _seconds: number,
     _nanoseconds: number
   }
@@ -618,7 +618,7 @@ export type CommunityCardData = {
   title: string
   type: string
   imageUrls: ImageSizes
-  createdUser:{
+  createdBy:{
     uid: string,
     displayName: string,
     profileImageUrl?: string
@@ -675,7 +675,8 @@ export type CommunityListProps = {
 export type CommunityPostCardProps = {
   data: CommunityCardData
   title: string
-  createdUser: {
+  createdBy: {
+      uid: string
       displayName: string
       profileImageUrl?: string
   }
@@ -721,7 +722,7 @@ export type ChallengePostCardProps = {
       _nanoseconds: number,
       _seconds: number,
   },
-  createdUser: {
+  createdBy: {
       uid: string,
       displayName: string,
       profileImageUrl?: string

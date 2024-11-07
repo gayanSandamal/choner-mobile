@@ -62,11 +62,11 @@ const CommentItem = (props: CommentItemProps) => {
   return (
     <View style={styles.chatWrapper}>
       <View className='w-[100%] mt-[10px] mb-[10px] flex flex-row justify-between z-1'>
-        <PostUserItem width={'max-w-[250px]'} imageUrl={props.comment.createdUser.profileImageUrl} userName={props.comment.createdUser.displayName} createdAt={props.comment.createdAt} />
+        <PostUserItem width={'max-w-[250px]'} imageUrl={props.comment.createdBy.profileImageUrl} userName={props.comment.createdBy.displayName} createdAt={props.comment.createdAt} />
         <CharmBtn frame={false} icon={IconNames.options} onPress={setOptionMenuId} size={InputSizes.md} />
         {showOptopnById && (
           <View style={styles.optionBtnWrapper}>
-            <PostOptions show={showOptopnById} isOwner={props.uid === props.postCreatedUserId || props.uid === props.comment.createdUser.uid} bottom={0} right={0} postVisibility={props.uid === props.comment.createdUser.uid? POST_VISIBILITY.SCHEDULED: POST_VISIBILITY.PUBLIC} onUpdate={props.onUpdate} onDelete={() => {}} />
+            <PostOptions show={showOptopnById} isOwner={props.uid === props.postCreatedUserId || props.uid === props.comment.createdBy.uid} bottom={0} right={0} postVisibility={props.uid === props.comment.createdBy.uid? POST_VISIBILITY.SCHEDULED: POST_VISIBILITY.PUBLIC} onUpdate={props.onUpdate} onDelete={() => {}} />
           </View>
         )}
       </View>
@@ -149,7 +149,7 @@ const Replies = (props: RepliesProps) => {
           const reply = parseToReplyProps(item)
           return (
             <>
-              <CommentItem type={"REPLY"} uid={props.user?.uid || ''} postCreatedUserId={props.postCreatedUserId} message={reply.reply} showOptions={props.showOptions} comment={reply} onUpdate={() => onPressUpdate(reply.reply, reply.id, reply.createdUser.uid)} setShowOptions={props.setShowOptions}/>
+              <CommentItem type={"REPLY"} uid={props.user?.uid || ''} postCreatedUserId={props.postCreatedUserId} message={reply.reply} showOptions={props.showOptions} comment={reply} onUpdate={() => onPressUpdate(reply.reply, reply.id, reply.createdBy.uid)} setShowOptions={props.setShowOptions}/>
               {selectedReply?.replyId === reply.id && <CommentInput hideUser ref={replyUpdateInputRef} placeholder={'Update your reply...'} user={props.user} text={replyText} isDisabled={updatingReply} isUpdating={updatingReply} commentType={CommentType.UPDATE} onTextChange={setReplyText} onSubmit={onUpdateReply} onCancelUpdate={onSuccessCancelUpdate} />}
             </>
           )
@@ -211,7 +211,7 @@ const Comment = (props: CommentProps) => {
     })
   }
 
-  const replyPlaceholder = props.uid === props.comment.createdUser.uid? 'Your thoughts...': `Your thoughts on ${props.comment.createdUser.displayName?.split(' ')?.[0]}'s comment...`
+  const replyPlaceholder = props.uid === props.comment.createdBy.uid? 'Your thoughts...': `Your thoughts on ${props.comment.createdBy.displayName?.split(' ')?.[0]}'s comment...`
 
   return (
     <>

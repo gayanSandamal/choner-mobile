@@ -95,7 +95,7 @@ export default function InterestsListScreen() {
           const parsedItem = parseToInterestCardProps(item)
           return (
             <View className='mb-4'>
-              <InterestCard isOwner={parsedItem.createdUser.uid === uid} data={parsedItem} showOptionInterest={showOptionInterest} onOptionPress={() => setInterestPostData({id: parsedItem.id, interest: parsedItem.title, interestDesc: parsedItem.description, scheduledAt: parsedItem.scheduledAt, visibility: parsedItem.visibility})} setShowOptionInterest={setShowOptionInterest}  />
+              <InterestCard isOwner={parsedItem.createdBy.uid === uid} data={parsedItem} showOptionInterest={showOptionInterest} onOptionPress={() => setInterestPostData({id: parsedItem.id, interest: parsedItem.title, interestDesc: parsedItem.description, scheduledAt: parsedItem.scheduledAt, visibility: parsedItem.visibility})} setShowOptionInterest={setShowOptionInterest}  />
             </View>
           )
         }}

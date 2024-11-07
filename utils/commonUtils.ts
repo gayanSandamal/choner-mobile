@@ -141,10 +141,10 @@ export function parseToInterestCardProps(data: any): InterestCardData {
     id: data.id,
     title: data.title,
     description: data.description,
-    createdUser: {
-      uid: data.createdUser.uid,
-      displayName: data.createdUser.displayName,
-      profileImageUrl: data.createdUser.profileImageUrl
+    createdBy: {
+      uid: data.createdBy.uid,
+      displayName: data.createdBy.displayName,
+      profileImageUrl: data.createdBy.profileImageUrl
     },
     createdAt: {
       _seconds: data.createdAt?._seconds,
@@ -169,10 +169,10 @@ export function parseToCommunityCardProps(data: any): CommunityCardData {
       md: data?.imageUrls?.md,
       lg: data?.imageUrls?.lg,
     },
-    createdUser: {
-      uid: data.createdUser.uid,
-      displayName: data.createdUser.displayName,
-      profileImageUrl: data.createdUser.profileImageUrl
+    createdBy: {
+      uid: data.createdBy.uid,
+      displayName: data.createdBy.displayName,
+      profileImageUrl: data.createdBy.profileImageUrl
     },
     createdAt: {
       _seconds: data.createdAt._seconds,
@@ -196,10 +196,10 @@ export function parseToChallengeCardProps(data: any): ChallengePostCardProps {
     challengeState: data.challengeState,
     participationRangeId: data.participationRangeId,
     location: data.location,
-    createdUser: {
-      uid: data.createdUser.uid,
-      displayName: data.createdUser.displayName,
-      profileImageUrl: data.createdUser.profileImageUrl
+    createdBy: {
+      uid: data.createdBy.uid,
+      displayName: data.createdBy.displayName,
+      profileImageUrl: data.createdBy.profileImageUrl
     },
     createdAt: {
       _seconds: data.createdAt._seconds,
@@ -218,7 +218,7 @@ export function parseToCommentProps(data: any): CommentData {
   return {
     id: data.id,
     postId: data.postId,
-    createdUser: {
+    createdBy: {
       uid: data.createdBy.uid,
       displayName: data.createdBy.displayName,
       profileImageUrl: data.createdBy.profileImageUrl
@@ -235,7 +235,7 @@ export function parseToReplyProps(data: any): ReplyData {
   return {
     id: data.id,
     commentId: data.commentId,
-    createdUser: {
+    createdBy: {
       uid: data.createdBy.uid,
       displayName: data.createdBy.displayName,
       profileImageUrl: data.createdBy.profileImageUrl

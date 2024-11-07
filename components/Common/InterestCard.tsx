@@ -37,9 +37,9 @@ export const InterestCard = ({isOwner, data, disabled, classNames, navigationPat
           id: data.id,
           title: data.title,
           description: data.description,
-          createdUser: {
-            ...data.createdUser,
-            profileImageUrl: escapePercent(data?.createdUser?.profileImageUrl || '')
+          createdBy: {
+            ...data.createdBy,
+            profileImageUrl: escapePercent(data?.createdBy?.profileImageUrl || '')
           },
           createdAt: data.createdAt,
           scheduledAt: data.scheduledAt,
@@ -56,7 +56,7 @@ export const InterestCard = ({isOwner, data, disabled, classNames, navigationPat
     <>
       <TouchableOpacity className={classNames} activeOpacity={disabled ? 1 : 0.5} style={{...styles.wrapper, ...(scheduled && {opacity: 0.5})}} onPress={navigateToInterest}>
         <View className='flex flex-row items-top'>
-          <PostUserItem imageUrl={data.createdUser.profileImageUrl || undefined} userName={data.createdUser.displayName} createdAt={data.createdAt} dateProps={{newLineDate: true}} />
+          <PostUserItem imageUrl={data.createdBy.profileImageUrl || undefined} userName={data.createdBy.displayName} createdAt={data.createdAt} dateProps={{newLineDate: true}} />
           <View style={{backgroundColor: Colors.light.white, width: 1, height: '100%'}} />
           <Label type={FontTypes.FTitle3Bold} label={data.title} classNames='ml-2 mt-[-4px] w-100' numberOfLines={3} containerStyles={{ flexShrink: 1 }} />
         </View>
@@ -84,7 +84,7 @@ export const InterestCard = ({isOwner, data, disabled, classNames, navigationPat
         <Label classNames="mt-5" type={FontTypes.FLabelBold} label={'Post data will be permanently removed!'} />
         <View className="mt-10 ml-0.5 mr-0.5 flex-row justify-between">
           <Btn outlined disabled={isDeleting} onPress={() => setShowDeleteModal(false)} icon={IconNames.cancel} size={InputSizes.md} color={Colors.light.white} label="Cancel" />
-          <Btn isLoading={isDeleting} disabled={isDeleting} onPress={() => deletePost({uid: data.createdUser.uid, id: data.id, visibility: data.visibility})} icon={IconNames.save} size={InputSizes.md} backgroundColor={Colors.dark.red} label="Yes, Delete" />
+          <Btn isLoading={isDeleting} disabled={isDeleting} onPress={() => deletePost({uid: data.createdBy.uid, id: data.id, visibility: data.visibility})} icon={IconNames.save} size={InputSizes.md} backgroundColor={Colors.dark.red} label="Yes, Delete" />
         </View>
       </Modal>
     </>

@@ -39,9 +39,9 @@ export default function InterestView() {
     const interest = JSON.parse(data as string)
     const decodedInterest = {
         ...interest,
-        createdUser: {
-          ...interest.createdUser,
-          profileImageUrl: unescapePercent(interest.createdUser.profileImageUrl)
+        createdBy: {
+          ...interest.createdBy,
+          profileImageUrl: unescapePercent(interest.createdBy.profileImageUrl)
         }
       }
       setPostData(decodedInterest)
@@ -106,7 +106,7 @@ export default function InterestView() {
           <CommentsList
             comments={comments}
             uid={user?.uid || ''}
-            postCreatedUserId={postData.createdUser.uid}
+            postCreatedUserId={postData.createdBy.uid}
             idFetching={fetchingComments}
             user={user}
             commentText={commentText}

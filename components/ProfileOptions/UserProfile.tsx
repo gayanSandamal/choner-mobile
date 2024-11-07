@@ -164,7 +164,7 @@ export default function UserProfile () {
                     const parsedItem = parseToInterestCardProps(item)
                     return (
                         <View className='mb-4'>
-                            <InterestCard scheduled={tabs?.visibility === POST_VISIBILITY.SCHEDULED} isOwner={parsedItem.createdUser.uid === uid} data={parsedItem} showOptionInterest={showOptionInterest} navigationPath="/interest" onOptionPress={() => setInterestPostData({id: parsedItem.id, interest: parsedItem.title, interestDesc: parsedItem.description, scheduledAt: parsedItem?.scheduledAt, visibility: parsedItem.visibility})} setShowOptionInterest={setShowOptionInterest} />
+                            <InterestCard scheduled={tabs?.visibility === POST_VISIBILITY.SCHEDULED} isOwner={parsedItem.createdBy.uid === uid} data={parsedItem} showOptionInterest={showOptionInterest} navigationPath="/interest" onOptionPress={() => setInterestPostData({id: parsedItem.id, interest: parsedItem.title, interestDesc: parsedItem.description, scheduledAt: parsedItem?.scheduledAt, visibility: parsedItem.visibility})} setShowOptionInterest={setShowOptionInterest} />
                         </View>
                     )
                 }

@@ -30,9 +30,9 @@ export const CommunityPostCard = (props: CommunityPostCardProps) => {
                 md: escapePercent(props.data?.imageUrls?.md || ''),
                 lg: escapePercent(props.data?.imageUrls?.lg || '')
               },
-              createdUser: {
-                ...props.data.createdUser,
-                profileImageUrl: escapePercent(props.data?.createdUser?.profileImageUrl || '')
+              createdBy: {
+                ...props.data.createdBy,
+                profileImageUrl: escapePercent(props.data?.createdBy?.profileImageUrl || '')
               },
               createdAt: props.data.createdAt,
               scheduledAt: props.data.scheduledAt,
@@ -48,7 +48,7 @@ export const CommunityPostCard = (props: CommunityPostCardProps) => {
             <Image style={{width: '100%', aspectRatio: props.image? 1: 2, opacity: props.scheduled ? 0.5 : 1}} source={props.image} placeholder={{ blurhash: BLURHASH[2] }} contentFit={props.image ? "cover": "fill"} transition={500} />
             <View className='px-3 pb-3' style={{width: '100%', opacity: props.scheduled ? 0.5 : 1}}>
                 <Label numberOfLines={6} classNames='py-3' type={FontTypes.FLabel} label={props.title} color={Colors.dark['grey-shade-4']} />
-                <PostUserItem fullWidth={true} imageUrl={props.createdUser.profileImageUrl} userName={props.createdUser.displayName} createdAt={props.createdAt} />
+                <PostUserItem fullWidth={true} imageUrl={props.createdBy.profileImageUrl} userName={props.createdBy.displayName} createdAt={props.createdAt} />
             </View>
             {props.scheduled && (
                 <View className="absolute right-2.5 top-2.5">

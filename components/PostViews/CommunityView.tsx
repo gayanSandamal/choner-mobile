@@ -48,9 +48,9 @@ export default function CommunityView() {
     const post = JSON.parse(data as string)
     const decodedPost = {
         ...post,
-        createdUser: {
-          ...post.createdUser,
-          profileImageUrl: unescapePercent(post.createdUser.profileImageUrl)
+        createdBy: {
+          ...post.createdBy,
+          profileImageUrl: unescapePercent(post.createdBy.profileImageUrl)
         },
         imageUrls: {
           sm: unescapePercent(post?.imageUrls?.sm || ''),
@@ -120,7 +120,7 @@ export default function CommunityView() {
         {postData.imageUrls.md && <ExpoImage source={postData?.imageUrls?.md} style={styles.imageSmall} contentFit={"cover"} placeholder={{ blurhash: BLURHASH[3] }} />}
         <Label classNames='mt-[10px]' type={FontTypes.FLabel} label={postData.title} color={Colors.dark['grey-shade-4']} />
         <View className='w-[100%] mt-[15px] mb-[10px] flex flex-row justify-between'>
-          <PostUserItem width={'max-w-[250px]'} imageUrl={postData.createdUser.profileImageUrl} userName={postData.createdUser.displayName} createdAt={postData.createdAt} />
+          <PostUserItem width={'max-w-[250px]'} imageUrl={postData.createdBy.profileImageUrl} userName={postData.createdBy.displayName} createdAt={postData.createdAt} />
           <CharmBtn frame icon={IconNames.options} onPress={() => setShowOptions((prev) => !prev)} size={InputSizes.md} />
           {showOptions && (
             <View style={styles.optionBtnWrapper}>
@@ -134,7 +134,7 @@ export default function CommunityView() {
           <CommentsList
             comments={comments}
             uid={user?.uid || ''}
-            postCreatedUserId={postData.createdUser.uid}
+            postCreatedUserId={postData.createdBy.uid}
             idFetching={fetchingComments}
             user={user}
             commentText={commentText}
@@ -151,7 +151,7 @@ export default function CommunityView() {
         <Label classNames="mt-5" type={FontTypes.FLabelBold} label={'Post data will be permanently removed!'} />
         <View className="mt-10 ml-0.5 mr-0.5 flex-row justify-between">
           <Btn outlined disabled={deletingPost} onPress={() => setShowDeleteModal(false)} icon={IconNames.cancel} size={InputSizes.md} color={Colors.light.white} label="Cancel" />
-          <Btn isLoading={deletingPost} disabled={deletingPost} onPress={() => deletePost({uid: postData.createdUser.uid, id: postData.id, type: postData.type, visibility: postData.visibility})} icon={IconNames.save} size={InputSizes.md} backgroundColor={Colors.dark.red} label="Yes, Delete" />
+          <Btn isLoading={deletingPost} disabled={deletingPost} onPress={() => deletePost({uid: postData.createdBy.uid, id: postData.id, type: postData.type, visibility: postData.visibility})} icon={IconNames.save} size={InputSizes.md} backgroundColor={Colors.dark.red} label="Yes, Delete" />
         </View>
       </Modal>
     </>
