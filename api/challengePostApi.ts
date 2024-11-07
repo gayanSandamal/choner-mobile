@@ -51,9 +51,7 @@ type ToggleUserChallengeStatusProps = {
     uid: string
     challengeId?: string
 }
-export const toggleUserChallengeStatus = async (props: ToggleUserChallengeStatusProps) => {
-
-    return axios.post('/toggleParticipationHandler', {
-        challengeId: props.challengeId,
-    })
+export const toggleUserChallengeStatus = async ({challengeId}: ToggleUserChallengeStatusProps) => {
+    const data = { challengeId }
+    return axios.post('/toggleChallengeParticipationHandler', { data })
 }
