@@ -1,12 +1,19 @@
 import { View } from "react-native";
 import { Btn } from "../Base/Button";
-import { FontTypes, IconNames, InputSizes, SignUpScreenProps } from "@/types/Components";
+import { FontTypes, IconNames, InputSizes } from "@/types/Components";
 import { ContentSection } from "../Wrappers/Sections";
 import { Colors } from '@/constants/Colors';
 import Label from '../Base/Label';
 import { router } from "expo-router";
+import { useSession } from "@/hooks/ctx";
+import { useEffect } from "react";
 
 export default function InitialScreen() {
+  const {session} = useSession()
+  
+  useEffect(() => {
+    session && router.replace('/')
+  }, [session])
 
   return (
     <ContentSection cardMode={false} containerStyles={{ maxWidth: 353 }}>
@@ -16,5 +23,6 @@ export default function InitialScreen() {
       <View className='flex items-center'>
         <Btn wrapperClasses='text-center' onPress={() => {}} size={InputSizes.sm} textMode link={'/landing-page'} color={Colors.dark.link} label="Terms of Service and Privacy Policy"></Btn>
       </View>
-    </ContentSection>)
+    </ContentSection>
+  )
 }

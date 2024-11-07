@@ -1,7 +1,6 @@
 import { useContext, createContext, type PropsWithChildren } from 'react';
 import { useStorageState } from './../hooks/useStorageState';
 import { useQueryClient } from '@tanstack/react-query';
-import { QueryKeys } from '@/constants/values';
 
 const AuthContext = createContext<{
   signIn: (userCredential: any) => void;

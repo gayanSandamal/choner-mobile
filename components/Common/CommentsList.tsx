@@ -186,14 +186,14 @@ type CommentProps = {
 const Comment = (props: CommentProps) => {
   const commentReplyInputRef = useRef<TextInput | null>(null)
   const [replyText, setReplyText] = useState<string>('')
-  const [showReplies, setShowReplies] = useState<boolean>(false)
+  const [showReplies, setShowReplies] = useState<string | null>(null)
 
   const {mutate: createReply, isPending: addingReply} = useCreateReply(() => onSuccessReply(), () => {})
 
   const onSuccessReply = () => {
     props.setReplyingComment(null)
     setReplyText('')
-    setShowReplies(true)
+    setShowReplies(props.comment.id)
   }
 
   const onSelectReply = () => {
@@ -216,10 +216,10 @@ const Comment = (props: CommentProps) => {
   return (
     <>
       <CommentItem uid={props.uid} type="COMMENT" message={props.comment.comment} postCreatedUserId={props.postCreatedUserId} showOptions={props.showOptions} comment={props.comment} onUpdate={props.onUpdate} setShowOptions={props.setShowOptions} />
-      <CommentBottomItems isShowingReplies={showReplies} isReplying={props.replyingComment?.commentId === props.comment.id} onReply={onSelectReply} setShowReplies={() => setShowReplies(!showReplies)} />
+      <CommentBottomItems isShowingReplies={!!showReplies && showReplies === props.comment.id} isReplying={props.replyingComment?.commentId === props.comment.id} onReply={onSelectReply} setShowReplies={() => setShowReplies(!showReplies? props.comment.id: null)} />
       <View className="pl-5 w-full z-2">
         {props.replyingComment?.commentId === props.comment.id && <CommentInput ref={commentReplyInputRef} placeholder={replyPlaceholder} user={props.user} text={replyText} isDisabled={addingReply} isUpdating={addingReply} commentType={CommentType.REPLY} onTextChange={setReplyText} onSubmit={onReply} onCancelUpdate={() => {}} />}
-        {showReplies && <Replies user={props.user} postType={props.postType} postId={props.comment.postId} commentId={props.comment.id} showOptions={props.showOptions} postCreatedUserId={props.postCreatedUserId} setShowOptions={props.setShowOptions} />}
+        {showReplies === props.comment.id && <Replies user={props.user} postType={props.postType} postId={props.comment.postId} commentId={props.comment.id} showOptions={props.showOptions} postCreatedUserId={props.postCreatedUserId} setShowOptions={props.setShowOptions} />}
       </View>
       <View style={styles.chatItemBottomLine} />
     </>
@@ -276,7 +276,6 @@ export const CommentsList = (props: ChatListProps) => {
         <CommentInput ref={commentInputRef} headerText="Comments" user={props.user} text={props.commentText} isDisabled={props.addingComment || updatingComment} isUpdating={updatingComment} commentType={!!updatingCommentData?.commentId? CommentType.UPDATE: CommentType.COMMENT} onTextChange={props.setCommentText} onSubmit={onCommentOrReply} onCancelUpdate={onCancelUpdateComment} />
         <FlatList
           data={props.comments}
-          extraData={props.comments}
           removeClippedSubviews={true}
           scrollEnabled={false}
           initialNumToRender={1}

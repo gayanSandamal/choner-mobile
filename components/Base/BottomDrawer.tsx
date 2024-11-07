@@ -11,7 +11,7 @@ export default function BottomDrawer(props: ModalProps) {
   return (
     <Modal transparent={true} animationType="slide" visible={props.showModal} onRequestClose={() => props.setShowModal(false)}>
         <Pressable style={styles.modalWrapper} onPress={() => props.setShowModal(false)}/>
-        <View style={styles.modalContentWrapper}>
+        <View style={{...styles.modalContentWrapper, ...props.contentWrapperStyles}}>
           {props.children}
         </View>
     </Modal>

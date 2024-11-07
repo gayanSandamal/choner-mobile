@@ -1,4 +1,4 @@
-import { DimensionValue, ImageStyle, StyleProp, TextInput, ViewStyle } from "react-native"
+import { DimensionValue, ImageStyle, NativeSyntheticEvent, StyleProp, TextInput, TextInputSubmitEditingEventData, ViewStyle } from "react-native"
 import { CartItem } from "./Products"
 import { User } from "./User"
 
@@ -134,6 +134,7 @@ export type ModalProps = {
   showModal: boolean
   children: React.ReactNode
   customModal?: boolean
+  contentWrapperStyles?: ViewStyle
   setShowModal: (show: boolean) => void
 }
 
@@ -309,7 +310,9 @@ export enum IconNames {
   join = 'join',
   active = 'active',
   circleCheck = 'circleCheck',
-  survey = 'survey'
+  survey = 'survey',
+  locationPoint = 'locationPoint',
+  check = 'check'
 }
 
 export enum PostType {
@@ -630,27 +633,6 @@ export type CommunityCardData = {
   isOwner?: boolean
 }
 
-export type ChallengeCardData = {
-  id: string
-  description: string
-  type: string
-  createdUser:{
-    uid: string,
-    displayName: string,
-    profileImageUrl?: string
-  }
-  createdAt:{
-    _seconds: number,
-    _nanoseconds: number
-  }
-  challengedAt: {_nanoseconds: number, _seconds: number} | undefined
-  joinedCount?: number
-  participation: string
-  location?: string
-  allowAnyone?: boolean
-  isOwner?: boolean
-}
-
 export type PostUserItemProps = {
   userName: string
   createdAt?: {
@@ -730,7 +712,7 @@ export type ChallengePostCardProps = {
   type: string,
   participationRangeId: number,
   description: string,
-  location: string,
+  location: LocationData,
   createdAt: {
       _nanoseconds: number,
       _seconds: number,
@@ -744,6 +726,8 @@ export type ChallengePostCardProps = {
       displayName: string,
       profileImageUrl?: string
   }
+  allowAnyone?: boolean
+  isOwner?: boolean
   participantLimitReached?: boolean
 }
 
@@ -777,6 +761,7 @@ export type SignUpScreenProps = {
 export type InputType = 'text' | 'numeric'
 
 export type InputProps = {
+  editable?: boolean
   containerStyles?: ContainerStyles
   classNames?: string
   size?: InputSize
@@ -789,6 +774,7 @@ export type InputProps = {
   iconRight?: string
   secureTextEntry?: boolean
   onChange?: (text: string) => void
+  onSubmitEditing?: () => void
   onPressIconRight?: (show: boolean) => void
 }
 
@@ -853,4 +839,9 @@ export type SurveyData = {
   title: string
   completedForms: CompletedForm[]
   pages: SurveyPageData[]
+}
+
+export type LocationData = {
+  name: string
+  address: string
 }

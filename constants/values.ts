@@ -12,7 +12,11 @@ export const enum QueryKeys {
     COMMUNITY = 'community',
     USER_COMMUNITY = 'userCommunity',
     COMMENTS = 'comments',
-    REPLIES = 'replies'
+    REPLIES = 'replies',
+    CHALLENGES = 'challenges',
+    SEARCH_LOCATION = 'searchLocation',
+    JOINED_CHALLENGES = 'joinedChallenges',
+    USER_CHALLENGES = 'userChallenges',
 }
 
 export const DURATIONS = {
@@ -58,14 +62,14 @@ export const CommunityPostTypes = ['post', 'question']
 export const peopleCountOption = [
     {
         label: '2 - 5',
-        value: 1
+        value: '1'
     },
     {
         label: '6 - 10',
-        value: 2
+        value: '2'
     },
     {
         label: '11 - 30',
-        value: 3
+        value: '3'
     }
 ]

@@ -5,7 +5,7 @@ import { Platform } from 'react-native';
 type UseStateHook<T> = [[boolean, T | null], (value: T | null) => void];
 
 function useAsyncState<T>(
-  initialValue: [boolean, T | null] = [true, null],
+  initialValue: [boolean, T | null] = [true, null]
 ): UseStateHook<T> {
   return React.useReducer(
     (state: [boolean, T | null], action: T | null = null): [boolean, T | null] => [false, action],
@@ -34,27 +34,28 @@ export async function setStorageItemAsync(key: string, value: string | null) {
 }
 
 export function useStorageState(key: string): UseStateHook<string> {
-  // Public
-  const [state, setState] = useAsyncState<string>();
+  const [state, setState] = useAsyncState<string>()
 
-  // Get
   React.useEffect(() => {
-    if (Platform.OS === 'web') {
-      try {
-        if (typeof localStorage !== 'undefined') {
-          setState(localStorage.getItem(key));
-        }
-      } catch (e) {
-        console.error('Local storage is unavailable:', e);
-      }
-    } else {
-      SecureStore.getItemAsync(key).then(value => {
-        setState(value);
-      });
-    }
-  }, [key]);
+    const fetchStorageValue = async () => {
+      let value: string | null = null
 
-  // Set
+      if (Platform.OS === 'web') {
+        try {
+          value = typeof localStorage !== 'undefined' ? localStorage.getItem(key) : null
+        } catch (e) {
+          console.error('Local storage is unavailable:', e)
+        }
+      } else {
+        value = await SecureStore.getItemAsync(key)
+      }
+      
+      setState(value)
+    }
+
+    fetchStorageValue()
+  }, [key])
+
   const setValue = React.useCallback(
     (value: string | null) => {
       setState(value);

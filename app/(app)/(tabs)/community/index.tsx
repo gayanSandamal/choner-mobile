@@ -26,7 +26,6 @@ export default function CommunityScreen() {
     fetchNextPage: fetchNextPosts
   } = useFetchCommunityPosts(uid || '', tabs?.tab || CommunityPostTypes[0], !!uid && !!tabs)
 
-
   useEffect(() => {
     !tabs && setTabs({tab: CommunityPostTypes[0]})
     !communityPosts && refetchPosts()
