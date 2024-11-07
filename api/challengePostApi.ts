@@ -1,4 +1,4 @@
-import { ImageSizes } from "@/types/Components"
+import { ImageSizes, LocationData } from "@/types/Components"
 import { getAxios } from "@/utils/AxiosUtils"
 
 const axios = getAxios(true)
@@ -11,7 +11,7 @@ export type CreateChallengePostProps = {
     type: string
     participationRangeId: string
     description: string
-    location: string
+    location: LocationData
     challengeAt: string
     joinAnyone: boolean
 }
@@ -43,5 +43,17 @@ export const getUserChallengePosts = async (props: GetChallengeProps) => {
         data: {
             ...(props.lastPostId && {lastVisible: props.lastPostId})
         }
+    })
+}
+
+// Toggle User Challenge posts join
+type ToggleUserChallengeStatusProps = {
+    uid: string
+    challengeId?: string
+}
+export const toggleUserChallengeStatus = async (props: ToggleUserChallengeStatusProps) => {
+
+    return axios.post('/toggleParticipationHandler', {
+        challengeId: props.challengeId,
     })
 }

@@ -67,6 +67,8 @@ const getIcon = (props: { color: string, name: string }) => {
         [IconNames.active]: <Icons.IconActive fill={color} />,
         [IconNames.circleCheck]: <Icons.IconCircleCheck fill={color} />,
         [IconNames.survey]: <Icons.IconSurvey fill={color} />,
+        [IconNames.locationPoint]: <Icons.IconLocationPoint fill={color} />,
+        [IconNames.check]: <Icons.IconCheck fill={color} />,
     };
 
     return iconMap[name];

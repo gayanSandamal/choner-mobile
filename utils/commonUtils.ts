@@ -1,4 +1,4 @@
-import { ChallengePostCardProps, CommentData, CommunityCardData, InterestCardData, ReplyData } from "@/types/Components";
+import { ChallengePostCardProps, CommentData, CommunityCardData, InterestCardData, LocationData, ReplyData } from "@/types/Components";
 import { Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker"
 import * as MediaLibrary from 'expo-media-library'
@@ -378,4 +378,20 @@ export const addOrUpdateItemsInCache = (cachedData: any, newComment: any, key: s
     ...cachedData,
     pages: updatedPages,
   }
+}
+
+export const filterPlusCodeFromAddress = (address: string) => {
+  const plusCodePattern = /\b\w{4}\+\w{2,}\b/
+
+  let cleanedAddress = address.replace(plusCodePattern, '').trim();
+  cleanedAddress = cleanedAddress.replace(/^,|,$/g, '').trim()
+
+  return cleanedAddress
+}
+
+export const parseLocation = (location: any) => {
+  return {
+    name: location?.displayName?.text || '',
+    address: location?.formattedAddress? filterPlusCodeFromAddress(location?.formattedAddress): ''
+  } as LocationData
 }

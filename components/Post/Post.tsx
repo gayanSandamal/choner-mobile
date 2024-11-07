@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, TouchableOpacity, View, ScrollView, Switch, Text } from "react-native"
 import Label from "../Base/Label"
-import { ActionBarProps, ChallengePostCategory, ChallengePostParams, ChallengeState, CommunityCardData, CommunityPostParams, FontSizes, FontTypes, IconNames, InputSizes, InterestPostParams, PostBottomActionsProps, PostHeaderProps, PostModalProps, PostType, PostWrapperComponentProps, PublishChallengePostProps, PublishCommunityPostProps, PublishInterestPostProps, UploadImage, UserChallengeStatus } from "@/types/Components"
+import { ActionBarProps, ChallengePostCategory, ChallengePostParams, ChallengeState, CommunityCardData, CommunityPostParams, FontSizes, FontTypes, IconNames, InputSizes, InterestPostParams, LocationData, PostBottomActionsProps, PostHeaderProps, PostModalProps, PostType, PostWrapperComponentProps, PublishChallengePostProps, PublishCommunityPostProps, PublishInterestPostProps, UploadImage, UserChallengeStatus } from "@/types/Components"
 import { Colors } from "@/constants/Colors"
 import React, { useCallback, useEffect, useState } from "react"
 import Icon from "../Base/Icon"
@@ -22,20 +22,13 @@ import { useUploadImage } from "@/hooks/mutate/useMutateImage"
 import { CommunityPostTypes, ImageSizes, peopleCountOption, StoragePaths } from "@/constants/values"
 import { Input } from "../Base/Input"
 import { useCreateChallengePost } from "@/hooks/mutate/useMutateChallengePosts"
+import { LocationBottomDrawer } from "../Common/LocationBottomDrawer"
 
 const styles = StyleSheet.create({
-  checkbox: {
-    alignSelf: 'center',
-    width: 24,
-    height: 24,
-  },
-  label: {
-    margin: 8,
-  },
-  removeImage: {position: 'absolute', bottom: 10, right: 10, padding: 6, borderRadius: 8, backgroundColor: Colors.dark['grey-transparent']},
-  communityTypeBtn: {width: '100%', paddingHorizontal: 8, height: 50, borderRadius: 10, borderWidth: 1, borderColor: Colors.dark['grey-shade-4'], flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start'},
-  imagePicker: {position: 'relative', width: '100%', borderRadius: 10, borderStyle: 'dashed', borderWidth: 1, borderColor: Colors.dark["grey-shade-2"], alignItems: 'center', justifyContent: 'center', overflow: 'hidden'},
-  bottomBorder: {borderBottomWidth: 1, borderColor: Colors.dark["grey-shade-2"]}
+  removeImage: { position: 'absolute', bottom: 10, right: 10, padding: 6, borderRadius: 8, backgroundColor: Colors.dark['grey-transparent'] },
+  communityTypeBtn: { width: '100%', paddingHorizontal: 8, height: 50, borderRadius: 10, borderWidth: 1, borderColor: Colors.dark['grey-shade-4'], flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start' },
+  imagePicker: { position: 'relative', width: '100%', borderRadius: 10, borderStyle: 'dashed', borderWidth: 1, borderColor: Colors.dark["grey-shade-2"], alignItems: 'center', justifyContent: 'center', overflow: 'hidden' },
+  bottomBorder: { borderBottomWidth: 1, borderColor: Colors.dark["grey-shade-2"] }
 })
 
 export const ActionBar = (props: ActionBarProps) => {
@@ -98,8 +91,8 @@ const PublishInterestPost = (props: PublishInterestPostProps) => {
   const [dateTime, setDateTime] = useState<Date | null>(!!props.postParams?.scheduledAt ? timeDataToLocalString(props.postParams?.scheduledAt) : null)
   const [isPostPublishable, setIsPostPublishable] = useState(false)
 
-  const { mutate: createPost, isPending: isCreatingPost } = useCreateInteresPost(() => onSuccess(), () => {})
-  const { mutate: updatePost, isPending: isUpdatingPost } = useUpdateInteresPost(() => onSuccess(), () => {})
+  const { mutate: createPost, isPending: isCreatingPost } = useCreateInteresPost(() => onSuccess(), () => { })
+  const { mutate: updatePost, isPending: isUpdatingPost } = useUpdateInteresPost(() => onSuccess(), () => { })
 
   useEffect(() => {
     !props?.postParams && setDateTime(new Date())
@@ -130,7 +123,7 @@ const PublishInterestPost = (props: PublishInterestPostProps) => {
   }, [])
 
   const onPressMutate = () => {
-    props.postParams?.id ? onUpdatePost(): onCreatePost()
+    props.postParams?.id ? onUpdatePost() : onCreatePost()
   }
 
   const onCreatePost = () => {
@@ -192,27 +185,27 @@ const PublishInterestPost = (props: PublishInterestPostProps) => {
   )
 }
 
-export const PublishCommunityPost = (props: PublishCommunityPostProps) => {  
+export const PublishCommunityPost = (props: PublishCommunityPostProps) => {
   const uid = useAuthUserId()
 
   const [selectedType, setSelectedType] = useState<string | null>(props.postParams?.type || null)
   const [showDatePicker, setShowDatePicker] = useState(false)
   const [isScheduled, setIsScheduled] = useState(!!props.postParams?.scheduledAt?._seconds || false)
-  const [dateTime, setDateTime] = useState<Date | null>(!!props.postParams?.scheduledAt ? timeDataToLocalString(props.postParams?.scheduledAt): null)
+  const [dateTime, setDateTime] = useState<Date | null>(!!props.postParams?.scheduledAt ? timeDataToLocalString(props.postParams?.scheduledAt) : null)
   const [title, setTtile] = useState(props.postParams?.title || '')
   const [showDrawer, setShowDrawer] = useState(false)
-  const [image, setImage] = useState<UploadImage| null>(!!props.postParams?.imageUrls?.md? {
+  const [image, setImage] = useState<UploadImage | null>(!!props.postParams?.imageUrls?.md ? {
     uri: props.postParams?.imageUrls?.md,
     name: ''
-} :null)
+  } : null)
   const [isUploading, setIsUploading] = useState<boolean>(false)
 
-  const {uploadImage} = useUploadImage((uri) => onSuccessImageUpload(uri), () => {})
-  const {mutate: createPost} = useCreateCommunityPost(() => onSuccessCreatePost(), (e) => setIsUploading(false))
-  const {mutate: updatePost} = useUpdateCommunityPost((data) => onSuccessUpdatePost(data), (e) => setIsUploading(false))
+  const { uploadImage } = useUploadImage((uri) => onSuccessImageUpload(uri), () => { })
+  const { mutate: createPost } = useCreateCommunityPost(() => onSuccessCreatePost(), (e) => setIsUploading(false))
+  const { mutate: updatePost } = useUpdateCommunityPost((data) => onSuccessUpdatePost(data), (e) => setIsUploading(false))
 
   useEffect(() => {
-    
+
     return () => {
       props.onClose(true)
     }
@@ -241,15 +234,15 @@ export const PublishCommunityPost = (props: PublishCommunityPostProps) => {
 
   const setPostHeaderData = (): PostHeaderProps => {
     return {
-      icon: selectedType === CommunityPostTypes[0]? IconNames.addPost: IconNames.qanda,
-      title: !props.postParams && selectedType === CommunityPostTypes[0]?
+      icon: selectedType === CommunityPostTypes[0] ? IconNames.addPost : IconNames.qanda,
+      title: !props.postParams && selectedType === CommunityPostTypes[0] ?
         'Publish a Post'
-        : !props.postParams && selectedType === CommunityPostTypes[1]?
+        : !props.postParams && selectedType === CommunityPostTypes[1] ?
           'Ask a question'
-          : props.postParams && selectedType === CommunityPostTypes[0]?
+          : props.postParams && selectedType === CommunityPostTypes[0] ?
             'Update post'
-            : props.postParams && selectedType === CommunityPostTypes[1]?
-              'Update question': '',
+            : props.postParams && selectedType === CommunityPostTypes[1] ?
+              'Update question' : '',
       onCancel: () => props.onClose(true),
     }
   }
@@ -268,11 +261,11 @@ export const PublishCommunityPost = (props: PublishCommunityPostProps) => {
 
   const onCreatePost = async () => {
     if (!uid || title?.trim() === '') return
- 
+
     setIsUploading(true)
 
     if (image?.blob) {
-      await uploadImage(image, selectedType === CommunityPostTypes[0]? StoragePaths.COMMUNITY_POST: StoragePaths.COMMUNITY_QUESTION)
+      await uploadImage(image, selectedType === CommunityPostTypes[0] ? StoragePaths.COMMUNITY_POST : StoragePaths.COMMUNITY_QUESTION)
       return
     }
 
@@ -281,11 +274,11 @@ export const PublishCommunityPost = (props: PublishCommunityPostProps) => {
 
   const onUpdatePost = async () => {
     if (!uid || title?.trim() === '') return
- 
+
     setIsUploading(true)
 
     if (image?.blob) {
-      await uploadImage(image, selectedType === CommunityPostTypes[0]? StoragePaths.COMMUNITY_POST: StoragePaths.COMMUNITY_QUESTION)
+      await uploadImage(image, selectedType === CommunityPostTypes[0] ? StoragePaths.COMMUNITY_POST : StoragePaths.COMMUNITY_QUESTION)
       return
     }
 
@@ -293,9 +286,9 @@ export const PublishCommunityPost = (props: PublishCommunityPostProps) => {
   }
 
   const onSuccessImageUpload = (imageUrl: string) => {
-    props?.postParams?.id? setUpdatePostData(imageUrl) : setCreatePostData(imageUrl)
+    props?.postParams?.id ? setUpdatePostData(imageUrl) : setCreatePostData(imageUrl)
   }
-  
+
 
   const setCreatePostData = (imageUrl?: string) => {
 
@@ -303,13 +296,13 @@ export const PublishCommunityPost = (props: PublishCommunityPostProps) => {
       uid,
       title,
       type: selectedType,
-      ...(imageUrl && image?.type && { 
-          imageUrls: {
-            sm: updateImageWithSize(imageUrl, image?.type, ImageSizes.SM),
-            md: updateImageWithSize(imageUrl, image?.type, ImageSizes.MD),
-            lg: updateImageWithSize(imageUrl, image?.type, ImageSizes.LG)
-          }
-        }),
+      ...(imageUrl && image?.type && {
+        imageUrls: {
+          sm: updateImageWithSize(imageUrl, image?.type, ImageSizes.SM),
+          md: updateImageWithSize(imageUrl, image?.type, ImageSizes.MD),
+          lg: updateImageWithSize(imageUrl, image?.type, ImageSizes.LG)
+        }
+      }),
       ...(dateTime && isScheduled && { scheduledAt: dateTime?.toISOString() })
     } as CreateCommunityPostProps
 
@@ -318,60 +311,60 @@ export const PublishCommunityPost = (props: PublishCommunityPostProps) => {
 
   const setUpdatePostData = (imageUrl?: string) => {
 
-  const imageStatus = checkImageStatus(image, props.postParams?.imageUrls?.md)
+    const imageStatus = checkImageStatus(image, props.postParams?.imageUrls?.md)
 
-  const communityPostData = {
-    id: props?.postParams?.id,
-    uid,
-    title,
-    ...(imageStatus !== 'unchanged' && {imageStatus}),
-    type: selectedType,
-    ...(imageUrl && image?.type && imageStatus === 'updated' && { 
+    const communityPostData = {
+      id: props?.postParams?.id,
+      uid,
+      title,
+      ...(imageStatus !== 'unchanged' && { imageStatus }),
+      type: selectedType,
+      ...(imageUrl && image?.type && imageStatus === 'updated' && {
         imageUrls: {
           sm: updateImageWithSize(imageUrl, image?.type, ImageSizes.SM),
           md: updateImageWithSize(imageUrl, image?.type, ImageSizes.MD),
           lg: updateImageWithSize(imageUrl, image?.type, ImageSizes.LG)
         }
       }),
-    ...(dateTime && isScheduled && { scheduledAt: dateTime?.toISOString() })
-  } as UpdateCommunityPostProps
+      ...(dateTime && isScheduled && { scheduledAt: dateTime?.toISOString() })
+    } as UpdateCommunityPostProps
 
-  updatePost(communityPostData)
-}
+    updatePost(communityPostData)
+  }
 
-const checkImageStatus = (image: UploadImage | null, initialImageUri: string | undefined) => {
-  if (!image && initialImageUri) return 'deleted'
-  if (image?.uri && image.uri !== initialImageUri) return 'updated'
-  return 'unchanged'
-}
+  const checkImageStatus = (image: UploadImage | null, initialImageUri: string | undefined) => {
+    if (!image && initialImageUri) return 'deleted'
+    if (image?.uri && image.uri !== initialImageUri) return 'updated'
+    return 'unchanged'
+  }
 
   const onPressMutate = () => {
-    props.postParams?.id ? onUpdatePost(): onCreatePost()
+    props.postParams?.id ? onUpdatePost() : onCreatePost()
   }
 
   return (
     <>
       <Pressable className="pl-[10px] pr-[10px] pt-[75px] w-full h-full" onPress={() => !selectedType && props.onClose(true)}>
-        <ActionBar {...{ ...props.actionBarData }} active={true} onPress={() => {}} />
+        <ActionBar {...{ ...props.actionBarData }} active={true} onPress={() => { }} />
         {!selectedType && <TouchableOpacity activeOpacity={1} className="w-full h-4" />}
         <ScrollView className="w-full" showsVerticalScrollIndicator={false}>
           {selectedType && (
             <PostWrapperComponent postHeaderData={setPostHeaderData()} onCancel={() => props.onClose(true)}>
-              <TouchableOpacity disabled={isUploading} style={{...styles.imagePicker, aspectRatio: !!image? 1: 2 }} onPress={() => setShowDrawer(true)}>
-                {!image &&(
+              <TouchableOpacity disabled={isUploading} style={{ ...styles.imagePicker, aspectRatio: !!image ? 1 : 2 }} onPress={() => setShowDrawer(true)}>
+                {!image && (
                   <>
                     <Icon name={IconNames.image} size={InputSizes.xl} />
                     <Label classNames="mt-[10px]" label="Add an image" color={Colors.dark["grey-shade-3"]} />
                   </>
                 )}
                 {image && (
-                  <Image style={{width: '100%', height: '100%'}} source={image.uri} contentFit="cover" transition={500} />
+                  <Image style={{ width: '100%', height: '100%' }} source={image.uri} contentFit="cover" transition={500} />
                 )}
                 {image && <TouchableOpacity disabled={isUploading} style={styles.removeImage} onPress={() => setImage(null)}>
                   <Icon name={IconNames.delete} />
                 </TouchableOpacity>}
               </TouchableOpacity>
-              <TextArea disabled={isUploading} clasName="mt-[10px]" height={120} maxCharacters={2000} value={title} placeHolder={selectedType === CommunityPostTypes[0]? "Enter your thoughts...": "What's your problem? we can help you :)"} onChangeText={setTtile}
+              <TextArea disabled={isUploading} clasName="mt-[10px]" height={120} maxCharacters={2000} value={title} placeHolder={selectedType === CommunityPostTypes[0] ? "Enter your thoughts..." : "What's your problem? we can help you :)"} onChangeText={setTtile}
               />
               <PostBottomActions
                 isScheduled={isScheduled}
@@ -392,14 +385,14 @@ const checkImageStatus = (image: UploadImage | null, initialImageUri: string | u
             <>
               {selectedType !== CommunityPostTypes[0] && (
                 <>
-                  <TouchableOpacity style={styles.communityTypeBtn}  onPress={() => setSelectedType(CommunityPostTypes[0])} >
+                  <TouchableOpacity style={styles.communityTypeBtn} onPress={() => setSelectedType(CommunityPostTypes[0])} >
                     <Icon name={IconNames.addPost} color={Colors.dark['grey-shade-4']} />
                     <View className="ml-2">
                       <Label classNames="mb-1" label="Publish post" color={Colors.dark['grey-shade-4']} />
                       <Label label="Share your thoughts, ideas & tips with your followers" type={FontTypes.FSmall} color={Colors.dark['grey-shade-3']} />
                     </View>
                   </TouchableOpacity>
-                  <TouchableOpacity activeOpacity={1}  className="w-full h-4" />
+                  <TouchableOpacity activeOpacity={1} className="w-full h-4" />
                 </>
               )}
               {selectedType !== CommunityPostTypes[1] && (
@@ -415,10 +408,10 @@ const checkImageStatus = (image: UploadImage | null, initialImageUri: string | u
               )}
             </>
           )}
-          <TouchableOpacity activeOpacity={1} className="w-full h-4" /> 
+          <TouchableOpacity activeOpacity={1} className="w-full h-4" />
         </ScrollView>
       </Pressable>
-      
+
       <ImagePickerBottomDrawer showDrawer={showDrawer} setShowDrawer={setShowDrawer} onPressImagePickItem={onPressImagePickItem} />
     </>
   )
@@ -431,14 +424,15 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
   const [type, setType] = useState(ChallengePostCategory.ON_LOCATION)
   const [date, setDate] = useState<Date | null>(null)
   const [showDatePicker, setShowDatePicker] = useState(false)
-  const [location, setLocation] = useState('')
+  const [location, setLocation] = useState<LocationData>({name: '', address: ''})
   const [peopleCount, setPeopleCount] = useState(peopleCountOption[0])
   const [joinAnyone, setJoinAnyone] = useState(false)
+  const [showDrawer, setShowDrawer] = useState<boolean>(false)
 
-  const {mutate: createChallenge, isPending: creatingPost} = useCreateChallengePost(() => props.onSuccess(), () => {})
+  const { mutate: createChallenge, isPending: creatingPost } = useCreateChallengePost(() => props.onSuccess(), () => { })
 
   const onCreateChallenge = () => {
-    uid && description?.trim() !== '' && location?.trim() !== '' && !!date && createChallenge({
+    uid && description?.trim() !== '' && location?.name?.trim() !== '' && !!date && createChallenge({
       uid,
       participantStatus: UserChallengeStatus.JOINED,
       challengeState: ChallengeState.SCHEDULED,
@@ -456,15 +450,17 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
   const toggleType = (selectedType: ChallengePostCategory) => setType(selectedType)
   const updatePeopleCount = (countOption: any) => setPeopleCount(countOption)
 
+  const publishDisabled = !uid || description?.trim() === '' || location?.name?.trim() === '' || !date
+
   return (
     <View className="pl-[10px] pr-[10px] pt-[75px] w-full h-full">
-      <ActionBar {...props.actionBarData} active onPress={() => {}} />
+      <ActionBar {...props.actionBarData} active onPress={() => { }} />
       <ScrollView className="w-full" showsVerticalScrollIndicator={false}>
         <PostWrapperComponent postHeaderData={props.postHeaderData} onCancel={props.onSuccess}>
           <TextArea disabled={false} clasName="mt-[10px]" height={100} maxCharacters={2000} value={description} placeHolder="Ex: 30 pushups in 30 seconds" onChangeText={setDescription} />
 
           {/* <Label  type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label='{`'Challenge type' /> */}
-          <Text className="mt-3 mb-3" style={{fontSize: 14, fontWeight: 400, color: Colors.dark["grey-shade-3"]}}>Challenges are <Text style={{textDecorationLine: 'underline', fontWeight: 500}}>on location</Text> events</Text>
+          <Text className="mt-3 mb-3" style={{ fontSize: 14, fontWeight: 400, color: Colors.dark["grey-shade-3"] }}>Challenges are <Text style={{ textDecorationLine: 'underline', fontWeight: 500 }}>on location</Text> events</Text>
 
           {/* <View className="flex flex-row items-center w-full pb-3">
             {[ChallengePostCategory.VIRTUAL, ChallengePostCategory.ON_LOCATION].map((category) => (
@@ -485,11 +481,14 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
 
           <View className="flex flex-row items-center w-full pb-3" style={styles.bottomBorder}>
             <Icon name={IconNames.exclamation} color={Colors.dark["grey-shade-2"]} />
-            <Label classNames="ml-2 w-[90%]" color={Colors.dark["grey-shade-2"]} containerStyles={{ fontStyle: 'italic' }} label={type === ChallengePostCategory.VIRTUAL? "Virtual challenge lets participants join remotely from anywhere": "This requires participants to be physically present"}/>
+            <Label classNames="ml-2 w-[90%]" color={Colors.dark["grey-shade-2"]} containerStyles={{ fontStyle: 'italic' }} label={type === ChallengePostCategory.VIRTUAL ? "Virtual challenge lets participants join remotely from anywhere" : "This requires participants to be physically present"} />
           </View>
 
-          <Label classNames="mt-3 mb-3" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label={`Challenge time & location${type !== ChallengePostCategory.VIRTUAL ? '*' : ''}`}/>
-          <Input classNames="mb-5" placeholder="CHALLENGE LOCATION" icon={IconNames.location} fontSize={FontSizes.FLabel} containerStyles={{ height: 50 }} value={location} onChange={setLocation}/>
+          <Label classNames="mt-3 mb-3" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label={`Challenge time & location${type !== ChallengePostCategory.VIRTUAL ? '*' : ''}`} />
+          <TouchableOpacity className='shadow-sm flex flex-row items-center mb-5' style={{ backgroundColor: Colors.dark['fied-bg-idle'], height: 50, width: '100%', borderRadius: 30, paddingHorizontal: 20 }} onPress={() => setShowDrawer(true)}>
+            <Icon name={IconNames.location} size={InputSizes.md} color={ Colors.dark['primary-shade-3']} />
+            <Label classNames="ml-3 pr-2" type={FontTypes.FLabel} ellipsizeMode="tail" numberOfLines={2} label={location?.name || "CHALLENGE LOCATION"} />
+          </TouchableOpacity>
           <View className="flex flex-row justify-between w-full pb-3" style={styles.bottomBorder}>
             <Pressable className="flex flex-row items-center" onPress={() => setShowDatePicker(true)}>
               <Checkbox classNames="mr-3" isChecked={!!date} onPress={() => (date ? setDate(null) : setShowDatePicker(true))} />
@@ -515,7 +514,7 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
           </View>
 
           <View className="flex flex-row items-center w-full pb-4">
-            <Switch value={joinAnyone} style={{ padding: 0, marginTop: -5 }} trackColor={{ false: Colors.dark["primary-shade-3"], true: Colors.dark["soundcloud-gdr-1"] }} thumbColor={Colors.dark["grey-shade-4"]} onValueChange={setJoinAnyone}/>
+            <Switch value={joinAnyone} style={{ padding: 0, marginTop: -5 }} trackColor={{ false: Colors.dark["primary-shade-3"], true: Colors.dark["soundcloud-gdr-1"] }} thumbColor={Colors.dark["grey-shade-4"]} onValueChange={setJoinAnyone} />
             <Label classNames="pb-1 ml-2" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label="Allow anyone to join" />
           </View>
 
@@ -524,15 +523,15 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
             <Label classNames="ml-2 w-[90%]" color={Colors.dark["grey-shade-2"]} containerStyles={{ fontStyle: 'italic' }} label="Participation is limited by group size" />
           </View>
 
-          <Btn isLoading={creatingPost} disabled={creatingPost} size={InputSizes.md} fontType={FontTypes.FLabelBold} wrapperClasses="ml-[auto] mt-3" label={props.postParams ? 'UPDATE' : 'PUBLISH'} icon={IconNames.send} onPress={onCreateChallenge} />
+          <Btn isLoading={creatingPost} disabled={creatingPost || publishDisabled} size={InputSizes.md} fontType={FontTypes.FLabelBold} wrapperClasses="ml-[auto] mt-3" label={props.postParams ? 'UPDATE' : 'PUBLISH'} icon={IconNames.send} onPress={onCreateChallenge} />
         </PostWrapperComponent>
         <View className="mb-20" />
       </ScrollView>
       <DateTimePickerModal isVisible={showDatePicker} mode="datetime" date={date || new Date()} minimumDate={minTime()} onConfirm={(d) => { setDate(d); setShowDatePicker(false); }} onCancel={() => setShowDatePicker(false)} />
+      <LocationBottomDrawer uid={uid || ''} showDrawer={showDrawer} setShowDrawer={setShowDrawer} setLocation={setLocation} />
     </View>
   )
 }
-
 
 export const PostModal = (props: PostModalProps) => {
   return (
@@ -545,7 +544,7 @@ export const PostModal = (props: PostModalProps) => {
       )}
       {props.postType === PostType.challenge && (
         <PublishChallengePost postHeaderData={props.postHeaderData} actionBarData={props.actionBarData} postParams={props.postParams as ChallengePostParams} onSuccess={props.onCancel} />
-      )}  
+      )}
     </Modal>
   )
 }

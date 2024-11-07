@@ -14,6 +14,8 @@ export const enum QueryKeys {
     COMMENTS = 'comments',
     REPLIES = 'replies',
     CHALLENGES = 'challenges',
+    SEARCH_LOCATION = 'searchLocation',
+    JOINED_CHALLENGES = 'joinedChallenges',
     USER_CHALLENGES = 'userChallenges',
 }
 

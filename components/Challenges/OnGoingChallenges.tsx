@@ -21,7 +21,7 @@ const OnGoingChallenges = () => {
     const [showChallengeCreate, setShowChallengeCreate] = useState<boolean>(false)
 
     const {data: challenges, isFetching: fetchingPosts, fetchNextPage: fetchNextChallenges, refetch: refetchChallenges} = useFetchChallengePosts(uid || '', !!uid)
-        
+
     useEffect(() => {
         !tabs && setTabs({tab: ChallegeScreenTabs[0]})
         !challenges && refetchChallenges()
@@ -53,6 +53,7 @@ const OnGoingChallenges = () => {
                 data={[{}]}
                 removeClippedSubviews={true}
                 showsVerticalScrollIndicator={false}
+                keyExtractor={(_, index) => `main-${index}`}
                 ListHeaderComponent={() => (
                     <>
                         <View className="w-full flex flex-row items-center justify-between">
@@ -73,15 +74,14 @@ const OnGoingChallenges = () => {
                     <FlatList
                         className='bg-grey'
                         data={challenges}
-                        extraData={challenges}
                         scrollEnabled={false}
                         removeClippedSubviews={true}
                         showsVerticalScrollIndicator={false}
-                        keyExtractor={(_, index) => `${index}`}
+                        keyExtractor={(item, index) => `${item?.id}-${index}`}
                         renderItem={({ item }) => {
                             const parsedItem = parseToChallengeCardProps(item)
                             return (
-                                <ChallengePostCard item={parsedItem} />
+                                <ChallengePostCard uid={uid || ''} item={parsedItem} />
                             )
                         }}
                         ItemSeparatorComponent={() => <View className="w-full h-[15px]"/>}
