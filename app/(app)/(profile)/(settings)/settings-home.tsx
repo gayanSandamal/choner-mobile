@@ -52,6 +52,7 @@ export default function SettingsHome() {
       .catch((error: any) => {
         console.error('Error signing out:', error)
       })
+      .finally(() => router.replace('/landing-page'))
   }, [userId])
   
   return (

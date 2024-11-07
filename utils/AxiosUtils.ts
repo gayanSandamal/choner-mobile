@@ -1,7 +1,6 @@
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 import { getAuth } from 'firebase/auth';
-import { router } from 'expo-router';
 
 export const getAxios = (authenticate?: boolean) => {
   const axiosInstance = axios.create({

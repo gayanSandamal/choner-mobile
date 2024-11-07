@@ -1,8 +1,6 @@
 import { createChallengePost } from "@/api/challengePostApi"
-import { createCommunityPost, deleteCommunityPost, updateCommunityPost } from "@/api/communityPostApi"
 import { QueryKeys } from "@/constants/values"
-import { CommunityCardData } from "@/types/Components"
-import { addOrUpdateItemsInCache, isoDateTimeToSecond, parseToCommunityCardProps } from "@/utils/commonUtils"
+import { addOrUpdateItemsInCache } from "@/utils/commonUtils"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 export const useCreateChallengePost = (onSuccess: () => void, onError: (error: Error) => void) => {
