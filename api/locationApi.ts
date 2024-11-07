@@ -12,11 +12,13 @@ export const fetchLocations = async ({textQuery, pageToken}: FetchLocations) => 
       pageSize: 20,
       pageToken,
     }
+
+    const key = process.env.EXPO_PUBLIC_MAP_API_KEY
   
     return await axios.post(url, requestBody, {
         headers: {
           'Content-Type': 'application/json',
-          'X-Goog-Api-Key': 'AIzaSyCPlaaOcBFuIaSQA2dEZuFAY3nIAvDR944',
+          'X-Goog-Api-Key': `${key}`,
           'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,nextPageToken',
         },
       })
