@@ -1,5 +1,4 @@
-import { parseToCommentProps, parseToReplyProps } from "@/utils/commonUtils"
-import { ActivityIndicator, FlatList, View, StyleSheet, TextInput, Touchable, TouchableOpacity } from "react-native"
+import { ActivityIndicator, FlatList, View, StyleSheet, TextInput, TouchableOpacity } from "react-native"
 import { PostUserItem } from "./PostUserItem"
 import { Btn, CharmBtn } from "../Base/Button"
 import { ChatListProps, CommentData, CommentType, FontSizes, FontTypes, IconNames, InputSizes, ReplyData } from "@/types/Components"
@@ -146,7 +145,7 @@ const Replies = (props: RepliesProps) => {
         onTouchEnd={() => props.showOptions && props.setShowOptions(null)}
         keyExtractor={(_, index) => `reply-item-${index}`}
         renderItem={({item}) => {
-          const reply = parseToReplyProps(item)
+          const reply = item
           return (
             <>
               <CommentItem type={"REPLY"} uid={props.user?.uid || ''} postCreatedUserId={props.postCreatedUserId} message={reply.reply} showOptions={props.showOptions} comment={reply} onUpdate={() => onPressUpdate(reply.reply, reply.id, reply.createdBy.uid)} setShowOptions={props.setShowOptions}/>
@@ -284,7 +283,7 @@ export const CommentsList = (props: ChatListProps) => {
           keyExtractor={(_, index) => `comment-item-${index}`}
           ListHeaderComponent={() => <View style={styles.listHeaderLine} />}
           renderItem={({item}) => {
-            const comment = parseToCommentProps(item)
+            const comment = item
             return (
               <Comment user={props.user} uid={props.uid} postCreatedUserId={props.postCreatedUserId} postType={props.postType} showOptions={showOptions} comment={comment} replyingComment={replyingComment} setReplyingComment={setReplyingComment} onUpdate={() => onOptionUpdatePress(comment.id, comment.postId, comment.comment)} setShowOptions={setShowOptions} />
             )

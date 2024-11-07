@@ -6,7 +6,6 @@ import { useTabSelector } from "@/contexts/tabSelectorContext"
 import { useFetchChallengePosts } from "@/hooks/get/useFetchChallengePosts"
 import { useAuthUserId } from "@/hooks/useAuthUser"
 import { IconNames, InputSizes, PostType } from "@/types/Components"
-import { parseToChallengeCardProps } from "@/utils/commonUtils"
 import { router } from "expo-router"
 import { useEffect, useState } from "react"
 import { ActivityIndicator, FlatList, View } from "react-native"
@@ -79,7 +78,7 @@ const OnGoingChallenges = () => {
                         showsVerticalScrollIndicator={false}
                         keyExtractor={(item, index) => `${item?.id}-${index}`}
                         renderItem={({ item }) => {
-                            const parsedItem = parseToChallengeCardProps(item)
+                            const parsedItem = item
                             return (
                                 <ChallengePostCard uid={uid || ''} item={parsedItem} />
                             )

@@ -161,90 +161,17 @@ export function parseToInterestCardProps(data: any): InterestCardData {
 
 export function parseToCommunityCardProps(data: any): CommunityCardData {
   return {
-    id: data.id,
-    title: data.title,
-    type: data.type,
+    ...data,
     imageUrls: {
       sm: data?.imageUrls?.sm,
       md: data?.imageUrls?.md,
       lg: data?.imageUrls?.lg,
     },
-    createdBy: {
-      uid: data.createdBy.uid,
-      displayName: data.createdBy.displayName,
-      profileImageUrl: data.createdBy.profileImageUrl
-    },
-    createdAt: {
-      _seconds: data.createdAt._seconds,
-      _nanoseconds: data.createdAt._nanoseconds
-    },
     scheduledAt: data?.scheduledAt?._seconds? {
       _seconds: data?.scheduledAt?._seconds,
       _nanoseconds: data?.scheduledAt?._nanoseconds
     }: !!data?.scheduledAt? isoDateTimeToSecond(data?.scheduledAt): undefined,
-    visibility: data.visibility,
     voteCount: data.votes.length
-  }
-}
-
-export function parseToChallengeCardProps(data: any): ChallengePostCardProps {
-  return {
-    id: data.id,
-    description: data.description,
-    type: data.type,
-    participantStatus: data.participantStatus,
-    challengeState: data.challengeState,
-    participationRangeId: data.participationRangeId,
-    location: data.location,
-    createdBy: {
-      uid: data.createdBy.uid,
-      displayName: data.createdBy.displayName,
-      profileImageUrl: data.createdBy.profileImageUrl
-    },
-    createdAt: {
-      _seconds: data.createdAt._seconds,
-      _nanoseconds: data.createdAt._nanoseconds
-    },
-    challengeAt: {
-      _seconds: data?.challengeAt?._seconds,
-      _nanoseconds: data?.challengeAt?._nanoseconds
-    },
-    allowAnyone: data.allowAnyone,
-    participantLimitReached: data.participantLimitReached
-  }
-}
-
-export function parseToCommentProps(data: any): CommentData {
-  return {
-    id: data.id,
-    postId: data.postId,
-    createdBy: {
-      uid: data.createdBy.uid,
-      displayName: data.createdBy.displayName,
-      profileImageUrl: data.createdBy.profileImageUrl
-    },
-    createdAt: {
-      _seconds: data.createdAt._seconds,
-      _nanoseconds: data.createdAt._nanoseconds
-    },
-    comment: data.comment,
-  }
-}
-
-export function parseToReplyProps(data: any): ReplyData {
-  return {
-    id: data.id,
-    commentId: data.commentId,
-    createdBy: {
-      uid: data.createdBy.uid,
-      displayName: data.createdBy.displayName,
-      profileImageUrl: data.createdBy.profileImageUrl
-    },
-    createdAt: {
-      _seconds: data.createdAt._seconds,
-      _nanoseconds: data.createdAt._nanoseconds
-    },
-    reply: data.reply,
   }
 }
 

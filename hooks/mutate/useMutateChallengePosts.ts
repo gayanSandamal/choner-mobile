@@ -48,17 +48,17 @@ export const useToggleUserChallengeStatus = (onSuccess: () => void, onError: (er
           if (data?.status === 200) {
             const newChallenge = data?.data?.result?.data
 
-            // const existingJoindedCache = await queryClient.getQueryData([QueryKeys.JOINED_CHALLENGES, variables.uid])
+            const existingJoindedCache = await queryClient.getQueryData([QueryKeys.JOINED_CHALLENGES, variables.uid])
             const existingAllCache = await queryClient.getQueryData([QueryKeys.CHALLENGES, variables.uid])
 
-            // if (!existingJoindedCache) {
-            //   await queryClient.invalidateQueries({queryKey: [QueryKeys.JOINED_CHALLENGES, variables.uid]})
-            // } else {
-            //   await queryClient.setQueryData([QueryKeys.JOINED_CHALLENGES, variables.uid], (cachedData: any) => {
-            //       if (!cachedData) return cachedData
-            //       return addOrUpdateItemsInCache(cachedData, newChallenge, 'challenges')
-            //   })
-            // }
+            if (!existingJoindedCache) {
+              await queryClient.invalidateQueries({queryKey: [QueryKeys.JOINED_CHALLENGES, variables.uid]})
+            } else {
+              await queryClient.setQueryData([QueryKeys.JOINED_CHALLENGES, variables.uid], (cachedData: any) => {
+                  if (!cachedData) return cachedData
+                  return addOrUpdateItemsInCache(cachedData, newChallenge, 'challenges')
+              })
+            }
 
             if (!existingAllCache) {
               await queryClient.invalidateQueries({queryKey: [QueryKeys.CHALLENGES, variables.uid]})
