@@ -2,8 +2,6 @@ import OnGoingChallenges from "@/components/Challenges/OnGoingChallenges"
 import { TabSelectorProvider } from "@/contexts/tabSelectorContext"
 import { View } from "react-native"
 
-export const ChallegeScreenTabs = ['ALL', 'JOINED']
-
 const OnGoingChallengesPage = () => {
     
     return (

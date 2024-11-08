@@ -109,12 +109,12 @@ export default function CommunityView() {
         }: undefined}
         postHeaderData={{
           icon: IconNames.addPost,
-          title: `Edit this  ${postData.type === CommunityPostTypes[0]? 'Post': 'Question'}`
+          title: `Edit this ${postData.type === CommunityPostTypes[0]? 'Post': 'Question'}`
         }}
         actionBarData={{ title: `Hey, want to update your ${postData.type === CommunityPostTypes[0]? 'Post': 'Question'}..?` }}
         onCancel={onCloseModal}
         setShowModal={onCloseModal}
-        onSuccess={onSuccessUpdate}
+        onSuccess={(data) => onSuccessUpdate(data as CommunityCardData)}
       />
       <ScrollView className='mt-2' showsVerticalScrollIndicator={false} onTouchEnd={() => onScrollTouchEnd()} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
         {postData.imageUrls.md && <ExpoImage source={postData?.imageUrls?.md} style={styles.imageSmall} contentFit={"cover"} placeholder={{ blurhash: BLURHASH[3] }} />}
@@ -151,7 +151,7 @@ export default function CommunityView() {
         <Label classNames="mt-5" type={FontTypes.FLabelBold} label={'Post data will be permanently removed!'} />
         <View className="mt-10 ml-0.5 mr-0.5 flex-row justify-between">
           <Btn outlined disabled={deletingPost} onPress={() => setShowDeleteModal(false)} icon={IconNames.cancel} size={InputSizes.md} color={Colors.light.white} label="Cancel" />
-          <Btn isLoading={deletingPost} disabled={deletingPost} onPress={() => deletePost({uid: postData.createdBy.uid, id: postData.id, type: postData.type, visibility: postData.visibility})} icon={IconNames.save} size={InputSizes.md} backgroundColor={Colors.dark.red} label="Yes, Delete" />
+          <Btn isLoading={deletingPost} disabled={deletingPost} onPress={() => deletePost({uid: postData.createdBy.uid, id: postData.id, type: postData.type, visibility: postData.visibility})} icon={IconNames.delete} size={InputSizes.md} backgroundColor={Colors.dark.red} label="Yes, Delete" />
         </View>
       </Modal>
     </>

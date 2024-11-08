@@ -455,9 +455,9 @@ export type PostModalProps = {
   showModal: boolean
   postHeaderData?: PostHeaderProps
   actionBarData?: ActionBarProps
-  postParams?: InterestPostParams | CommunityPostParams | ChallengePostParams
+  postParams?: InterestPostParams | CommunityPostParams | ChallengePostCardProps
   onCancel: () => void
-  onSuccess?: (data: CommunityCardData) => void
+  onSuccess?: (data: CommunityCardData | ChallengePostCardProps) => void
   setShowModal: (show: boolean) => void
 }
 
@@ -498,16 +498,6 @@ export enum ChallengePostCategory {
   ON_LOCATION = 'on-locaion'
 }
 
-export type ChallengePostParams = {
-  id: string
-  title: string
-  type: ChallengePostCategory.VIRTUAL | ChallengePostCategory.ON_LOCATION
-  challengeAt: {_nanoseconds: number, _seconds: number}  | undefined
-  participation: string
-  location?: string
-  allowAnyone?: boolean
-}
-
 export type SelectedCommentParams = {
   commentId: string
   replyId?: string
@@ -531,10 +521,10 @@ export type PublishCommunityPostProps = {
 
 export type PublishChallengePostProps = {
   edit?: boolean
-  postParams?: ChallengePostParams
+  postParams?: ChallengePostCardProps
   postHeaderData?: PostHeaderProps
   actionBarData?: ActionBarProps
-  onSuccess: () => void
+  onSuccess: (data?: ChallengePostCardProps) => void
 }
 
 export type Circle = {
@@ -640,6 +630,7 @@ export type PostUserItemProps = {
       _seconds: number
       _nanoseconds: number
   }
+  fontType?: FontType
   imageUrl?: string
   classNames?: string
   width?: string
@@ -728,7 +719,7 @@ export type ChallengePostCardProps = {
       displayName: string,
       profileImageUrl?: string
   }
-  allowAnyone?: boolean
+  joinAnyone?: boolean
   isOwner?: boolean
   participantLimitReached?: boolean
 }
@@ -752,6 +743,7 @@ export type ChatListProps = {
   addingComment: boolean
   user: User | null
   postType: string
+  disableCommenting?: boolean
   setCommentText: (text: string) => void
   onAddComment: () => void
 }
@@ -810,6 +802,7 @@ export type CommentInputProps = {
   headerText?: string
   placeholder?: string
   hideUser?: boolean
+  disableCommenting?: boolean
   onTextChange: (text: string) => void
   onSubmit: () => void
   onCancelUpdate: () => void

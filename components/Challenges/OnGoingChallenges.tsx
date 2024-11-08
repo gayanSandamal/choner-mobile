@@ -78,7 +78,7 @@ const OnGoingChallenges = () => {
                         showsVerticalScrollIndicator={false}
                         keyExtractor={(item, index) => `${item?.id}-${index}`}
                         renderItem={({ item }) => {
-                            const parsedItem = item
+                            const parsedItem = {...item, isOwner: uid === item.createdBy.uid}
                             return (
                                 <ChallengePostCard uid={uid || ''} item={parsedItem} />
                             )

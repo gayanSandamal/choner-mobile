@@ -330,7 +330,7 @@ export const CommentsList = (props: ChatListProps) => {
 
     return (
       <>
-        <CommentInput ref={commentInputRef} headerText="Comments" user={props.user} text={props.commentText} isDisabled={props.addingComment || updatingComment} isUpdating={updatingComment} commentType={!!updatingCommentData?.commentId? CommentType.UPDATE: CommentType.COMMENT} onTextChange={props.setCommentText} onSubmit={onCommentOrReply} onCancelUpdate={onCancelUpdateComment} />
+        <CommentInput disableCommenting={props.disableCommenting} ref={commentInputRef} headerText="Comments" user={props.user} text={props.commentText} isDisabled={props.addingComment || updatingComment} isUpdating={updatingComment} commentType={!!updatingCommentData?.commentId? CommentType.UPDATE: CommentType.COMMENT} onTextChange={props.setCommentText} onSubmit={onCommentOrReply} onCancelUpdate={onCancelUpdateComment} />
         <FlatList
           data={props.comments}
           removeClippedSubviews={true}

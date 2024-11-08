@@ -1,12 +1,12 @@
-import { createChallengePost, toggleUserChallengeStatus } from "@/api/challengePostApi"
+import { createUpdateChallengePost, deleteChallengePost, toggleUserChallengeStatus } from "@/api/challengePostApi"
 import { QueryKeys } from "@/constants/values"
-import { addOrUpdateItemsInCache } from "@/utils/commonUtils"
+import { addOrUpdateItemsInCache, updatePageOnDelete } from "@/utils/commonUtils"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-export const useCreateChallengePost = (onSuccess: () => void, onError: (error: Error) => void) => {
+export const useCreateUpdateChallengePost = (onSuccess: (data: any) => void, onError: (error: Error) => void) => {
     const queryClient = useQueryClient()
     return useMutation({
-        mutationFn: createChallengePost,
+        mutationFn: createUpdateChallengePost,
         async onSuccess(data, variables) {
             if (data?.status === 200) {
               const newChallenge = data?.data?.result?.data
@@ -25,7 +25,7 @@ export const useCreateChallengePost = (onSuccess: () => void, onError: (error: E
 
               if (!existingAllCache) {
                 await queryClient.invalidateQueries({queryKey: [QueryKeys.CHALLENGES, variables.uid]})
-                onSuccess()
+                onSuccess(newChallenge)
                 return
               }
 
@@ -33,7 +33,7 @@ export const useCreateChallengePost = (onSuccess: () => void, onError: (error: E
                 if (!cachedData) return cachedData
                 return addOrUpdateItemsInCache(cachedData, newChallenge, 'challenges')
               })
-              onSuccess()
+              onSuccess(newChallenge)
             }
         },
         onError,
@@ -69,6 +69,30 @@ export const useToggleUserChallengeStatus = (onSuccess: () => void, onError: (er
             await queryClient.setQueryData([QueryKeys.CHALLENGES, variables.uid], (cachedData: any) => {
               if (!cachedData) return cachedData
               return addOrUpdateItemsInCache(cachedData, newChallenge, 'challenges')
+            })
+            onSuccess()
+          }
+      },
+      onError,
+  })
+}
+
+export const useDeleteChallengePost = (onSuccess: () => void, onError: (error: Error) => void) => {
+  const queryClient = useQueryClient()
+  return useMutation({
+      mutationFn: deleteChallengePost,
+      async onSuccess(data, variables) {
+          if (data?.status === 200) {
+            await queryClient.setQueryData([QueryKeys.CHALLENGES, variables.uid], (cachedData: any) => {
+              if (!cachedData) return cachedData
+              const updatedPages = updatePageOnDelete(cachedData, 'challenges', variables.challengeId)
+              return updatedPages
+            })
+
+            await queryClient.setQueryData([QueryKeys.JOINED_CHALLENGES, variables.uid], (cachedData: any) => {
+              if (!cachedData) return cachedData
+              const updatedPages = updatePageOnDelete(cachedData, 'challenges', variables.challengeId)
+              return updatedPages
             })
             onSuccess()
           }

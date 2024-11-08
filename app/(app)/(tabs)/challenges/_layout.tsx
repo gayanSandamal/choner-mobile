@@ -1,4 +1,3 @@
-import { TabSelectorProvider } from "@/contexts/tabSelectorContext"
 import { Stack } from "expo-router"
 
 export default function ChallengesLayout() {
@@ -6,6 +5,7 @@ export default function ChallengesLayout() {
         <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name='index' />
             <Stack.Screen name='on-going-challenges' />
+            <Stack.Screen name='challenge-view' />
         </Stack>
     )
 }

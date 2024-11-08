@@ -114,7 +114,8 @@ export const useDeleteComment = (onSuccess: () => void, onError: (error: Error) 
           if (data?.status === 200) {
             await queryClient.setQueryData([QueryKeys.COMMENTS, variables.postId, variables.type, variables.uid], (cachedData: any) => {
               if (!cachedData) return cachedData
-              return updatePageOnDelete(cachedData, 'comments', variables.commentId)
+              const updatedComments = updatePageOnDelete(cachedData, 'comments', variables.commentId)
+              return updatedComments
             })
             onSuccess()
           }
@@ -131,7 +132,8 @@ export const useDeleteReply = (onSuccess: () => void, onError: (error: Error) =>
           if (data?.status === 200) {
             await queryClient.setQueryData([QueryKeys.REPLIES, variables.postId, variables.commentId, variables.type, variables.uid], (cachedData: any) => {
               if (!cachedData) return cachedData
-              return updatePageOnDelete(cachedData, 'replies', variables.replyId)
+              const updatedReplies =  updatePageOnDelete(cachedData, 'replies', variables.replyId)
+              return updatedReplies
             })
             onSuccess()
           }
