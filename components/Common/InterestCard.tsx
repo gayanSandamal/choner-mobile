@@ -69,7 +69,7 @@ export const InterestCard = ({isOwner, data, disabled, classNames, navigationPat
             {!isOwner && <Btn classNames="mr-2" icon={IconNames.interests} label="Interested" size={InputSizes.sm} outlined />}
             <View className='flex-row items-center'>
               <Icon name={IconNames.interestsFill} size={InputSizes.sm} />
-              <Label label={`|  ${data.voteCount}`} type={FontTypes.FLabel} classNames='ml-1' />
+              <Label label={`|  ${data.voteCount || 0}`} type={FontTypes.FLabel} classNames='ml-1' />
             </View>
           </View>
           <CharmBtn icon={IconNames.options} onPress={() => setShowOptionInterest && setShowOptionInterest(data.id)} size={InputSizes.md} frame={true} />

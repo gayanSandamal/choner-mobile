@@ -8,7 +8,6 @@ import { Btn } from "../Base/Button"
 import { Colors } from "@/constants/Colors"
 import { peopleCountOption } from "@/constants/values"
 import { useToggleUserChallengeStatus } from "@/hooks/mutate/useMutateChallengePosts"
-import { memo } from "react"
 
 const styles = StyleSheet.create({
     wrapper: { borderWidth: 1, borderRadius: 20, borderColor: Colors.dark.main, width: '100%', backgroundColor: Colors.dark.darkText },
@@ -26,9 +25,39 @@ export const ChallengePostCard = ({item, uid}: ChallengePostCardTypes) => {
     const isOngoing = item.challengeState === ChallengeState.ONGOING
     const isEnded = item.challengeState === ChallengeState.ENDED
     const showJoinButton = item.participantStatus === UserChallengeStatus.NOT_JOINED
+    const showRequestButton = item.participantStatus === UserChallengeStatus.PENDING_REQUEST
     const isLimitReached = item.participantLimitReached
 
     const onPressJoin = () => toggleJoin({uid: uid, challengeId: item.id})
+
+    // const navigateToInterest = () => {
+    //     if (showOptionInterest === data.id) {
+    //       setShowOptionInterest && setShowOptionInterest('')
+    //       return
+    //     }
+      
+    //     !disabled && router.push({
+    //       pathname: navigationPath || '/interests/interest-view',
+    //       params: {
+    //         data: JSON.stringify({
+    //           isOwner,
+    //           id: data.id,
+    //           title: data.title,
+    //           description: data.description,
+    //           createdBy: {
+    //             ...data.createdBy,
+    //             profileImageUrl: escapePercent(data?.createdBy?.profileImageUrl || '')
+    //           },
+    //           createdAt: data.createdAt,
+    //           scheduledAt: data.scheduledAt,
+    //           visibility: data.visibility,
+    //           voteCount: data.voteCount,
+    //         })
+    //       },
+    //     })
+        
+    //     setShowOptionInterest && setShowOptionInterest('')
+    //   }
 
     return (
         <View className="py-[16px] pl-[16px]" style={{...styles.wrapper, ...(isOngoing && {borderColor: Colors.dark["green-shade-1"]})}}>
@@ -46,33 +75,35 @@ export const ChallengePostCard = ({item, uid}: ChallengePostCardTypes) => {
                 <Label classNames="mr-6" containerStyles={{ fontSize: 16, fontWeight: 400 }} color={Colors.light.white} label={item.location?.name || ''} ellipsizeMode="tail" numberOfLines={2} />
             </View>
 
-            <View className="flex flex-row items-center mt-4">
+            <View className="flex flex-row items-center mt-4 pr-3 w-full">
                 {isScheduled && (
                     <>
                         <Icon name={IconNames.trophy} color={Colors.dark["primary-material-1"]} classNames="mr-3" />
-                        <Label containerStyles={{ fontSize: 16, fontWeight: 400 }} color={Colors.light.white} label={`Challenge starts at${postCreateTimeToDate(item.challengeAt)}`} ellipsizeMode="tail" numberOfLines={1} />
+                        <Label classNames="mr-6" containerStyles={{ fontSize: 16, fontWeight: 400 }} color={Colors.light.white} label={`Challenge starts at ${postCreateTimeToDate(item.challengeAt)}`} ellipsizeMode="tail" numberOfLines={2} />
                     </>
                 )}
                 {isOngoing && (
                     <>
                         <Icon name={IconNames.active} color={Colors.dark["green-shade-1"]} classNames="mr-3" />
-                        <Label containerStyles={{ fontSize: 16, fontWeight: 400 }} color={Colors.light.white} label={`Challenge has started`} ellipsizeMode="tail" numberOfLines={1} />
+                        <Label classNames="mr-6" containerStyles={{ fontSize: 16, fontWeight: 400 }} color={Colors.light.white} label={`Challenge has started`} ellipsizeMode="tail" numberOfLines={1} />
                     </>
                 )}
                 {isEnded && (
                     <>
                         <Icon name={IconNames.trophy} color={Colors.dark["grey-shade-2"]} classNames="mr-3" />
-                        <Label containerStyles={{ fontSize: 16, fontWeight: 400 }} color={Colors.light.white} label={`Challenge has ended`} ellipsizeMode="tail" numberOfLines={1} />
+                        <Label classNames="mr-6" containerStyles={{ fontSize: 16, fontWeight: 400 }} color={Colors.light.white} label={`Challenge has ended`} ellipsizeMode="tail" numberOfLines={1} />
                     </>
                 )}
             </View>
 
             <View className="mt-5" style={styles.bottomItemsWrapper}>
-                <View className="flex-row">
-                    {showJoinButton && <Btn isLoading={toggleJoining} disabled={toggleJoining || isLimitReached} size={InputSizes.md} backgroundColor={isLimitReached? Colors.dark.disabled: undefined} fontType={FontTypes.FLabelBold} label={'JOIN'} icon={IconNames.join} onPress={onPressJoin} />}
-                    {!showJoinButton && <Btn isLoading={false} disabled={true} size={InputSizes.md} fontType={FontTypes.FLabelBold} backgroundColor={Colors.dark.disabled} label={'JOINED'} icon={IconNames.join} onPress={() => { }} />}
-                    <View className="mr-3" />
-                </View>
+                {uid!== item.createdBy.uid && (
+                    <View className="flex-row">
+                        {showJoinButton && <Btn isLoading={toggleJoining} disabled={toggleJoining || isLimitReached} size={InputSizes.md} backgroundColor={isLimitReached? Colors.dark.disabled: undefined} fontType={FontTypes.FLabelBold} label={'JOIN'} icon={IconNames.join} onPress={onPressJoin} />}
+                        {(!showJoinButton || showRequestButton) && <Btn isLoading={false} disabled={true} size={InputSizes.md} fontType={FontTypes.FLabelBold} backgroundColor={Colors.dark.disabled} label={showRequestButton? 'REQUESTED': 'JOINED'} icon={IconNames.join} onPress={() => { }} />}
+                        <View className="mr-3" />
+                    </View>
+                )}
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{alignItems: 'center'}}>
                     <View className="flex flex-row items-center px-[10px]" style={styles.infoItem}>
                         <Icon name={item.type === ChallengePostCategory.VIRTUAL ? IconNames.virtual : IconNames.onLocation} color={Colors.dark["primary-material-1"]} classNames="mr-1.5" />

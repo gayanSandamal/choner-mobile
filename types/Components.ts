@@ -594,6 +594,7 @@ export type CommentData = {
     _seconds: number,
     _nanoseconds: number
   }
+  replyCount?: number
   isOwner?: boolean
 }
 

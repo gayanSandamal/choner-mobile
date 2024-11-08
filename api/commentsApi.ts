@@ -2,6 +2,8 @@ import { getAxios } from "@/utils/AxiosUtils"
 
 const axios = getAxios(true)
 
+/*----------Comment APIs-----------*/
+
 // Create Comment
 export type CreateCommentProps = {
     uid: string
@@ -13,18 +15,6 @@ export type CreateCommentProps = {
 export const createComments = async ({postId, comment, type}: CreateCommentProps) => {
     const data = { postId, comment, type }
     return axios.post('/createCommentHandler', { data })
-}
-
-// Get Comments
-export type GetCommentProps = {
-    postId: string
-    type: string
-    lastVisible: any
-}
-
-export const getComments = async ({postId, type, lastVisible}: GetCommentProps) => {
-    const data = { postId, type, lastVisible }
-    return axios.post('/getCommentsHandler', { data })
 }
 
 // Update Comments
@@ -41,17 +31,46 @@ export const updateComments = async ({commentId, comment, type}: UpdateCommentPr
     return axios.post('/updateCommentHandler', { data })
 }
 
-// Create Comment
+// Delete Comment
+export type DeleteCommentProps = {
+    uid: string
+    commentId: string
+    type: string
+    postId: string
+}
+
+export const deleteComment = async ({commentId, postId, type}: DeleteCommentProps) => {
+    const data = { commentId, postId, type }
+    return axios.post('/deleteCommentHandler', { data })
+}
+
+// Get Comments
+export type GetCommentProps = {
+    postId: string
+    type: string
+    lastVisible: any
+}
+
+export const getComments = async ({postId, type, lastVisible}: GetCommentProps) => {
+    const data = { postId, type, lastVisible }
+    return axios.post('/getCommentsHandler', { data })
+}
+
+
+/*----------Reply APIs-----------*/
+
+// Create Reply
 export type CreateReplyProps = {
     uid: string
     postId: string
+    replyCount: number
     commentId: string
     reply: string
     type: string
 }
 
-export const createReply = async ({reply, commentId, type}: CreateReplyProps) => {
-    const data = { reply, commentId, type }
+export const createReply = async ({postId, reply, commentId, type}: CreateReplyProps) => {
+    const data = { postId, reply, commentId, type }
     return axios.post('/createReplyHandler', { data })
 }
 
@@ -68,6 +87,20 @@ export type UpdateReplyProps = {
 export const updateReply = async ({commentId, replyId, reply, type}: UpdateReplyProps) => {
     const data = { commentId, replyId, reply, type }
     return axios.post('/updateReplyHandler', { data })
+}
+
+// Delete Reply
+export type DeleteReplyProps = {
+    uid: string
+    commentId: string
+    replyId: string
+    type: string
+    postId: string
+}
+
+export const deleteReply = async ({replyId, type}: DeleteReplyProps) => {
+    const data = { replyId, type }
+    return axios.post('/deleteReplyHandler', { data })
 }
 
 // Get Replies
