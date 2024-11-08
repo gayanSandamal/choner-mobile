@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 type ChallengeViewCardTypes = { item: ChallengePostCardProps, uid: string, onPressOptions: () => void}
 
 export const ChallengeViewCard = ({item, uid, onPressOptions}: ChallengeViewCardTypes) => {
-    const {mutate: toggleJoin, isPending: toggleJoining} = useToggleUserChallengeStatus(() => {}, (data) => {})
+    const {mutate: toggleJoin, isPending: toggleJoining} = useToggleUserChallengeStatus(() => {}, () => {})
     
     const isScheduled = item.challengeState === ChallengeState.SCHEDULED
     const isOngoing = item.challengeState === ChallengeState.ONGOING

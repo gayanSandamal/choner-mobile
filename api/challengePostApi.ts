@@ -19,7 +19,7 @@ export type CreateUpdateChallengePostProps = {
 
 export const createUpdateChallengePost = async ({id, participantStatus, challengeState, type, participationRangeId, description, location, challengeAt, joinAnyone}: CreateUpdateChallengePostProps) => {
     if (id) {
-        const data = { id, participantStatus, challengeState, participationRangeId, description, location, challengeAt }
+        const data = { id, participantStatus, challengeState, participationRangeId, description, location, challengeAt, joinAnyone }
         return axios.post('/updateChallengeHandler', { data })
     }
     const data = { participantStatus, challengeState, type, participationRangeId, description, location, challengeAt, joinAnyone }
