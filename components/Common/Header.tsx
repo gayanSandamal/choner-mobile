@@ -36,6 +36,8 @@ const getTabTitle = (pathname: string) => {
         return 'Community'
     } else if (pathname.endsWith('/on-going-challenges')) {
         return 'On-Going Challenges'
+    } else if (pathname.endsWith('/challenge-view')) {
+        return 'Challenge'
     } else {
         return tabs.find((tab: TabType) => `/${tab.name}` === pathname)?.title
     }
@@ -48,15 +50,15 @@ const Header = (props: HeaderProps) => {
     return (
         <View className='rounded-2xl flex flex-row items-center justify-between px-5' style={styles.headerWrapper}>
             <View className='flex flex-row items-center'>
-                {hasSearch(pathname) && <CharmBtn icon={IconNames.search} onPress={() => { }} size={InputSizes.md} frame={false} />}
-                <Label classNames='ml-3' label={getTabTitle(pathname)} type={FontTypes.FTitle3Bold} color={FontColors.light} />
+                {/* {hasSearch(pathname) && <CharmBtn icon={IconNames.search} onPress={() => { }} size={InputSizes.md} frame={false} />} */}
+                <Label  label={getTabTitle(pathname)} type={FontTypes.FTitle3Bold} color={FontColors.light} />
             </View>
             <View className='flex flex-row items-center'>
-                <CharmBtn onPress={() => { }} size={InputSizes.md} frame={false}>
+                {/* <CharmBtn onPress={() => { }} size={InputSizes.md} frame={false}>
                     {
                         unreadNotifications && <View style={{ position: 'absolute', bottom: 4, right: 4 }}><Indicator /></View>
                     }
-                </CharmBtn>
+                </CharmBtn> */}
                 <Avatar img={user?.profileImageUrl} containerStyles={{ marginLeft: 10 }} size={InputSizes.sm} onPressAvatar={props.onPressAvatar} />
             </View>
         </View>

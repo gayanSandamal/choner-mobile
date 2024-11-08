@@ -1,6 +1,6 @@
-import { createComments, createReply, updateComments, updateReply } from "@/api/commentsApi"
+import { createComments, createReply, deleteComment, deleteReply, updateComments, updateReply } from "@/api/commentsApi"
 import { QueryKeys } from "@/constants/values"
-import { addOrUpdateItemsInCache } from "@/utils/commonUtils"
+import { addOrUpdateItemsInCache, updateItemInCacheList, updatePageOnDelete } from "@/utils/commonUtils"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 
@@ -60,6 +60,16 @@ export const useCreateReply = (onSuccess: () => void, onError: (error: Error) =>
 
             const existingCache = await queryClient.getQueryData([QueryKeys.REPLIES, variables.postId, variables.commentId, variables.type, variables.uid])
 
+            const existingComments = await queryClient.getQueryData([QueryKeys.COMMENTS, variables.postId, variables.type, variables.uid])
+
+            if (existingComments) {
+              const updatedReplyCount = variables.replyCount + 1
+              await queryClient.setQueryData([QueryKeys.COMMENTS, variables.postId, variables.type, variables.uid], (cachedData: any) => {
+                if (!cachedData) return cachedData;
+                return updateItemInCacheList(cachedData, variables.commentId, 'comments', 'replyCount', updatedReplyCount)
+              })
+            }
+
             if (!existingCache) {
               await queryClient.invalidateQueries({queryKey: [QueryKeys.REPLIES, variables.postId, variables.commentId, variables.type, variables.uid]})
               onSuccess()
@@ -96,21 +106,39 @@ export const useUpdateReply = (onSuccess: () => void, onError: (error: Error) =>
   })
 }
 
-const updatePageOnDelete = (cachedData: any, commentId: string) => {
-    const updatedPages = cachedData.pages.map((page: any) => ({
-      ...page,
-      data: {
-        ...page.data,
-        result: {
-          ...page.data.result,
-          comments: page.data.result.comments.filter(
-            (comment: any) => comment.id !== commentId
-          ),
-        },
+export const useDeleteComment = (onSuccess: () => void, onError: (error: Error) => void) => {
+  const queryClient = useQueryClient()
+  return useMutation({
+      mutationFn: deleteComment,
+      async onSuccess(data, variables) {
+          if (data?.status === 200) {
+            await queryClient.setQueryData([QueryKeys.COMMENTS, variables.postId, variables.type, variables.uid], (cachedData: any) => {
+              if (!cachedData) return cachedData
+              const updatedComments = updatePageOnDelete(cachedData, 'comments', variables.commentId)
+              return updatedComments
+            })
+            onSuccess()
+          }
       },
-    }))
-  
-    return updatedPages
-  }
-  
+      onError,
+  })
+}
+
+export const useDeleteReply = (onSuccess: () => void, onError: (error: Error) => void) => {
+  const queryClient = useQueryClient()
+  return useMutation({
+      mutationFn: deleteReply,
+      async onSuccess(data, variables) {
+          if (data?.status === 200) {
+            await queryClient.setQueryData([QueryKeys.REPLIES, variables.postId, variables.commentId, variables.type, variables.uid], (cachedData: any) => {
+              if (!cachedData) return cachedData
+              const updatedReplies =  updatePageOnDelete(cachedData, 'replies', variables.replyId)
+              return updatedReplies
+            })
+            onSuccess()
+          }
+      },
+      onError,
+  })
+}
   

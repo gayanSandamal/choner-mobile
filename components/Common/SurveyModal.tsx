@@ -1,9 +1,9 @@
 import React, { useState } from "react"
-import { Modal, ScrollView, StyleSheet, View } from "react-native"
+import { Modal, Platform, ScrollView, StyleSheet, View } from "react-native"
 import NavigateBack from "./NavigateBack"
 import Label from "../Base/Label"
 import { BtnDetailed } from "../Base/Button"
-import { CompletedForm, FontTypes, IconNames, JustifyContent, SurveyData, SurveyPageData } from "@/types/Components"
+import { CompletedForm, FontTypes, IconNames, SurveyData, SurveyPageData } from "@/types/Components"
 import { Colors } from "@/constants/Colors"
 import { Route, TabView } from "react-native-tab-view"
 import { LinearGradient } from "expo-linear-gradient"
@@ -99,7 +99,8 @@ export const SurveyModal = (props: SurveyModalProps) => {
     return (
         <Modal transparent={true} visible={props.showForm} animationType="fade" onRequestClose={() => props.setShowForm(false)}>
             <View className="w-full h-full bg-grey pt-7">
-                <NavigateBack classNames="px-3" label="TAKE THE SURVEY" navigate={() => props.setShowForm(false)} />
+                {Platform.OS === 'ios' && <View style={{height: 30}} />}
+                <NavigateBack classNames="px-3" label="GIVE US YOUR FEEDBACK" navigate={() => props.setShowForm(false)} />
                 <Label classNames="px-3 mt-5" type={FontTypes.FTitle1} label={(props.surveyData.title).toUpperCase()} containerStyles={{ letterSpacing: 4 }} />
                 <View className="w-full px-3">
                     <View className="w-[50%] h-[1px] mt-3" style={{backgroundColor: Colors.dark["grey-shade-4"]}}/>

@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, TouchableOpacity, View, ScrollView, Switch, Text } from "react-native"
 import Label from "../Base/Label"
-import { ActionBarProps, ChallengePostCategory, ChallengePostParams, ChallengeState, CommunityCardData, CommunityPostParams, FontSizes, FontTypes, IconNames, InputSizes, InterestPostParams, LocationData, PostBottomActionsProps, PostHeaderProps, PostModalProps, PostType, PostWrapperComponentProps, PublishChallengePostProps, PublishCommunityPostProps, PublishInterestPostProps, UploadImage, UserChallengeStatus } from "@/types/Components"
+import { ActionBarProps, ChallengePostCardProps, ChallengePostCategory, ChallengeState, CommunityCardData, CommunityPostParams, FontSizes, FontTypes, IconNames, InputSizes, InterestPostParams, LocationData, PostBottomActionsProps, PostHeaderProps, PostModalProps, PostType, PostWrapperComponentProps, PublishChallengePostProps, PublishCommunityPostProps, PublishInterestPostProps, UploadImage, UserChallengeStatus } from "@/types/Components"
 import { Colors } from "@/constants/Colors"
 import React, { useCallback, useEffect, useState } from "react"
 import Icon from "../Base/Icon"
@@ -21,7 +21,7 @@ import { CreateCommunityPostProps, UpdateCommunityPostProps } from "@/api/commun
 import { useUploadImage } from "@/hooks/mutate/useMutateImage"
 import { CommunityPostTypes, ImageSizes, peopleCountOption, StoragePaths } from "@/constants/values"
 import { Input } from "../Base/Input"
-import { useCreateChallengePost } from "@/hooks/mutate/useMutateChallengePosts"
+import { useCreateUpdateChallengePost } from "@/hooks/mutate/useMutateChallengePosts"
 import { LocationBottomDrawer } from "../Common/LocationBottomDrawer"
 
 const styles = StyleSheet.create({
@@ -420,19 +420,19 @@ export const PublishCommunityPost = (props: PublishCommunityPostProps) => {
 const PublishChallengePost = (props: PublishChallengePostProps) => {
   const uid = useAuthUserId()
 
-  const [description, setDescription] = useState('')
-  const [type, setType] = useState(ChallengePostCategory.ON_LOCATION)
-  const [date, setDate] = useState<Date | null>(null)
+  const [description, setDescription] = useState(props.postParams?.description || '')
+  const [type, setType] = useState(props.postParams?.type || ChallengePostCategory.ON_LOCATION)
+  const [date, setDate] = useState<Date | null>(!!props.postParams?.challengeAt ? timeDataToLocalString(props.postParams?.challengeAt) : null)
   const [showDatePicker, setShowDatePicker] = useState(false)
-  const [location, setLocation] = useState<LocationData>({name: '', address: ''})
-  const [peopleCount, setPeopleCount] = useState(peopleCountOption[0])
-  const [joinAnyone, setJoinAnyone] = useState(false)
+  const [location, setLocation] = useState<LocationData>(props.postParams?.location || {name: '', address: ''})
+  const [peopleCount, setPeopleCount] = useState(peopleCountOption[props.postParams? (parseInt(`${props.postParams?.participationRangeId}`) - 1): 0])
+  const [joinAnyone, setJoinAnyone] = useState(props.postParams?.joinAnyone || false)
   const [showDrawer, setShowDrawer] = useState<boolean>(false)
 
-  const { mutate: createChallenge, isPending: creatingPost } = useCreateChallengePost(() => props.onSuccess(), () => { })
+  const { mutate: createUpdateChallenge, isPending: creatingPost } = useCreateUpdateChallengePost((data) => props.onSuccess(data), () => {})
 
-  const onCreateChallenge = () => {
-    uid && description?.trim() !== '' && location?.name?.trim() !== '' && !!date && createChallenge({
+  const onCreateUpdateChallenge = () => {
+    uid && description?.trim() !== '' && location?.name?.trim() !== '' && !!date && createUpdateChallenge({
       uid,
       participantStatus: UserChallengeStatus.JOINED,
       challengeState: ChallengeState.SCHEDULED,
@@ -441,7 +441,8 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
       description,
       location,
       challengeAt: date?.toISOString() || '',
-      joinAnyone
+      joinAnyone,
+      ...(props?.postParams && { id: props.postParams.id})
     })
   }
 
@@ -523,7 +524,7 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
             <Label classNames="ml-2 w-[90%]" color={Colors.dark["grey-shade-2"]} containerStyles={{ fontStyle: 'italic' }} label="Participation is limited by group size" />
           </View>
 
-          <Btn isLoading={creatingPost} disabled={creatingPost || publishDisabled} size={InputSizes.md} fontType={FontTypes.FLabelBold} wrapperClasses="ml-[auto] mt-3" label={props.postParams ? 'UPDATE' : 'PUBLISH'} icon={IconNames.send} onPress={onCreateChallenge} />
+          <Btn isLoading={creatingPost} disabled={creatingPost || publishDisabled} size={InputSizes.md} fontType={FontTypes.FLabelBold} wrapperClasses="ml-[auto] mt-3" label={props.postParams ? 'UPDATE' : 'PUBLISH'} icon={IconNames.send} onPress={onCreateUpdateChallenge} />
         </PostWrapperComponent>
         <View className="mb-20" />
       </ScrollView>
@@ -543,7 +544,7 @@ export const PostModal = (props: PostModalProps) => {
         <PublishCommunityPost postParams={props.postParams as CommunityPostParams} actionBarData={props.actionBarData} onSuccess={(data) => props.onSuccess?.(data)} onClose={props.onCancel} />
       )}
       {props.postType === PostType.challenge && (
-        <PublishChallengePost postHeaderData={props.postHeaderData} actionBarData={props.actionBarData} postParams={props.postParams as ChallengePostParams} onSuccess={props.onCancel} />
+        <PublishChallengePost postHeaderData={props.postHeaderData} actionBarData={props.actionBarData} postParams={props.postParams as ChallengePostCardProps} onSuccess={(data) => {!!data? props.onSuccess && props.onSuccess(data): props.onCancel()}} />
       )}
     </Modal>
   )

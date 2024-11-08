@@ -3,8 +3,8 @@ import { getAxios } from "@/utils/AxiosUtils"
 
 const axios = getAxios(true)
 
-// Create Challenge post
-export type CreateChallengePostProps = {
+// Create Update Challenge post
+export type CreateUpdateChallengePostProps = {
     uid: string
     participantStatus: string
     challengeState: string
@@ -14,9 +14,14 @@ export type CreateChallengePostProps = {
     location: LocationData
     challengeAt: string
     joinAnyone: boolean
+    id?: string
 }
 
-export const createChallengePost = async ({participantStatus, challengeState, type, participationRangeId, description, location, challengeAt, joinAnyone}: CreateChallengePostProps) => {
+export const createUpdateChallengePost = async ({id, participantStatus, challengeState, type, participationRangeId, description, location, challengeAt, joinAnyone}: CreateUpdateChallengePostProps) => {
+    if (id) {
+        const data = { id, participantStatus, challengeState, participationRangeId, description, location, challengeAt }
+        return axios.post('/updateChallengeHandler', { data })
+    }
     const data = { participantStatus, challengeState, type, participationRangeId, description, location, challengeAt, joinAnyone }
     return axios.post('/createChallengeHandler ', { data })
 }
@@ -54,4 +59,15 @@ type ToggleUserChallengeStatusProps = {
 export const toggleUserChallengeStatus = async ({challengeId}: ToggleUserChallengeStatusProps) => {
     const data = { challengeId }
     return axios.post('/toggleChallengeParticipationHandler', { data })
+}
+
+// Delete Challenge
+type DeleteChallengeProps = {
+    uid: string
+    type: string
+    challengeId: string
+}
+export const deleteChallengePost = async ({challengeId, type}: DeleteChallengeProps) => {
+    const data = { id: challengeId, type }
+    return axios.post('/deleteChallengeHandler', { data })
 }

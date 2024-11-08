@@ -108,7 +108,7 @@ export const postCreateTimeToDate = (createdAt: {_seconds: number, _nanoseconds:
     const dateTime = date.toLocaleDateString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false, month: 'long', day: 'numeric' }).split(',')
     const dayArr = dateTime[0].split(' ')
     if (clipeDate) {
-      return dateTime[1] + ', ' + dayArr[1] + ' ' + dayArr[0].substring(0,3)
+      return dateTime[1]?.trim() + ', ' + dayArr[1] + ' ' + dayArr[0].substring(0,3)
     }
 
     if (newLineDate && !clipeDate) {
@@ -116,10 +116,10 @@ export const postCreateTimeToDate = (createdAt: {_seconds: number, _nanoseconds:
     }
 
     if (newLineDate && clipeDate) {
-      return dateTime[1] + ',\n' + dayArr[1] + ' ' + dayArr[0].substring(0,3)
+      return dateTime[1]?.trim() + ',\n' + dayArr[1] + ' ' + dayArr[0].substring(0,3)
     }
 
-    return dateTime[1] + ', ' + dayArr[1] + ' ' + dayArr[0]
+    return dateTime[1]?.trim() + ', ' + dayArr[1] + ' ' + dayArr[0]
   }
 }
 
@@ -264,6 +264,32 @@ export const setBtnOutlineColor = (condition: boolean) => {
 
 export const capitalize = (s: string) => s ? String(s[0]).toUpperCase() + String(s).slice(1): ''
 
+export const updateItemInCacheList = (cachedData: any, itemId: string, itemKey: string, updateKey: string, updateKeyValue: any) => {
+  const updatedPages = cachedData.pages.map((page: any) => {
+    const existingIndex = page.data.result?.[itemKey].findIndex((item: any) => item.id === itemId)
+    if (existingIndex !== -1) {
+      const updatedItems = [...page.data.result?.[itemKey]]
+      updatedItems[existingIndex] = {...updatedItems[existingIndex], [updateKey]: updateKeyValue}
+      return {
+        ...page,
+        data: {
+          ...page.data,
+          result: {
+            ...page.data.result,
+            [itemKey]: updatedItems,
+          },
+        },
+      };
+    }
+    return page
+  })
+
+  return {
+    ...cachedData,
+    pages: updatedPages,
+  }
+}
+
 export const addOrUpdateItemsInCache = (cachedData: any, newComment: any, key: string) => {
   const updatedPages = cachedData.pages.map((page: any) => {
     const existingIndex = page.data.result?.[key].findIndex((comment: any) => comment.id === newComment.id);
@@ -306,6 +332,27 @@ export const addOrUpdateItemsInCache = (cachedData: any, newComment: any, key: s
     pages: updatedPages,
   }
 }
+
+export const updatePageOnDelete = (cachedData: any, itemKey: string, itemId: string) => {
+  const updatedPages = cachedData.pages.map((page: any) => ({
+    ...page,
+    data: {
+      ...page.data,
+      result: {
+        ...page.data.result,
+        [itemKey]: page.data.result[itemKey].filter(
+          (item: any) => item.id !== itemId
+        ),
+      },
+    },
+  }))
+
+  return {
+    ...cachedData,
+    pages: updatedPages,
+  }
+}
+  
 
 export const filterPlusCodeFromAddress = (address: string) => {
   const plusCodePattern = /\b\w{4}\+\w{2,}\b/

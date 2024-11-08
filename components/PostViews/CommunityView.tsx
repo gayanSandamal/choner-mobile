@@ -21,7 +21,7 @@ import { CommentsList } from '../Common/CommentsList'
 import { useQueryClient } from '@tanstack/react-query'
 
 const styles = StyleSheet.create({
-  imageSmall: {width: '100%', aspectRatio: 1.5, borderRadius: 10, borderWidth: 3, marginTop: 10, borderColor: Colors.dark['grey-shade-3']},
+  imageSmall: {width: '100%', aspectRatio: 1.5, borderRadius: 10, borderWidth: 3, borderColor: Colors.dark['grey-shade-3']},
   btnDetailedWrapper: {width: 130, height: 35, marginEnd: 0, marginStart: 'auto', marginTop: 10, backgroundColor: Colors.dark['soundcloud-gdr-1'], borderRadius: 20, borderColor: Colors.dark['soundcloud-gdr-1'], paddingLeft: 9, paddingRight: 10, marginBottom: 0},
   optionBtnWrapper: { position: 'absolute', height: 10, width: 120, right: 0, zIndex: 1},
   commentsSelerator: {borderTopWidth: 1, borderTopColor: Colors.dark['grey-shade-3'], width: '100%'}
@@ -109,14 +109,14 @@ export default function CommunityView() {
         }: undefined}
         postHeaderData={{
           icon: IconNames.addPost,
-          title: `Edit this  ${postData.type === CommunityPostTypes[0]? 'Post': 'Question'}`
+          title: `Edit this ${postData.type === CommunityPostTypes[0]? 'Post': 'Question'}`
         }}
         actionBarData={{ title: `Hey, want to update your ${postData.type === CommunityPostTypes[0]? 'Post': 'Question'}..?` }}
         onCancel={onCloseModal}
         setShowModal={onCloseModal}
-        onSuccess={onSuccessUpdate}
+        onSuccess={(data) => onSuccessUpdate(data as CommunityCardData)}
       />
-      <ScrollView showsVerticalScrollIndicator={false} onTouchEnd={() => onScrollTouchEnd()} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+      <ScrollView className='mt-2' showsVerticalScrollIndicator={false} onTouchEnd={() => onScrollTouchEnd()} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
         {postData.imageUrls.md && <ExpoImage source={postData?.imageUrls?.md} style={styles.imageSmall} contentFit={"cover"} placeholder={{ blurhash: BLURHASH[3] }} />}
         <Label classNames='mt-[10px]' type={FontTypes.FLabel} label={postData.title} color={Colors.dark['grey-shade-4']} />
         <View className='w-[100%] mt-[15px] mb-[10px] flex flex-row justify-between'>
@@ -151,7 +151,7 @@ export default function CommunityView() {
         <Label classNames="mt-5" type={FontTypes.FLabelBold} label={'Post data will be permanently removed!'} />
         <View className="mt-10 ml-0.5 mr-0.5 flex-row justify-between">
           <Btn outlined disabled={deletingPost} onPress={() => setShowDeleteModal(false)} icon={IconNames.cancel} size={InputSizes.md} color={Colors.light.white} label="Cancel" />
-          <Btn isLoading={deletingPost} disabled={deletingPost} onPress={() => deletePost({uid: postData.createdBy.uid, id: postData.id, type: postData.type, visibility: postData.visibility})} icon={IconNames.save} size={InputSizes.md} backgroundColor={Colors.dark.red} label="Yes, Delete" />
+          <Btn isLoading={deletingPost} disabled={deletingPost} onPress={() => deletePost({uid: postData.createdBy.uid, id: postData.id, type: postData.type, visibility: postData.visibility})} icon={IconNames.delete} size={InputSizes.md} backgroundColor={Colors.dark.red} label="Yes, Delete" />
         </View>
       </Modal>
     </>

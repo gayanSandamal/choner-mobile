@@ -15,7 +15,7 @@ export const PostUserItem = (props: PostUserItemProps) => {
             {!props.useRNImage && <Avatar containerStyles={{ marginRight: 8 }} size={InputSizes.sm} img={props.imageUrl || undefined} />}
             {props.useRNImage && <Image src={props.imageUrl} source={require('../../assets/images/blurred.png')} style={[styles.RNImage, props.stylesForINimage]} resizeMode='cover'/>}
             <View className={props.width? 'flex ' + props.width: props.fullWidth? 'flex w-[80%]': 'flex w-[70px]'} >
-                <Label type={FontTypes.FP} classNames={props.createdAt? "mb-1": ""} label={props.userName} numberOfLines={1} ellipsizeMode="tail" />
+                <Label type={props.fontType || FontTypes.FP} classNames={props.createdAt? "mb-1": ""} label={props.userName} numberOfLines={1} ellipsizeMode="tail" />
                 {props.createdAt && <Label color={Colors.dark['grey-shade-3']} type={FontTypes.FSmall} label={postCreateTimeToDate(props.createdAt, props.dateProps?.clipeDate, props.dateProps?.newLineDate)} />}
             </View>
         </View>

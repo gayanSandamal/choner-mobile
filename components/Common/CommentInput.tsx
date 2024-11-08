@@ -15,17 +15,20 @@ const styles = StyleSheet.create({
 
 
 export const CommentInput = React.forwardRef((props: CommentInputProps, inputRef: React.LegacyRef<TextInput> | undefined) => {
-  const sendButtonWidth = props.commentType === CommentType.COMMENT? 130: props.commentType === CommentType.REPLY? 100: 110
-    return (
-        <View style={styles.commentUser}>
-          {props.headerText && <Label classNames='mt-1 mb-3' label={props.headerText} type={FontTypes.FLabel} />}
-          {!props.hideUser && <PostUserItem useRNImage width={'max-w-[250px]'} imageUrl={props.user?.profileImageUrl} userName={props.user?.displayName || ''} />}
-          {!props.hideUser && <View className="pb-3" />}
-          <TextInput multiline ref={inputRef} textAlignVertical="top" value={props.text} editable={!props.isDisabled} maxLength={1000} style={styles.commnetInput} onChangeText={props.onTextChange} placeholder={props.placeholder || 'Your thoughts...'} placeholderTextColor={Colors.dark['grey-shade-3']} />
-          <View className="flex flex-row w-full">
-            {props.commentType === CommentType.UPDATE && <BtnDetailed disabled={props.isUpdating} wrapperStyle={styles.cancelBtn} label={'CANCEL'} fontType={FontTypes.FLabel} labelAlign={JustifyContent.center} leftIcon={{name: IconNames.cancel}} onPress={props.onCancelUpdate} />}
-            <BtnDetailed isLoading={props.isDisabled} disabled={props.isDisabled} wrapperStyle={{...styles.btnDetailedWrapper, width: sendButtonWidth}} label={props.commentType === CommentType.UPDATE ? CommentType.UPDATE: props.commentType === CommentType.COMMENT? CommentType.COMMENT: CommentType.REPLY} fontType={FontTypes.FLabel} labelAlign={JustifyContent.center} leftIcon={{name: IconNames.send}} onPress={props.onSubmit} />
-          </View>
-        </View>
-    )
+  const sendButtonWidth = props.disableCommenting && props.commentType === CommentType.COMMENT? 185: props.disableCommenting && props.commentType === CommentType.COMMENT? 170: props.commentType === CommentType.COMMENT? 130: props.commentType === CommentType.REPLY? 100: 110
+  const btnText = props.disableCommenting && props.commentType === CommentType.COMMENT? 'JOIN TO COMMENT':props.disableCommenting && props.commentType === CommentType.REPLY? 'JOIN TO REPLY': props.commentType === CommentType.UPDATE ? CommentType.UPDATE: props.commentType === CommentType.COMMENT? CommentType.COMMENT: CommentType.REPLY
+  const btnStyles = {...styles.btnDetailedWrapper, width: sendButtonWidth, ...(props.disableCommenting && {backgroundColor: Colors.dark.disabled, borderColor: Colors.dark.disabled})}
+  
+  return (
+    <View style={styles.commentUser}>
+      {props.headerText && <Label classNames='mt-1 mb-3' label={props.headerText} type={FontTypes.FLabel} />}
+      {!props.hideUser && <PostUserItem useRNImage width={'max-w-[250px]'} imageUrl={props.user?.profileImageUrl} userName={props.user?.displayName || ''} />}
+      {!props.hideUser && <View className="pb-3" />}
+      <TextInput multiline ref={inputRef} textAlignVertical="top" value={props.text} editable={!props.isDisabled} maxLength={1000} style={styles.commnetInput} onChangeText={props.onTextChange} placeholder={props.placeholder || 'Your thoughts...'} placeholderTextColor={Colors.dark['grey-shade-3']} />
+      <View className="flex flex-row w-full">
+        {props.commentType === CommentType.UPDATE && <BtnDetailed disabled={props.isUpdating} wrapperStyle={styles.cancelBtn} label={'CANCEL'} fontType={FontTypes.FLabel} labelAlign={JustifyContent.center} leftIcon={{name: IconNames.cancel}} onPress={props.onCancelUpdate} />}
+        <BtnDetailed isLoading={props.isDisabled} disabled={props.isDisabled || props.disableCommenting} wrapperStyle={btnStyles} label={btnText} fontType={FontTypes.FLabel} labelAlign={JustifyContent.center} leftIcon={{name: IconNames.send}} onPress={props.onSubmit} />
+      </View>
+    </View>
+  )
 })
