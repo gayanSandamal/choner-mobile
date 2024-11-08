@@ -429,7 +429,7 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
   const [joinAnyone, setJoinAnyone] = useState(props.postParams?.joinAnyone || false)
   const [showDrawer, setShowDrawer] = useState<boolean>(false)
 
-  const { mutate: createUpdateChallenge, isPending: creatingPost } = useCreateUpdateChallengePost((data) => props.onSuccess(data), () => {})
+  const { mutate: createUpdateChallenge, isPending: creatingPost } = useCreateUpdateChallengePost((data) => props.onSuccess(data), (e) => {console.log(JSON.stringify(e))})
 
   const onCreateUpdateChallenge = () => {
     uid && description?.trim() !== '' && location?.name?.trim() !== '' && !!date && createUpdateChallenge({

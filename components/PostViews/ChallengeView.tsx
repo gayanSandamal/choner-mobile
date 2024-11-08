@@ -74,6 +74,7 @@ export default function ChallengeView() {
 
   const onSuccessUpdate = (data: ChallengePostCardProps) => {
     setPostData({ ...data, isOwner: postData?.isOwner })
+    setShowUpdate(false)
   }
 
   const onAddComment = () => addComment({
