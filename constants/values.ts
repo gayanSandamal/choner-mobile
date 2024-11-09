@@ -7,6 +7,7 @@ export const enum Screens {
 
 export const enum QueryKeys {
     USER = 'user',
+    SEARCH_LOCATION = 'searchLocation',
     INTERESTS = 'interests',
     USER_INTERESTS = 'userInterests',
     COMMUNITY = 'community',
@@ -14,9 +15,10 @@ export const enum QueryKeys {
     COMMENTS = 'comments',
     REPLIES = 'replies',
     CHALLENGES = 'challenges',
-    SEARCH_LOCATION = 'searchLocation',
     JOINED_CHALLENGES = 'joinedChallenges',
     USER_CHALLENGES = 'userChallenges',
+    CHALLENGE_JOINED_PARTICIPANTS = 'challengeJoinedParticipants',
+    CHALLENGE_PENDING_PRTICIPANTS = 'challengePendingParticipants',
 }
 
 export const DURATIONS = {

@@ -158,7 +158,7 @@ const Reply = (props: ReplyItemProps) => {
       <CommentItem type={"REPLY"} uid={props.user?.uid || ''} postCreatedUserId={props.postCreatedUserId} message={props.item.reply} showOptions={props.showOptions} comment={props.item} onUpdate={() => onPressUpdate(props.item.reply, props.item.id, props.item.createdBy.uid)} setShowOptions={props.setShowOptions} onDelete={onDeleteReply}
       />
       {selectedReply?.replyId === props.item.id && (
-        <CommentInput hideUser ref={replyUpdateInputRef} placeholder="Update your reply..." text={replyText} isDisabled={updatingReply} isUpdating={updatingReply} onTextChange={setReplyText} onSubmit={onUpdateReply} onCancelUpdate={onSuccessCancelUpdate} user={props.user} commentType={"COMMENT"} />
+        <CommentInput hideUser ref={replyUpdateInputRef} placeholder="Update your reply..." text={replyText} isDisabled={updatingReply} isUpdating={updatingReply} onTextChange={setReplyText} onSubmit={onUpdateReply} onCancelUpdate={onSuccessCancelUpdate} user={props.user} commentType={"UPDATE"} />
       )}
       {deletingReply && <DeletingView />}
     </View>
