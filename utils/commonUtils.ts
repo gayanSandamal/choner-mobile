@@ -333,7 +333,7 @@ export const addOrUpdateItemsInCache = (cachedData: any, newComment: any, key: s
   }
 }
 
-export const updatePageOnDelete = (cachedData: any, itemKey: string, itemId: string) => {
+export const updatePageOnDelete = (cachedData: any, itemKey: string, itemId: string, itemIdKey = 'id') => {
   const updatedPages = cachedData.pages.map((page: any) => ({
     ...page,
     data: {
@@ -341,7 +341,27 @@ export const updatePageOnDelete = (cachedData: any, itemKey: string, itemId: str
       result: {
         ...page.data.result,
         [itemKey]: page.data.result[itemKey].filter(
-          (item: any) => item.id !== itemId
+          (item: any) => item[itemIdKey] !== itemId
+        ),
+      },
+    },
+  }))
+
+  return {
+    ...cachedData,
+    pages: updatedPages,
+  }
+}
+
+export const updatePageOnDeleteList = (cachedData: any, itemKey: string, itemIds: string[], itemIdKey = 'id') => {
+  const updatedPages = cachedData.pages.map((page: any) => ({
+    ...page,
+    data: {
+      ...page.data,
+      result: {
+        ...page.data.result,
+        [itemKey]: page.data.result[itemKey].filter(
+          (item: any) => !itemIds.includes(item[itemIdKey])
         ),
       },
     },

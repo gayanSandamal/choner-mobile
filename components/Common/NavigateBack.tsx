@@ -27,7 +27,7 @@ export default function NavigateBack(props: NavigateBackProps) {
                 <CharmBtn icon={IconNames.chevronLeft} onPress={() => props.navigate()} size={InputSizes.md} frame={true} />
             </View>
             <Spacer width={15} />
-            <Label type={FontTypes.FTitle3Bold} label={props.label} />
+            <Label type={FontTypes.FTitle3Bold} label={props.label} ellipsizeMode="tail" numberOfLines={1} />
             {props.rightIcon && <View style={styles.rightButtonWrapper}>
                 <CharmBtn clear icon={props.rightIcon} onPress={props.onPressRightIcon} size={InputSizes.lg} frame={true} />
             </View>}

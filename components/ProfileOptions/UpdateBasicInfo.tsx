@@ -16,6 +16,7 @@ import Icon from "../Base/Icon"
 import { useUploadImage } from "@/hooks/mutate/useMutateImage"
 import { ImagePickerBottomDrawer } from "../Common/ImagePickerBottomDrawer"
 import { StoragePaths } from "@/constants/values"
+import { Toast } from "toastify-react-native"
 
 const styles = StyleSheet.create({
     avatarWrapper: {marginLeft: 'auto', marginRight: 'auto'},
@@ -77,7 +78,8 @@ export default function SettingsHome() {
     }
 
     const onSuccess = () => {
-        setIsupdating(false)  
+        setIsupdating(false)
+        Toast.success('Updated!')
     }
 
     const onError = () => {

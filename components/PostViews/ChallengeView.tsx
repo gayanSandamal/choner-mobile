@@ -1,5 +1,5 @@
 import { useUser } from "@/contexts/userContext"
-import { ChallengePostCardProps, FontTypes, IconNames, InputSizes, PostType, UserChallengeStatus } from "@/types/Components"
+import { ChallengePostCardProps, ChallengeState, FontTypes, IconNames, InputSizes, PostType, UserChallengeStatus } from "@/types/Components"
 import { unescapePercent } from "@/utils/commonUtils"
 import { router, useLocalSearchParams } from "expo-router"
 import { useCallback, useEffect, useState } from "react"
@@ -14,8 +14,9 @@ import { PostModal } from "../Post/Post"
 import { Btn, BtnDetailed } from "../Base/Button"
 import Label from "../Base/Label"
 import Modal from "../Base/Modal"
-import { useDeleteChallengePost } from "@/hooks/mutate/useMutateChallengePosts"
+import { useDeleteChallengePost, useToggleUserChallengeStatus } from "@/hooks/mutate/useMutateChallengePosts"
 import { CommentsList } from "../Common/CommentsList"
+import { RequestedParticipants } from "../Challenges/RequestedParticipants"
 
 const styles = StyleSheet.create({
   optionList: { zIndex: 2, borderWidth: 1, width: 120, right: 10, top: 45, borderRadius: 10, paddingBottom: 6, borderColor: Colors.light.white, position: 'absolute', backgroundColor:Colors.dark.darkText },
@@ -37,10 +38,12 @@ export default function ChallengeView() {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false)
   const [showUpdate, setShowUpdate] = useState<boolean>(false)
   const [commentText, setCommentText] = useState<string>('')
+  const [showWaitingList, setShowWaitingList] = useState<boolean>(false)
 
   const {mutate: deletePost, isPending: deletingPost} = useDeleteChallengePost(() => router.back(), () => {})
   const { mutate: addComment, isPending: addingComment } = useCreateComment(() => setCommentText(''), () => { })
-  const { data: comments, isFetching: fetchingComments, refetch: refetchComments } = useFetchCommemnts(postData?.id || '', user?.uid || '', 'challengesPost', !!postData && !!user)
+  const {mutate: toggleParticipation, isPending: togglingChallenge} = useToggleUserChallengeStatus((data) => onSuccessToggleJoin(data), () => {})
+  const { data: comments, isFetching: fetchingComments, refetch: refetchComments } = useFetchCommemnts(postData?.id || '', user?.uid || '', 'challengesPost', !!postData?.id && !!user?.uid)
 
   useEffect(() => {
     const challenge = JSON.parse(data as string)
@@ -68,6 +71,13 @@ export default function ChallengeView() {
     setShowUpdate(false)
   }
 
+  const onToggleParticipation = () => toggleParticipation({uid: user?.uid || '', challengeId: postData?.id})
+
+  const onSuccessToggleJoin = (data: ChallengePostCardProps) => {
+    const updatedChallenge = {...postData, participantStatus: data.participantStatus}
+    setPostData(updatedChallenge as ChallengePostCardProps)
+  }
+
   const onScrollTouchEnd = () => {
     showOptions && setShowOptions(false)
   }
@@ -86,7 +96,7 @@ export default function ChallengeView() {
 
   const onDeletePost = () => user && postData && deletePost({uid: user?.uid, challengeId: postData.id, type: postData.type})
 
-  const optionButtons = [{ name: 'Edit', icon: IconNames.editPencil, visible: postData?.isOwner, onPress: () => setShowUpdate(true) }, { name: 'Delete', icon: IconNames.delete, visible: postData?.isOwner, onPress: () => setShowDeleteModal(true) }, { name: 'Leave', icon: IconNames.logout, visible: !postData?.isOwner, onPress: () => {} }, { name: 'Report', icon: IconNames.report, visible: !postData?.isOwner, onPress: () => {} }]
+  const optionButtons = [{ name: 'Edit', icon: IconNames.editPencil, visible: postData?.isOwner, onPress: () => setShowUpdate(true) }, { name: 'Delete', icon: IconNames.delete, visible: postData?.isOwner, onPress: () => setShowDeleteModal(true) }, { name: 'Leave', icon: IconNames.logout, visible: !postData?.isOwner && postData?.participantStatus !== UserChallengeStatus.NOT_JOINED, onPress: () => onToggleParticipation() }, { name: 'Report', icon: IconNames.report, visible: !postData?.isOwner, onPress: () => {} }]
 
   if (!postData || !user) {
     return <ActivityIndicator color={Colors.light.white} className='mt-20' size={40} />
@@ -108,7 +118,7 @@ export default function ChallengeView() {
         onSuccess={(data) => onSuccessUpdate(data as ChallengePostCardProps)}
       />
       <ScrollView className="mt-2" onTouchEnd={onScrollTouchEnd} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
-        <ChallengeViewCard item={postData} uid={user?.uid} onPressOptions={() => setShowOptions(true)} />
+        <ChallengeViewCard item={postData} isLeaving={togglingChallenge} isJoining={postData.participantStatus === UserChallengeStatus.NOT_JOINED && togglingChallenge} uid={user?.uid} onPressOptions={() => setShowOptions(true)} onJoin={onToggleParticipation} setShowWaitingList={setShowWaitingList} />
         {showOptions && (
           <View style={styles.optionList}>
             {optionButtons.map((btn, index) => (
@@ -120,7 +130,7 @@ export default function ChallengeView() {
         <View className="mt-5" style={styles.commentsSelerator} />
 
         <CommentsList
-          disableCommenting={postData.participantStatus !== UserChallengeStatus.JOINED}
+          disableCommenting={postData.participantStatus !== UserChallengeStatus.JOINED && postData.participantStatus !== UserChallengeStatus.PENDING_REQUEST}
           comments={comments}
           uid={user?.uid || ''}
           postCreatedUserId={postData.createdBy.uid}
@@ -134,14 +144,17 @@ export default function ChallengeView() {
         />
 
       </ScrollView>
+
       <Modal showModal={showDeleteModal} setShowModal={setShowDeleteModal}>
-        <Label type={FontTypes.FTitle1} label={'Want to detete this community post?'} />
+        <Label type={FontTypes.FTitle1} label={'Want to detete this challenge?'} />
         <Label classNames="mt-5" type={FontTypes.FLabelBold} label={'Post data will be permanently removed!'} />
         <View className="mt-10 ml-0.5 mr-0.5 flex-row justify-between">
           <Btn outlined disabled={deletingPost} onPress={() => setShowDeleteModal(false)} icon={IconNames.cancel} size={InputSizes.md} color={Colors.light.white} label="Cancel" />
           <Btn isLoading={deletingPost} disabled={deletingPost} onPress={onDeletePost} icon={IconNames.delete} size={InputSizes.md} backgroundColor={Colors.dark.red} label="Yes, Delete" />
         </View>
       </Modal>
+
+      {showWaitingList && <RequestedParticipants uid={user.uid || ''} challenge={postData} showModal={showWaitingList} setShowModal={setShowWaitingList} />}
     </>
   )
 }

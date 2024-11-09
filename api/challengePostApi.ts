@@ -71,3 +71,25 @@ export const deleteChallengePost = async ({challengeId, type}: DeleteChallengePr
     const data = { id: challengeId, type }
     return axios.post('/deleteChallengeHandler', { data })
 }
+
+// Pending Challenge Participants
+type PendingChallengeParticipantsProps = {
+    uid: string
+    challengeId: string
+    lastPostId?: string
+}
+export const getPendingChallengeParticipants = async ({challengeId}: PendingChallengeParticipantsProps) => {
+    const data = { challengeId }
+    return axios.post('/getParticipantsToBeJoinedHandler', { data })
+}
+
+// Bulk Approve Challenge Participants
+type BulkApproveRequestedParticipantsProps = {
+    uid: string
+    challengeId: string
+    uids: string[]
+}
+export const bulkApproveRequestedParticipants =  async ({challengeId, uids}: BulkApproveRequestedParticipantsProps) => {
+    const data = { challengeId, uids }
+    return axios.post('/bulkApproveJoinChallengeParticipantsHandler', { data })
+}

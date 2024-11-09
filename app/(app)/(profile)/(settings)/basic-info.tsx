@@ -1,4 +1,3 @@
-import { Spacer } from "@/components/Base/Spacer"
 import UpdateBasicInfo from "@/components/ProfileOptions/UpdateBasicInfo"
 import { SettingsWrapper } from "@/components/Wrappers/SettingsWrapper"
 

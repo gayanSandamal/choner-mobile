@@ -312,7 +312,8 @@ export enum IconNames {
   circleCheck = 'circleCheck',
   survey = 'survey',
   locationPoint = 'locationPoint',
-  check = 'check'
+  check = 'check',
+  checklist = 'checklist'
 }
 
 export enum PostType {

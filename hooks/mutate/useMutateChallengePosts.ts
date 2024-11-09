@@ -1,6 +1,6 @@
-import { createUpdateChallengePost, deleteChallengePost, toggleUserChallengeStatus } from "@/api/challengePostApi"
+import { bulkApproveRequestedParticipants, createUpdateChallengePost, deleteChallengePost, toggleUserChallengeStatus } from "@/api/challengePostApi"
 import { QueryKeys } from "@/constants/values"
-import { addOrUpdateItemsInCache, updatePageOnDelete } from "@/utils/commonUtils"
+import { addOrUpdateItemsInCache, updatePageOnDelete, updatePageOnDeleteList } from "@/utils/commonUtils"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 export const useCreateUpdateChallengePost = (onSuccess: (data: any) => void, onError: (error: Error) => void) => {
@@ -40,7 +40,7 @@ export const useCreateUpdateChallengePost = (onSuccess: (data: any) => void, onE
     })
 }
 
-export const useToggleUserChallengeStatus = (onSuccess: () => void, onError: (error: Error) => void) => {
+export const useToggleUserChallengeStatus = (onSuccess: (data: any) => void, onError: (error: Error) => void) => {
   const queryClient = useQueryClient()
   return useMutation({
       mutationFn: toggleUserChallengeStatus,
@@ -62,7 +62,7 @@ export const useToggleUserChallengeStatus = (onSuccess: () => void, onError: (er
 
             if (!existingAllCache) {
               await queryClient.invalidateQueries({queryKey: [QueryKeys.CHALLENGES, variables.uid]})
-              onSuccess()
+              onSuccess(newChallenge)
               return
             }
 
@@ -70,7 +70,7 @@ export const useToggleUserChallengeStatus = (onSuccess: () => void, onError: (er
               if (!cachedData) return cachedData
               return addOrUpdateItemsInCache(cachedData, newChallenge, 'challenges')
             })
-            onSuccess()
+            onSuccess(newChallenge)
           }
       },
       onError,
@@ -95,6 +95,24 @@ export const useDeleteChallengePost = (onSuccess: () => void, onError: (error: E
               return updatedPages
             })
             onSuccess()
+          }
+      },
+      onError,
+  })
+}
+
+export const useBulkApproveRequestedParticipants = (onSuccess: (uids: string[]) => void, onError: (error: Error) => void) => {
+  const queryClient = useQueryClient()
+  return useMutation({
+      mutationFn: bulkApproveRequestedParticipants,
+      async onSuccess(data, variables) {
+          if (data?.status === 200) {
+            await queryClient.setQueryData([QueryKeys.CHALLENGE_PENDING_PRTICIPANTS, variables.uid, variables.challengeId], (cachedData: any) => {
+              if (!cachedData) return cachedData
+              const updatedPages = updatePageOnDeleteList(cachedData, 'data', variables.uids, 'uid')
+              return updatedPages
+            })
+            onSuccess(variables.uids)
           }
       },
       onError,
