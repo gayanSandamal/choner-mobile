@@ -89,7 +89,9 @@ const PublishInterestPost = (props: PublishInterestPostProps) => {
   const [showDatePicker, setShowDatePicker] = useState(false)
   const [isScheduled, setIsScheduled] = useState(!!props.postParams?.scheduledAt?._seconds || false)
   const [dateTime, setDateTime] = useState<Date | null>(!!props.postParams?.scheduledAt ? timeDataToLocalString(props.postParams?.scheduledAt) : null)
+  const [location, setLocation] = useState<LocationData>(props.postParams?.location || {name: '', address: ''})
   const [isPostPublishable, setIsPostPublishable] = useState(false)
+  const [showDrawer, setShowDrawer] = useState<boolean>(false)
 
   const { mutate: createPost, isPending: isCreatingPost } = useCreateInteresPost(() => onSuccess(), () => { })
   const { mutate: updatePost, isPending: isUpdatingPost } = useUpdateInteresPost(() => onSuccess(), () => { })
@@ -133,6 +135,7 @@ const PublishInterestPost = (props: PublishInterestPostProps) => {
       uid,
       title: interestData.interest,
       description: interestData.interestDesc,
+      location,
       ...(dateTime && isScheduled && { scheduledAt: dateTime?.toISOString() })
     } as CreateInterestProps
 
@@ -146,6 +149,7 @@ const PublishInterestPost = (props: PublishInterestPostProps) => {
       uid,
       id: props.postParams?.id,
       title: interestData.interest,
+      location,
       description: interestData.interestDesc,
       ...(dateTime && isScheduled && { scheduledAt: dateTime?.toISOString() })
     } as UpdateInterestProps
@@ -167,6 +171,13 @@ const PublishInterestPost = (props: PublishInterestPostProps) => {
       <PostWrapperComponent postHeaderData={props.postHeaderData} onCancel={props.onSuccess}>
         <TextArea disabled={isCreatingPost || isUpdatingPost} disableNewLine height={50} maxLines={2} maxCharacters={90} value={interest} placeHolder={"what is your interest?"} onChangeText={(text) => setInterestData((prev) => ({ ...prev, interest: text }))} />
         <TextArea disabled={isCreatingPost || isUpdatingPost} clasName="mt-[10px]" height={80} maxCharacters={200} value={interestDesc} placeHolder={"Why are you interested?"} onChangeText={(text) => setInterestData((prev) => ({ ...prev, interestDesc: text }))} />
+
+        <Label classNames="mt-3 mb-3" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label={`Location`} />
+        <TouchableOpacity className='shadow-sm flex flex-row items-center mb-5' style={{ backgroundColor: Colors.dark['fied-bg-idle'], height: 50, width: '100%', borderRadius: 30, paddingHorizontal: 20 }} onPress={() => setShowDrawer(true)}>
+          <Icon name={IconNames.location} size={InputSizes.md} color={ Colors.dark['primary-shade-3']} />
+          <Label classNames="ml-3 pr-2" type={FontTypes.FLabel} ellipsizeMode="tail" numberOfLines={2} label={location?.name || "CHALLENGE LOCATION"} />
+        </TouchableOpacity>
+
         <PostBottomActions
           isScheduled={isScheduled}
           dateTime={dateTime}
@@ -181,6 +192,7 @@ const PublishInterestPost = (props: PublishInterestPostProps) => {
           setIsScheduled={setIsScheduled}
         />
       </PostWrapperComponent>
+      <LocationBottomDrawer uid={uid || ''} showDrawer={showDrawer} setShowDrawer={setShowDrawer} setLocation={setLocation} />
     </View>
   )
 }

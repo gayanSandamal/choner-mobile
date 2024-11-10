@@ -1,3 +1,4 @@
+import { LocationData } from "@/types/Components"
 import { getAxios } from "@/utils/AxiosUtils"
 import * as SecureStore from 'expo-secure-store'
 
@@ -43,11 +44,12 @@ export type CreateInterestProps = {
     uid: string
     title: string
     description: string
+    location?: LocationData
     scheduledAt?: string
 }
 
 export const createInterest = async ({uid, title, description, scheduledAt}: CreateInterestProps) => {
-    const data = { uid, title, description, scheduledAt }
+    const data = { uid, title, description, location, scheduledAt }
     return axios.post('/createInterestHandler', { data })
 }
 

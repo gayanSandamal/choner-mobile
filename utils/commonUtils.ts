@@ -155,6 +155,7 @@ export function parseToInterestCardProps(data: any): InterestCardData {
       _nanoseconds: data?.scheduledAt?._nanoseconds
     }: !!data?.scheduledAt? isoDateTimeToSecond(data?.scheduledAt): undefined,
     visibility: data.visibility,
+    location: data?.location,
     voteCount: data?.votes?.length
   }
 }

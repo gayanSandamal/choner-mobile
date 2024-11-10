@@ -18,9 +18,7 @@ const styles = StyleSheet.create({
 
 type ChallengeViewCardTypes = { item: ChallengePostCardProps, isLeaving: boolean, isJoining: boolean, uid: string, onPressOptions: () => void, onJoin?: () => void, setShowWaitingList?: (show: boolean) => void}
 
-export const ChallengeViewCard = ({isLeaving, isJoining, item, uid, onPressOptions, onJoin, setShowWaitingList}: ChallengeViewCardTypes) => {
-    const {mutate: toggleJoin, isPending: toggleJoining} = useToggleUserChallengeStatus(() => {}, () => {})
-    
+export const ChallengeViewCard = ({isLeaving, isJoining, item, uid, onPressOptions, onJoin, setShowWaitingList}: ChallengeViewCardTypes) => {    
     const isScheduled = item.challengeState === ChallengeState.SCHEDULED
     const isOngoing = item.challengeState === ChallengeState.ONGOING
     const isEnded = item.challengeState === ChallengeState.ENDED
@@ -31,14 +29,6 @@ export const ChallengeViewCard = ({isLeaving, isJoining, item, uid, onPressOptio
     const isOwner = uid === item.createdBy.uid
     const challengeEndText = onJoin && item.participantStatus !== UserChallengeStatus.NOT_JOINED? `Challenge ended at ${postCreateTimeToDate(item.challengeAt)}`: `Challenge has ended`
     const cardWrapperStyle = {...styles.wrapper, ...(isOngoing && {borderColor: Colors.dark["green-shade-1"]}), ...(!joinAnyone && isOwner && {backgroundColor: '#9173202A'})}
-
-    const onPressJoin = () => {
-        if (onJoin) {
-            onJoin()
-            return
-        }
-        toggleJoin({uid: uid, challengeId: item.id})
-    }
  
     return (
         <View className="relative py-[16px] px-[14px]" style={cardWrapperStyle}>
@@ -97,7 +87,7 @@ export const ChallengeViewCard = ({isLeaving, isJoining, item, uid, onPressOptio
 
             {!isOwner && (
                 <View className="mt-5 flex-row">
-                    {showJoinButton && <Btn isLoading={toggleJoining || isJoining} disabled={toggleJoining || isLimitReached || isJoining} size={InputSizes.md} backgroundColor={isLimitReached? Colors.dark.disabled: undefined} fontType={FontTypes.FLabelBold} label={'JOIN'} icon={IconNames.join} onPress={onPressJoin} />}
+                    {showJoinButton && <Btn isLoading={isJoining} disabled={isLimitReached || isJoining} size={InputSizes.md} backgroundColor={isLimitReached? Colors.dark.disabled: undefined} fontType={FontTypes.FLabelBold} label={'JOIN'} icon={IconNames.join} onPress={onJoin} />}
                     {(!showJoinButton || showRequestButton) && <Btn isLoading={false} disabled={true} size={InputSizes.md} fontType={FontTypes.FLabelBold} backgroundColor={Colors.dark.disabled} label={showRequestButton? 'REQUESTED': 'JOINED'} icon={IconNames.join} onPress={() => { }} />}
                 </View>
             )}

@@ -17,6 +17,7 @@ import Modal from "../Base/Modal"
 import { useDeleteChallengePost, useToggleUserChallengeStatus } from "@/hooks/mutate/useMutateChallengePosts"
 import { CommentsList } from "../Common/CommentsList"
 import { RequestedParticipants } from "../Challenges/RequestedParticipants"
+import { JoinedParticipants } from "../Challenges/JoinedParticipants"
 
 const styles = StyleSheet.create({
   optionList: { zIndex: 2, borderWidth: 1, width: 120, right: 10, top: 45, borderRadius: 10, paddingBottom: 6, borderColor: Colors.light.white, position: 'absolute', backgroundColor:Colors.dark.darkText },
@@ -118,7 +119,7 @@ export default function ChallengeView() {
         onSuccess={(data) => onSuccessUpdate(data as ChallengePostCardProps)}
       />
       <ScrollView className="mt-2" onTouchEnd={onScrollTouchEnd} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
-        <ChallengeViewCard item={postData} isLeaving={togglingChallenge} isJoining={postData.participantStatus === UserChallengeStatus.NOT_JOINED && togglingChallenge} uid={user?.uid} onPressOptions={() => setShowOptions(true)} onJoin={onToggleParticipation} setShowWaitingList={setShowWaitingList} />
+        <ChallengeViewCard item={postData} isLeaving={postData.participantStatus !== UserChallengeStatus.NOT_JOINED && togglingChallenge} isJoining={postData.participantStatus === UserChallengeStatus.NOT_JOINED && togglingChallenge} uid={user?.uid} onPressOptions={() => setShowOptions(true)} onJoin={onToggleParticipation} setShowWaitingList={setShowWaitingList} />
         {showOptions && (
           <View style={styles.optionList}>
             {optionButtons.map((btn, index) => (
@@ -127,10 +128,12 @@ export default function ChallengeView() {
           </View>
         )}
 
+        <JoinedParticipants uid={user.uid} challenge={postData} />
+
         <View className="mt-5" style={styles.commentsSelerator} />
 
         <CommentsList
-          disableCommenting={postData.participantStatus !== UserChallengeStatus.JOINED && postData.participantStatus !== UserChallengeStatus.PENDING_REQUEST}
+          disableCommenting={postData.participantStatus !== UserChallengeStatus.JOINED && postData.participantStatus === UserChallengeStatus.PENDING_REQUEST}
           comments={comments}
           uid={user?.uid || ''}
           postCreatedUserId={postData.createdBy.uid}

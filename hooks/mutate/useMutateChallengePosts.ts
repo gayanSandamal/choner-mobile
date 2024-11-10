@@ -107,7 +107,7 @@ export const useBulkApproveRequestedParticipants = (onSuccess: (uids: string[]) 
       mutationFn: bulkApproveRequestedParticipants,
       async onSuccess(data, variables) {
           if (data?.status === 200) {
-            await queryClient.setQueryData([QueryKeys.CHALLENGE_PENDING_PRTICIPANTS, variables.uid, variables.challengeId], (cachedData: any) => {
+            await queryClient.setQueryData([QueryKeys.CHALLENGE_PENDING_PARTICIPANTS, variables.uid, variables.challengeId], (cachedData: any) => {
               if (!cachedData) return cachedData
               const updatedPages = updatePageOnDeleteList(cachedData, 'data', variables.uids, 'uid')
               return updatedPages

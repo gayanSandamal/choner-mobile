@@ -79,13 +79,7 @@ export default function InterestView() {
       <PostModal
         postType={PostType.interest}
         showModal={!!interestPostData}
-        postParams={interestPostData ? {
-          id: interestPostData.id,
-          interest: interestPostData.interest,
-          interestDesc: interestPostData.interestDesc,
-          scheduledAt: interestPostData.scheduledAt,
-          visibility: interestPostData.visibility
-        }: undefined}
+        postParams={interestPostData || undefined}
         postHeaderData={{
           icon: IconNames.addPost,
           title: 'Edit this interest'

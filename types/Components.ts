@@ -478,6 +478,7 @@ export type InterestPostParams = {
   interestDesc: string
   scheduledAt: {_nanoseconds: number, _seconds: number} | undefined
   visibility: "public" | "scheduled"
+  location?: LocationData
 }
 
 export enum CommunityPostCategory {
@@ -562,6 +563,7 @@ export type InterestCardData = {
   scheduledAt: {_nanoseconds: number, _seconds: number} | undefined
   visibility: "public" | "scheduled"
   voteCount: number
+  location?: LocationData
   isOwner?: boolean
 }
 
@@ -650,6 +652,7 @@ export type InterestCardProps = {
   showOptionInterest?: string
   disabled?: boolean
   classNames?: string
+  location?: LocationData,
   navigationPath?: string
   isOwner?: boolean
   onOptionPress: () => void
