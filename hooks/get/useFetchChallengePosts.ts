@@ -13,7 +13,7 @@ export const useFetchChallengePosts = (uid: string, enabled = true) => {
             if (!data?.pages) return undefined
             return data?.pages.map((page) => page?.data?.result?.challenges)?.flat()
         },
-        gcTime: 0
+        gcTime: DURATIONS.FIVE_MINUTES
     })
 }
 
