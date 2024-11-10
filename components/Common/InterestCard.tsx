@@ -64,6 +64,10 @@ export const InterestCard = ({isOwner, data, disabled, classNames, navigationPat
           <Label label="Why: " type={FontTypes.FLabel} color={Colors.dark.background} containerStyles={{ fontWeight: 500 }} />
           <Label label={data.description} type={FontTypes.FLabel} color={Colors.dark['grey-shade-3']} classNames='w-100' numberOfLines={2} containerStyles={{ flexShrink: 1 }} />
         </View>
+        {data.location?.name && <View className="flex flex-row items-center mb-1 pr-3 w-full">
+          <Icon name={IconNames.location} color={Colors.light.white} classNames="mr-3" />
+          <Label classNames="mr-6" containerStyles={{ fontSize: 16, fontWeight: 400 }} color={Colors.light.white} label={data.location?.name} ellipsizeMode="tail" numberOfLines={2} />
+        </View>}
         <View className='flex flex-row items-center justify-between'>
           <View className='flex flex-row items-center'>
             {!isOwner && <Btn classNames="mr-2" icon={IconNames.interests} label="Interested" size={InputSizes.sm} outlined />}

@@ -38,10 +38,6 @@ export const getChallengePosts = async (props: GetChallengeProps) => {
     })
 }
 
-// Get User Challenge posts
-type GetUserChallengeProps = {
-    lastPostId?: string
-}
 export const getUserChallengePosts = async (props: GetChallengeProps) => {
 
     return axios.post('/getPaginatedChallengesHandler', {
@@ -82,6 +78,13 @@ export const getPendingChallengeParticipants = async ({challengeId}: PendingChal
     const data = { challengeId }
     return axios.post('/getParticipantsToBeJoinedHandler', { data })
 }
+
+// Challenge Participants
+export const getJoinedChallengeParticipants = async ({challengeId}: PendingChallengeParticipantsProps) => {
+    const data = { challengeId }
+    return axios.post('/getAllJoinedChallengeParticipantsHandler', { data })
+}
+
 
 // Bulk Approve Challenge Participants
 type BulkApproveRequestedParticipantsProps = {

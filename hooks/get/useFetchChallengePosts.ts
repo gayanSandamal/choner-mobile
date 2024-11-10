@@ -1,4 +1,4 @@
-import { getChallengePosts, getPendingChallengeParticipants, getUserChallengePosts } from "@/api/challengePostApi"
+import { getChallengePosts, getJoinedChallengeParticipants, getPendingChallengeParticipants, getUserChallengePosts } from "@/api/challengePostApi"
 import { DURATIONS, QueryKeys } from "@/constants/values"
 import { useInfiniteQuery } from "@tanstack/react-query"
 
@@ -36,8 +36,23 @@ export const useFetchPendingChallengeParticipants = (uid: string, challengeId: s
     return useInfiniteQuery({
         enabled: enabled,
         initialPageParam: undefined,
-        queryKey: [QueryKeys.CHALLENGE_PENDING_PRTICIPANTS, uid, challengeId],
+        queryKey: [QueryKeys.CHALLENGE_PENDING_PARTICIPANTS, uid, challengeId],
         queryFn: ({pageParam}) => getPendingChallengeParticipants({lastPostId: pageParam, challengeId, uid}),
+        getNextPageParam: (lastPage) => (lastPage && lastPage.data.result?.hasMore ? lastPage?.data.result?.lastVisible : undefined),
+        select(data) {
+            if (!data?.pages) return undefined
+            return data?.pages.map((page) => page?.data?.result?.data)?.flat()
+        },
+        gcTime: DURATIONS.FIVE_MINUTES
+    })
+}
+
+export const useFetchJoinedChallengeParticipants = (uid: string, challengeId: string, enabled = true) => {
+    return useInfiniteQuery({
+        enabled: enabled,
+        initialPageParam: undefined,
+        queryKey: [QueryKeys.CHALLENGE_JOINED_PARTICIPANTS, uid, challengeId],
+        queryFn: ({pageParam}) => getJoinedChallengeParticipants({lastPostId: pageParam, challengeId, uid}),
         getNextPageParam: (lastPage) => (lastPage && lastPage.data.result?.hasMore ? lastPage?.data.result?.lastVisible : undefined),
         select(data) {
             if (!data?.pages) return undefined

@@ -6,7 +6,7 @@ import Icon from "../Base/Icon"
 import Label from "../Base/Label"
 import { Colors } from "@/constants/Colors"
 import Checkbox from "../Base/CheckBox"
-import { useCallback, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { PostUserItem } from "../Common/PostUserItem"
 import { Btn } from "../Base/Button"
 import { useBulkApproveRequestedParticipants } from "@/hooks/mutate/useMutateChallengePosts"
@@ -30,8 +30,6 @@ type RequestedParticipantsProps = {
 export const RequestedParticipants = (props: RequestedParticipantsProps) => {
     const {data: pendingParticipants, isFetching: fetchingParticipants, refetch} = useFetchPendingChallengeParticipants(props.uid, props.challenge.id, !!props.uid && !!props.challenge.id)
     const {mutate: approve, isPending: approving} = useBulkApproveRequestedParticipants((data) => onSuccessApprove(data), () => {})
-
-    useEffect(() => {refetch()}, [])
 
     const [checkedParticipants, setCheckedParticipants] = useState<string[]>([])
     const [selectAll, setSelectAll] = useState<boolean>(false)
@@ -105,7 +103,7 @@ export const RequestedParticipants = (props: RequestedParticipantsProps) => {
                             </TouchableOpacity>
                         )
                     }}
-                    ListEmptyComponent={() => <ActivityIndicator color={Colors.light.white} className='mt-20' size={40} />}
+                    ListEmptyComponent={() => fetchingParticipants && !pendingParticipants && <ActivityIndicator color={Colors.light.white} className='mt-20' size={40} />}
                     ItemSeparatorComponent={() =>  <View className="h-4"/>}
                 />
                 <View className="w-full flex-row justify-end h-[60px]" style={{borderTopWidth: 1, borderColor: Colors.dark.darkText}}>

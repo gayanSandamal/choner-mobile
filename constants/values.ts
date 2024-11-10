@@ -18,7 +18,7 @@ export const enum QueryKeys {
     JOINED_CHALLENGES = 'joinedChallenges',
     USER_CHALLENGES = 'userChallenges',
     CHALLENGE_JOINED_PARTICIPANTS = 'challengeJoinedParticipants',
-    CHALLENGE_PENDING_PRTICIPANTS = 'challengePendingParticipants',
+    CHALLENGE_PENDING_PARTICIPANTS = 'challengePendingParticipants',
 }
 
 export const DURATIONS = {
