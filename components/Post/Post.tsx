@@ -172,10 +172,10 @@ const PublishInterestPost = (props: PublishInterestPostProps) => {
         <TextArea disabled={isCreatingPost || isUpdatingPost} disableNewLine height={50} maxLines={2} maxCharacters={90} value={interest} placeHolder={"what is your interest?"} onChangeText={(text) => setInterestData((prev) => ({ ...prev, interest: text }))} />
         <TextArea disabled={isCreatingPost || isUpdatingPost} clasName="mt-[10px]" height={80} maxCharacters={200} value={interestDesc} placeHolder={"Why are you interested?"} onChangeText={(text) => setInterestData((prev) => ({ ...prev, interestDesc: text }))} />
 
-        <Label classNames="mt-3 mb-3" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label={`Location`} />
+        <Label classNames="mt-3 mb-2" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label={`Location`} />
         <TouchableOpacity className='shadow-sm flex flex-row items-center mb-5' style={{ backgroundColor: Colors.dark['fied-bg-idle'], height: 50, width: '100%', borderRadius: 30, paddingHorizontal: 20 }} onPress={() => setShowDrawer(true)}>
           <Icon name={IconNames.location} size={InputSizes.md} color={ Colors.dark['primary-shade-3']} />
-          <Label classNames="ml-3 pr-2" type={FontTypes.FLabel} ellipsizeMode="tail" numberOfLines={2} label={location?.name || "CHALLENGE LOCATION"} />
+          <Label classNames="ml-3 pr-2" type={FontTypes.FLabel} ellipsizeMode="tail" numberOfLines={2} label={location?.name || "INTEREST LOCATION"} />
         </TouchableOpacity>
 
         <PostBottomActions
@@ -497,7 +497,7 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
             <Label classNames="ml-2 w-[90%]" color={Colors.dark["grey-shade-2"]} containerStyles={{ fontStyle: 'italic' }} label={type === ChallengePostCategory.VIRTUAL ? "Virtual challenge lets participants join remotely from anywhere" : "This requires participants to be physically present"} />
           </View>
 
-          <Label classNames="mt-3 mb-3" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label={`Challenge time & location${type !== ChallengePostCategory.VIRTUAL ? '*' : ''}`} />
+          <Label classNames="mt-3 mb-2" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label={`Challenge time & location${type !== ChallengePostCategory.VIRTUAL ? '*' : ''}`} />
           <TouchableOpacity className='shadow-sm flex flex-row items-center mb-5' style={{ backgroundColor: Colors.dark['fied-bg-idle'], height: 50, width: '100%', borderRadius: 30, paddingHorizontal: 20 }} onPress={() => setShowDrawer(true)}>
             <Icon name={IconNames.location} size={InputSizes.md} color={ Colors.dark['primary-shade-3']} />
             <Label classNames="ml-3 pr-2" type={FontTypes.FLabel} ellipsizeMode="tail" numberOfLines={2} label={location?.name || "CHALLENGE LOCATION"} />
