@@ -56,9 +56,11 @@ export default function UserProfile () {
     }, [])
 
     useEffect(() => {
-        const challenge = JSON.parse(data as string)
-        if (challenge.toInterest) {
-            setTabs({tab: tabNames[2], visibility: POST_VISIBILITY.PUBLIC})
+        if (data) {
+            const challenge = JSON.parse(data as string)
+            if (challenge.toInterest) {
+                setTabs({tab: tabNames[2], visibility: POST_VISIBILITY.PUBLIC})
+            }
         }
       }, [data])
 
