@@ -72,9 +72,9 @@ const HomeScreen = () => {
         <GridItem columns={2} gridDimentions={dimensions}>
           <CommunityPostsAutoSlider communityPostType={CommunityPostTypes[1]} interval={3000} />
         </GridItem>
-        <GridItem columns={1} gridDimentions={dimensions}>
+        {/* <GridItem columns={1} gridDimentions={dimensions}>
           <DiagnosisWidget />
-        </GridItem>
+        </GridItem> */}
         {/* <GridItem columns={1} gridDimentions={dimensions}>
           <Card></Card>
         </GridItem>
