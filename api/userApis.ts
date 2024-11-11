@@ -24,10 +24,9 @@ type SetUserProps = {
     displayName?: string
     bio?: string
     profileImageUrl?: string
-    professionalIn?: string
 }
 
-export const setUser = async ({displayName, profileImageUrl, professionalIn, bio}: SetUserProps) => {
+export const setUser = async ({displayName, profileImageUrl, bio}: SetUserProps) => {
     const session = await SecureStore.getItemAsync('session')
 
     if (!session) return null
@@ -38,7 +37,6 @@ export const setUser = async ({displayName, profileImageUrl, professionalIn, bio
         uid,
         ...(displayName !== undefined && { displayName }),
         ...(profileImageUrl !== undefined && { profileImageUrl }),
-        ...(professionalIn !== undefined && { professionalIn }),
         ...(bio !== undefined && { bio })
       }
 

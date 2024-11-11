@@ -62,7 +62,7 @@ export const Bio = () => {
                     classNames="mb-[10px]"
                     type={FontTypes.FTitle3Bold}
                     color={Colors.dark["grey-shade-4"]}
-                    label={`${user?.displayName}${user?.professionalIn ? ` | ${user.professionalIn}`: ''}`}
+                    label={user?.displayName || ''}
                 />
                 {!showEditBio && user?.bio && <Label
                     classNames="mb-[15px] text-center"

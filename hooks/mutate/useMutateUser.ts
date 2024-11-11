@@ -15,7 +15,6 @@ export const useSetUser = (onSuccess: (data: User) => void, onError: (error: Err
                     const updatedUserData = {
                         ...response?.data?.result,
                         displayName: variables?.displayName || response?.data?.result?.displayName,
-                        professionalIn: variables?.professionalIn  || response?.data?.result?.professionalIn,
                         profileImageUrl: variables?.profileImageUrl  || response?.data?.result?.profileImageUrl,
                         bio: variables?.bio || response?.data?.result?.bio
                     }

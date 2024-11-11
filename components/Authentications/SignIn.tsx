@@ -20,6 +20,8 @@ export default function SignInScreen() {
 
   const onPressSignIn = () => {
     fbSignIn(email, password).then((userCredential) => {
+      console.log('userCredential', userCredential?._tokenResponse?.idToken);
+      
       signIn(userCredential.user);
       if (userCredential.user) {
         router.replace('/')

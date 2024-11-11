@@ -4,6 +4,5 @@ export type User = {
     emailVerified: boolean
     displayName: string
     bio: string
-    professionalIn: string
     profileImageUrl: string
 }

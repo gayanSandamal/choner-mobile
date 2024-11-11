@@ -3,11 +3,20 @@ import { FontSizes, InputProps, InputSizes } from "@/types/Components";
 import { TextInput, View } from "react-native";
 import Icon from '@/components/Base/Icon'
 import { CharmBtn } from "./Button";
+import { opacity } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
 
 export const Input = (props: InputProps) => {
-    const { value, placeholder, icon, iconRight, classNames, containerStyles, editable, secureTextEntry = false, onChange, onPressIconRight } = props
+    const { value, placeholder, icon, iconRight, classNames, containerStyles, editable, secureTextEntry = false, disabled = false, onChange, onPressIconRight } = props
     return (
-        <View className={`shadow-sm flex flex-row items-center ${classNames}`} style={[{ backgroundColor: Colors.dark['fied-bg-idle'], height: 60, width: '100%', borderRadius: 30, paddingHorizontal: 20 }, ...(containerStyles ? [containerStyles] : [])]}>
+        <View className={`shadow-sm flex flex-row items-center ${classNames}`} style={[
+            {
+                backgroundColor: Colors.dark['fied-bg-idle'],
+                height: 60,
+                width: '100%',
+                borderRadius: 30,
+                paddingHorizontal: 20,
+                ...(disabled && { opacity: 0.5})
+            }, ...(containerStyles ? [containerStyles] : [])]}>
             {icon && <Icon name={icon} size={InputSizes.md} color={props.iconColor || Colors.dark['primary-shade-3']} />}
             <TextInput
                 editable={editable}
@@ -17,6 +26,7 @@ export const Input = (props: InputProps) => {
                 placeholder={placeholder}
                 placeholderTextColor={Colors.dark['grey-shade-4']}
                 value={value}
+                readOnly={disabled}
                 onSubmitEditing={props.onSubmitEditing}
                 secureTextEntry={secureTextEntry}
             />

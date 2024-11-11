@@ -22,16 +22,18 @@ const SECTIONS: Section[] = [
     data: [
       { label: "Basic info", icon: IconNames.info, route: "/basic-info" },
       { label: "Account settings", icon: IconNames.person, route: "/account-settings" },
-      { label: "Privacy", icon: IconNames.incognito, route: "/privacy" },
-      { label: "Security", icon: IconNames.lock, route: "/security" }
+      // TODO: Let's not implement these for now
+      // { label: "Privacy", icon: IconNames.incognito, route: "/privacy" },
+      // { label: "Security", icon: IconNames.lock, route: "/security" }
     ],
   },
-  {
-    title: "Secondary Account",
-    data: [
-      { label: "Add secondary account", icon: IconNames.personAdd, route: "/secondary-account" }
-    ],
-  },
+  // TODO: Let's not implement these for now
+  // {
+  //   title: "Secondary Account",
+  //   data: [
+  //     { label: "Add secondary account", icon: IconNames.personAdd, route: "/secondary-account" }
+  //   ],
+  // },
   {
     title: "Login",
     data: [
