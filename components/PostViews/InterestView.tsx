@@ -1,11 +1,9 @@
-import { BtnDetailed } from '@/components/Base/Button'
-import Label from '@/components/Base/Label'
 import { InterestCard } from '@/components/Common/InterestCard'
 import { Colors } from '@/constants/Colors'
-import { FontTypes, IconNames, InterestCardData, InterestPostParams, JustifyContent, PostType } from '@/types/Components'
+import { IconNames, InterestCardData, InterestPostParams, PostType } from '@/types/Components'
 import { unescapePercent } from '@/utils/commonUtils'
 import {router, useLocalSearchParams } from 'expo-router'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useLayoutEffect, useState } from 'react'
 import { View, StyleSheet, ActivityIndicator, ScrollView, RefreshControl } from 'react-native'
 import { PostModal } from '../Post/Post'
 import { useFetchCommemnts } from '@/hooks/get/useFetchComments'
@@ -36,7 +34,7 @@ export default function InterestView() {
   const {mutate: addComment, isPending: addingComment} = useCreateComment(() => setCommentText(''), () => {})
   const {data: comments, isFetching: fetchingComments, refetch : refetchComments} = useFetchCommemnts(postData?.id || '', user?.uid || '', 'interestsPost', !!postData && !!user && postData.visibility === POST_VISIBILITY.PUBLIC)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const interest = JSON.parse(data as string)
     const decodedInterest = {
         ...interest,
