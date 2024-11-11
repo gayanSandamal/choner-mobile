@@ -22,7 +22,7 @@ const DiagnosisWidget = () => {
     setChallenge(
       {
         imageUri: 'https://media.istockphoto.com/id/484942652/photo/how-long-can-you-hold-a-plank.jpg?s=612x612&w=0&k=20&c=mNewkXYasZNinXInIB18vqR7Gqnoz9SnfINCYeEQBfs=',
-        label: `RUN A\nSELF-DIAGNOSis`
+        label: `RUN A\nSELF-DIAGNOSIS`
       }
     )
     setIntersts(36)

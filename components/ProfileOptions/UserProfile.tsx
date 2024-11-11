@@ -15,8 +15,9 @@ import { CommunityPostTypes, POST_VISIBILITY } from "@/constants/values"
 import { useFetchUserCommunityPosts } from "@/hooks/get/useFetchCommunityPosts"
 import { CommunityList } from "../Common/CommunityList"
 import { UserStatus } from "../Common/UserStatus"
+import { useLocalSearchParams } from "expo-router"
 
-const tabNames = [ 'Posts', 'Questions', 'Interests',]
+const tabNames = [ 'Posts', 'Questions', 'Interests' ]
 
 const styles = StyleSheet.create({
     wrapper: {flex: 1, alignItems: 'center'},
@@ -27,8 +28,11 @@ const styles = StyleSheet.create({
 })
 
 export default function UserProfile () {
+    const flatListRef = useRef(null)
+    
     const uid = useAuthUserId()
     const {tabs, setTabs} = useTabSelector()
+    const {data} = useLocalSearchParams()
 
     const [refreshing, setRefreching] = useState<boolean>(false)
     const [interestPostData, setInterestPostData] = useState<InterestPostParams | null>(null)
@@ -52,8 +56,15 @@ export default function UserProfile () {
     }, [])
 
     useEffect(() => {
+        const challenge = JSON.parse(data as string)
+        if (challenge.toInterest) {
+            setTabs({tab: tabNames[2], visibility: POST_VISIBILITY.PUBLIC})
+        }
+      }, [data])
+
+    useEffect(() => {
         !communityPosts && !!tabs && tabs?.tab === tabNames[0] && uid && fetchNextCommunityPosts()
-        !communityPosts && !!tabs && tabs?.tab === tabNames[1]  && uid && fetchNextCommunityPosts()
+        !communityPosts && !!tabs && tabs?.tab === tabNames[1] && uid && fetchNextCommunityPosts()
         !interests && !!tabs && tabs?.tab === tabNames[2]  && uid && refetchInterest()
     }, [tabs?.tabs])
 
@@ -117,6 +128,7 @@ export default function UserProfile () {
     return  (
     <TouchableWithoutFeedback onPress={onViewPress} accessible={false}>
         <FlatList
+            ref={flatListRef}
             className="mt-3"
             data={tabs?.tab === tabNames[2]? interests: communityPosts? [{}]: []}
             scrollEnabled={true}
@@ -155,6 +167,7 @@ export default function UserProfile () {
                         </View>
                         <CharmBtn icon={IconNames.timer} color={tabs?.visibility === POST_VISIBILITY.SCHEDULED? Colors.dark["primary-material-1"]: Colors.light.white} onPress={setVisibility} size={InputSizes.md} frame={true} />
                     </View>
+                    {(fetchingInterests && !interests) || (fetchingCommunityPosts && !communityPosts) && <ActivityIndicator color={Colors.light.white} className='mt-20' size={40} />}
                 </>
             }
             renderItem={({ item, index }) => {
@@ -169,7 +182,6 @@ export default function UserProfile () {
                     )
                 }
             }}
-            ListEmptyComponent={() =>  (fetchingInterests && !interests) || (fetchingCommunityPosts && !communityPosts) && <ActivityIndicator color={Colors.light.white} className='mt-20' size={40} />}
             keyExtractor={(item, index) => `${item?.id}-${index}`}
             refreshing={refreshing}
             onEndReachedThreshold={0.4}

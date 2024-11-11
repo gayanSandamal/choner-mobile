@@ -4,7 +4,7 @@ import { Colors } from '@/constants/Colors'
 import { CommunityCardData, CommunityPostCategory, FontTypes, IconNames, InputSizes, PostType } from '@/types/Components'
 import { unescapePercent } from '@/utils/commonUtils'
 import {router, useLocalSearchParams } from 'expo-router'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useLayoutEffect, useState } from 'react'
 import { View, StyleSheet, ActivityIndicator, ScrollView, RefreshControl } from 'react-native'
 import { PostModal } from '../Post/Post'
 import { BLURHASH, CommunityPostTypes, POST_VISIBILITY, QueryKeys } from '@/constants/values'
@@ -44,7 +44,7 @@ export default function CommunityView() {
   const {mutate: addComment, isPending: addingComment} = useCreateComment(() => setCommentText(''), () => {})
   const {data: comments, isFetching: fetchingComments, refetch : refetchComments} = useFetchCommemnts(postData?.id || '', user?.uid || '', postData?.type === CommunityPostTypes[0]? 'communityPost': 'communityQuestion', !!postData && !!user && postData.visibility === POST_VISIBILITY.PUBLIC)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const post = JSON.parse(data as string)
     const decodedPost = {
         ...post,
@@ -59,7 +59,7 @@ export default function CommunityView() {
         }
       }
       setPostData(decodedPost)
-  }, [])
+  }, [data])
   
   const onCloseModal = () => {
     setShowUpdate(false)

@@ -49,7 +49,7 @@ export type CreateInterestProps = {
 }
 
 export const createInterest = async ({uid, title, description, scheduledAt}: CreateInterestProps) => {
-    const data = { uid, title, description, location, scheduledAt }
+    const data = { uid, title, description, scheduledAt }
     return axios.post('/createInterestHandler', { data })
 }
 
@@ -76,4 +76,15 @@ export type DeleteInterestProps = {
 // Delete Interest post
 export const deleteInterest = async ({id}: DeleteInterestProps) => {
     return axios.post('/deleteInterestHandler', { data: { id } })
+}
+
+export type GetShowedInterestProps = {
+    uid: string
+    interestId: string
+    LastUserId?: string
+}
+
+// Delete Interest post
+export const getWhoShowedInterest = async ({interestId}: GetShowedInterestProps) => {
+    return axios.post('/getAllInterestedHandler', { data: { interestId } })
 }

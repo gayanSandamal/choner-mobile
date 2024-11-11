@@ -5,7 +5,7 @@ export const tabs: TabType[] = [
     name: 'index',
     title: 'Insights',
     icon: {
-      name: IconNames.insight,
+      name: IconNames.dashboard,
       link: ''
     }
   },

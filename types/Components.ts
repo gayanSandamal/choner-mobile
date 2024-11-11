@@ -313,7 +313,8 @@ export enum IconNames {
   survey = 'survey',
   locationPoint = 'locationPoint',
   check = 'check',
-  checklist = 'checklist'
+  checklist = 'checklist',
+  dashboard = 'dashboard'
 }
 
 export enum PostType {
@@ -655,6 +656,7 @@ export type InterestCardProps = {
   location?: LocationData,
   navigationPath?: string
   isOwner?: boolean
+  noTextLimit?: boolean
   onOptionPress: () => void
   onDelete?: () => void
   setShowOptionInterest?: (show: string) => void

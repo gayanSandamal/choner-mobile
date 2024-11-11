@@ -10,6 +10,7 @@ export const enum QueryKeys {
     SEARCH_LOCATION = 'searchLocation',
     INTERESTS = 'interests',
     USER_INTERESTS = 'userInterests',
+    WHO_SHOWED_INTEREST = 'whoShowedInterst',
     COMMUNITY = 'community',
     USER_COMMUNITY = 'userCommunity',
     COMMENTS = 'comments',

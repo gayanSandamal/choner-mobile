@@ -1,11 +1,9 @@
-import { BtnDetailed } from '@/components/Base/Button'
-import Label from '@/components/Base/Label'
 import { InterestCard } from '@/components/Common/InterestCard'
 import { Colors } from '@/constants/Colors'
-import { FontTypes, IconNames, InterestCardData, InterestPostParams, JustifyContent, PostType } from '@/types/Components'
+import { IconNames, InterestCardData, InterestPostParams, PostType } from '@/types/Components'
 import { unescapePercent } from '@/utils/commonUtils'
 import {router, useLocalSearchParams } from 'expo-router'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useLayoutEffect, useState } from 'react'
 import { View, StyleSheet, ActivityIndicator, ScrollView, RefreshControl } from 'react-native'
 import { PostModal } from '../Post/Post'
 import { useFetchCommemnts } from '@/hooks/get/useFetchComments'
@@ -14,6 +12,7 @@ import { useCreateComment } from '@/hooks/mutate/useMutateComments'
 import { CommentsList } from '../Common/CommentsList'
 import { POST_VISIBILITY, QueryKeys } from '@/constants/values'
 import { useQueryClient } from '@tanstack/react-query'
+import { JoinedParticipants } from '../Challenges/JoinedParticipants'
 
 const styles = StyleSheet.create({
   btnDetailedWrapper: {width: 140, backgroundColor: Colors.dark['soundcloud-gdr-1'], borderRadius: 20, borderColor: Colors.dark['soundcloud-gdr-1'], paddingLeft: 15, paddingRight: 12, marginBottom: 0},
@@ -35,7 +34,7 @@ export default function InterestView() {
   const {mutate: addComment, isPending: addingComment} = useCreateComment(() => setCommentText(''), () => {})
   const {data: comments, isFetching: fetchingComments, refetch : refetchComments} = useFetchCommemnts(postData?.id || '', user?.uid || '', 'interestsPost', !!postData && !!user && postData.visibility === POST_VISIBILITY.PUBLIC)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const interest = JSON.parse(data as string)
     const decodedInterest = {
         ...interest,
@@ -70,7 +69,7 @@ export default function InterestView() {
     setRefreshing(false)
   }, [refetchComments])
 
-  if (!postData) {
+  if (!postData || !user) {
     return <ActivityIndicator color={Colors.light.white} className='mt-20' size={40} />
   }
 
@@ -89,12 +88,15 @@ export default function InterestView() {
         setShowModal={onCloseModal}
       />
       <ScrollView showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
-      <InterestCard disabled isOwner={postData.isOwner} classNames='mt-2' data={postData} showOptionInterest={showOptionInterest} navigationPath="/interest" onOptionPress={() => setInterestPostData({id: postData.id, interest: postData.title, interestDesc: postData.description, scheduledAt: postData.scheduledAt, visibility: postData.visibility})} setShowOptionInterest={setShowOptionInterest} onDelete={() => router.back()} />
-        <View className='flex-row items-center justify-between mt-5 mb-3'>
+      <InterestCard noTextLimit disabled isOwner={postData.isOwner} classNames='mt-2' data={postData} showOptionInterest={showOptionInterest} navigationPath="/interest" onOptionPress={() => setInterestPostData({id: postData.id, interest: postData.title, interestDesc: postData.description, scheduledAt: postData.scheduledAt, visibility: postData.visibility})} setShowOptionInterest={setShowOptionInterest} onDelete={() => router.back()} />
+        {/* <View className='flex-row items-center justify-between mt-5 mb-3'>
             <Label label=''/>
             <BtnDetailed wrapperStyle={styles.btnDetailedWrapper} label={'Form circle'} fontType={FontTypes.FLabelBold} labelAlign={JustifyContent.center} rightIcon={{name: IconNames.addCircle, classNames: 'mt-[3px]'}} onPress={() => {}} />
-        </View>
-        <View style={styles.commentsSelerator} />
+        </View> */}
+
+        <JoinedParticipants text='Who showed interest' postType={PostType.interest} uid={user.uid} postId={postData.id} />
+
+        <View className='mt-4' style={styles.commentsSelerator} />
 
         {postData.visibility === POST_VISIBILITY.PUBLIC && (
           <CommentsList

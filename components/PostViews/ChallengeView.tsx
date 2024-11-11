@@ -1,8 +1,8 @@
 import { useUser } from "@/contexts/userContext"
-import { ChallengePostCardProps, ChallengeState, FontTypes, IconNames, InputSizes, PostType, UserChallengeStatus } from "@/types/Components"
+import { ChallengePostCardProps, FontTypes, IconNames, InputSizes, PostType, UserChallengeStatus } from "@/types/Components"
 import { unescapePercent } from "@/utils/commonUtils"
 import { router, useLocalSearchParams } from "expo-router"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useLayoutEffect, useState } from "react"
 import { ActivityIndicator, RefreshControl, ScrollView, View, StyleSheet } from "react-native"
 import { Colors } from "@/constants/Colors"
 import { QueryKeys } from "@/constants/values"
@@ -46,7 +46,7 @@ export default function ChallengeView() {
   const {mutate: toggleParticipation, isPending: togglingChallenge} = useToggleUserChallengeStatus((data) => onSuccessToggleJoin(data), () => {})
   const { data: comments, isFetching: fetchingComments, refetch: refetchComments } = useFetchCommemnts(postData?.id || '', user?.uid || '', 'challengesPost', !!postData?.id && !!user?.uid)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const challenge = JSON.parse(data as string)
     const decodedInterest = {
       ...challenge,
@@ -128,7 +128,7 @@ export default function ChallengeView() {
           </View>
         )}
 
-        <JoinedParticipants uid={user.uid} challenge={postData} />
+        <JoinedParticipants text='View Participants' postType={PostType.challenge} uid={user.uid} postId={postData.id} />
 
         <View className="mt-5" style={styles.commentsSelerator} />
 
