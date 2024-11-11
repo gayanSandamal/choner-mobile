@@ -15,6 +15,9 @@ import { useAuthUserId } from '@/hooks/useAuthUser';
 import { useUser } from '@/contexts/userContext';
 import { useGetUser } from '@/hooks/get/useUser';
 import { router } from 'expo-router';
+import { InterestAutoSlider } from '@/components/AutoSliders/InterestsAutoSlider';
+import { CommunityPostsAutoSlider } from '@/components/AutoSliders/CommunityPostsAutoSlider';
+import { CommunityPostTypes } from '@/constants/values';
 
 const HomeScreen = () => {
   const userId = useAuthUserId()
@@ -59,6 +62,15 @@ const HomeScreen = () => {
         </GridItem>
         <GridItem columns={2} gridDimentions={dimensions}>
           <InterestsWidget />
+        </GridItem>
+        <GridItem columns={1} gridDimentions={dimensions}>
+          <InterestAutoSlider interval={3000} />
+        </GridItem>
+        <GridItem columns={2} gridDimentions={dimensions}>
+          <CommunityPostsAutoSlider communityPostType={CommunityPostTypes[0]} interval={3000} />
+        </GridItem>
+        <GridItem columns={2} gridDimentions={dimensions}>
+          <CommunityPostsAutoSlider communityPostType={CommunityPostTypes[1]} interval={3000} />
         </GridItem>
         <GridItem columns={1} gridDimentions={dimensions}>
           <DiagnosisWidget />

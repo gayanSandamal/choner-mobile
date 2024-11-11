@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   optionListButton: {borderWidth: 0, width: '100%', height: 30, marginBottom: 0, padding: 0, paddingLeft: 8, marginVertical: 6, backgroundColor: 'transparent'},
 })
 
-export const InterestCard = ({isOwner, data, disabled, classNames, navigationPath, showOptionInterest, scheduled, setShowOptionInterest, onOptionPress, onDelete}: InterestCardProps) => {
+export const InterestCard = ({isOwner, data, disabled, classNames, navigationPath, showOptionInterest, scheduled, noTextLimit, setShowOptionInterest, onOptionPress, onDelete}: InterestCardProps) => {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false)
 
   const {mutate: deletePost, isPending: isDeleting} = useDeleteInteresPost(() => onDelete && onDelete(), () => {})
@@ -58,15 +58,15 @@ export const InterestCard = ({isOwner, data, disabled, classNames, navigationPat
         <View className='flex flex-row items-top'>
           <PostUserItem imageUrl={data.createdBy.profileImageUrl || undefined} userName={data.createdBy.displayName} createdAt={data.createdAt} dateProps={{newLineDate: true}} />
           <View style={{backgroundColor: Colors.light.white, width: 1, height: '100%'}} />
-          <Label type={FontTypes.FTitle3Bold} label={data.title} classNames='ml-2 mt-[-4px] w-100' numberOfLines={3} containerStyles={{ flexShrink: 1 }} />
+          <Label type={FontTypes.FTitle3Bold} label={data.title} classNames='ml-2 mt-[-4px] w-100' numberOfLines={noTextLimit? undefined: 3} containerStyles={{ flexShrink: 1 }} />
         </View>
         <View className='flex flex-row my-4'>
           <Label label="Why: " type={FontTypes.FLabel} color={Colors.dark.background} containerStyles={{ fontWeight: 500 }} />
-          <Label label={data.description} type={FontTypes.FLabel} color={Colors.dark['grey-shade-3']} classNames='w-100' numberOfLines={2} containerStyles={{ flexShrink: 1 }} />
+          <Label label={data.description} type={FontTypes.FLabel} color={Colors.dark['grey-shade-3']} classNames='w-100' numberOfLines={noTextLimit? undefined: 2} containerStyles={{ flexShrink: 1 }} />
         </View>
         {data.location?.name && <View className="flex flex-row items-center mb-1 pr-3 w-full">
           <Icon name={IconNames.location} color={Colors.light.white} classNames="mr-3" />
-          <Label classNames="mr-6" containerStyles={{ fontSize: 16, fontWeight: 400 }} color={Colors.light.white} label={data.location?.name} ellipsizeMode="tail" numberOfLines={2} />
+          <Label classNames="mr-6" containerStyles={{ fontSize: 16, fontWeight: 400 }} color={Colors.light.white} label={data.location?.name} ellipsizeMode="tail" numberOfLines={noTextLimit? undefined: 2} />
         </View>}
         <View className='flex flex-row items-center justify-between'>
           <View className='flex flex-row items-center'>

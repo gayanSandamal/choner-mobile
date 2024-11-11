@@ -52,7 +52,7 @@ export const CommunityPostCard = (props: CommunityPostCardProps) => {
             </View>
             {props.scheduled && (
                 <View className="absolute right-2.5 top-2.5">
-                    <Icon name={IconNames.timer} size={InputSizes.md} color={Colors.dark["primary-material-1"]}/>
+                  <Icon name={IconNames.timer} size={InputSizes.md} color={Colors.dark["primary-material-1"]}/>
                 </View>
             )}
       </TouchableOpacity>

@@ -128,7 +128,7 @@ export default function ChallengeView() {
           </View>
         )}
 
-        <JoinedParticipants uid={user.uid} challenge={postData} />
+        <JoinedParticipants text='View Participants' postType={PostType.challenge} uid={user.uid} postId={postData.id} />
 
         <View className="mt-5" style={styles.commentsSelerator} />
 

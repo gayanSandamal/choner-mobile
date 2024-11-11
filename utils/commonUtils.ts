@@ -142,9 +142,9 @@ export function parseToInterestCardProps(data: any): InterestCardData {
     title: data.title,
     description: data.description,
     createdBy: {
-      uid: data.createdBy.uid,
-      displayName: data.createdBy.displayName,
-      profileImageUrl: data.createdBy.profileImageUrl
+      uid: data.createdBy?.uid,
+      displayName: data.createdBy?.displayName,
+      profileImageUrl: data.createdBy?.profileImageUrl
     },
     createdAt: {
       _seconds: data.createdAt?._seconds,
