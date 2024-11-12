@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { useSession } from "@/hooks/ctx";
 import { Btn } from "../Base/Button";
 import { IconNames, InputSizes } from "@/types/Components";
@@ -7,21 +7,27 @@ import { ContentSection } from "../Wrappers/Sections";
 import { Colors } from '@/constants/Colors';
 import { Input } from "../Base/Input";
 import { fbSignIn } from './../../auth';
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
 export default function SignInScreen() {
-  const { signIn } = useSession();
+  const { session, signIn } = useSession();
+
   const [email, setEmail] = useState<string | undefined>(undefined);
   const [password, setPassword] = useState<string | undefined>(undefined);
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
+  useLayoutEffect(() => {
+    session && router.replace('/')
+  }, [session])
+
   const onShowConfirmPasswordPress = () => {
     setShowConfirmPassword(!showConfirmPassword);
   }
 
   const onPressSignIn = () => {
-    fbSignIn(email, password).then((userCredential) => {
-      console.log('userCredential', userCredential?._tokenResponse?.idToken);
-      
+    setIsLoading(true)
+    fbSignIn(email, password).then((userCredential) => {      
       signIn(userCredential.user);
       if (userCredential.user) {
         router.replace('/')
@@ -32,6 +38,7 @@ export default function SignInScreen() {
       });
     // Navigate after signing in. You may want to tweak this to ensure sign-in is
     // successful before navigating.
+    setIsLoading(false)
   };
   return (
     <ContentSection cardMode={false} containerStyles={{ maxWidth: 353 }}>
@@ -45,7 +52,7 @@ export default function SignInScreen() {
         <Separator /> */}
         <Input classNames='mb-5' placeholder={'ENTER EMAIL'} value={email} onChange={setEmail} icon={IconNames.email} />
         <Input classNames='mb-5' placeholder={'ENTER PASSWORD'} value={password} onChange={setPassword} icon={IconNames.password} iconRight={showConfirmPassword ? IconNames.view : IconNames.hidden} onPressIconRight={onShowConfirmPasswordPress} secureTextEntry={!showConfirmPassword} />
-        <Btn onPress={onPressSignIn} icon={IconNames.login} size={InputSizes.lg} block label="SIGN IN"></Btn>
+        <Btn isLoading={isLoading} onPress={onPressSignIn} icon={IconNames.login} size={InputSizes.lg} block label="SIGN IN"></Btn>
         <Btn wrapperClasses='text-center mt-16' onPress={() => {}} link="/forgot-password" size={InputSizes.sm} textMode color={Colors.dark['grey-shade-2']} label="FORGOT PASSWORD"></Btn>
         <Btn wrapperClasses='mt-10' onPress={() => router.navigate('/sign-up')} icon={IconNames.register} size={InputSizes.lg} block outlined color={Colors.dark['primary-shade-2']} label="SIGN UP"></Btn>
       </View>

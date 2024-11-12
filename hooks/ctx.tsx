@@ -1,6 +1,5 @@
 import { useContext, createContext, type PropsWithChildren } from 'react';
 import { useStorageState } from './../hooks/useStorageState';
-import { useQueryClient } from '@tanstack/react-query';
 
 const AuthContext = createContext<{
   signIn: (userCredential: any) => void;
@@ -26,9 +25,7 @@ export function useSession() {
   return value;
 }
 
-export function SessionProvider({ children }: PropsWithChildren) {
-  const queryClient = useQueryClient()
-  
+export function SessionProvider({ children }: PropsWithChildren) {  
   const [[isLoading, session], setSession] = useStorageState('session');
 
   return (

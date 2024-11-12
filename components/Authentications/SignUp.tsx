@@ -1,11 +1,11 @@
 import { View } from "react-native";
-import { Btn, CharmBtn } from "../Base/Button";
-import { IconNames, InputSizes, SignUpScreenProps } from "@/types/Components";
+import { Btn } from "../Base/Button";
+import { IconNames, InputSizes } from "@/types/Components";
 import { ContentSection } from "../Wrappers/Sections";
 import { Colors } from '@/constants/Colors';
 import { Input } from "../Base/Input";
 import { fbSignUp } from './../../auth';
-import { useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { router } from "expo-router";
 import { UserCredential } from "firebase/auth";
 import { useSession } from "@/hooks/ctx";
@@ -13,14 +13,19 @@ import { useSession } from "@/hooks/ctx";
 export default function SignUpScreen() {
   const user = useRef<UserCredential | null>(null)
 
-  const { signIn } = useSession();
+  const { session, signIn } = useSession();
 
   const [email, setEmail] = useState<string | undefined>(undefined);
   const [password, setPassword] = useState<string | undefined>(undefined);
   const [confirmPassword, setConfirmPassword] = useState<string | undefined>(undefined);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
+  useLayoutEffect(() => {
+    session && router.replace('/')
+  }, [session])
+  
   const onShowPasswordPress = () => {
     setShowPassword(!showPassword);
   }
@@ -30,6 +35,7 @@ export default function SignUpScreen() {
   }
 
   const onPressSignUp = () => {
+    setIsLoading(true)
     if (!email || !password || !confirmPassword) {
       alert('Please fill in all fields');
       return false;
@@ -51,7 +57,7 @@ export default function SignUpScreen() {
         user.current = userCredential
         if (userCredential.user) {
           signIn(userCredential.user)
-          router.replace('/')
+          router.replace('/survey')
         } else {
           router.navigate('/sign-in');
         }
@@ -62,6 +68,7 @@ export default function SignUpScreen() {
     // Navigate after signing in. You may want to tweak this to ensure sign-in is
     // successful before navigating.
     // router.replace('/');
+    setIsLoading(false)
   }
 
   return (
@@ -78,7 +85,7 @@ export default function SignUpScreen() {
         <Input classNames='mb-5' placeholder={'ENTER PASSWORD'} value={password} onChange={setPassword} icon={IconNames.password} iconRight={showPassword ? IconNames.view : IconNames.hidden} onPressIconRight={onShowPasswordPress} secureTextEntry={!showPassword} />
         <Input classNames='mb-5' placeholder={'CONFIRM PASSWORD'} value={confirmPassword} onChange={setConfirmPassword} icon={IconNames.password}  iconRight={showConfirmPassword ? IconNames.view : IconNames.hidden} onPressIconRight={onShowConfirmPasswordPress} secureTextEntry={!showConfirmPassword} />
 
-        <Btn onPress={onPressSignUp} icon={IconNames.register} size={InputSizes.lg} block label="SIGN UP" wrapperClasses='mb-10'></Btn>
+        <Btn isLoading={isLoading} onPress={onPressSignUp} icon={IconNames.register} size={InputSizes.lg} block label="SIGN UP" wrapperClasses='mb-10'></Btn>
 
         <Btn onPress={() => router.navigate('/sign-in')} icon={IconNames.login} size={InputSizes.lg} block outlined color={Colors.dark['primary-shade-2']} label="SIGN IN" wrapperClasses='mt-5'></Btn>
       </View>

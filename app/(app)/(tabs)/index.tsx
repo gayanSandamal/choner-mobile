@@ -58,7 +58,7 @@ const HomeScreen = () => {
           <ChallengesWidget />
         </GridItem>
         <GridItem columns={2} gridDimentions={dimensions}>
-          <SurveyWidget />
+          <SurveyWidget uid={userId || ''} />
         </GridItem>
         <GridItem columns={2} gridDimentions={dimensions}>
           <InterestsWidget />
