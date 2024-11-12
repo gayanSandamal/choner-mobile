@@ -773,6 +773,7 @@ export type InputProps = {
   iconColor?: string
   iconRight?: string
   secureTextEntry?: boolean
+  disabled?: boolean
   onChange?: (text: string) => void
   onSubmitEditing?: () => void
   onPressIconRight?: (show: boolean) => void

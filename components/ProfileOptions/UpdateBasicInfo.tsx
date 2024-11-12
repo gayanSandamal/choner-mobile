@@ -38,9 +38,7 @@ export default function SettingsHome() {
 
     const [firstName, setFirstName] = useState<string>(user?.displayName?.split(' ')?.[0] || '')
     const [lastName, setLastName] = useState<string>(user?.displayName?.split(' ')?.[1] || '')
-    const [selectedProfession, setSeletedProfession] = useState<string | null>(user?.professionalIn || null)
     const [image, setImage] = useState< UploadImage| null>(null)
-    const [dropdownVisible, setDropdownVisible] = useState(false)
     const [isUpdating, setIsupdating] = useState<boolean>(false)
     const [showDrawer, setShowDrawer] = useState<boolean>(false)
 
@@ -94,7 +92,6 @@ export default function SettingsHome() {
             uid: user?.uid || '',
             displayName: firstName + ' ' + lastName,
             profileImageUrl: user?.profileImageUrl,
-            ...(selectedProfession && { professionalIn: selectedProfession }),
         }
     }
 
@@ -136,15 +133,6 @@ export default function SettingsHome() {
             blob: imageBlob as Blob,
         })
     }
-            
-    const toggleDropdown = () => {
-        Keyboard.isVisible() && Keyboard.dismiss()
-        setDropdownVisible(!dropdownVisible)
-    }
-    const selectProfession = (profession: string) => {
-        setSeletedProfession(profession)
-        setDropdownVisible(false)
-    }
 
     const onPressImagePickItem = (index: number) => {
         index === 0 ? captureAndPickImage(): pickImage()
@@ -160,33 +148,12 @@ export default function SettingsHome() {
                     <Icon name={IconNames.camera} />
                 </TouchableOpacity>
             </View>
-            <Label classNames='text-white  mb-[5px]' label="First name" />
+            <Label classNames='text-white mt-6 mb-3' label="Registered email" />
+            <Input classNames='mb-5' placeholder={'First name'} fontSize={FontSizes.FLabel} value={user?.email} disabled onChange={checkAndSetFirstName} />
+            <Label classNames='text-white mb-3' label="First name" />
             <Input classNames='mb-5' placeholder={'First name'} fontSize={FontSizes.FLabel} value={firstName} onChange={checkAndSetFirstName} />
-            <Label classNames='text-white mb-[5px]' label="Last name" />
-            <Input classNames='mb-5' placeholder={'Last name'} fontSize={FontSizes.FLabel} value={lastName} onChange={checkAndSetLastName} />
-            <Label classNames='text-white mb-[5px]' label="Professional in" />
-            <View style={styles.dropDownWrapper}>
-                <BtnDetailed
-                    label={selectedProfession || 'Select a profession'}
-                    rightIcon={{ name: IconNames.down, color: Colors.dark['primary-shade-3'] }}
-                    wrapperStyle={styles.btnWrapper}
-                    onPress={toggleDropdown}
-                />
-                {dropdownVisible && (
-                    <View style={styles.dropdown}>
-                        <FlatList
-                            data={professions.filter((item) => item !== selectedProfession)}
-                            keyExtractor={(item) => `${item}`}
-                            renderItem={({ item }) => (
-                                <TouchableOpacity onPress={() => selectProfession(item)} style={styles.dropdownItem}>
-                                    <Text style={styles.dropDownText}>{item}</Text>
-                                </TouchableOpacity>
-                            )}
-                            ItemSeparatorComponent={() =>{ return <View className="flex h-px ml-2 mr-2 bg-white"/>}}
-                        />
-                    </View>
-                )}
-            </View>
+            <Label classNames='text-white mb-3' label="Last name" />
+            <Input classNames='mb-8' placeholder={'Last name'} fontSize={FontSizes.FLabel} value={lastName} onChange={checkAndSetLastName} />
             <View className="ml-0.5 mr-0.5 flex-row justify-between">
                 <Btn outlined disabled={isUpdating} onPress={() => router.back()} icon={IconNames.cancel} size={InputSizes.lg} color={Colors.dark['green-shade-1']} label="CANCEL" />
                 <Btn isLoading={isUpdating} disabled={isUpdating} onPress={onSave} icon={IconNames.save} size={InputSizes.lg} backgroundColor={Colors.dark['green-shade-1']} label="SAVE" />
