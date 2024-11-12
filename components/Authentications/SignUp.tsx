@@ -24,7 +24,7 @@ export default function SignUpScreen() {
 
   useLayoutEffect(() => {
     session && router.replace('/')
-  }, [])
+  }, [session])
   
   const onShowPasswordPress = () => {
     setShowPassword(!showPassword);

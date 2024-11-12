@@ -19,7 +19,7 @@ export default function SignInScreen() {
 
   useLayoutEffect(() => {
     session && router.replace('/')
-  }, [])
+  }, [session])
 
   const onShowConfirmPasswordPress = () => {
     setShowConfirmPassword(!showConfirmPassword);
@@ -27,9 +27,7 @@ export default function SignInScreen() {
 
   const onPressSignIn = () => {
     setIsLoading(true)
-    fbSignIn(email, password).then((userCredential) => {
-      console.log('userCredential', userCredential?._tokenResponse?.idToken);
-      
+    fbSignIn(email, password).then((userCredential) => {      
       signIn(userCredential.user);
       if (userCredential.user) {
         router.replace('/')
