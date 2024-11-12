@@ -823,23 +823,23 @@ export type UploadImage = {
 
 export type SurveyPageData = {
   id: string
-  description: string
-  options: { id: string, description: string }[]
-  type: {
-    multiSelect?: boolean
-    textMultiline?: boolean
-  }
+  title: string
+  type: 'radio' | 'textarea'
+  options?: { id: string, title: string }[]
+  placeholder?: string
 }
 
 export type CompletedForm = {
   pageId: string
   optionIds?: string[]
+  text?: string
 }
 
 export type SurveyData = {
+  id: string
   title: string
   completedForms: CompletedForm[]
-  pages: SurveyPageData[]
+  questions: SurveyPageData[]
 }
 
 export type LocationData = {

@@ -6,14 +6,14 @@ import { Colors } from '@/constants/Colors';
 import Label from '../Base/Label';
 import { router } from "expo-router";
 import { useSession } from "@/hooks/ctx";
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 
 export default function InitialScreen() {
   const {session} = useSession()
   
-  useEffect(() => {
+  useLayoutEffect(() => {
     session && router.replace('/')
-  }, [session])
+  }, [])
 
   return (
     <ContentSection cardMode={false} containerStyles={{ maxWidth: 353 }}>

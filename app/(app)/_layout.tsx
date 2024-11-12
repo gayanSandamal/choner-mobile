@@ -38,6 +38,7 @@ export default function RootLayout() {
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="(tabs)" />
           <Stack.Screen name="(profile)" />
+          <Stack.Screen name='survey' />
         </Stack>
       </UserProvider>
     </ThemeProvider>
