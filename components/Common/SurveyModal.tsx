@@ -170,7 +170,7 @@ export const SurveyModal = (props: SurveyModalProps) => {
                     {index !== props.surveyData.questions.length - 1? (
                         <BtnDetailed rightIcon={{ name: IconNames.chevronMiniRight, color: Colors.dark.background, classNames: "ml-[-8px] mt-[1px]" }} wrapperStyle={styles.next} label="NEXT" labelStyle={{ fontSize: 14, fontWeight: "400" }} onPress={() => setIndex((prev) => Math.min(prev + 1, props.surveyData.questions.length - 1))}
                         />): (
-                            <BtnDetailed isLoading={isPending} disabled={getProgress() !== 100} loaderSize={21} leftIcon={{ name: IconNames.save, color: Colors.dark.background, classNames: "mr-[-3px]" }} wrapperStyle={styles.save} label="SAVE" labelStyle={{ fontSize: 14, fontWeight: "400" }} onPress={onSave} />
+                            <BtnDetailed isLoading={isPending} loaderSize={21} leftIcon={{ name: IconNames.save, color: Colors.dark.background, classNames: "mr-[-3px]" }} wrapperStyle={styles.save} label="SAVE" labelStyle={{ fontSize: 14, fontWeight: "400" }} onPress={onSave} />
                         )}
                 </View>
             </View>
