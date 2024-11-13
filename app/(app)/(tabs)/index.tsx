@@ -1,10 +1,8 @@
-import { Btn } from '@/components/Base/Button';
 import BaseGrid from '@/components/Base/Grids/BaseGrid';
 import GridItem from '@/components/Base/Grids/GridItem';
 import { Spacer } from '@/components/Base/Spacer';
 import Greeting from '@/components/Insights/Greeting';
 import ChallengesWidget from '@/components/Widgets/ChallengesWidget';
-import DiagnosisWidget from '@/components/Widgets/DiagnosisWidget';
 import InterestsWidget from '@/components/Widgets/InterestsWidget';
 import SurveyWidget from '@/components/Widgets/SurveyWidget';
 import { ContentSection } from '@/components/Wrappers/Sections';
@@ -18,16 +16,17 @@ import { router } from 'expo-router';
 import { InterestAutoSlider } from '@/components/AutoSliders/InterestsAutoSlider';
 import { CommunityPostsAutoSlider } from '@/components/AutoSliders/CommunityPostsAutoSlider';
 import { CommunityPostTypes } from '@/constants/values';
+import { useFetchDashboardData } from '@/hooks/get/useFetchDashboardData';
 
 const HomeScreen = () => {
   const userId = useAuthUserId()
-
-  const {setUser} = useUser()
+  const {user, setUser} = useUser()
   
   // This cause grid dimentions to transform from 0 -> full. Creating a transform effect in the initial grid render
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
 
   const {data: fetchedUser, refetch: fetchUser} = useGetUser(userId || '', false)
+  const {data: dashboard} = useFetchDashboardData(userId || '', !!userId)
 
     useEffect(() => {
       if (fetchedUser) {
@@ -51,7 +50,7 @@ const HomeScreen = () => {
   return (
     <ScrollView className='px-3'>
       <ContentSection classNames='mt-3' cardMode={false}>
-        <Greeting />
+        <Greeting motive={dashboard?.motive} user={user} />
       </ContentSection>
       <BaseGrid onFetchDimensions={handleSetDimensions}>
         <GridItem columns={1} gridDimentions={dimensions}>
@@ -61,7 +60,7 @@ const HomeScreen = () => {
           <SurveyWidget uid={userId || ''} />
         </GridItem>
         <GridItem columns={2} gridDimentions={dimensions}>
-          <InterestsWidget />
+          <InterestsWidget interests={dashboard?.similarInterestsCount || 0} />
         </GridItem>
         <GridItem columns={1} gridDimentions={dimensions}>
           <InterestAutoSlider interval={3000} />

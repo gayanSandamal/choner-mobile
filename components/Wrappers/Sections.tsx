@@ -1,19 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import { Link } from 'expo-router';
 import { SectionProps } from '@/types/Components';
-
-const styles = StyleSheet.create({
-  contentSectionWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-});
 
 
 export const ContentSection = (props: SectionProps) => {

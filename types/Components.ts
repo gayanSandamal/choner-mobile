@@ -1,5 +1,4 @@
-import { DimensionValue, ImageStyle, NativeSyntheticEvent, StyleProp, TextInput, TextInputSubmitEditingEventData, ViewStyle } from "react-native"
-import { CartItem } from "./Products"
+import { DimensionValue, ImageStyle, StyleProp, TextInput, ViewStyle } from "react-native"
 import { User } from "./User"
 
 type sizes = 'sm' | 'md' | 'lg'
@@ -136,13 +135,6 @@ export type ModalProps = {
   customModal?: boolean
   contentWrapperStyles?: ViewStyle
   setShowModal: (show: boolean) => void
-}
-
-export type CartItemProps = {
-  item: CartItem
-  onRemove: (item: CartItem) => void
-  onUpdateQty: (item: CartItem, qty: number) => void
-  onPressImage: (item: CartItem) => void
 }
 
 export type NumberInput = {
@@ -501,6 +493,11 @@ export enum ChallengePostCategory {
   ON_LOCATION = 'on-locaion'
 }
 
+export enum EnrolmentStatus {
+  ENROLLED = 'enrolled',
+  NOT_ENROLLED = 'not-enrolled',
+}
+
 export type SelectedCommentParams = {
   commentId: string
   replyId?: string
@@ -564,6 +561,7 @@ export type InterestCardData = {
   scheduledAt: {_nanoseconds: number, _seconds: number} | undefined
   visibility: "public" | "scheduled"
   voteCount: number
+  enrolmentStatus?: EnrolmentStatus.ENROLLED | EnrolmentStatus.NOT_ENROLLED
   location?: LocationData
   isOwner?: boolean
 }
@@ -657,7 +655,10 @@ export type InterestCardProps = {
   navigationPath?: string
   isOwner?: boolean
   noTextLimit?: boolean
+  uid?: string
+  isTogglingEnrole?: boolean
   onOptionPress: () => void
+  onToggleEnrole?: () => void
   onDelete?: () => void
   setShowOptionInterest?: (show: string) => void
 }
@@ -846,4 +847,10 @@ export type SurveyData = {
 export type LocationData = {
   name: string
   address: string
+}
+
+export type Dashboard = {
+  motive: string
+  randomTrendingChallenge: ChallengePostCardProps
+  similarInterestsCount: number
 }

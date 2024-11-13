@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { router } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 import { getAuth } from 'firebase/auth';
 
@@ -18,7 +19,7 @@ export const getAxios = (authenticate?: boolean) => {
     async (request) => {
       const session = await SecureStore.getItemAsync('session')
       const auth = getAuth();
-      const token = auth.currentUser?.stsTokenManager?.accessToken
+      const token = await auth.currentUser?.getIdToken(true)
 
       if (token && session && authenticate) {
         request.headers.Authorization = `Bearer ${token}`
@@ -37,7 +38,7 @@ export const getAxios = (authenticate?: boolean) => {
     async (error) => {
       const originalRequest = error.config;
 
-      if (error.response.status === 401 && !originalRequest._retry) {
+      if (error.response.status === 401) {
         originalRequest._retry = true
         const auth = getAuth();
         const user = auth.currentUser

@@ -84,7 +84,16 @@ export type GetShowedInterestProps = {
     LastUserId?: string
 }
 
-// Delete Interest post
 export const getWhoShowedInterest = async ({interestId}: GetShowedInterestProps) => {
-    return axios.post('/getAllInterestedHandler', { data: { interestId } })
+    return axios.post('/getEnrolledEnthusiastsHandler', { data: { interestId } })
+}
+
+type ToggleInterestedProps = {
+    uid: string
+    interestId: string
+}
+
+export const toggleInterested = async ({interestId}: ToggleInterestedProps) => {
+    const data = { interestId }
+    return axios.post('/toggleInterestEnrolmentHandler', { data })
 }

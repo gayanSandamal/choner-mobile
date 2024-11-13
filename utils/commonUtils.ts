@@ -156,6 +156,7 @@ export function parseToInterestCardProps(data: any): InterestCardData {
     }: !!data?.scheduledAt? isoDateTimeToSecond(data?.scheduledAt): undefined,
     visibility: data.visibility,
     location: data?.location,
+    enrolmentStatus: data.enrolmentStatus,
     voteCount: data?.votes?.length
   }
 }

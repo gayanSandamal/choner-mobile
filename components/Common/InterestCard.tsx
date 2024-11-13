@@ -1,12 +1,12 @@
 import { TouchableOpacity, View, StyleSheet } from "react-native"
 import Label from "../Base/Label"
-import { FontTypes, IconNames, InputSizes, InterestCardProps } from "@/types/Components"
+import { EnrolmentStatus, FontTypes, IconNames, InputSizes, InterestCardProps } from "@/types/Components"
 import { Colors } from "@/constants/Colors"
 import { Btn, CharmBtn } from "../Base/Button"
 import Icon from "../Base/Icon"
 import { escapePercent } from "@/utils/commonUtils"
 import { router } from "expo-router"
-import { useDeleteInteresPost } from "@/hooks/mutate/useMutateInterestPosts"
+import { useDeleteInteresPost, useToggleInterested } from "@/hooks/mutate/useMutateInterestPosts"
 import { useState } from "react"
 import Modal from "../Base/Modal"
 import { PostUserItem } from "./PostUserItem"
@@ -18,10 +18,11 @@ const styles = StyleSheet.create({
   optionListButton: {borderWidth: 0, width: '100%', height: 30, marginBottom: 0, padding: 0, paddingLeft: 8, marginVertical: 6, backgroundColor: 'transparent'},
 })
 
-export const InterestCard = ({isOwner, data, disabled, classNames, navigationPath, showOptionInterest, scheduled, noTextLimit, setShowOptionInterest, onOptionPress, onDelete}: InterestCardProps) => {
+export const InterestCard = ({uid, isOwner, data, disabled, classNames, navigationPath, showOptionInterest, scheduled, noTextLimit, isTogglingEnrole, setShowOptionInterest, onToggleEnrole, onOptionPress, onDelete}: InterestCardProps) => {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false)
 
   const {mutate: deletePost, isPending: isDeleting} = useDeleteInteresPost(() => onDelete && onDelete(), () => {})
+  const {mutate: toggleEnrolment, isPending: isToggling} = useToggleInterested(() => {}, () => {})
 
   const navigateToInterest = () => {
     if (showOptionInterest === data.id) {
@@ -44,6 +45,7 @@ export const InterestCard = ({isOwner, data, disabled, classNames, navigationPat
           createdAt: data.createdAt,
           scheduledAt: data.scheduledAt,
           visibility: data.visibility,
+          enrolmentStatus: data.enrolmentStatus,
           voteCount: data.voteCount,
         })
       },
@@ -51,6 +53,15 @@ export const InterestCard = ({isOwner, data, disabled, classNames, navigationPat
     
     setShowOptionInterest && setShowOptionInterest('')
   }
+
+  const onPressInterest = () => {
+    if (onToggleEnrole) {
+      onToggleEnrole()
+    }
+    toggleEnrolment({uid: uid || '', interestId: data.id})
+  }
+
+  const notEnrolled = !data?.enrolmentStatus || data.enrolmentStatus === EnrolmentStatus.NOT_ENROLLED
 
   return (
     <>
@@ -70,7 +81,7 @@ export const InterestCard = ({isOwner, data, disabled, classNames, navigationPat
         </View>}
         <View className='flex flex-row items-center justify-between'>
           <View className='flex flex-row items-center'>
-            {!isOwner && <Btn classNames="mr-2" icon={IconNames.interests} label="Interested" size={InputSizes.sm} outlined />}
+            {!isOwner && <Btn isLoading={isToggling || isTogglingEnrole} disabled={isToggling} classNames="mr-2" icon={notEnrolled? IconNames.interests: IconNames.interestsFill} label="Interested" size={InputSizes.sm} outlined={notEnrolled} onPress={onPressInterest} />}
             <View className='flex-row items-center'>
               <Icon name={IconNames.interestsFill} size={InputSizes.sm} />
               <Label label={`|  ${data.voteCount || 0}`} type={FontTypes.FLabel} classNames='ml-1' />

@@ -13,6 +13,7 @@ import { CommentsList } from '../Common/CommentsList'
 import { POST_VISIBILITY, QueryKeys } from '@/constants/values'
 import { useQueryClient } from '@tanstack/react-query'
 import { JoinedParticipants } from '../Challenges/JoinedParticipants'
+import { useToggleInterested } from '@/hooks/mutate/useMutateInterestPosts'
 
 const styles = StyleSheet.create({
   btnDetailedWrapper: {width: 140, backgroundColor: Colors.dark['soundcloud-gdr-1'], borderRadius: 20, borderColor: Colors.dark['soundcloud-gdr-1'], paddingLeft: 15, paddingRight: 12, marginBottom: 0},
@@ -33,6 +34,7 @@ export default function InterestView() {
 
   const {mutate: addComment, isPending: addingComment} = useCreateComment(() => setCommentText(''), () => {})
   const {data: comments, isFetching: fetchingComments, refetch : refetchComments} = useFetchCommemnts(postData?.id || '', user?.uid || '', 'interestsPost', !!postData && !!user && postData.visibility === POST_VISIBILITY.PUBLIC)
+  const {mutate: toggleEnrolment, isPending: isToggling} = useToggleInterested((data) => onSuccessEnrolled(data), () => {})
 
   useLayoutEffect(() => {
     const interest = JSON.parse(data as string)
@@ -51,6 +53,11 @@ export default function InterestView() {
     setShowOptionInterest('')
   }
 
+  const onSuccessEnrolled = (data: InterestCardData) => {
+    if (!postData) return
+    const newPost = {...postData, enrolmentStatus: data.enrolmentStatus}
+    setPostData(newPost)
+  }
   
   const onAddComment = () => addComment({
     uid: user?.uid || '',
@@ -68,6 +75,10 @@ export default function InterestView() {
     })
     setRefreshing(false)
   }, [refetchComments])
+
+  const onPressInterested = () => {
+    postData && user && toggleEnrolment({uid: user?.uid, interestId: postData.id})
+  }
 
   if (!postData || !user) {
     return <ActivityIndicator color={Colors.light.white} className='mt-20' size={40} />
@@ -88,7 +99,7 @@ export default function InterestView() {
         setShowModal={onCloseModal}
       />
       <ScrollView showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
-      <InterestCard noTextLimit disabled isOwner={postData.isOwner} classNames='mt-2' data={postData} showOptionInterest={showOptionInterest} navigationPath="/interest" onOptionPress={() => setInterestPostData({id: postData.id, interest: postData.title, interestDesc: postData.description, scheduledAt: postData.scheduledAt, visibility: postData.visibility})} setShowOptionInterest={setShowOptionInterest} onDelete={() => router.back()} />
+      <InterestCard noTextLimit disabled isTogglingEnrole={isToggling} isOwner={postData.isOwner} classNames='mt-2' data={postData} showOptionInterest={showOptionInterest} navigationPath="/interest" onOptionPress={() => setInterestPostData({id: postData.id, interest: postData.title, interestDesc: postData.description, scheduledAt: postData.scheduledAt, visibility: postData.visibility})} setShowOptionInterest={setShowOptionInterest} onDelete={() => router.back()} onToggleEnrole={onPressInterested} />
         {/* <View className='flex-row items-center justify-between mt-5 mb-3'>
             <Label label=''/>
             <BtnDetailed wrapperStyle={styles.btnDetailedWrapper} label={'Form circle'} fontType={FontTypes.FLabelBold} labelAlign={JustifyContent.center} rightIcon={{name: IconNames.addCircle, classNames: 'mt-[3px]'}} onPress={() => {}} />

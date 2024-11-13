@@ -1,4 +1,4 @@
-import { createInterest, deleteInterest, updateInterest } from "@/api/interestPostApi"
+import { createInterest, deleteInterest, toggleInterested, updateInterest } from "@/api/interestPostApi"
 import { POST_VISIBILITY, QueryKeys } from "@/constants/values"
 import { isoDateTimeToSecond } from "@/utils/commonUtils"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
@@ -194,3 +194,25 @@ const addOrUpdateInterestInCache = (cachedData: any, newInterest: any) => {
     pages: updatedPages,
   }
 }
+
+export const useToggleInterested = (onSuccess: (data: any) => void, onError: (error: Error) => void) => {
+  const queryClient = useQueryClient()
+  return useMutation({
+      mutationFn: toggleInterested,
+      async onSuccess(data, variables) {
+          if (data?.status === 200) {
+            const newInterest = {
+              ...data?.data?.result?.data,
+             }
+
+            await queryClient.setQueryData([QueryKeys.INTERESTS, variables.uid], (cachedData: any) => {
+              if (!cachedData) return cachedData;
+              return addOrUpdateInterestInCache(cachedData, newInterest)
+            })
+            onSuccess(newInterest)
+          }
+      },
+      onError,
+  })
+}
+
