@@ -158,9 +158,9 @@ export default function UserProfile () {
                         setShowModal={onCloseModal}
                     />
                     <Bio />
-                    <Label classNames="mt-2 mb-3" label="Owerview" type={FontTypes.FTitle3Bold} />
+                    <Label classNames="mt-4 mb-3" label="Overview" type={FontTypes.FTitle3Bold} />
                     <UserStatus />
-                    <Label label="Activity" type={FontTypes.FTitle3Bold} />
+                    <Label classNames="mt-4" label="Activity" type={FontTypes.FTitle3Bold} />
                     <View className="flex items-center flex-row justify-between items-center mt-4 mb-4" >
                         <View className="flex flex-row">
                             <Btn size={InputSizes.md} outlined={!!setHeaderButtonTextColor(0)} label="POSTS" color={setHeaderButtonTextColor(0)} backgroundColor={setHeaderButtonBackgroundColor(0)} wrapperClasses='mr-2 mb-[1px]' onPress={() => setSelectdTab(0)} />
