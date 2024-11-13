@@ -11,10 +11,38 @@ type GreetingProps = {
 }
 
 const Greeting = ({user, motive}: GreetingProps) => {
+  const greetings = [
+    "Hi",         // English
+    "Hola",       // Spanish
+    "Salut",      // French
+    "Hallo",      // German
+    "Hoi",        // Dutch
+    "Ciao",       // Italian
+    "Olá",        // Portuguese
+    "Hej",        // Swedish
+    "Hej",        // Danish
+    "Hei",        // Norwegian
+    "Moi",        // Finnish
+    "Cześć",      // Polish
+    "Γεια",       // Greek
+    "Ahoj",       // Czech
+    "Szia",       // Hungarian
+    "Salut",      // Romanian
+    "Ahoj",       // Slovak
+    "Dia dhuit",  // Irish Gaelic
+    "Helo",       // Welsh
+    "Kia ora"     // Māori (New Zealand)
+  ];
+
+  const getRandomGreeting = () => {
+    const randomIndex = Math.floor(Math.random() * greetings.length);
+    return greetings[randomIndex];
+  }
+  
   return (
     <View>
       <View className='flex flex-row'>
-        <Label label='Hello' type={FontTypes.FTitle3} />
+        <Label label={getRandomGreeting()} type={FontTypes.FTitle3} />
         <Label label={`${user?.displayName? ' ' + user?.displayName?.split(' ')?.[0] : ''},`} type={FontTypes.FTitle3Bold} />
       </View>
       {motive && (
