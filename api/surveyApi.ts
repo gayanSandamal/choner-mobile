@@ -24,7 +24,6 @@ export type UpdateSurveyProps = {
 
 export const updateSurvey = async ({id, title, pages, isFeedback}: UpdateSurveyProps) => {
     const data = { id, title, pages, isFeedback }
-    console.log('data: ',JSON.stringify(data))
     return axios.post('/submitFormHandler', { data })
 }
 
