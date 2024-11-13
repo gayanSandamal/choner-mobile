@@ -1,4 +1,4 @@
-import { ImageSizes, LocationData } from "@/types/Components"
+import { LocationData } from "@/types/Components"
 import { getAxios } from "@/utils/AxiosUtils"
 
 const axios = getAxios(true)
@@ -23,7 +23,7 @@ export const createUpdateChallengePost = async ({id, participantStatus, challeng
         return axios.post('/updateChallengeHandler', { data })
     }
     const data = { participantStatus, challengeState, type, participationRangeId, description, location, challengeAt, joinAnyone }
-    return axios.post('/createChallengeHandler ', { data })
+    return axios.post('/createChallengeHandler', { data })
 }
 
 // Get Challenge posts

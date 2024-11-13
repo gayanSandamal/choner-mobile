@@ -1,31 +1,18 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import Card from "../Base/Card"
-import { View, ImageBackground, StyleSheet, TouchableOpacity } from "react-native"
+import { View, StyleSheet, TouchableOpacity } from "react-native"
 import Label from "../Base/Label"
 import { FontTypes, IconNames, InputSizes } from "@/types/Components"
-import PieChart from 'react-native-pie-chart'
 import { Colors } from "@/constants/Colors"
 import Icon from "../Base/Icon"
 import Svg, { Circle } from "react-native-svg"
 import { router } from "expo-router"
 
-const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    backgroundColor: '#003E62'
-  },
-  image: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-})
+type InterestsWidgetProps = {
+  interests: number
+}
 
-const InterestsWidget = () => {
-  const [interests, setIntersts] = useState<number>(0)
-
-  useEffect(() => {
-    setIntersts(7)
-  }, [])
+const InterestsWidget = ({interests}: InterestsWidgetProps) => {
 
   const labelText = () => {
     let gap = `    `
@@ -56,10 +43,12 @@ const InterestsWidget = () => {
           <Icon color={Colors.dark.background} name={IconNames.interests} size={InputSizes.xs} />
           <Label type={FontTypes.FTitle3} label={'INTERESTS'} containerStyles={{ letterSpacing: 1, fontWeight: 700 }} classNames="mb-3"></Label>
         </View>
-        <View className="flex flex-row w-full mt-8">
-          <Label type={FontTypes.FDisplay3} label={String(count)} containerStyles={{ letterSpacing: 1, fontWeight: 700, position: 'absolute', bottom: 24 }}></Label>
-          <Label type={FontTypes.FLabel} label={labelText()} containerStyles={{ letterSpacing: 1 }}></Label>
-        </View>
+        {interests !== 0 && (
+          <View className="flex flex-row w-full mt-8">
+            <Label type={FontTypes.FDisplay3} label={String(count)} containerStyles={{ letterSpacing: 1, fontWeight: 700, position: 'absolute', bottom: 24 }}></Label>
+            <Label type={FontTypes.FLabel} label={labelText()} containerStyles={{ letterSpacing: 1 }}></Label>
+          </View>
+        )}
       </TouchableOpacity>
     </Card>
   )
