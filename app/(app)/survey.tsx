@@ -29,7 +29,7 @@ export default function Survey() {
                             <Label label={`JUST ${survey?.questions?.length} QUESTIONS`} type={FontTypes.FLabelBold} />
                             <Icon classNames="mr-[-5px] mt-[1px]" name={IconNames.chevronMiniRight} />
                         </TouchableOpacity>
-                        <TouchableOpacity className="mt-3" style={{ width: '60%', height: 36, borderRadius: 30, borderWidth: 1, borderColor: Colors.dark["soundcloud-gdr-1"], flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }} onPress={() => router.replace('/')}>
+                        <TouchableOpacity className="mt-3" style={{ width: '60%', height: 36, borderRadius: 30, borderWidth: 1, borderColor: Colors.dark["soundcloud-gdr-1"], flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }} onPress={() => router.navigate('/(app)/')}>
                             <Label label="ANSWER LATER" type={FontTypes.FLabelBold} color={Colors.dark["soundcloud-gdr-1"]} />
                             <Icon classNames="mr-[-5px] mt-[1px]" name={IconNames.chevronMiniRight} color={Colors.dark["soundcloud-gdr-1"]} />
                         </TouchableOpacity>

@@ -155,8 +155,8 @@ export default function SettingsHome() {
             <Label classNames='text-white mb-3' label="Last name" />
             <Input classNames='mb-8' placeholder={'Last name'} fontSize={FontSizes.FLabel} value={lastName} onChange={checkAndSetLastName} />
             <View className="ml-0.5 mr-0.5 flex-row justify-between">
-                <Btn outlined disabled={isUpdating} onPress={() => router.back()} icon={IconNames.cancel} size={InputSizes.lg} color={Colors.dark['green-shade-1']} label="CANCEL" />
-                <Btn isLoading={isUpdating} disabled={isUpdating} onPress={onSave} icon={IconNames.save} size={InputSizes.lg} backgroundColor={Colors.dark['green-shade-1']} label="SAVE" />
+                <Btn outlined disabled={isUpdating} onPress={() => router.back()} icon={IconNames.cancel} size={InputSizes.md} color={Colors.dark['green-shade-1']} label="CANCEL" />
+                <Btn isLoading={isUpdating} disabled={isUpdating} onPress={onSave} icon={IconNames.save} size={InputSizes.md} backgroundColor={Colors.dark['green-shade-1']} label="SAVE" />
             </View>
             <ImagePickerBottomDrawer showDrawer={showDrawer} setShowDrawer={setShowDrawer} onPressImagePickItem={onPressImagePickItem} />
         </View>

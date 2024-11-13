@@ -134,7 +134,7 @@ export const SurveyModal = (props: SurveyModalProps) => {
     }
 
     const onSuccessUpdate = () => {
-        router.replace('/')
+        router.navigate('/(app)/')
         props.setShowForm(false)
     }
 
