@@ -12,18 +12,13 @@ import { tabs } from '@/constants/NavigationTabs';
 const styles = StyleSheet.create({
   tab: {
     position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
     height: 60,
     paddingTop: 0,
-    marginHorizontal: 12,
+    marginHorizontal: 10,
     marginBottom: 5,
-    paddingBottom: 0,
-    alignItems: 'center',
-    alignContent: 'center',
-    justifyContent: 'center',
     borderColor: 'black',
+    flexDirection: 'row',
+    alignItems: 'center',
     borderRadius: 20,
     borderTopColor: Colors.dark.grey,
     backgroundColor: Colors.dark.grey,
@@ -51,6 +46,7 @@ export default function TabLayout() {
               {...{ key }}
               options={{
                 title: tab.title,
+                href: Boolean(tab.hide) ? null : tab.icon.link as any,
                 tabBarIcon: ({ focused }) => (
                   <TabBarIcon icon={tab.icon.name} color={focused ? Colors.dark['primary-shade-1'] : Colors.dark.background} link={tab.icon.link} />
                 ),

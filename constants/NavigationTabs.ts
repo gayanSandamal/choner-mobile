@@ -41,6 +41,7 @@ export const tabs: TabType[] = [
     meta: {
       search: true,
     },
+    hide: true,
   },
   {
     name: 'challenges',
