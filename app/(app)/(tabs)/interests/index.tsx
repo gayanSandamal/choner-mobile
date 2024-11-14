@@ -80,7 +80,7 @@ export default function InterestsListScreen() {
         ListHeaderComponent={
           <>
             <ActionBar title='Hey, any interests on your mind..?' active={false} onPress={() => setShowCreateInterest(true)} />
-            <FlatList
+            {/* <FlatList
               data={circles}
               renderItem={({ item }) => <Circle {...item} />}
               keyExtractor={item => item.id.toString()}
@@ -88,7 +88,7 @@ export default function InterestsListScreen() {
             />
             <View className='mt-5 mb-4 flex items-end'>
               <BtnDetailed wrapperStyle={styles.btnDetailedWrapper} label={'Explore circles'} leftIcon={{name: IconNames.checkCircle, classNames: 'mt-[3px] ml-[3px]'}} onPress={() => {}} />
-            </View>
+            </View> */}
           </>
         }
         renderItem={({ item }) => {
