@@ -9,7 +9,7 @@ export const useFetchDashboardData = (userId: string, enabled = true) => {
         queryFn: () => getDashboardData({userId}),
         select(data) {
             if (!data?.data?.result) return undefined
-            return data?.data?.result
+            return data?.data?.result.data
         },
         gcTime: DURATIONS.FIVE_MINUTES
     })
