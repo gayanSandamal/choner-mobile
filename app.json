@@ -52,7 +52,9 @@
           "savePhotosPermission": "Allow $(PRODUCT_NAME) to save photos for uploading.",
           "isAccessMediaLocationEnabled": true
         }
-      ]
+      ],
+      "expo-font",
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true
