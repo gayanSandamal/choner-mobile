@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Modal, Platform, ScrollView, StyleSheet, View } from "react-native"
+import { Modal, Platform, ScrollView, StyleSheet, View, Text } from "react-native"
 import NavigateBack from "./NavigateBack"
 import Label from "../Base/Label"
 import { BtnDetailed } from "../Base/Button"
@@ -113,9 +113,9 @@ export const SurveyModal = (props: SurveyModalProps) => {
     const renderScene = ({ route }: { route: Route }) => {
         const pageIndex = parseInt(route.key.split("-")[1])
         const options = selectedOptions.filter((option) => option.pageId === props.surveyData.questions[pageIndex].id)?.[0] || []
-        return (
+        return pageIndex === index ? (
             <SurveyPage selectedOption={options} surveyPage={props.surveyData.questions[pageIndex]} setSelectedOption={addSelectedOption} setShowForm={props.setShowForm} />
-        )
+        ) : null
     }
 
     const onSave = () => {
@@ -164,6 +164,7 @@ export const SurveyModal = (props: SurveyModalProps) => {
                     />
                 </View>
                 <TabView renderTabBar={() => null} navigationState={{ index, routes }} renderScene={renderScene} onIndexChange={setIndex} />
+                <Text style={{ flex: 1, color: 'white' }}>{index}</Text>
                 <View className="flex flex-row w-full justify-between items-center pb-3 px-3 pt-2">
                     <BtnDetailed leftIcon={{ name: IconNames.chevronMiniLeft, color: Colors.dark.background, classNames: "mr-[-8px] mt-[1px]" }} disabled={index === 0 || isPending} wrapperStyle={styles.back} label="BACK" labelStyle={{ fontSize: 14, fontWeight: "400" }} onPress={() => setIndex((prev) => Math.max(prev - 1, 0))} />
                     <Label classNames="mb-3" type={FontTypes.FP} label={`${index + 1} out of ${props.surveyData.questions.length} Questions`} />
