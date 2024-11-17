@@ -175,7 +175,7 @@ const PublishInterestPost = (props: PublishInterestPostProps) => {
         <Label classNames="mt-3 mb-2" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label={`Location`} />
         <TouchableOpacity className='shadow-sm flex flex-row items-center mb-5' style={{ backgroundColor: Colors.dark['fied-bg-idle'], height: 50, width: '100%', borderRadius: 30, paddingHorizontal: 20 }} onPress={() => setShowDrawer(true)}>
           <Icon name={IconNames.location} size={InputSizes.md} color={ Colors.dark['primary-shade-3']} />
-          <Label classNames="ml-3 pr-2" type={FontTypes.FLabel} ellipsizeMode="tail" numberOfLines={2} label={location?.name || "INTEREST LOCATION"} />
+          <Label classNames="ml-3 pr-2" type={FontTypes.FLabel} ellipsizeMode="tail" numberOfLines={2} label={location?.name || "LOCATION"} />
         </TouchableOpacity>
 
         <PostBottomActions
