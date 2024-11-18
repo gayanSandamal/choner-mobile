@@ -43,7 +43,7 @@ const imageUrls = [
 export default function ChallengesScreen() {
   return (
     <ScrollView className="h-full bg-grey px-3 pt-3" contentContainerStyle={{ alignItems: 'center' }}>
-      <View className="w-full mb-[20px]">
+      {/* <View className="w-full mb-[20px]">
         <ImageBackground source={{ uri: imageUrls[0] }} resizeMode="cover" style={styles.eventWrapper}>
           <View className='pt-5 w-full h-full px-4 pb-2' style={{ backgroundColor: '#0000006A' }}>
             <Label containerStyles={{ fontSize: 24, letterSpacing: 3, fontWeight: '700' }} color={Colors.dark.main} label="CHONERSPHERE" />
@@ -52,7 +52,7 @@ export default function ChallengesScreen() {
             <BtnDetailed leftIcon={{ name: IconNames.bicepsFilled }} label="Count me in !" labelAlign={JustifyContent.center} wrapperStyle={styles.buttonLarge} onPress={() => {}} />
           </View>
         </ImageBackground>
-      </View>
+      </View> */}
 
       <UserStatus />
 
@@ -68,7 +68,7 @@ export default function ChallengesScreen() {
         </ImageBackground>
       </View>
 
-      <View className="w-full mb-[25px]">
+      {/* <View className="w-full mb-[25px]">
         <ImageBackground source={{ uri: imageUrls[3] }} resizeMode="cover" style={styles.cardWrapperWide}>
           <View style={{ backgroundColor: '#0000006A', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
             <Label classNames='pb-7' containerStyles={{ fontSize: 32, letterSpacing: 3, fontWeight: '700' }} color={Colors.dark['soundcloud-gdr-1']} label="CHOSEN ONE" />
@@ -77,9 +77,9 @@ export default function ChallengesScreen() {
             <BtnDetailed label="Find Yours" fontType={FontTypes.FTitle3} labelAlign={JustifyContent.center} wrapperStyle={styles.buttonMedium} onPress={() => {}} />
           </View>
         </ImageBackground>
-      </View>
+      </View> */}
 
-      <View className="w-full mb-[20px]">
+      {/* <View className="w-full mb-[20px]">
         <ImageBackground source={{ uri: imageUrls[2] }} resizeMode="cover" style={styles.cardWrapperWide}>
           <View style={{ backgroundColor: '#0000006A', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
             <Label classNames='pb-5' containerStyles={{ fontSize: 24, letterSpacing: 3, fontWeight: '700' }} color={Colors.light.white} label="THE RESISTANCE" />
@@ -88,7 +88,7 @@ export default function ChallengesScreen() {
             <BtnDetailed label="Can You Resist?" fontType={FontTypes.FTitle3} labelAlign={JustifyContent.center} wrapperStyle={styles.buttonLarge} onPress={() => {}} />
           </View>
         </ImageBackground>
-      </View>
+      </View> */}
     </ScrollView>
   );
 }

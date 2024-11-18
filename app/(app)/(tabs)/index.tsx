@@ -17,6 +17,7 @@ import { InterestAutoSlider } from '@/components/AutoSliders/InterestsAutoSlider
 import { CommunityPostsAutoSlider } from '@/components/AutoSliders/CommunityPostsAutoSlider';
 import { CommunityPostTypes } from '@/constants/values';
 import { useFetchDashboardData } from '@/hooks/get/useFetchDashboardData';
+import { Colors } from '@/constants/Colors';
 
 const HomeScreen = () => {
   const userId = useAuthUserId()
@@ -48,7 +49,7 @@ const HomeScreen = () => {
     }, [])
 
   return (
-    <ScrollView className='px-3'>
+    <ScrollView className='px-3' style={{backgroundColor: Colors.dark.grey}}>
       <ContentSection classNames='mt-3' cardMode={false}>
         <Greeting motive={dashboard?.motive} user={user} />
       </ContentSection>

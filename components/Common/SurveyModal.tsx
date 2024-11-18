@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react"
-import { Modal, Platform, ScrollView, StyleSheet, View } from "react-native"
+import { Modal, Platform, ScrollView, StyleSheet, View, Text } from "react-native"
 import NavigateBack from "./NavigateBack"
 import Label from "../Base/Label"
 import { BtnDetailed } from "../Base/Button"
 import { CompletedForm, FontTypes, IconNames, SurveyData, SurveyPageData } from "@/types/Components"
 import { Colors } from "@/constants/Colors"
-import { Route, TabView } from "react-native-tab-view"
+import { Route } from "react-native-tab-view"
 import { LinearGradient } from "expo-linear-gradient"
 import { TextArea } from "../Base/TextArea"
 import { router } from "expo-router"
@@ -13,7 +13,7 @@ import { useUpdateSurvey } from "@/hooks/mutate/useMutateSurvey"
 
 const styles = StyleSheet.create({
     back: { width: 86, height: 35, borderRadius: 30, paddingRight: 11, paddingLeft: 7, borderColor: Colors.dark.background },
-    next: { width: 86, height: 35, borderRadius: 30, paddingLeft: 16, paddingRight: 7, borderColor: Colors.dark["primary-shade-2"], backgroundColor: Colors.dark["primary-shade-2"] },
+    next: { width: 86, height: 35, borderRadius: 30, paddingLeft: 14, paddingRight: 7, borderColor: Colors.dark["primary-shade-2"], backgroundColor: Colors.dark["primary-shade-2"], flexDirection: 'row-reverse' },
     save: { width: 86, height: 35, borderRadius: 30, borderColor: Colors.dark["primary-shade-2"], backgroundColor: Colors.dark["primary-shade-2"] },
     selectedOption: { marginTop: 15, height: 57, borderColor: Colors.dark["soundcloud-gdr-1"], backgroundColor: Colors.dark.darkText },
     notSelectedOption: { marginTop: 15, height: 57, borderColor: Colors.dark["green-shade-3"], backgroundColor: Colors.dark.darkText },
@@ -113,9 +113,9 @@ export const SurveyModal = (props: SurveyModalProps) => {
     const renderScene = ({ route }: { route: Route }) => {
         const pageIndex = parseInt(route.key.split("-")[1])
         const options = selectedOptions.filter((option) => option.pageId === props.surveyData.questions[pageIndex].id)?.[0] || []
-        return (
+        return pageIndex === index ? (
             <SurveyPage selectedOption={options} surveyPage={props.surveyData.questions[pageIndex]} setSelectedOption={addSelectedOption} setShowForm={props.setShowForm} />
-        )
+        ) : null
     }
 
     const onSave = () => {
@@ -163,12 +163,12 @@ export const SurveyModal = (props: SurveyModalProps) => {
                         style={{ width: `${getProgress()}%`, height: '100%', borderRadius: 15 }}
                     />
                 </View>
-                <TabView renderTabBar={() => null} navigationState={{ index, routes }} renderScene={renderScene} onIndexChange={setIndex} />
+                {renderScene({ route: routes[index] })}
                 <View className="flex flex-row w-full justify-between items-center pb-3 px-3 pt-2">
                     <BtnDetailed leftIcon={{ name: IconNames.chevronMiniLeft, color: Colors.dark.background, classNames: "mr-[-8px] mt-[1px]" }} disabled={index === 0 || isPending} wrapperStyle={styles.back} label="BACK" labelStyle={{ fontSize: 14, fontWeight: "400" }} onPress={() => setIndex((prev) => Math.max(prev - 1, 0))} />
                     <Label classNames="mb-3" type={FontTypes.FP} label={`${index + 1} out of ${props.surveyData.questions.length} Questions`} />
                     {index !== props.surveyData.questions.length - 1? (
-                        <BtnDetailed rightIcon={{ name: IconNames.chevronMiniRight, color: Colors.dark.background, classNames: "ml-[-8px] mt-[1px]" }} wrapperStyle={styles.next} label="NEXT" labelStyle={{ fontSize: 14, fontWeight: "400" }} onPress={() => setIndex((prev) => Math.min(prev + 1, props.surveyData.questions.length - 1))}
+                        <BtnDetailed leftIcon={{ name: IconNames.chevronMiniRight, color: Colors.dark.background, classNames: "mr-[-8px] mt-[1px]" }} wrapperStyle={styles.next} label="NEXT" labelStyle={{ fontSize: 14, fontWeight: "400" }} onPress={() => setIndex((prev) => Math.min(prev + 1, props.surveyData.questions.length - 1))}
                         />): (
                             <BtnDetailed isLoading={isPending} loaderSize={21} leftIcon={{ name: IconNames.save, color: Colors.dark.background, classNames: "mr-[-3px]" }} wrapperStyle={styles.save} label="SAVE" labelStyle={{ fontSize: 14, fontWeight: "400" }} onPress={onSave} />
                         )}

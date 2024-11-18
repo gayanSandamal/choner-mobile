@@ -4,7 +4,7 @@ import { IconNames, InputSizes } from "@/types/Components";
 import { ContentSection } from "../Wrappers/Sections";
 import { Colors } from '@/constants/Colors';
 import { Input } from "../Base/Input";
-import { fbSignUp } from './../../auth';
+import { fbSendEmailVerification, fbSignUp } from './../../auth';
 import { useLayoutEffect, useRef, useState } from "react";
 import { router } from "expo-router";
 import { UserCredential } from "firebase/auth";
@@ -56,6 +56,9 @@ export default function SignUpScreen() {
       .then((userCredential) => {
         user.current = userCredential
         if (userCredential.user) {
+          if (!userCredential.user.emailVerified) {
+            fbSendEmailVerification()
+          }
           signIn(userCredential.user)
           router.replace('/survey')
         } else {

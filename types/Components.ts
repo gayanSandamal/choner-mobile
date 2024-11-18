@@ -15,6 +15,7 @@ export type TabType = {
     link: string
   },
   meta?: TabMeta
+  hide?: boolean
 }
 
 export type SectionLink = {
