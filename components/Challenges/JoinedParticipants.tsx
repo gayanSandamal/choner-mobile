@@ -54,7 +54,7 @@ export const JoinedParticipants = (props: JoinedParticipantsProps) => {
         <>
             <Btn classNames="mr-[auto] mt-4 h-[40px]" fontType={FontTypes.FTitle3} backgroundColor={Colors.dark.darkText} label={`${props.text} ${participants? '(' + participants.length + ')': ''}`} onPress={() => setShowModal(true)} />
             <Modal animationType="fade" visible={showModal} onRequestClose={() => setShowModal(false)}>
-                <View className='px-4 w-full h-full bg-grey'>
+                <View className='px-4 w-full h-full' style={{backgroundColor: Colors.dark.grey}}>
                     <View className={`mt-[${Platform.OS === 'ios'? '45px': '20px'}]`} />
                     <NavigateBack label="" navigate={() => setShowModal(false)} />
    

@@ -35,7 +35,7 @@ type LocationBottomDrawerProps = {
   
     return (
       <BottomDrawer showModal={props.showDrawer} contentWrapperStyles={{ height: '90%' }} setShowModal={onHideDrawer}>
-        <Input classNames="mb-5" placeholder="CHALLENGE LOCATION" icon={IconNames.location} iconRight={!!textQuery?.trim()? IconNames.check: IconNames.close} fontSize={FontSizes.FLabel} containerStyles={{ height: 50, backgroundColor: Colors.dark["grey-shade-1"], paddingHorizontal: 10, marginBottom: 7 }} value={!!textQuery ? textQuery : (props.location?.name || '')} onPressIconRight={() => !!textQuery?.trim()? onClose(): onHideDrawer()} onChange={setTextQuery} onSubmitEditing={fetchLocations} />
+        <Input classNames="mb-5" placeholder="CHALLENGE LOCATION" icon={IconNames.location} iconRight={!!textQuery?.trim()? IconNames.check: IconNames.close} containerStyles={{ height: 50, backgroundColor: Colors.dark["grey-shade-1"], paddingHorizontal: 10, marginBottom: 7 }} value={!!textQuery ? textQuery : (props.location?.name || '')} onPressIconRight={() => !!textQuery?.trim()? onClose(): onHideDrawer()} onChange={setTextQuery} onSubmitEditing={fetchLocations} />
         {fetchingLocations && !isFetchingNextPage && <ActivityIndicator color={Colors.light.white} size={25} />}
         {locations && (
           <FlatList

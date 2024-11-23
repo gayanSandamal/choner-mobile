@@ -147,8 +147,8 @@ export default function CommunityView() {
 
       </ScrollView>
       <Modal showModal={showDeleteModal} setShowModal={setShowDeleteModal}>
-        <Label type={FontTypes.FTitle1} label={'Want to detete this community post?'} />
-        <Label classNames="mt-5" type={FontTypes.FLabelBold} label={'Post data will be permanently removed!'} />
+        <Label type={FontTypes.FTitle1} label={'Do you want to delete this community post?'} />
+        <Label classNames="mt-5" type={FontTypes.FLabelBold} label={'This will be permanently removed!'} />
         <View className="mt-10 ml-0.5 mr-0.5 flex-row justify-between">
           <Btn outlined disabled={deletingPost} onPress={() => setShowDeleteModal(false)} icon={IconNames.cancel} size={InputSizes.md} color={Colors.light.white} label="Cancel" />
           <Btn isLoading={deletingPost} disabled={deletingPost} onPress={() => deletePost({uid: postData.createdBy.uid, id: postData.id, type: postData.type, visibility: postData.visibility})} icon={IconNames.delete} size={InputSizes.md} backgroundColor={Colors.dark.red} label="Yes, Delete" />

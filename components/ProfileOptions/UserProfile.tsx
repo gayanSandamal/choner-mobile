@@ -128,7 +128,6 @@ export default function UserProfile () {
     }
 
     return  (
-    <TouchableWithoutFeedback onPress={onViewPress} accessible={false}>
         <FlatList
             ref={flatListRef}
             className="mt-3"
@@ -137,6 +136,7 @@ export default function UserProfile () {
             nestedScrollEnabled={true}
             removeClippedSubviews={true}
             showsVerticalScrollIndicator={false}
+            onTouchEnd={onViewPress}
             ListHeaderComponent={
                 <>
                     <PostModal
@@ -190,5 +190,5 @@ export default function UserProfile () {
             onRefresh={onRefresh}
             onEndReached={() => tabs?.tab === tabNames[2]? fetchNextInterests(): fetchNextCommunityPosts()}
         />
-    </TouchableWithoutFeedback>)
+    )
 }

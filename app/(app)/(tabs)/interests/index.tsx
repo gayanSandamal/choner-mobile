@@ -44,18 +44,12 @@ const tempCircles: CircleType[] = [
 
 export default function InterestsListScreen() {
   const uid = useAuthUserId()
-
-  const [circles, setCircles] = useState<CircleType[]>([])
   const [refreshing, setRefreching] = useState<boolean>(false)
   const [interestPostData, setInterestPostData] = useState<InterestPostParams | null>(null)
   const [showOptionInterest, setShowOptionInterest] = useState<string>('')
   const [showCreateInterest, setShowCreateInterest] = useState<boolean>(false)
 
   const {data: interests, isFetching, refetch, fetchNextPage} = useFetchInterestPosts(uid || '', !!uid)
-
-  useEffect(() => {
-    setCircles(tempCircles)
-  }, [])
 
   const onRefresh = async () => {
     setRefreching(true)
@@ -71,12 +65,13 @@ export default function InterestsListScreen() {
   }
 
   return (
-    <View className='bg-grey h-full'>
+    <View className='h-full' style={{backgroundColor: Colors.dark.grey}}>
       <FlatList
-        className='px-3 bg-grey'
+        className='px-3'
         data={interests}
         removeClippedSubviews={true}
         showsVerticalScrollIndicator={false}
+        onTouchEnd={() => showOptionInterest && setShowOptionInterest('')}
         ListHeaderComponent={
           <>
             <ActionBar title='Hey, any interests on your mind..?' active={false} onPress={() => setShowCreateInterest(true)} />

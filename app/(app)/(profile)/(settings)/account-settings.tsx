@@ -60,8 +60,8 @@ export default function AccountSettings() {
             />
             </SettingsWrapper>
             <Modal showModal={showDeleteModal} setShowModal={setShowDeleteModal}>
-                <Label type={FontTypes.FTitle1} label={'Want to detete this account?'} />
-                <Label classNames="mt-5" type={FontTypes.FLabelBold} label={'Your data will be permanently removed!'} />
+                <Label type={FontTypes.FTitle1} label={'Do you want to delete this account?'} />
+                <Label classNames="mt-5" type={FontTypes.FLabelBold} label={'Your data will be permanently deleted!'} />
                 <View className="mt-10 ml-0.5 mr-0.5 flex-row justify-between">
                     <Btn outlined disabled={isDeleting} onPress={() => setShowDeleteModal(false)} icon={IconNames.cancel} size={InputSizes.md} color={Colors.light.white} label="Cancel" />
                     <Btn isLoading={isDeleting} disabled={isDeleting} onPress={() => userId && deleteAccount({userId})} icon={IconNames.save} size={InputSizes.md} backgroundColor={Colors.dark.red} label="Yes, Delete" />

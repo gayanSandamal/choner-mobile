@@ -95,8 +95,8 @@ export const InterestCard = ({uid, isOwner, data, disabled, classNames, navigati
         <Icon name={IconNames.timer} size={InputSizes.md} color={Colors.dark["primary-material-1"]}/>
       </View>}
       <Modal showModal={showDeleteModal} setShowModal={setShowDeleteModal}>
-        <Label type={FontTypes.FTitle1} label={'Want to detete this interest post?'} />
-        <Label classNames="mt-5" type={FontTypes.FLabelBold} label={'Post data will be permanently removed!'} />
+        <Label type={FontTypes.FTitle1} label={'Do you want to delete this interest post?'} />
+        <Label classNames="mt-5" type={FontTypes.FLabelBold} label={'This will be permanently removed!'} />
         <View className="mt-10 ml-0.5 mr-0.5 flex-row justify-between">
           <Btn outlined disabled={isDeleting} onPress={() => setShowDeleteModal(false)} icon={IconNames.cancel} size={InputSizes.md} color={Colors.light.white} label="Cancel" />
           <Btn isLoading={isDeleting} disabled={isDeleting} onPress={() => deletePost({uid: data.createdBy.uid, id: data.id, visibility: data.visibility})} icon={IconNames.delete} size={InputSizes.md} backgroundColor={Colors.dark.red} label="Yes, Delete" />

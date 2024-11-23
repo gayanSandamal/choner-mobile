@@ -48,7 +48,8 @@ const OnGoingChallenges = () => {
     return (
         <>
             <FlatList
-                className="px-3 bg-grey w-full h-full"
+                className="px-3 w-full h-full"
+                style={{backgroundColor: Colors.dark.grey}}
                 data={[{}]}
                 removeClippedSubviews={true}
                 showsVerticalScrollIndicator={false}
@@ -71,7 +72,6 @@ const OnGoingChallenges = () => {
                 )}
                 renderItem={() => (
                     <FlatList
-                        className='bg-grey'
                         data={challenges}
                         scrollEnabled={false}
                         removeClippedSubviews={true}

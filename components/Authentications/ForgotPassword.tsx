@@ -2,7 +2,7 @@ import { View } from "react-native";
 import { router } from 'expo-router';
 import { useSession } from "@/hooks/ctx";
 import { Btn } from "../Base/Button";
-import { IconNames, InputSizes } from "@/types/Components";
+import { FontSizes, IconNames, InputSizes } from "@/types/Components";
 import { ContentSection } from "../Wrappers/Sections";
 import { Input } from "../Base/Input";
 

@@ -80,7 +80,7 @@ export const RequestedParticipants = (props: RequestedParticipantsProps) => {
 
     return (
         <Modal animationType="fade" visible={props.showModal} onRequestClose={() => props.setShowModal(false)}>
-            <View className='px-4 w-full h-full bg-grey'>
+            <View className='px-4 w-full h-full' style={{backgroundColor: Colors.dark.grey}}>
                 <View className={`mt-[${Platform.OS === 'ios'? '45px': '20px'}]`} />
                 <NavigateBack label={props.challenge.description} navigate={() => props.setShowModal(false)} />
                 <View className="flex flex-row items-center w-full mt-6 mb-2">

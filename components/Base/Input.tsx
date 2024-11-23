@@ -3,7 +3,6 @@ import { FontSizes, InputProps, InputSizes } from "@/types/Components";
 import { TextInput, View } from "react-native";
 import Icon from '@/components/Base/Icon'
 import { CharmBtn } from "./Button";
-import { opacity } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
 
 export const Input = (props: InputProps) => {
     const { value, placeholder, icon, iconRight, classNames, containerStyles, editable, secureTextEntry = false, disabled = false, onChange, onPressIconRight } = props
@@ -21,7 +20,7 @@ export const Input = (props: InputProps) => {
             <TextInput
                 editable={editable}
                 textAlign={'left'}
-                style={{ flex: 1, padding: 10, color: Colors.dark.text, fontSize: props.fontSize || FontSizes.FP }}
+                style={{ flex: 1, padding: 10, color: Colors.dark.text, fontSize: props.fontSize || FontSizes.FLabel }}
                 onChangeText={onChange}
                 placeholder={placeholder}
                 placeholderTextColor={Colors.dark['grey-shade-4']}

@@ -2,18 +2,19 @@ import { View } from "react-native";
 import { router, useFocusEffect } from 'expo-router';
 import { useSession } from "@/hooks/ctx";
 import { Btn } from "../Base/Button";
-import { IconNames, InputSizes } from "@/types/Components";
+import { FontSizes, IconNames, InputSizes } from "@/types/Components";
 import { ContentSection } from "../Wrappers/Sections";
 import { Colors } from '@/constants/Colors';
 import { Input } from "../Base/Input";
 import { fbSignIn } from './../../auth';
-import { useLayoutEffect, useState } from "react";
+import { useCallback, useLayoutEffect, useState } from "react";
+import { Toast } from "toastify-react-native";
 
 export default function SignInScreen() {
   const { session, signIn } = useSession();
 
-  const [email, setEmail] = useState<string | undefined>(undefined);
-  const [password, setPassword] = useState<string | undefined>(undefined);
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
@@ -25,21 +26,39 @@ export default function SignInScreen() {
     setShowConfirmPassword(!showConfirmPassword);
   }
 
-  const onPressSignIn = () => {
+  const onPressSignIn = async () => {
+    if (email?.trim() === '' || password?.trim() === '') {
+      Toast.error('Please fill in all fields')
+      return
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailValidated = email && emailPattern.test(email.toLowerCase());
+
+    if (!emailValidated) {
+      Toast.error('Invalid email address')
+      return
+    }
+    
     setIsLoading(true)
-    fbSignIn(email, password).then((userCredential) => {      
-      signIn(userCredential.user);
-      if (userCredential.user) {
-        router.replace('/')
+    try {
+      await fbSignIn(email, password).then((userCredential) => {      
+        signIn(userCredential.user);
+        if (userCredential.user) {
+          router.replace('/')
+        }
+      })
+    } catch (e: any) {
+      const isAuthError = e.code.includes('auth')
+      let errMsg = e.code
+      if (isAuthError) {
+        errMsg = errMsg.replace('auth/', '')
       }
-    })
-      .catch((error) => {
-        console.error('Error signing in:', error);
-      });
-    // Navigate after signing in. You may want to tweak this to ensure sign-in is
-    // successful before navigating.
+      Toast.error(errMsg)
+    }
     setIsLoading(false)
-  };
+  }
+
   return (
     <ContentSection cardMode={false} containerStyles={{ maxWidth: 353 }}>
       <View className='flex items-center mt-3'>
