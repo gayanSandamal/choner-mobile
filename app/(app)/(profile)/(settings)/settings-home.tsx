@@ -1,15 +1,16 @@
-import { SectionList } from "react-native";
-import { BtnDetailed } from "@/components/Base/Button";
+import { SectionList, View } from "react-native";
+import { Btn, BtnDetailed } from "@/components/Base/Button";
 import Label from "@/components/Base/Label";
 import { Spacer } from "@/components/Base/Spacer";
 import { SettingsWrapper } from "@/components/Wrappers/SettingsWrapper";
-import { FontTypes, IconNames } from "@/types/Components";
+import { FontTypes, IconNames, InputSizes } from "@/types/Components";
 import { router } from "expo-router";
 import { Colors } from "@/constants/Colors";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { fblogOut } from "@/auth";
 import { useAuthUserId } from "@/hooks/useAuthUser";
 import { useSession } from "@/hooks/ctx";
+import Modal from "@/components/Base/Modal";
 
 type Section = {
   title: string
@@ -46,15 +47,22 @@ export default function SettingsHome() {
   const userId = useAuthUserId()
   const {signOut} = useSession()
 
-  const onLogOut = useCallback(() => {
-    fblogOut()
+  const [showLogOutModal, setShowLogOutModal] = useState<boolean>(false)
+  const [islogingOut, setIsLogingOut] = useState<boolean>(false)
+
+  const onLogOut = useCallback(async () => {
+    setIsLogingOut(true)
+    await fblogOut()
       .then(() => {
         signOut(userId)
       })
       .catch((error: any) => {
         console.error('Error signing out:', error)
       })
-      .finally(() => router.replace('/landing-page'))
+      .finally(() => {
+        setIsLogingOut(false)
+        router.replace('/landing-page')
+      })
   }, [userId])
   
   return (
@@ -67,7 +75,7 @@ export default function SettingsHome() {
             leftIcon={{name: item.icon}}
             rightIcon={!item.hideRightIcon ? {name: IconNames.chevronMiniRight}: undefined}
             label={item.label}
-            onPress={() => item.hideRightIcon ? onLogOut() : router.navigate(item.route)}
+            onPress={() => item.hideRightIcon ? setShowLogOutModal(true) : router.navigate(item.route)}
           />
         )}
         renderSectionHeader={({ section: { title } }) => (
@@ -75,6 +83,14 @@ export default function SettingsHome() {
         )}
         SectionSeparatorComponent={() => <Spacer height={20} />}
       />
+      
+      <Modal showModal={showLogOutModal} setShowModal={setShowLogOutModal}>
+        <Label type={FontTypes.FTitle1} label={'Want to log out?'} />
+        <View className="mt-10 ml-0.5 mr-0.5 flex-row justify-between">
+          <Btn outlined onPress={() => setShowLogOutModal(false)} icon={IconNames.cancel} size={InputSizes.md} color={Colors.light.white} label="Cancel" />
+          <Btn isLoading={islogingOut} disabled={islogingOut} onPress={onLogOut} icon={IconNames.delete} size={InputSizes.md} backgroundColor={Colors.dark.red} label="Yes, Log out" />
+        </View>
+      </Modal>
     </SettingsWrapper>
   )
 }

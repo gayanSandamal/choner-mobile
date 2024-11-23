@@ -1,6 +1,6 @@
 import { View } from "react-native";
 import { Btn } from "../Base/Button";
-import { IconNames, InputSizes } from "@/types/Components";
+import { FontSizes, IconNames, InputSizes } from "@/types/Components";
 import { ContentSection } from "../Wrappers/Sections";
 import { Colors } from '@/constants/Colors';
 import { Input } from "../Base/Input";
@@ -9,6 +9,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import { router } from "expo-router";
 import { UserCredential } from "firebase/auth";
 import { useSession } from "@/hooks/ctx";
+import { Toast } from "toastify-react-native";
 
 export default function SignUpScreen() {
   const user = useRef<UserCredential | null>(null)
@@ -34,43 +35,42 @@ export default function SignUpScreen() {
     setShowConfirmPassword(!showConfirmPassword);
   }
 
-  const onPressSignUp = () => {
-    setIsLoading(true)
-    if (!email || !password || !confirmPassword) {
-      alert('Please fill in all fields');
-      return false;
+  const onPressSignUp = async () => {
+    if (email?.trim() === '' || password?.trim() === ''  || confirmPassword?.trim() === '' ) {
+      Toast.error('Please fill in all fields')
+      return
     }
 
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const emailValidated = emailPattern.test(email.toLowerCase());
+    const emailValidated = email && emailPattern.test(email.toLowerCase());
 
     if (!emailValidated) {
-      alert('Invalid email address');
-      return false;
+      Toast.error('Invalid email address')
+      return
     }
     if (password !== confirmPassword) {
-      alert('Passwords do not match');
-      return false;
+      Toast.error('Passwords do not match')
+      return
     }
-    fbSignUp(email, password)
-      .then((userCredential) => {
-        user.current = userCredential
-        if (userCredential.user) {
-          if (!userCredential.user.emailVerified) {
-            fbSendEmailVerification()
+    
+    setIsLoading(true)
+    try {
+      await fbSignUp(email, password)
+        .then((userCredential) => {
+          user.current = userCredential
+          if (userCredential.user) {
+            if (!userCredential.user.emailVerified) {
+              fbSendEmailVerification()
+            }
+            signIn(userCredential.user)
+            router.replace('/survey')
+          } else {
+            router.navigate('/sign-in')
           }
-          signIn(userCredential.user)
-          router.replace('/survey')
-        } else {
-          router.navigate('/sign-in');
-        }
-      })
-      .catch((error) => {
-        alert('Error signing up. Try again');
-      });
-    // Navigate after signing in. You may want to tweak this to ensure sign-in is
-    // successful before navigating.
-    // router.replace('/');
+        })
+    } catch (e) {
+      Toast.error('Sign up error')
+    }
     setIsLoading(false)
   }
 
@@ -84,11 +84,11 @@ export default function SignUpScreen() {
           <CharmBtn icon={IconNames.apple} onPress={() => { }} size={InputSizes.lg} />
         </View>
         <Separator /> */}
-        <Input classNames='mb-5' placeholder={'ENTER EMAIL'} value={email} onChange={setEmail} icon={IconNames.email} />
-        <Input classNames='mb-5' placeholder={'ENTER PASSWORD'} value={password} onChange={setPassword} icon={IconNames.password} iconRight={showPassword ? IconNames.view : IconNames.hidden} onPressIconRight={onShowPasswordPress} secureTextEntry={!showPassword} />
-        <Input classNames='mb-5' placeholder={'CONFIRM PASSWORD'} value={confirmPassword} onChange={setConfirmPassword} icon={IconNames.password}  iconRight={showConfirmPassword ? IconNames.view : IconNames.hidden} onPressIconRight={onShowConfirmPasswordPress} secureTextEntry={!showConfirmPassword} />
+        <Input classNames='mb-5' placeholder={'ENTER EMAIL'} value={email} onChange={setEmail} icon={IconNames.email} fontSize={FontSizes.FLabel} />
+        <Input classNames='mb-5' placeholder={'ENTER PASSWORD'} value={password} onChange={setPassword} icon={IconNames.password} iconRight={showPassword ? IconNames.view : IconNames.hidden} onPressIconRight={onShowPasswordPress} secureTextEntry={!showPassword} fontSize={FontSizes.FLabel} />
+        <Input classNames='mb-5' placeholder={'CONFIRM PASSWORD'} value={confirmPassword} onChange={setConfirmPassword} icon={IconNames.password}  iconRight={showConfirmPassword ? IconNames.view : IconNames.hidden} onPressIconRight={onShowConfirmPasswordPress} secureTextEntry={!showConfirmPassword} fontSize={FontSizes.FLabel} />
 
-        <Btn isLoading={isLoading} onPress={onPressSignUp} icon={IconNames.register} size={InputSizes.lg} block label="SIGN UP" wrapperClasses='mb-10'></Btn>
+        <Btn isLoading={isLoading} onPress={onPressSignUp} icon={IconNames.register} size={InputSizes.lg} block label="SIGN UP" wrapperClasses='mb-10' />
 
         <Btn onPress={() => router.navigate('/sign-in')} icon={IconNames.login} size={InputSizes.lg} block outlined color={Colors.dark['primary-shade-2']} label="SIGN IN" wrapperClasses='mt-5'></Btn>
       </View>

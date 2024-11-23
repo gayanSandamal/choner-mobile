@@ -1,6 +1,6 @@
 import { router, Tabs } from 'expo-router';
 import React from 'react';
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
@@ -18,7 +18,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     borderColor: 'black',
     flexDirection: 'row',
-    alignItems: 'center',
     borderRadius: 20,
     borderTopColor: Colors.dark.grey,
     backgroundColor: Colors.dark.grey,
@@ -30,7 +29,6 @@ export default function TabLayout() {
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.dark.grey }}>
       <Header onPressAvatar={() => router.navigate('/profile')} />
       <Tabs
-        sceneContainerStyle={{ backgroundColor: Colors.dark.grey }}
         screenOptions={{
           headerShown: false,
           tabBarShowLabel: false,
@@ -48,7 +46,9 @@ export default function TabLayout() {
                 title: tab.title,
                 href: Boolean(tab.hide) ? null : tab.icon.link as any,
                 tabBarIcon: ({ focused }) => (
-                  <TabBarIcon icon={tab.icon.name} color={focused ? Colors.dark['primary-shade-1'] : Colors.dark.background} link={tab.icon.link} />
+                  <View style={{marginTop: 20}}>
+                    <TabBarIcon icon={tab.icon.name} color={focused ? Colors.dark['primary-shade-1'] : Colors.dark.background} link={tab.icon.link} />
+                  </View>
                 ),
               }}
             />

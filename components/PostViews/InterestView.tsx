@@ -98,7 +98,7 @@ export default function InterestView() {
         onCancel={onCloseModal}
         setShowModal={onCloseModal}
       />
-      <ScrollView showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+      <ScrollView showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} onTouchEnd={() => showOptionInterest && setShowOptionInterest('')}/>}>
       <InterestCard noTextLimit disabled isTogglingEnrole={isToggling} isOwner={postData.isOwner} classNames='mt-2' data={postData} showOptionInterest={showOptionInterest} navigationPath="/interest" onOptionPress={() => setInterestPostData({id: postData.id, interest: postData.title, interestDesc: postData.description, scheduledAt: postData.scheduledAt, visibility: postData.visibility})} setShowOptionInterest={setShowOptionInterest} onDelete={() => router.back()} onToggleEnrole={onPressInterested} />
         {/* <View className='flex-row items-center justify-between mt-5 mb-3'>
             <Label label=''/>
