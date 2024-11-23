@@ -149,11 +149,11 @@ export default function SettingsHome() {
                 </TouchableOpacity>
             </View>
             <Label classNames='text-white mt-6 mb-3' label="Registered email" />
-            <Input classNames='mb-5' placeholder={'First name'} fontSize={FontSizes.FLabel} value={user?.email} disabled onChange={checkAndSetFirstName} />
+            <Input classNames='mb-5' placeholder={'First name'} value={user?.email} disabled onChange={checkAndSetFirstName} />
             <Label classNames='text-white mb-3' label="First name" />
-            <Input classNames='mb-5' placeholder={'First name'} fontSize={FontSizes.FLabel} value={firstName} onChange={checkAndSetFirstName} />
+            <Input classNames='mb-5' placeholder={'First name'} value={firstName} onChange={checkAndSetFirstName} />
             <Label classNames='text-white mb-3' label="Last name" />
-            <Input classNames='mb-8' placeholder={'Last name'} fontSize={FontSizes.FLabel} value={lastName} onChange={checkAndSetLastName} />
+            <Input classNames='mb-8' placeholder={'Last name'} value={lastName} onChange={checkAndSetLastName} />
             <View className="ml-0.5 mr-0.5 flex-row justify-between">
                 <Btn outlined disabled={isUpdating} onPress={() => router.back()} icon={IconNames.cancel} size={InputSizes.md} color={Colors.dark['green-shade-1']} label="CANCEL" />
                 <Btn isLoading={isUpdating} disabled={isUpdating} onPress={onSave} icon={IconNames.save} size={InputSizes.md} backgroundColor={Colors.dark['green-shade-1']} label="SAVE" />

@@ -85,7 +85,7 @@ export default function SettingsHome() {
       />
       
       <Modal showModal={showLogOutModal} setShowModal={setShowLogOutModal}>
-        <Label type={FontTypes.FTitle1} label={'Want to log out?'} />
+        <Label type={FontTypes.FTitle1} label={'Do you want to log out?'} />
         <View className="mt-10 ml-0.5 mr-0.5 flex-row justify-between">
           <Btn outlined onPress={() => setShowLogOutModal(false)} icon={IconNames.cancel} size={InputSizes.md} color={Colors.light.white} label="Cancel" />
           <Btn isLoading={islogingOut} disabled={islogingOut} onPress={onLogOut} icon={IconNames.delete} size={InputSizes.md} backgroundColor={Colors.dark.red} label="Yes, Log out" />

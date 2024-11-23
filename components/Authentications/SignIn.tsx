@@ -64,8 +64,8 @@ export default function SignInScreen() {
           <CharmBtn icon={IconNames.apple} onPress={() => { }} size={InputSizes.lg} />
         </View>
         <Separator /> */}
-        <Input classNames='mb-5' placeholder={'ENTER EMAIL'} value={email} onChange={setEmail} icon={IconNames.email} fontSize={FontSizes.FLabel} />
-        <Input classNames='mb-5' placeholder={'ENTER PASSWORD'} value={password} onChange={setPassword} icon={IconNames.password} iconRight={showConfirmPassword ? IconNames.view : IconNames.hidden} onPressIconRight={onShowConfirmPasswordPress} secureTextEntry={!showConfirmPassword} fontSize={FontSizes.FLabel}/>
+        <Input classNames='mb-5' placeholder={'ENTER EMAIL'} value={email} onChange={setEmail} icon={IconNames.email} />
+        <Input classNames='mb-5' placeholder={'ENTER PASSWORD'} value={password} onChange={setPassword} icon={IconNames.password} iconRight={showConfirmPassword ? IconNames.view : IconNames.hidden} onPressIconRight={onShowConfirmPasswordPress} secureTextEntry={!showConfirmPassword} />
         <Btn isLoading={isLoading} onPress={onPressSignIn} icon={IconNames.login} size={InputSizes.lg} block label="SIGN IN"></Btn>
         <Btn wrapperClasses='text-center mt-16' onPress={() => {}} link="/forgot-password" size={InputSizes.sm} textMode color={Colors.dark['grey-shade-2']} label="FORGOT PASSWORD"></Btn>
         <Btn wrapperClasses='mt-10' onPress={() => router.navigate('/sign-up')} icon={IconNames.register} size={InputSizes.lg} block outlined color={Colors.dark['primary-shade-2']} label="SIGN UP"></Btn>
