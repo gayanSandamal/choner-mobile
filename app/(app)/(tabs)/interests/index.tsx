@@ -65,9 +65,9 @@ export default function InterestsListScreen() {
   }
 
   return (
-    <View className='bg-grey h-full'>
+    <View className='h-full' style={{backgroundColor: Colors.dark.grey}}>
       <FlatList
-        className='px-3 bg-grey'
+        className='px-3'
         data={interests}
         removeClippedSubviews={true}
         showsVerticalScrollIndicator={false}

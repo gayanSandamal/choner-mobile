@@ -148,7 +148,7 @@ export const SurveyModal = (props: SurveyModalProps) => {
 
     return (
         <Modal transparent={true} visible={props.showForm} animationType="fade" onRequestClose={() => props.setShowForm(false)}>
-            <View className="w-full h-full bg-grey pt-7">
+            <View className="w-full h-full pt-7" style={{backgroundColor: Colors.dark.grey}}>
                 {Platform.OS === 'ios' && <View style={{height: 30}} />}
                 {!props.hideNavigateBack && <NavigateBack classNames="px-3" label="GIVE US YOUR FEEDBACK" navigate={() => props.setShowForm(false)} />}
                 <Label classNames="px-3 mt-5" type={FontTypes.FTitle1} label={(props.surveyData.title).toUpperCase()} containerStyles={{ letterSpacing: 4 }} />

@@ -63,7 +63,11 @@ const PostBottomActions = (props: PostBottomActionsProps) => {
 const PostWrapperComponent = (props: PostWrapperComponentProps) => {
   return (
     <View className="mt-4">
-      <View className="flex flex-column items-start rounded-lg px-4 py-3 mb-4 bg-grey" style={{ borderColor: Colors.dark.background, borderWidth: 1 }} >
+      <View className="flex flex-column items-start rounded-lg px-4 py-3 mb-4" style={{
+        borderColor: Colors.dark.background,
+        borderWidth: 1,
+        backgroundColor: Colors.dark.grey
+      }} >
         <View className="flex flex-row items-center mb-3 w-full">
           <View className="flex flex-row items-center">
             <Icon name={props?.postHeaderData?.icon || ''} size={InputSizes.md} />

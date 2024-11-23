@@ -48,8 +48,13 @@ export default function SignInScreen() {
           router.replace('/')
         }
       })
-    } catch (e) {
-      Toast.error('Sign in error')
+    } catch (e: any) {
+      const isAuthError = e.code.includes('auth')
+      let errMsg = e.code
+      if (isAuthError) {
+        errMsg = errMsg.replace('auth/', '')
+      }
+      Toast.error(errMsg)
     }
     setIsLoading(false)
   }

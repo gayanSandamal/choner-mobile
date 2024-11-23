@@ -20,7 +20,7 @@ export default function Survey() {
 
     return (
         <MainWrapper>
-            <View className="w-full h-full bg-grey items-center justify-center">
+            <View className="w-full h-full items-center justify-center" style={{backgroundColor: Colors.dark.grey}}>
                 {isFetching && <ActivityIndicator size={40} color={Colors.light.white} />}
                 {survey && !isFetching && (
                     <>

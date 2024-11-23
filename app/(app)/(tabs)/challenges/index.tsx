@@ -42,7 +42,7 @@ const imageUrls = [
 
 export default function ChallengesScreen() {
   return (
-    <ScrollView className="h-full bg-grey px-3 pt-3" contentContainerStyle={{ alignItems: 'center' }}>
+    <ScrollView className="h-full px-3 pt-3" style={{backgroundColor: Colors.dark.grey}} contentContainerStyle={{ alignItems: 'center' }}>
       {/* <View className="w-full mb-[20px]">
         <ImageBackground source={{ uri: imageUrls[0] }} resizeMode="cover" style={styles.eventWrapper}>
           <View className='pt-5 w-full h-full px-4 pb-2' style={{ backgroundColor: '#0000006A' }}>

@@ -14,7 +14,7 @@ export default function InitialScreen() {
     session && router.replace('/(app)')})
   
   if (session) {
-    <View className="w-full h-full bg-grey" />
+    <View className="w-full h-full" style={{backgroundColor: Colors.dark.grey}} />
   }
 
   return (
