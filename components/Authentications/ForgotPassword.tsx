@@ -1,23 +1,25 @@
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import { router } from 'expo-router';
-import { useSession } from "@/hooks/ctx";
 import { Btn } from "../Base/Button";
-import { FontSizes, IconNames, InputSizes } from "@/types/Components";
+import { IconNames, InputSizes } from "@/types/Components";
 import { ContentSection } from "../Wrappers/Sections";
 import { Input } from "../Base/Input";
+import { fbSendPasswordResetEmail } from "@/auth";
+import { useState } from "react";
 
 export default function ForgotPasswordScreen() {
-  const { signIn } = useSession();
-  const onPressSignIn = () => {
-    // Navigate after signing in. You may want to tweak this to ensure sign-in is
-    // successful before navigating.
-    router.replace('/landing-page');
+  const [email, setEmail] = useState<string | undefined>(undefined);
+  const onPressResetEmail = () => {
+    fbSendPasswordResetEmail(email).then(() => {
+      router.replace('/sign-in');
+    });
   };
   return (
     <ContentSection cardMode={false} containerStyles={{ maxWidth: 353 }}>
       <View className='flex items-center mt-3'>
-        <Input classNames='mb-5' placeholder={'ENTER EMAIL'} value={undefined} icon={IconNames.email} />
-        <Btn onPress={() => router.navigate('/sign-in')} icon={IconNames.login} size={InputSizes.lg} block label="SEND CODE"></Btn>
+        <Text></Text>
+        <Input classNames='mb-5' placeholder={'ENTER EMAIL'} value={email} onChange={setEmail} icon={IconNames.email} />
+        <Btn onPress={onPressResetEmail} icon={IconNames.email} size={InputSizes.lg} block label="SEND RESET LINK"></Btn>
       </View>
     </ContentSection>)
 }
