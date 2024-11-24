@@ -763,6 +763,7 @@ export type SignUpScreenProps = {
 export type InputType = 'text' | 'numeric'
 
 export type InputProps = {
+  focus?: boolean
   editable?: boolean
   containerStyles?: ContainerStyles
   classNames?: string

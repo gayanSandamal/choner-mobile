@@ -5,7 +5,7 @@ import Icon from '@/components/Base/Icon'
 import { CharmBtn } from "./Button";
 
 export const Input = (props: InputProps) => {
-    const { value, placeholder, icon, iconRight, classNames, containerStyles, editable, secureTextEntry = false, disabled = false, onChange, onPressIconRight } = props
+    const { value, placeholder, icon, iconRight, classNames, containerStyles, editable, secureTextEntry = false, disabled = false, focus, onChange, onPressIconRight } = props
     return (
         <View className={`shadow-sm flex flex-row items-center ${classNames}`} style={[
             {
@@ -18,6 +18,7 @@ export const Input = (props: InputProps) => {
             }, ...(containerStyles ? [containerStyles] : [])]}>
             {icon && <Icon name={icon} size={InputSizes.md} color={props.iconColor || Colors.dark['primary-shade-3']} />}
             <TextInput
+                autoFocus={focus || false}
                 editable={editable}
                 textAlign={'left'}
                 style={{ flex: 1, padding: 10, color: Colors.dark.text, fontSize: props.fontSize || FontSizes.FLabel }}
