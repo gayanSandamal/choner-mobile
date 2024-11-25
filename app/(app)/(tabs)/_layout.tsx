@@ -34,14 +34,14 @@ export default function TabLayout() {
           tabBarShowLabel: false,
           tabBarStyle: {
             ...styles.tab,
-            ...commonStyles['shadow-md'],
+            ...commonStyles['shadow-sm'],
           }
         }}>
         {tabs.map((tab: TabType, key) => {
           return (
             <Tabs.Screen
               name={tab.name}
-              {...{ key }}
+              key={key}
               options={{
                 title: tab.title,
                 href: Boolean(tab.hide) ? null : tab.icon.link as any,

@@ -4,7 +4,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 import "./../../global.css"
-import { Text, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useSession } from '@/hooks/ctx';
 import { UserProvider } from '@/contexts/userContext';
@@ -23,8 +23,8 @@ export default function RootLayout() {
   }, [isLoading])
 
   if (isLoading) {
-    return <View className='flex h-100 items-center justify-center'>
-      <Text>Loading...</Text>
+    return <View className='flex h-full w-full bg-grey items-center justify-center'>
+      <Image source={require('../../assets/images/icon.png')} style={{marginTop: -50}} />
     </View>
   }
 
