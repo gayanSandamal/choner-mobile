@@ -27,7 +27,7 @@ import { LocationBottomDrawer } from "../Common/LocationBottomDrawer"
 const styles = StyleSheet.create({
   removeImage: { position: 'absolute', bottom: 10, right: 10, padding: 6, borderRadius: 8, backgroundColor: Colors.dark['grey-transparent'] },
   communityTypeBtn: { width: '100%', paddingHorizontal: 8, height: 50, borderRadius: 10, borderWidth: 1, borderColor: Colors.dark['grey-shade-4'], flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start' },
-  imagePicker: { position: 'relative', width: '100%', borderRadius: 10, borderStyle: 'dashed', borderWidth: 1, borderColor: Colors.dark["grey-shade-2"], alignItems: 'center', justifyContent: 'center', overflow: 'hidden' },
+  imagePicker: { position: 'relative', width: '100%', borderRadius: 10, borderStyle: 'solid', borderWidth: 1, borderColor: Colors.dark["grey-shade-2"], alignItems: 'center', justifyContent: 'center', overflow: 'hidden' },
   bottomBorder: { borderBottomWidth: 1, borderColor: Colors.dark["grey-shade-2"] }
 })
 

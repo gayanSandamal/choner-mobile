@@ -1,6 +1,6 @@
 import { router, Tabs } from 'expo-router';
 import React from 'react';
-import { StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     height: 60,
     marginHorizontal: 10,
+    paddingTop: Platform.OS === 'ios' ? 30 : 0,
     marginBottom: 5,
     borderColor: 'black',
     flexDirection: 'row',
@@ -33,7 +34,7 @@ export default function TabLayout() {
           tabBarShowLabel: false,
           tabBarStyle: {
             ...styles.tab,
-            ...commonStyles['shadow-sm'],
+            ...commonStyles['shadow-md'],
           }
         }}>
         {tabs.map((tab: TabType, key) => {
