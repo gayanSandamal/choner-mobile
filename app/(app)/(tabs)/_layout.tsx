@@ -13,7 +13,6 @@ const styles = StyleSheet.create({
   tab: {
     position: 'absolute',
     height: 60,
-    paddingTop: 0,
     marginHorizontal: 10,
     marginBottom: 5,
     borderColor: 'black',
@@ -46,9 +45,7 @@ export default function TabLayout() {
                 title: tab.title,
                 href: Boolean(tab.hide) ? null : tab.icon.link as any,
                 tabBarIcon: ({ focused }) => (
-                  <View style={{marginTop: 20}}>
-                    <TabBarIcon icon={tab.icon.name} color={focused ? Colors.dark['primary-shade-1'] : Colors.dark.background} link={tab.icon.link} />
-                  </View>
+                  <TabBarIcon icon={tab.icon.name} color={focused ? Colors.dark['primary-shade-1'] : Colors.dark.background} link={tab.icon.link} />
                 ),
               }}
             />

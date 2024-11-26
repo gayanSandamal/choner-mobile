@@ -1,0 +1,51 @@
+{
+    "build": {
+      "development": {
+        "developmentClient": true,
+        "distribution": "internal",
+        "android": {
+          "buildType": "apk"
+        },
+        "ios": {
+          "simulator": true
+        },
+        "env": {
+          "BASE_API": "https://s3-eu-west-1.amazonaws.com/api.themeshplatform.com/",
+          "EXPO_PUBLIC_FB_URL": "https://us-central1-choner-6d275.cloudfunctions.net",
+          "EXPO_PUBLIC_FB_STORAGE_URL": "gs://choner-6d275.appspot.com",
+          "EXPO_PUBLIC_MAP_API_KEY": "AIzaSyCPlaaOcBFuIaSQA2dEZuFAY3nIAvDR944",
+          "EXPO_PUBLIC_DEFAULT_TIMEOUT": "240000"
+        }
+      },
+      "preview": {
+        "distribution": "internal",
+        "android": {
+          "buildType": "app-bundle"
+        },
+        "ios": {
+          "enterpriseProvisioning": "adhoc"
+        },
+        "env": {
+          "BASE_API": "https://s3-eu-west-1.amazonaws.com/api.themeshplatform.com/",
+          "EXPO_PUBLIC_FB_URL": "https://us-central1-choner-6d275.cloudfunctions.net",
+          "EXPO_PUBLIC_FB_STORAGE_URL": "gs://choner-6d275.appspot.com",
+          "EXPO_PUBLIC_MAP_API_KEY": "AIzaSyCPlaaOcBFuIaSQA2dEZuFAY3nIAvDR944",
+          "EXPO_PUBLIC_DEFAULT_TIMEOUT": "240000"
+        }
+      },
+      "production": {
+        "distribution": "store",
+        "android": {
+          "buildType": "app-bundle"
+        },
+        "ios": {
+          "enterpriseProvisioning": "universal"
+        }
+      }
+    },
+    "cli": {
+      "version": ">=3.0.0",
+      "appVersionSource": "local"
+    }
+  }
+  
