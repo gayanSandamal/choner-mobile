@@ -12,7 +12,6 @@
       "resizeMode": "contain",
       "backgroundColor": "#001827"
     },
-    "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
@@ -55,6 +54,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "f6d39b4d-87c6-4800-af88-53d26085fc40"
+      }
     }
   }
 }

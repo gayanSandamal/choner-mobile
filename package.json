@@ -50,7 +50,8 @@
     "react-native-tab-view": "^3.5.2",
     "react-native-view-slider": "^1.1.1",
     "react-native-virtualized-view": "^1.0.0",
-    "toastify-react-native": "^5.0.2"
+    "toastify-react-native": "^5.0.2",
+    "expo-dev-client": "~4.0.29"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
