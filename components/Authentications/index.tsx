@@ -17,6 +17,13 @@ export default function InitialScreen() {
     <View className="w-full h-full" style={{backgroundColor: Colors.dark.grey}} />
   }
 
+  const termsLink = {
+    pathname: '/webview',
+    params: {
+      uri: 'https://choner.io/terms-conditions/'
+    }
+  }
+
   return (
     <ContentSection cardMode={false} containerStyles={{ maxWidth: 353 }}>
       {!session && <>
@@ -24,7 +31,7 @@ export default function InitialScreen() {
         <Btn wrapperClasses='mt-6' onPress={() => router.navigate('/sign-up')} icon={IconNames.register} size={InputSizes.lg} block outlined color={Colors.dark['primary-shade-2']} label="SIGN UP"></Btn>
         <Label classNames='mt-6 text-center' color={Colors.dark['grey-shade-2']} type={FontTypes.FP} label='By creating an account, you agree to our' />
         <View className='flex items-center'>
-          <Btn wrapperClasses='text-center' size={InputSizes.sm} textMode link={'/terms'} color={Colors.dark.link} label="Terms of Service and Privacy Policy"></Btn>
+          <Btn wrapperClasses='text-center' size={InputSizes.sm} textMode link={termsLink} color={Colors.dark.link} label="Terms and Conditions"></Btn>
         </View>
       </>}
     </ContentSection>
