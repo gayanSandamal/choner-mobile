@@ -49,7 +49,7 @@ export const Bio = () => {
                     <Label label="453" type={FontTypes.FTitle1} />
                     <Label label="Following" type={FontTypes.FLabel} color={Colors.dark['grey-shade-3']} />
                 </View> */}
-                <Avatar img={user?.profileImageUrl} containerStyles={styles.avatar} size={InputSizes.xl} onPressAvatar={() => router.navigate('/basic-info')} />
+                <Avatar img={user?.profileImageUrl} containerStyles={styles.avatar} size={InputSizes.xl} onPressAvatar={() => router.navigate('/(app)/(profile)/(settings)/basic-info')} />
                 {/* <View className="items-center mt-[20px]">
                     <Label label="20.4K" type={FontTypes.FTitle1} />
                     <Label label="Followers" type={FontTypes.FLabel} color={Colors.dark['grey-shade-3']} />

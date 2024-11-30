@@ -47,7 +47,7 @@ export type SectionProps = {
 }
 
 export type BtnLinkProps = {
-  href: string
+  href: Link
   label?: string
   color?: string
 }
@@ -100,6 +100,8 @@ export interface CharmBtnProps extends BtnProps{
   clear?: boolean,
 }
 
+export type Link = string | object
+
 export type BtnProps = {
   label?: string
   iconColor?: string
@@ -111,6 +113,7 @@ export type BtnProps = {
   iconHeight?: number
   block?: boolean
   textMode?: boolean
+  link?: Link
   backgroundColor?: string
   style?: StyleProp<ViewStyle>
   isLoading?: boolean

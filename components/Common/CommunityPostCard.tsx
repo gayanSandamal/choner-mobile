@@ -18,7 +18,7 @@ export const CommunityPostCard = (props: CommunityPostCardProps) => {
 
     const navigateToCommunityScreen = () => {
         router.push({
-          pathname: props.navigationPath || '/community/community-view',
+          pathname: props.navigationPath || '/(app)/(tabs)/community/community-view',
           params: {
             data: JSON.stringify({
               isOwner: props.isOwner,

@@ -21,8 +21,8 @@ const SECTIONS: Section[] = [
   {
     title: "Your Account",
     data: [
-      { label: "Basic info", icon: IconNames.info, route: "/basic-info" },
-      { label: "Account settings", icon: IconNames.person, route: "/account-settings" },
+      { label: "Basic info", icon: IconNames.info, route: "/(app)/(profile)/(settings)/basic-info" },
+      { label: "Account settings", icon: IconNames.person, route: "/(app)/(profile)/(settings)/account-settings" },
       // TODO: Let's not implement these for now
       // { label: "Privacy", icon: IconNames.incognito, route: "/privacy" },
       // { label: "Security", icon: IconNames.lock, route: "/security" }

@@ -49,7 +49,7 @@ export const InterestAutoSlider = ({ interval = 3000 }: AutoSliderProps) => {
 
   const navigateToInterest = (data: InterestCardData) => {
     router.push({
-      pathname: '/interests/interest-view',
+      pathname: '/(app)/interests/interest-view',
       params: {
         data: JSON.stringify({
           isOwner: false,

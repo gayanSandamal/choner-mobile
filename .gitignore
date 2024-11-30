@@ -1,6 +1,7 @@
 node_modules/
 .expo/
 dist/
+ios/
 npm-debug.*
 *.jks
 *.p8
@@ -18,3 +19,4 @@ web-build/
 # expo-env.d.ts
 # @end expo-cli
 .env
+android

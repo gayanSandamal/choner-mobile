@@ -23,7 +23,7 @@ type RenderCommunityPostProps = {
 const RenderCommunityPost = React.memo(({ item }: RenderCommunityPostProps) => {
     const navigateToPost = () => {
         router.push({
-          pathname: '/community/community-view',
+          pathname: '/(app)/(tabs)/community/community-view',
           params: {
             data: JSON.stringify({
               isOwner: item.isOwner,
