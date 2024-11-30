@@ -24,7 +24,7 @@ export default function SignUpScreen() {
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   useLayoutEffect(() => {
-    session && router.replace('/')
+    session && router.replace('/(app)')
   }, [session])
   
   const onShowPasswordPress = () => {
@@ -63,7 +63,7 @@ export default function SignUpScreen() {
               fbSendEmailVerification()
             }
             signIn(userCredential.user)
-            router.replace('/survey')
+            router.replace('/(app)/survey')
           } else {
             router.navigate('/sign-in')
           }

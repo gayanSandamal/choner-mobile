@@ -38,7 +38,7 @@ const InterestsWidget = ({interests}: InterestsWidgetProps) => {
         <Circle opacity="0.2" cx="88" cy="88" r="9.5" stroke="#FE8C00" />
       </Svg>
 
-      <TouchableOpacity className="flex align-between justify-center mb-1" onPress={() => router.push({pathname: '/profile', params: {data: JSON.stringify({toInterest: true})}})}>
+      <TouchableOpacity className="flex align-between justify-center mb-1" onPress={() => router.push({pathname: '/(app)/(profile)/profile', params: {data: JSON.stringify({toInterest: true})}})}>
         <View className="flex flex-row items-start w-full justify-start mb-10">
           <Icon color={Colors.dark.background} name={IconNames.interests} size={InputSizes.xs} />
           <Label type={FontTypes.FTitle3} label={'INTERESTS'} containerStyles={{ letterSpacing: 1, fontWeight: 700 }} classNames="mb-3"></Label>

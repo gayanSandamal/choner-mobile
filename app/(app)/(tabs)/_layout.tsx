@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
 export default function TabLayout() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.dark.grey }}>
-      <Header onPressAvatar={() => router.navigate('/profile')} />
+      <Header onPressAvatar={() => router.navigate('/(app)/(profile)/profile')} />
       <Tabs
         screenOptions={{
           headerShown: false,

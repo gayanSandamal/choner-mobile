@@ -14,7 +14,7 @@ export const tabs: TabType[] = [
     title: 'Community',
     icon: {
       name: IconNames.handshake,
-      link: 'community'
+      link: '/(app)/(tabs)/community'
     },
     meta: {
       search: true,
@@ -25,7 +25,7 @@ export const tabs: TabType[] = [
     title: 'Interests',
     icon: {
       name: IconNames.interests,
-      link: 'interests'
+      link: '/(app)/(tabs)/interests'
     },
     meta: {
       search: true,
@@ -48,7 +48,7 @@ export const tabs: TabType[] = [
     title: 'Challenges',
     icon: {
       name: IconNames.trophy,
-      link: 'challenges'
+      link: '/(app)/(tabs)/challenges'
     },
     meta: {
       search: true,
