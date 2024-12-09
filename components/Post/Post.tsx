@@ -7,10 +7,11 @@ import Icon from "../Base/Icon"
 import { Btn, CharmBtn } from "../Base/Button"
 import Modal from "../Base/Modal"
 import { TextArea } from "../Base/TextArea"
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import Checkbox from "../Base/CheckBox"
 import { useAuthUserId } from "@/hooks/useAuthUser"
-import { useCreateInteresPost, useUpdateInteresPost } from "@/hooks/mutate/useMutateInterestPosts"
+// Renamed hooks to match likely correct naming
+import { useCreateInterestPost, useUpdateInterestPost } from "@/hooks/mutate/useMutateInterestPosts"
 import { captureAndPickImage, formatDateToCustomString, minTime, pickImage, setBtnBackgroundColor, setBtnOutlineColor, timeDataToLocalString, updateImageWithSize } from "@/utils/commonUtils"
 import { CreateInterestProps, UpdateInterestProps } from "@/api/interestPostApi"
 import { ImagePickerBottomDrawer } from "../Common/ImagePickerBottomDrawer"
@@ -41,21 +42,29 @@ export const ActionBar = (props: ActionBarProps) => {
 }
 
 const PostBottomActions = (props: PostBottomActionsProps) => {
+  const { isScheduled, dateTime, showDatePicker, isPostPublishable, isLoading, postTypeUpdate, onPressMutate, handleConfirm, setShowDatePicker, setIsScheduled } = props
   const scheduledText = () => {
-    return props.isScheduled && props.dateTime ? `Schedule at ${props.dateTime && formatDateToCustomString(props.dateTime)}` : 'Schedule'
+    return isScheduled && dateTime ? `Schedule at` : 'Schedule'
+  }
+  const toggleDatePicker = (state: boolean) => {
+    setShowDatePicker(state)
+    setIsScheduled(state)
   }
   return (
     <>
       <View className="flex items-center justify-end w-full mt-4">
         <View className="flex flex-row justify-between w-full">
-          <Pressable className="flex flex-row items-center justify-between" onPress={() => props.setShowDatePicker(true)}>
-            <Checkbox classNames="mr-2" isChecked={props.isScheduled} onPress={(state) => props.isScheduled ? props.setIsScheduled(state) : props.setShowDatePicker(true)} />
+          <View className="flex flex-row items-center justify-between">
+            <Checkbox classNames="mr-2" isChecked={isScheduled || showDatePicker} onPress={(state) => toggleDatePicker(state)} />
             <Label type={FontTypes.FSmall} label={scheduledText()} color={Colors.dark['grey-shade-3']} containerStyles={{ fontWeight: 400, textAlign: 'right' }} />
-          </Pressable>
-          <Btn isLoading={props.isLoading} disabled={props.isLoading || !props.isPostPublishable} size={InputSizes.md} fontType={FontTypes.FLabelBold} label={!!props.postTypeUpdate ? 'UPDATE' : 'PUBLISH'} icon={IconNames.send} onPress={props.onPressMutate} />
+          </View>
+          <Btn isLoading={isLoading} disabled={isLoading || !isPostPublishable} size={InputSizes.md} fontType={FontTypes.FLabelBold} label={!!postTypeUpdate ? 'UPDATE' : 'PUBLISH'} icon={IconNames.send} onPress={onPressMutate} />
         </View>
       </View>
-      <DateTimePickerModal isVisible={props.showDatePicker} mode="datetime" date={props.dateTime || new Date()} minimumDate={minTime()} onConfirm={props.handleConfirm} onCancel={props.hideDatePicker} />
+      {showDatePicker && <View style={{ marginTop: 10, marginStart: -10 }}>
+        <DateTimePicker display="spinner" mode="datetime" value={dateTime || new Date()} minimumDate={minTime()} onChange={() => handleConfirm} />
+          <Text style={{ color: Colors.light.white}}>{ dateTime?.toString() }</Text>
+      </View>}
     </>
   );
 };
@@ -63,7 +72,7 @@ const PostBottomActions = (props: PostBottomActionsProps) => {
 const PostWrapperComponent = (props: PostWrapperComponentProps) => {
   return (
     <View className="mt-4">
-      <View className="flex flex-column items-start rounded-lg px-4 py-3 mb-4" style={{
+      <View className="flex flex-col items-start rounded-lg px-4 py-3 mb-4" style={{
         borderColor: Colors.dark.background,
         borderWidth: 1,
         backgroundColor: Colors.dark.grey
@@ -93,12 +102,12 @@ const PublishInterestPost = (props: PublishInterestPostProps) => {
   const [showDatePicker, setShowDatePicker] = useState(false)
   const [isScheduled, setIsScheduled] = useState(!!props.postParams?.scheduledAt?._seconds || false)
   const [dateTime, setDateTime] = useState<Date | null>(!!props.postParams?.scheduledAt ? timeDataToLocalString(props.postParams?.scheduledAt) : null)
-  const [location, setLocation] = useState<LocationData>(props.postParams?.location || {name: '', address: ''})
+  const [location, setLocation] = useState<LocationData>(props.postParams?.location || { name: '', address: '' })
   const [isPostPublishable, setIsPostPublishable] = useState(false)
   const [showDrawer, setShowDrawer] = useState<boolean>(false)
 
-  const { mutate: createPost, isPending: isCreatingPost } = useCreateInteresPost(() => onSuccess(), () => { })
-  const { mutate: updatePost, isPending: isUpdatingPost } = useUpdateInteresPost(() => onSuccess(), () => { })
+  const { mutate: createPost, isPending: isCreatingPost } = useCreateInterestPost(() => onSuccess(), () => { })
+  const { mutate: updatePost, isPending: isUpdatingPost } = useUpdateInterestPost(() => onSuccess(), () => { })
 
   useEffect(() => {
     !props?.postParams && setDateTime(new Date())
@@ -123,10 +132,6 @@ const PublishInterestPost = (props: PublishInterestPostProps) => {
     props.onSuccess()
     onClose()
   }
-
-  const hideDatePicker = useCallback(() => {
-    setShowDatePicker(false)
-  }, [])
 
   const onPressMutate = () => {
     props.postParams?.id ? onUpdatePost() : onCreatePost()
@@ -162,7 +167,7 @@ const PublishInterestPost = (props: PublishInterestPostProps) => {
   }
 
   const handleConfirm = useCallback((date: Date) => {
-    hideDatePicker()
+    setShowDatePicker(false)
     setIsScheduled(true)
     setDateTime(date)
   }, [showDatePicker])
@@ -177,8 +182,8 @@ const PublishInterestPost = (props: PublishInterestPostProps) => {
         <TextArea disabled={isCreatingPost || isUpdatingPost} clasName="mt-[10px]" height={80} maxCharacters={200} value={interestDesc} placeHolder={"Why are you interested?"} onChangeText={(text) => setInterestData((prev) => ({ ...prev, interestDesc: text }))} />
 
         <Label classNames="mt-3 mb-2" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label={`Location`} />
-        <TouchableOpacity className='shadow-sm flex flex-row items-center mb-5' style={{ backgroundColor: Colors.dark['fied-bg-idle'], height: 50, width: '100%', borderRadius: 30, paddingHorizontal: 20 }} onPress={() => setShowDrawer(true)}>
-          <Icon name={IconNames.location} size={InputSizes.md} color={ Colors.dark['primary-shade-3']} />
+        <TouchableOpacity className='shadow-sm flex flex-row items-center mb-5' style={{ backgroundColor: Colors.dark['field-bg-idle'], height: 50, width: '100%', borderRadius: 30, paddingHorizontal: 20 }} onPress={() => setShowDrawer(true)}>
+          <Icon name={IconNames.location} size={InputSizes.md} color={Colors.dark['primary-shade-3']} />
           <Label classNames="ml-3 pr-2" type={FontTypes.FLabel} ellipsizeMode="tail" numberOfLines={2} label={location?.name || "LOCATION"} />
         </TouchableOpacity>
 
@@ -191,7 +196,6 @@ const PublishInterestPost = (props: PublishInterestPostProps) => {
           postTypeUpdate={!!props.postParams}
           onPressMutate={onPressMutate}
           handleConfirm={handleConfirm}
-          hideDatePicker={hideDatePicker}
           setShowDatePicker={setShowDatePicker}
           setIsScheduled={setIsScheduled}
         />
@@ -227,12 +231,8 @@ export const PublishCommunityPost = (props: PublishCommunityPostProps) => {
     }
   }, [])
 
-  const hideDatePicker = useCallback(() => {
-    setShowDatePicker(false)
-  }, [])
-
   const handleConfirm = useCallback((date: Date) => {
-    hideDatePicker()
+    setShowDatePicker(false)
     setIsScheduled(true)
     setDateTime(date)
   }, [showDatePicker])
@@ -249,19 +249,27 @@ export const PublishCommunityPost = (props: PublishCommunityPostProps) => {
   }
 
   const setPostHeaderData = (): PostHeaderProps => {
-    return {
-      icon: selectedType === CommunityPostTypes[0] ? IconNames.addPost : IconNames.qanda,
-      title: !props.postParams && selectedType === CommunityPostTypes[0] ?
-        'Publish a Post'
-        : !props.postParams && selectedType === CommunityPostTypes[1] ?
-          'Ask a question'
-          : props.postParams && selectedType === CommunityPostTypes[0] ?
-            'Update post'
-            : props.postParams && selectedType === CommunityPostTypes[1] ?
-              'Update question' : '',
-      onCancel: () => props.onClose(true),
+    const isUpdate = props.postParams != null;
+    const isPost = selectedType === CommunityPostTypes[0];
+    const isQuestion = selectedType === CommunityPostTypes[1];
+
+    let title = '';
+    if (!isUpdate && isPost) {
+      title = 'Publish a Post';
+    } else if (!isUpdate && isQuestion) {
+      title = 'Ask a question';
+    } else if (isUpdate && isPost) {
+      title = 'Update post';
+    } else if (isUpdate && isQuestion) {
+      title = 'Update question';
     }
-  }
+
+    return {
+      icon: isPost ? IconNames.addPost : IconNames.qanda,
+      title,
+      onCancel: () => props.onClose(true),
+    };
+  };
 
   const onPressImagePickItem = async (index: number) => {
     const imageId = `${uid}-${uuid()}`
@@ -304,7 +312,6 @@ export const PublishCommunityPost = (props: PublishCommunityPostProps) => {
   const onSuccessImageUpload = (imageUrl: string) => {
     props?.postParams?.id ? setUpdatePostData(imageUrl) : setCreatePostData(imageUrl)
   }
-
 
   const setCreatePostData = (imageUrl?: string) => {
 
@@ -362,23 +369,45 @@ export const PublishCommunityPost = (props: PublishCommunityPostProps) => {
     <>
       <Pressable className="pl-[10px] pr-[10px] pt-[75px] w-full h-full" onPress={() => !selectedType && props.onClose(true)}>
         <ActionBar {...{ ...props.actionBarData }} active={true} onPress={() => { }} />
-        {!selectedType && <TouchableOpacity activeOpacity={1} className="w-full h-4" />}
+        {!selectedType ? <TouchableOpacity activeOpacity={1} className="w-full h-4" /> : null}
         <ScrollView className="w-full" showsVerticalScrollIndicator={false}>
-          {selectedType && (
+          {selectedType ? (
             <PostWrapperComponent postHeaderData={setPostHeaderData()} onCancel={() => props.onClose(true)}>
-              <TouchableOpacity disabled={isUploading} style={{ ...styles.imagePicker, aspectRatio: !!image ? 1 : 2 }} onPress={() => setShowDrawer(true)}>
-                {!image && (
+              <TouchableOpacity
+                accessibilityRole="button"
+                accessibilityLabel="Open image picker"
+                disabled={isUploading}
+                style={[
+                  styles.imagePicker,
+                  { aspectRatio: image != null ? 1 : 2, opacity: isUploading ? 0.5 : 1 }
+                ]}
+                onPress={() => setShowDrawer(true)}
+              >
+                {image == null ? (
                   <>
                     <Icon name={IconNames.image} size={InputSizes.xl} />
                     <Label classNames="mt-[10px]" label="Add an image" color={Colors.dark["grey-shade-3"]} />
                   </>
-                )}
-                {image && (
-                  <Image style={{ width: '100%', height: '100%' }} source={image.uri} contentFit="cover" transition={500} />
-                )}
-                {image && <TouchableOpacity disabled={isUploading} style={styles.removeImage} onPress={() => setImage(null)}>
-                  <Icon name={IconNames.delete} />
-                </TouchableOpacity>}
+                ) : null}
+                {image != null ? (
+                  <Image
+                    style={{ width: '100%', height: '100%' }}
+                    source={{ uri: image.uri }}
+                    contentFit="cover"
+                    transition={500}
+                  />
+                ) : null}
+                {image != null ? (
+                  <TouchableOpacity
+                    accessibilityRole="button"
+                    accessibilityLabel="Remove image"
+                    disabled={isUploading}
+                    style={styles.removeImage}
+                    onPress={() => setImage(null)}
+                  >
+                    <Icon name={IconNames.delete} />
+                  </TouchableOpacity>
+                ) : null}
               </TouchableOpacity>
               <TextArea disabled={isUploading} clasName="mt-[10px]" height={120} maxCharacters={2000} value={title} placeHolder={selectedType === CommunityPostTypes[0] ? "Enter your thoughts..." : "What's your problem? we can help you :)"} onChangeText={setTtile}
               />
@@ -391,39 +420,56 @@ export const PublishCommunityPost = (props: PublishCommunityPostProps) => {
                 postTypeUpdate={!!props?.postParams}
                 onPressMutate={onPressMutate}
                 handleConfirm={handleConfirm}
-                hideDatePicker={hideDatePicker}
                 setShowDatePicker={setShowDatePicker}
                 setIsScheduled={setIsScheduled}
               />
             </PostWrapperComponent>
-          )}
-          {!props.postParams && (
+          ) : null}
+          {props.postParams == null ? (
             <>
-              {selectedType !== CommunityPostTypes[0] && (
+              {selectedType !== CommunityPostTypes[0] ? (
                 <>
-                  <TouchableOpacity style={styles.communityTypeBtn} onPress={() => setSelectedType(CommunityPostTypes[0])} >
+                  <TouchableOpacity
+                    accessibilityRole="button"
+                    accessibilityLabel="Select 'Publish post' option"
+                    style={styles.communityTypeBtn}
+                    onPress={() => setSelectedType(CommunityPostTypes[0])}
+                  >
                     <Icon name={IconNames.addPost} color={Colors.dark['grey-shade-4']} />
                     <View className="ml-2">
                       <Label classNames="mb-1" label="Publish post" color={Colors.dark['grey-shade-4']} />
-                      <Label label="Share your thoughts, ideas & tips with your followers" type={FontTypes.FSmall} color={Colors.dark['grey-shade-3']} />
+                      <Label
+                        label="Share your thoughts, ideas & tips with your followers"
+                        type={FontTypes.FSmall}
+                        color={Colors.dark['grey-shade-3']}
+                      />
                     </View>
                   </TouchableOpacity>
-                  <TouchableOpacity activeOpacity={1} className="w-full h-4" />
+                  <View className="w-full h-4" />
                 </>
-              )}
-              {selectedType !== CommunityPostTypes[1] && (
+              ) : null}
+              {selectedType !== CommunityPostTypes[1] ? (
                 <>
-                  <TouchableOpacity style={styles.communityTypeBtn} onPress={() => setSelectedType(CommunityPostTypes[1])}>
+                  <TouchableOpacity
+                    accessibilityRole="button"
+                    accessibilityLabel="Select 'Need an answer?' option"
+                    style={styles.communityTypeBtn}
+                    onPress={() => setSelectedType(CommunityPostTypes[1])}
+                  >
                     <Icon name={IconNames.qanda} color={Colors.dark['grey-shade-4']} />
                     <View className="ml-2">
                       <Label classNames="mb-1" label="Need an answer?" color={Colors.dark['grey-shade-4']} />
-                      <Label label="Get help from your audience by publishing your question" type={FontTypes.FSmall} color={Colors.dark['grey-shade-3']} />
+                      <Label
+                        label="Get help from your audience by publishing your question"
+                        type={FontTypes.FSmall}
+                        color={Colors.dark['grey-shade-3']}
+                      />
                     </View>
                   </TouchableOpacity>
                 </>
-              )}
+              ) : null}
             </>
-          )}
+          ) : null}
           <TouchableOpacity activeOpacity={1} className="w-full h-4" />
         </ScrollView>
       </Pressable>
@@ -440,12 +486,16 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
   const [type, setType] = useState(props.postParams?.type || ChallengePostCategory.ON_LOCATION)
   const [date, setDate] = useState<Date | null>(!!props.postParams?.challengeAt ? timeDataToLocalString(props.postParams?.challengeAt) : null)
   const [showDatePicker, setShowDatePicker] = useState(false)
-  const [location, setLocation] = useState<LocationData>(props.postParams?.location || {name: '', address: ''})
-  const [peopleCount, setPeopleCount] = useState(peopleCountOption[props.postParams? (parseInt(`${props.postParams?.participationRangeId}`) - 1): 0])
+  const [location, setLocation] = useState<LocationData>(props.postParams?.location || { name: '', address: '' })
+
+  // Safely compute the initial index for peopleCount
+  const initialPeopleCountIndex = props.postParams ? Math.max(0, parseInt(`${props.postParams?.participationRangeId}`, 10) - 1) : 0
+  const [peopleCount, setPeopleCount] = useState(peopleCountOption[initialPeopleCountIndex])
+
   const [joinAnyone, setJoinAnyone] = useState(props.postParams?.joinAnyone || false)
   const [showDrawer, setShowDrawer] = useState<boolean>(false)
 
-  const { mutate: createUpdateChallenge, isPending: creatingPost } = useCreateUpdateChallengePost((data) => props.onSuccess(data), () => {})
+  const { mutate: createUpdateChallenge, isPending: creatingPost } = useCreateUpdateChallengePost((data) => props.onSuccess(data), () => { })
 
   const onCreateUpdateChallenge = () => {
     uid && description?.trim() !== '' && location?.name?.trim() !== '' && !!date && createUpdateChallenge({
@@ -458,7 +508,7 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
       location,
       challengeAt: date?.toISOString() || '',
       joinAnyone,
-      ...(props?.postParams && { id: props.postParams.id})
+      ...(props?.postParams && { id: props.postParams.id })
     })
   }
 
@@ -477,7 +527,7 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
           <TextArea disabled={false} clasName="mt-[10px]" height={100} maxCharacters={2000} value={description} placeHolder="Ex: 30 pushups in 30 seconds" onChangeText={setDescription} />
 
           {/* <Label  type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label='{`'Challenge type' /> */}
-          <Text className="mt-3 mb-3" style={{ fontSize: 14, fontWeight: 400, color: Colors.dark["grey-shade-3"] }}>Challenges are <Text style={{ textDecorationLine: 'underline', fontWeight: 500 }}>on location</Text> events</Text>
+          <Text className="mt-3 mb-3" style={{ fontSize: 14, fontWeight: '400', color: Colors.dark["grey-shade-3"] }}>Challenges are <Text style={{ textDecorationLine: 'underline', fontWeight: '500' }}>on location</Text> events</Text>
 
           {/* <View className="flex flex-row items-center w-full pb-3">
             {[ChallengePostCategory.VIRTUAL, ChallengePostCategory.ON_LOCATION].map((category) => (
@@ -502,8 +552,8 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
           </View>
 
           <Label classNames="mt-3 mb-2" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label={`Challenge time & location${type !== ChallengePostCategory.VIRTUAL ? '*' : ''}`} />
-          <TouchableOpacity className='shadow-sm flex flex-row items-center mb-5' style={{ backgroundColor: Colors.dark['fied-bg-idle'], height: 50, width: '100%', borderRadius: 30, paddingHorizontal: 20 }} onPress={() => setShowDrawer(true)}>
-            <Icon name={IconNames.location} size={InputSizes.md} color={ Colors.dark['primary-shade-3']} />
+          <TouchableOpacity className='shadow-sm flex flex-row items-center mb-5' style={{ backgroundColor: Colors.dark['field-bg-idle'], height: 50, width: '100%', borderRadius: 30, paddingHorizontal: 20 }} onPress={() => setShowDrawer(true)}>
+            <Icon name={IconNames.location} size={InputSizes.md} color={Colors.dark['primary-shade-3']} />
             <Label classNames="ml-3 pr-2" type={FontTypes.FLabel} ellipsizeMode="tail" numberOfLines={2} label={location?.name || "CHALLENGE LOCATION"} />
           </TouchableOpacity>
           <View className="flex flex-row justify-between w-full pb-3" style={styles.bottomBorder}>
@@ -544,7 +594,7 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
         </PostWrapperComponent>
         <View className="mb-20" />
       </ScrollView>
-      <DateTimePickerModal isVisible={showDatePicker} mode="datetime" date={date || new Date()} minimumDate={minTime()} onConfirm={(d) => { setDate(d); setShowDatePicker(false); }} onCancel={() => setShowDatePicker(false)} />
+      {showDatePicker ? <DateTimePicker mode="datetime" value={date || new Date()} minimumDate={minTime()} onChange={(d) => { setDate(d as unknown as Date); setShowDatePicker(false); }} /> : null}
       <LocationBottomDrawer uid={uid || ''} showDrawer={showDrawer} setShowDrawer={setShowDrawer} setLocation={setLocation} />
     </View>
   )
@@ -553,15 +603,15 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
 export const PostModal = (props: PostModalProps) => {
   return (
     <Modal customModal showModal={props.showModal} setShowModal={props.setShowModal}>
-      {props.postType === PostType.interest && (
+      {props.postType === PostType.interest ? (
         <PublishInterestPost postHeaderData={props.postHeaderData} actionBarData={props.actionBarData} postParams={props.postParams as InterestPostParams} onSuccess={props.onCancel} />
-      )}
-      {props.postType === PostType.community && (
+      ) : null}
+      {props.postType === PostType.community ? (
         <PublishCommunityPost postParams={props.postParams as CommunityPostParams} actionBarData={props.actionBarData} onSuccess={(data) => props.onSuccess?.(data)} onClose={props.onCancel} />
-      )}
-      {props.postType === PostType.challenge && (
-        <PublishChallengePost postHeaderData={props.postHeaderData} actionBarData={props.actionBarData} postParams={props.postParams as ChallengePostCardProps} onSuccess={(data) => {!!data? props.onSuccess && props.onSuccess(data): props.onCancel()}} />
-      )}
+      ) : null}
+      {props.postType === PostType.challenge ? (
+        <PublishChallengePost postHeaderData={props.postHeaderData} actionBarData={props.actionBarData} postParams={props.postParams as ChallengePostCardProps} onSuccess={(data) => { !!data ? props.onSuccess && props.onSuccess(data) : props.onCancel() }} />
+      ) : null}
     </Modal>
   )
 }

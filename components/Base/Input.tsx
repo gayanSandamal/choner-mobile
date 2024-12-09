@@ -9,7 +9,7 @@ export const Input = (props: InputProps) => {
     return (
         <View className={`shadow-sm flex flex-row items-center ${classNames}`} style={[
             {
-                backgroundColor: Colors.dark['fied-bg-idle'],
+                backgroundColor: Colors.dark['field-bg-idle'],
                 height: 60,
                 width: '100%',
                 borderRadius: 30,

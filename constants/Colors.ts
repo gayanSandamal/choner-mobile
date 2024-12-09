@@ -41,7 +41,7 @@ export const Colors = {
     'disabled': '#38444A',
     'primary-material-1': '#FFB300',
     'link': '#3498DB',
-    'fied-bg-idle': '#233240',
+    'field-bg-idle': '#233240',
     'field-bg-active': '#444E54',
     'field-bg-disabled': '#38444A',
     'green-shade-1': '#4CAF50',

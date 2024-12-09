@@ -4,6 +4,6 @@ import { router } from 'expo-router';
 
 export function TabBarIcon({ style, ...rest }: any) {
   return <CharmBtn {...rest} onPress={() =>
-    router.replace(rest.link)
+    router.navigate(rest.link)
   } size={InputSizes.md} frame={false} />;
 }

@@ -23,8 +23,8 @@ const styles = StyleSheet.create({
     avatar: { marginTop: 20, backgroundColor: '#F7971E' },
     cameraButton: {position: 'absolute', bottom: 0, right: -3, padding: 6, borderRadius: 8, backgroundColor: Colors.dark['grey-transparent']},
     dropDownWrapper: {zIndex: 1},
-    btnWrapper: { width: '100%', paddingHorizontal: 25, borderRadius: 30, height: 60, marginBottom: 20, backgroundColor: Colors.dark['fied-bg-idle'], flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderWidth: 0 },
-    dropdown: { position: 'absolute', marginTop: 70, backgroundColor: Colors.dark['fied-bg-idle'], borderRadius: 5, width: '100%', zIndex: 2 },
+    btnWrapper: { width: '100%', paddingHorizontal: 25, borderRadius: 30, height: 60, marginBottom: 20, backgroundColor: Colors.dark['field-bg-idle'], flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderWidth: 0 },
+    dropdown: { position: 'absolute', marginTop: 70, backgroundColor: Colors.dark['field-bg-idle'], borderRadius: 5, width: '100%', zIndex: 2 },
     dropdownItem: { padding: 15 },
     dropDownText: { color: Colors.light.white },
 })

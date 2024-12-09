@@ -6,9 +6,9 @@ import { BLURHASH } from "@/constants/values";
 import { Colors } from "@/constants/Colors";
 
 export const matchOnlyLetters = (text: string) => {
-    const regex = /^\p{L}+$/u
-        
-    return regex.test(text)
+  const regex = /^\p{L}+$/u
+
+  return regex.test(text)
 }
 
 type AnyObject = { [key: string]: any };
@@ -55,20 +55,59 @@ const options: Intl.DateTimeFormatOptions = {
   year: 'numeric',
 }
 
-export const formatDateToCustomString = (date: Date) => {
-  const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date)
-  if( Platform.OS === 'android') {
-    const [day, year, time] = formattedDate.split(', ')
-    return `${time} on ${day}, ${year}`
+export const formatDateToCustomString = (date: Date): string => {
+  try {
+    const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
+
+    if (Platform.OS === 'android') {
+      const parts = formattedDate.split(', ');
+      // Expecting [day, year, time]
+      if (parts.length !== 3) {
+        // Fallback if the format isn't as expected
+        return formattedDate;
+      }
+
+      const [day, year, time] = parts;
+      // Double-check that day, year, and time are defined
+      if (!day || !year || !time) {
+        return formattedDate; // Return as-is if parsing failed
+      }
+
+      return `${time} on ${day}, ${year}`;
+    }
+
+    // For other platforms (iOS, web), expecting a format like "Monday, March 1, 2022 at 10:00 AM"
+    const dayYearTime = formattedDate.split(', ');
+    // Expect at least [day, yearWithTime], potentially more for locale differences
+    if (dayYearTime.length < 2) {
+      return formattedDate;
+    }
+
+    const [day, yearWithTime] = dayYearTime;
+    if (!day || !yearWithTime) {
+      return formattedDate;
+    }
+
+    const yearAndTime = yearWithTime.split(' at ');
+    if (yearAndTime.length < 2) {
+      return formattedDate;
+    }
+
+    const [year, time] = yearAndTime;
+    if (!year || !time) {
+      return formattedDate;
+    }
+
+    return `${time.trim()} on ${day}, ${year}`;
+  } catch (error) {
+    // If something went wrong in formatting or splitting,
+    // return a fallback, like a simple ISO string.
+    console.error('Error formatting date:', error);
+    return date.toISOString();
   }
-
-  const [day, yearWithTime] = formattedDate.split(', ')
-  const [year, time] = yearWithTime.split(' at ')
-
-  return `${time?.trim()} on ${day}, ${year}`
 }
 
-export const timeDataToLocalString  = (timeAt: {_seconds: number, _nanoseconds: number}): Date | null => {
+export const timeDataToLocalString = (timeAt: { _seconds: number, _nanoseconds: number }): Date | null => {
   if (!timeAt?._seconds) return null
   const milliseconds = timeAt._seconds * 1000 + Math.floor(timeAt._nanoseconds / 1000000);
   return new Date(milliseconds);
@@ -78,18 +117,18 @@ export const isDayOld = (timeAt: { _seconds: number; _nanoseconds: number }) => 
   if (!timeAt?._seconds) return
 
   const milliseconds = timeAt._seconds * 1000 + Math.floor(timeAt._nanoseconds / 1000000);
-  
+
   const timeDate = new Date(milliseconds);
   const currentTime = new Date();
-  
+
   const diffMilliseconds = currentTime.getTime() - timeDate.getTime();
   const diffDays = diffMilliseconds / (1000 * 60 * 60 * 24);
-  
+
   return diffDays >= 1;
 };
 
 
-export const postCreateTimeToDate = (createdAt: {_seconds: number, _nanoseconds: number}, clipeDate?: boolean, newLineDate?: boolean) => {
+export const postCreateTimeToDate = (createdAt: { _seconds: number, _nanoseconds: number }, clipeDate?: boolean, newLineDate?: boolean) => {
   const milliseconds = createdAt?._seconds * 1000 + Math.floor(createdAt?._nanoseconds / 1000000);
   const date = new Date(milliseconds);
 
@@ -108,7 +147,7 @@ export const postCreateTimeToDate = (createdAt: {_seconds: number, _nanoseconds:
     const dateTime = date.toLocaleDateString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false, month: 'long', day: 'numeric' }).split(',')
     const dayArr = dateTime[0].split(' ')
     if (clipeDate) {
-      return dateTime[1]?.trim() + ', ' + dayArr[1] + ' ' + dayArr[0].substring(0,3)
+      return dateTime[1]?.trim() + ', ' + dayArr[1] + ' ' + dayArr[0].substring(0, 3)
     }
 
     if (newLineDate && !clipeDate) {
@@ -116,7 +155,7 @@ export const postCreateTimeToDate = (createdAt: {_seconds: number, _nanoseconds:
     }
 
     if (newLineDate && clipeDate) {
-      return dateTime[1]?.trim() + ',\n' + dayArr[1] + ' ' + dayArr[0].substring(0,3)
+      return dateTime[1]?.trim() + ',\n' + dayArr[1] + ' ' + dayArr[0].substring(0, 3)
     }
 
     return dateTime[1]?.trim() + ', ' + dayArr[1] + ' ' + dayArr[0]
@@ -131,8 +170,8 @@ export const isoDateTimeToSecond = (dateTime: string) => {
   const nanoseconds = (date.getMilliseconds() * 1e6)
 
   return {
-      _seconds: seconds,
-      _nanoseconds: nanoseconds
+    _seconds: seconds,
+    _nanoseconds: nanoseconds
   }
 }
 
@@ -150,10 +189,10 @@ export function parseToInterestCardProps(data: any): InterestCardData {
       _seconds: data.createdAt?._seconds,
       _nanoseconds: data.createdAt?._nanoseconds
     },
-    scheduledAt: data?.scheduledAt?._seconds? {
+    scheduledAt: data?.scheduledAt?._seconds ? {
       _seconds: data?.scheduledAt?._seconds,
       _nanoseconds: data?.scheduledAt?._nanoseconds
-    }: !!data?.scheduledAt? isoDateTimeToSecond(data?.scheduledAt): undefined,
+    } : !!data?.scheduledAt ? isoDateTimeToSecond(data?.scheduledAt) : undefined,
     visibility: data.visibility,
     location: data?.location,
     enrolmentStatus: data.enrolmentStatus,
@@ -169,10 +208,10 @@ export function parseToCommunityCardProps(data: any): CommunityCardData {
       md: data?.imageUrls?.md,
       lg: data?.imageUrls?.lg,
     },
-    scheduledAt: data?.scheduledAt?._seconds? {
+    scheduledAt: data?.scheduledAt?._seconds ? {
       _seconds: data?.scheduledAt?._seconds,
       _nanoseconds: data?.scheduledAt?._nanoseconds
-    }: !!data?.scheduledAt? isoDateTimeToSecond(data?.scheduledAt): undefined,
+    } : !!data?.scheduledAt ? isoDateTimeToSecond(data?.scheduledAt) : undefined,
     voteCount: data.votes.length
   }
 }
@@ -210,10 +249,10 @@ const setImageData = async (image: ImagePicker.ImagePickerResult, id: string) =>
 
 export const pickImage = async (id: string) => {
   const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 1,
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    allowsEditing: true,
+    aspect: [1, 1],
+    quality: 1,
   })
 
   if (!result.canceled) {
@@ -230,10 +269,10 @@ export const captureAndPickImage = async (id: string) => {
   await ImagePicker.requestCameraPermissionsAsync()
   await MediaLibrary.requestPermissionsAsync()
   const result = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 1,
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    allowsEditing: true,
+    aspect: [1, 1],
+    quality: 1,
   })
 
   if (!result.canceled) {
@@ -257,21 +296,21 @@ export const truncateText = (text: string, maxLength: number) => {
 }
 
 export const setBtnBackgroundColor = (condition: boolean) => {
-  return condition? Colors.dark['soundcloud-gdr-1']: undefined
+  return condition ? Colors.dark['soundcloud-gdr-1'] : undefined
 }
 
 export const setBtnOutlineColor = (condition: boolean) => {
-  return condition? Colors.dark["primary-shade-2"]: undefined
+  return condition ? Colors.dark["primary-shade-2"] : undefined
 }
 
-export const capitalize = (s: string) => s ? String(s[0]).toUpperCase() + String(s).slice(1): ''
+export const capitalize = (s: string) => s ? String(s[0]).toUpperCase() + String(s).slice(1) : ''
 
 export const updateItemInCacheList = (cachedData: any, itemId: string, itemKey: string, updateKey: string, updateKeyValue: any) => {
   const updatedPages = cachedData.pages.map((page: any) => {
     const existingIndex = page.data.result?.[itemKey].findIndex((item: any) => item.id === itemId)
     if (existingIndex !== -1) {
       const updatedItems = [...page.data.result?.[itemKey]]
-      updatedItems[existingIndex] = {...updatedItems[existingIndex], [updateKey]: updateKeyValue}
+      updatedItems[existingIndex] = { ...updatedItems[existingIndex], [updateKey]: updateKeyValue }
       return {
         ...page,
         data: {
@@ -374,7 +413,7 @@ export const updatePageOnDeleteList = (cachedData: any, itemKey: string, itemIds
     pages: updatedPages,
   }
 }
-  
+
 
 export const filterPlusCodeFromAddress = (address: string) => {
   const plusCodePattern = /\b\w{4}\+\w{2,}\b/
@@ -388,6 +427,6 @@ export const filterPlusCodeFromAddress = (address: string) => {
 export const parseLocation = (location: any) => {
   return {
     name: location?.displayName?.text || '',
-    address: location?.formattedAddress? filterPlusCodeFromAddress(location?.formattedAddress): ''
+    address: location?.formattedAddress ? filterPlusCodeFromAddress(location?.formattedAddress) : ''
   } as LocationData
 }

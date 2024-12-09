@@ -60,6 +60,7 @@ export type UpdateInterestProps = {
     title: string
     description: string
     scheduledAt?: string
+    location?: LocationData
 }
 
 export const updateInterest = async ({id, uid, title, description, scheduledAt}: UpdateInterestProps) => {

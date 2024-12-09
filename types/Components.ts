@@ -414,15 +414,14 @@ export type PostTypesProps = {
 export type PostBottomActionsProps = {
   isScheduled: boolean
   dateTime: Date | null
-  showDatePicker: boolean
   isPostPublishable: boolean
   isLoading: boolean
   postTypeUpdate: boolean
+  showDatePicker: boolean
   onPressMutate: () => void
-  handleConfirm: (date: Date) => void
-  hideDatePicker: () => void
-  setShowDatePicker: (state: boolean) => void
   setIsScheduled: (state: boolean) => void
+  setShowDatePicker: (state: boolean) => void
+  handleConfirm: (date: Date) => void
 }
 
 export type PostWrapperComponentProps = {
