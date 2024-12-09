@@ -19,7 +19,7 @@ export default function SignInScreen() {
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   useLayoutEffect(() => {
-    session && router.replace('/')
+    session && router.replace('/(app)')
   }, [session])
 
   const onShowConfirmPasswordPress = () => {
@@ -45,7 +45,7 @@ export default function SignInScreen() {
       await fbSignIn(email, password).then((userCredential) => {      
         signIn(userCredential.user);
         if (userCredential.user) {
-          router.replace('/')
+          router.replace('/(app)')
         }
       })
     } catch (e: any) {

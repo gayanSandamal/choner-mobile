@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { AppState, AppStateStatus } from 'react-native/Libraries/AppState/AppState';
 import ToastManager from 'toastify-react-native'
 import { Colors } from '@/constants/Colors';
+import 'react-native-reanimated';
 
 const queryClient = new QueryClient()
 

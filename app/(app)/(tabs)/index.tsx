@@ -22,7 +22,7 @@ import { Colors } from '@/constants/Colors';
 const HomeScreen = () => {
   const userId = useAuthUserId()
   const {user, setUser} = useUser()
-  
+
   // This cause grid dimentions to transform from 0 -> full. Creating a transform effect in the initial grid render
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
 
@@ -33,7 +33,7 @@ const HomeScreen = () => {
       if (fetchedUser) {
         setUser(fetchedUser)
         if (!fetchedUser?.displayName) {
-          router.navigate('/basic-info')
+          router.navigate('/(app)/(profile)/(settings)/basic-info')
         }
       }
     }, [fetchedUser])

@@ -2,9 +2,8 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native
 import { Redirect, Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import 'react-native-reanimated';
 import "./../../global.css"
-import { Image, Text, View } from 'react-native';
+import { Image, View } from 'react-native';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useSession } from '@/hooks/ctx';
 import { UserProvider } from '@/contexts/userContext';
@@ -24,7 +23,7 @@ export default function RootLayout() {
 
   if (isLoading) {
     return <View className='flex h-full w-full bg-grey items-center justify-center'>
-      <Image source={require('../../assets/images/icon.png')} style={{marginTop: -50}} />
+      <Image source={require('../../assets/images/splash.png')} resizeMode='contain' style={{width: 420, marginTop: -5}}/>
     </View>
   }
 

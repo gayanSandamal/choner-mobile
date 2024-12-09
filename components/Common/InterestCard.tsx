@@ -31,7 +31,7 @@ export const InterestCard = ({uid, isOwner, data, disabled, classNames, navigati
     }
   
     !disabled && router.push({
-      pathname: navigationPath || '/interests/interest-view',
+      pathname: navigationPath || '/(app)/(tabs)/interests/interest-view',
       params: {
         data: JSON.stringify({
           isOwner,
