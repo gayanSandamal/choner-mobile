@@ -421,7 +421,7 @@ export type PostBottomActionsProps = {
   onPressMutate: () => void
   setIsScheduled: (state: boolean) => void
   setShowDatePicker: (state: boolean) => void
-  handleConfirm: (date: Date) => void
+  handleConfirm: (date: Date | null) => void
 }
 
 export type PostWrapperComponentProps = {

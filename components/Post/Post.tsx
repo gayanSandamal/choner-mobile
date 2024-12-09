@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, TouchableOpacity, View, ScrollView, Switch, Text } from "react-native"
 import Label from "../Base/Label"
-import { ActionBarProps, ChallengePostCardProps, ChallengePostCategory, ChallengeState, CommunityCardData, CommunityPostParams, FontSizes, FontTypes, IconNames, InputSizes, InterestPostParams, LocationData, PostBottomActionsProps, PostHeaderProps, PostModalProps, PostType, PostWrapperComponentProps, PublishChallengePostProps, PublishCommunityPostProps, PublishInterestPostProps, UploadImage, UserChallengeStatus } from "@/types/Components"
+import { ActionBarProps, ChallengePostCardProps, ChallengePostCategory, ChallengeState, CommunityCardData, CommunityPostParams, FontTypes, IconNames, InputSizes, InterestPostParams, LocationData, PostBottomActionsProps, PostHeaderProps, PostModalProps, PostType, PostWrapperComponentProps, PublishChallengePostProps, PublishCommunityPostProps, PublishInterestPostProps, UploadImage, UserChallengeStatus } from "@/types/Components"
 import { Colors } from "@/constants/Colors"
 import React, { useCallback, useEffect, useState } from "react"
 import Icon from "../Base/Icon"
@@ -21,7 +21,7 @@ import { useCreateCommunityPost, useUpdateCommunityPost } from "@/hooks/mutate/u
 import { CreateCommunityPostProps, UpdateCommunityPostProps } from "@/api/communityPostApi"
 import { useUploadImage } from "@/hooks/mutate/useMutateImage"
 import { CommunityPostTypes, ImageSizes, peopleCountOption, StoragePaths } from "@/constants/values"
-import { Input } from "../Base/Input"
+// import { Input } from "../Base/Input"
 import { useCreateUpdateChallengePost } from "@/hooks/mutate/useMutateChallengePosts"
 import { LocationBottomDrawer } from "../Common/LocationBottomDrawer"
 
@@ -43,12 +43,15 @@ export const ActionBar = (props: ActionBarProps) => {
 
 const PostBottomActions = (props: PostBottomActionsProps) => {
   const { isScheduled, dateTime, showDatePicker, isPostPublishable, isLoading, postTypeUpdate, onPressMutate, handleConfirm, setShowDatePicker, setIsScheduled } = props
-  const scheduledText = () => {
-    return isScheduled && dateTime ? `Schedule at` : 'Schedule'
-  }
+
   const toggleDatePicker = (state: boolean) => {
     setShowDatePicker(state)
     setIsScheduled(state)
+    if (state) {
+      handleConfirm(new Date())
+    } else {
+      handleConfirm(null)
+    }
   }
   return (
     <>
@@ -56,14 +59,13 @@ const PostBottomActions = (props: PostBottomActionsProps) => {
         <View className="flex flex-row justify-between w-full">
           <View className="flex flex-row items-center justify-between">
             <Checkbox classNames="mr-2" isChecked={isScheduled || showDatePicker} onPress={(state) => toggleDatePicker(state)} />
-            <Label type={FontTypes.FSmall} label={scheduledText()} color={Colors.dark['grey-shade-3']} containerStyles={{ fontWeight: 400, textAlign: 'right' }} />
+            <Label type={FontTypes.FSmall} label={'Schedule'} color={Colors.dark['grey-shade-3']} containerStyles={{ fontWeight: 400, textAlign: 'right' }} />
           </View>
           <Btn isLoading={isLoading} disabled={isLoading || !isPostPublishable} size={InputSizes.md} fontType={FontTypes.FLabelBold} label={!!postTypeUpdate ? 'UPDATE' : 'PUBLISH'} icon={IconNames.send} onPress={onPressMutate} />
         </View>
       </View>
-      {showDatePicker && <View style={{ marginTop: 10, marginStart: -10 }}>
-        <DateTimePicker display="spinner" mode="datetime" value={dateTime || new Date()} minimumDate={minTime()} onChange={() => handleConfirm} />
-          <Text style={{ color: Colors.light.white}}>{ dateTime?.toString() }</Text>
+      {showDatePicker || dateTime && <View style={{ marginTop: 10, marginStart: -10 }}>
+        <DateTimePicker display="spinner" mode="datetime" value={dateTime || new Date()} minimumDate={minTime()} onChange={(_event, date) => handleConfirm(date as unknown as Date)} />
       </View>}
     </>
   );
@@ -166,10 +168,9 @@ const PublishInterestPost = (props: PublishInterestPostProps) => {
     canUpdate && updatePost(interestPostData)
   }
 
-  const handleConfirm = useCallback((date: Date) => {
-    setShowDatePicker(false)
+  const handleConfirm = useCallback((date?: Date | null) => {
     setIsScheduled(true)
-    setDateTime(date)
+    if (date) setDateTime(date)
   }, [showDatePicker])
 
   const { interest, interestDesc } = interestData
@@ -231,10 +232,9 @@ export const PublishCommunityPost = (props: PublishCommunityPostProps) => {
     }
   }, [])
 
-  const handleConfirm = useCallback((date: Date) => {
-    setShowDatePicker(false)
+  const handleConfirm = useCallback((date: Date | null) => {
     setIsScheduled(true)
-    setDateTime(date)
+    if (date) setDateTime(date)
   }, [showDatePicker])
 
   const onSuccessCreatePost = () => {
@@ -328,7 +328,7 @@ export const PublishCommunityPost = (props: PublishCommunityPostProps) => {
       }),
       ...(dateTime && isScheduled && { scheduledAt: dateTime?.toISOString() })
     } as CreateCommunityPostProps
-
+    
     createPost(communityPostData)
   }
 
@@ -514,7 +514,7 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
 
   const scheduledText = date ? `Challenge at ${formatDateToCustomString(date)}` : 'Challenge at?'
 
-  const toggleType = (selectedType: ChallengePostCategory) => setType(selectedType)
+  // const toggleType = (selectedType: ChallengePostCategory) => setType(selectedType)
   const updatePeopleCount = (countOption: any) => setPeopleCount(countOption)
 
   const publishDisabled = !uid || description?.trim() === '' || location?.name?.trim() === '' || !date
@@ -528,7 +528,7 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
 
           {/* <Label  type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label='{`'Challenge type' /> */}
           <Text className="mt-3 mb-3" style={{ fontSize: 14, fontWeight: '400', color: Colors.dark["grey-shade-3"] }}>Challenges are <Text style={{ textDecorationLine: 'underline', fontWeight: '500' }}>on location</Text> events</Text>
-
+          {/* TODO: Add on location and virtual events */}
           {/* <View className="flex flex-row items-center w-full pb-3">
             {[ChallengePostCategory.VIRTUAL, ChallengePostCategory.ON_LOCATION].map((category) => (
               <Btn
