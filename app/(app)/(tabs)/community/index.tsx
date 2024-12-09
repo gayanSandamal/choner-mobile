@@ -9,7 +9,7 @@ import { Colors } from '@/constants/Colors'
 import { CommunityPostTypes } from '@/constants/values'
 import { Btn } from '@/components/Base/Button'
 import { useTabSelector } from '@/contexts/tabSelectorContext'
-import { CommunityList } from '@/components/Common/CommunityList'
+import { CommunityPostCard } from '@/components/Common/CommunityPostCard'
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: Colors.dark.grey },
@@ -77,7 +77,9 @@ export default function CommunityScreen() {
       <FlatList
         contentContainerStyle={styles.flatList}
         data={communityPosts || []}
-        keyExtractor={(item, index) => `community-post-${index}`}
+        keyExtractor={(_item, index) => `community-post-${index}`}
+        numColumns={2}
+        columnWrapperStyle={{ justifyContent: 'space-between' }}
         ListHeaderComponent={
           <>
             <ActionBar
@@ -104,12 +106,8 @@ export default function CommunityScreen() {
             )}
           </>
         }
-        renderItem={({ item }) => (
-          <CommunityList
-            uid={uid || ''}
-            communityPostList1={communityPostList1}
-            communityPostList2={communityPostList2}
-          />
+        renderItem={({ item: parsedData, index }) => (
+          <CommunityPostCard key={index} data={parsedData} uid={uid} cols={2} />
         )}
         ListFooterComponent={<Spacer height={60} />}
         refreshing={refreshing}

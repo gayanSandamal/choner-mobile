@@ -676,20 +676,10 @@ export type CommunityListProps = {
 
 export type CommunityPostCardProps = {
   data: CommunityCardData
-  title: string
-  createdBy: {
-      uid: string
-      displayName: string
-      profileImageUrl?: string
-  }
-  createdAt: {
-      _seconds: number
-      _nanoseconds: number
-  } | undefined
-  scheduled?: boolean
-  image?: string
-  isOwner?: boolean
+  uid?: string | null
   navigationPath?: string
+  scheduled?: boolean
+  cols?: number
 }
 
 export enum ChallengeState {
