@@ -793,6 +793,8 @@ export type TextAreaProps = {
   autoFocus?: boolean
   styles?: ViewStyle
   onChangeText: (text: string) => void
+  onFocus?: () => void
+  onBlur?: () => void
 }
 
 export type CommentInputProps = {

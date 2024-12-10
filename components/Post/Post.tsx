@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, TouchableOpacity, View, ScrollView, Switch, Text } from "react-native"
+import { Pressable, StyleSheet, TouchableOpacity, View, ScrollView, Switch, Text, KeyboardAvoidingView, Platform } from "react-native"
 import Label from "../Base/Label"
 import { ActionBarProps, ChallengePostCardProps, ChallengePostCategory, ChallengeState, CommunityCardData, CommunityPostParams, FontTypes, IconNames, InputSizes, InterestPostParams, LocationData, PostBottomActionsProps, PostHeaderProps, PostModalProps, PostType, PostWrapperComponentProps, PublishChallengePostProps, PublishCommunityPostProps, PublishInterestPostProps, UploadImage, UserChallengeStatus } from "@/types/Components"
 import { Colors } from "@/constants/Colors"
@@ -44,6 +44,12 @@ export const ActionBar = (props: ActionBarProps) => {
 const PostBottomActions = (props: PostBottomActionsProps) => {
   const { isScheduled, dateTime, showDatePicker, isPostPublishable, isLoading, postTypeUpdate, onPressMutate, handleConfirm, setShowDatePicker, setIsScheduled } = props
 
+  useEffect(() => {
+    if (isScheduled || dateTime) {
+      setShowDatePicker(true)
+    }
+  }, [isScheduled, dateTime])
+
   const toggleDatePicker = (state: boolean) => {
     setShowDatePicker(state)
     setIsScheduled(state)
@@ -53,19 +59,29 @@ const PostBottomActions = (props: PostBottomActionsProps) => {
       handleConfirm(null)
     }
   }
+
+  const scheduledLabel = () => {
+    if (dateTime) {
+      return 'Scheduled at'
+    } else if (isScheduled) {
+      return 'Will be schedule at'
+    }
+  }
+
   return (
     <>
-      <View className="flex items-center justify-end w-full mt-4">
+      <View className="flex items-center justify-end w-full mt-2">
         <View className="flex flex-row justify-between w-full">
           <View className="flex flex-row items-center justify-between">
-            <Checkbox classNames="mr-2" isChecked={isScheduled || showDatePicker} onPress={(state) => toggleDatePicker(state)} />
+            <Checkbox classNames="mr-2" isChecked={showDatePicker} onPress={(state) => toggleDatePicker(state)} />
             <Label type={FontTypes.FSmall} label={'Schedule'} color={Colors.dark['grey-shade-3']} containerStyles={{ fontWeight: 400, textAlign: 'right' }} />
           </View>
           <Btn isLoading={isLoading} disabled={isLoading || !isPostPublishable} size={InputSizes.md} fontType={FontTypes.FLabelBold} label={!!postTypeUpdate ? 'UPDATE' : 'PUBLISH'} icon={IconNames.send} onPress={onPressMutate} />
         </View>
       </View>
-      {showDatePicker || dateTime && <View style={{ marginTop: 10, marginStart: -10 }}>
-        <DateTimePicker display="spinner" mode="datetime" value={dateTime || new Date()} minimumDate={minTime()} onChange={(_event, date) => handleConfirm(date as unknown as Date)} />
+      {showDatePicker && <View className="flex flex-row items-center mt-4">
+        <Label type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label={scheduledLabel()} />
+        <DateTimePicker mode="datetime" value={dateTime || new Date()} minimumDate={minTime()} onChange={(_event, date) => handleConfirm(date as unknown as Date)} />
       </View>}
     </>
   );
@@ -220,13 +236,13 @@ export const PublishCommunityPost = (props: PublishCommunityPostProps) => {
     name: ''
   } : null)
   const [isUploading, setIsUploading] = useState<boolean>(false)
+  const [inputFocused, setInputFocused] = useState(false)
 
   const { uploadImage } = useUploadImage((uri) => onSuccessImageUpload(uri), () => { })
   const { mutate: createPost } = useCreateCommunityPost(() => onSuccessCreatePost(), (e) => setIsUploading(false))
   const { mutate: updatePost } = useUpdateCommunityPost((data) => onSuccessUpdatePost(data), (e) => setIsUploading(false))
 
   useEffect(() => {
-
     return () => {
       props.onClose(true)
     }
@@ -328,7 +344,7 @@ export const PublishCommunityPost = (props: PublishCommunityPostProps) => {
       }),
       ...(dateTime && isScheduled && { scheduledAt: dateTime?.toISOString() })
     } as CreateCommunityPostProps
-    
+
     createPost(communityPostData)
   }
 
@@ -366,116 +382,114 @@ export const PublishCommunityPost = (props: PublishCommunityPostProps) => {
   }
 
   return (
-    <>
-      <Pressable className="pl-[10px] pr-[10px] pt-[75px] w-full h-full" onPress={() => !selectedType && props.onClose(true)}>
-        <ActionBar {...{ ...props.actionBarData }} active={true} onPress={() => { }} />
-        {!selectedType ? <TouchableOpacity activeOpacity={1} className="w-full h-4" /> : null}
-        <ScrollView className="w-full" showsVerticalScrollIndicator={false}>
-          {selectedType ? (
-            <PostWrapperComponent postHeaderData={setPostHeaderData()} onCancel={() => props.onClose(true)}>
+    <ScrollView className="pl-[10px] pr-[10px] pt-[75px] w-full h-full" showsVerticalScrollIndicator={false}>
+      <ActionBar {...{ ...props.actionBarData }} active={true} onPress={() => { }} />
+      {!selectedType ? <TouchableOpacity activeOpacity={1} className="w-full h-4" /> : null}
+      {selectedType ? (
+        <PostWrapperComponent postHeaderData={setPostHeaderData()} onCancel={() => props.onClose(true)}>
+          <TouchableOpacity
+            accessibilityRole="button"
+            accessibilityLabel="Open image picker"
+            disabled={isUploading}
+            style={[
+              styles.imagePicker,
+              { aspectRatio: inputFocused && !image?.uri ? 3.9 : 1, opacity: isUploading ? 0.5 : 1 }
+            ]}
+            onPress={() => setShowDrawer(true)}
+          >
+            {image == null ? (
+              <>
+                <Icon name={IconNames.image} size={InputSizes.xl} />
+                <Label classNames="mt-[10px]" label="Add an image" color={Colors.dark["grey-shade-3"]} />
+              </>
+            ) : null}
+            {image != null ? (
+              <Image
+                style={{ width: '100%', height: '100%', aspectRatio: 1 }}
+                source={{ uri: image.uri }}
+                contentFit="cover"
+                transition={500}
+              />
+            ) : null}
+            {image != null ? (
               <TouchableOpacity
                 accessibilityRole="button"
-                accessibilityLabel="Open image picker"
+                accessibilityLabel="Remove image"
                 disabled={isUploading}
-                style={[
-                  styles.imagePicker,
-                  { aspectRatio: image != null ? 1 : 2, opacity: isUploading ? 0.5 : 1 }
-                ]}
-                onPress={() => setShowDrawer(true)}
+                style={styles.removeImage}
+                onPress={() => setImage(null)}
               >
-                {image == null ? (
-                  <>
-                    <Icon name={IconNames.image} size={InputSizes.xl} />
-                    <Label classNames="mt-[10px]" label="Add an image" color={Colors.dark["grey-shade-3"]} />
-                  </>
-                ) : null}
-                {image != null ? (
-                  <Image
-                    style={{ width: '100%', height: '100%' }}
-                    source={{ uri: image.uri }}
-                    contentFit="cover"
-                    transition={500}
-                  />
-                ) : null}
-                {image != null ? (
-                  <TouchableOpacity
-                    accessibilityRole="button"
-                    accessibilityLabel="Remove image"
-                    disabled={isUploading}
-                    style={styles.removeImage}
-                    onPress={() => setImage(null)}
-                  >
-                    <Icon name={IconNames.delete} />
-                  </TouchableOpacity>
-                ) : null}
+                <Icon name={IconNames.delete} />
               </TouchableOpacity>
-              <TextArea disabled={isUploading} clasName="mt-[10px]" height={120} maxCharacters={2000} value={title} placeHolder={selectedType === CommunityPostTypes[0] ? "Enter your thoughts..." : "What's your problem? we can help you :)"} onChangeText={setTtile}
-              />
-              <PostBottomActions
-                isScheduled={isScheduled}
-                dateTime={dateTime}
-                showDatePicker={showDatePicker}
-                isPostPublishable={title?.trim() !== ''}
-                isLoading={isUploading}
-                postTypeUpdate={!!props?.postParams}
-                onPressMutate={onPressMutate}
-                handleConfirm={handleConfirm}
-                setShowDatePicker={setShowDatePicker}
-                setIsScheduled={setIsScheduled}
-              />
-            </PostWrapperComponent>
-          ) : null}
-          {props.postParams == null ? (
+            ) : null}
+          </TouchableOpacity>
+          <KeyboardAvoidingView className="w-full" behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}>
+            <TextArea disabled={isUploading} clasName="mt-[10px]" height={120} maxCharacters={2000} value={title} placeHolder={selectedType === CommunityPostTypes[0] ? "Enter your thoughts..." : "What's your problem? we can help you :)"} onChangeText={setTtile} onFocus={() => setInputFocused(true)} onBlur={() => setInputFocused(false)}
+            />
+            <PostBottomActions
+              isScheduled={isScheduled}
+              dateTime={dateTime}
+              showDatePicker={showDatePicker}
+              isPostPublishable={title?.trim() !== ''}
+              isLoading={isUploading}
+              postTypeUpdate={!!props?.postParams}
+              onPressMutate={onPressMutate}
+              handleConfirm={handleConfirm}
+              setShowDatePicker={setShowDatePicker}
+              setIsScheduled={setIsScheduled}
+            />
+          </KeyboardAvoidingView>
+        </PostWrapperComponent>
+      ) : null}
+      {props.postParams == null ? (
+        <>
+          {selectedType !== CommunityPostTypes[0] ? (
             <>
-              {selectedType !== CommunityPostTypes[0] ? (
-                <>
-                  <TouchableOpacity
-                    accessibilityRole="button"
-                    accessibilityLabel="Select 'Publish post' option"
-                    style={styles.communityTypeBtn}
-                    onPress={() => setSelectedType(CommunityPostTypes[0])}
-                  >
-                    <Icon name={IconNames.addPost} color={Colors.dark['grey-shade-4']} />
-                    <View className="ml-2">
-                      <Label classNames="mb-1" label="Publish post" color={Colors.dark['grey-shade-4']} />
-                      <Label
-                        label="Share your thoughts, ideas & tips with your followers"
-                        type={FontTypes.FSmall}
-                        color={Colors.dark['grey-shade-3']}
-                      />
-                    </View>
-                  </TouchableOpacity>
-                  <View className="w-full h-4" />
-                </>
-              ) : null}
-              {selectedType !== CommunityPostTypes[1] ? (
-                <>
-                  <TouchableOpacity
-                    accessibilityRole="button"
-                    accessibilityLabel="Select 'Need an answer?' option"
-                    style={styles.communityTypeBtn}
-                    onPress={() => setSelectedType(CommunityPostTypes[1])}
-                  >
-                    <Icon name={IconNames.qanda} color={Colors.dark['grey-shade-4']} />
-                    <View className="ml-2">
-                      <Label classNames="mb-1" label="Need an answer?" color={Colors.dark['grey-shade-4']} />
-                      <Label
-                        label="Get help from your audience by publishing your question"
-                        type={FontTypes.FSmall}
-                        color={Colors.dark['grey-shade-3']}
-                      />
-                    </View>
-                  </TouchableOpacity>
-                </>
-              ) : null}
+              <TouchableOpacity
+                accessibilityRole="button"
+                accessibilityLabel="Select 'Publish post' option"
+                style={styles.communityTypeBtn}
+                onPress={() => setSelectedType(CommunityPostTypes[0])}
+              >
+                <Icon name={IconNames.addPost} color={Colors.dark['grey-shade-4']} />
+                <View className="ml-2">
+                  <Label classNames="mb-1" label="Publish post" color={Colors.dark['grey-shade-4']} />
+                  <Label
+                    label="Share your thoughts, ideas & tips with your followers"
+                    type={FontTypes.FSmall}
+                    color={Colors.dark['grey-shade-3']}
+                  />
+                </View>
+              </TouchableOpacity>
+              <View className="w-full h-4" />
             </>
           ) : null}
-          <TouchableOpacity activeOpacity={1} className="w-full h-4" />
-        </ScrollView>
-      </Pressable>
+          {selectedType !== CommunityPostTypes[1] ? (
+            <>
+              <TouchableOpacity
+                accessibilityRole="button"
+                accessibilityLabel="Select 'Need an answer?' option"
+                style={styles.communityTypeBtn}
+                onPress={() => setSelectedType(CommunityPostTypes[1])}
+              >
+                <Icon name={IconNames.qanda} color={Colors.dark['grey-shade-4']} />
+                <View className="ml-2">
+                  <Label classNames="mb-1" label="Need an answer?" color={Colors.dark['grey-shade-4']} />
+                  <Label
+                    label="Get help from your audience by publishing your question"
+                    type={FontTypes.FSmall}
+                    color={Colors.dark['grey-shade-3']}
+                  />
+                </View>
+              </TouchableOpacity>
+            </>
+          ) : null}
+        </>
+      ) : null}
+      <TouchableOpacity activeOpacity={1} className="w-full h-4" />
 
       <ImagePickerBottomDrawer showDrawer={showDrawer} setShowDrawer={setShowDrawer} onPressImagePickItem={onPressImagePickItem} />
-    </>
+    </ScrollView>
   )
 }
 
