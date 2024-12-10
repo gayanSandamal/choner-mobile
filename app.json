@@ -2,7 +2,7 @@
   "expo": {
     "name": "Choner",
     "slug": "Choner",
-    "version": "0.9.0",
+    "version": "0.0.3",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp-choner",
@@ -32,7 +32,8 @@
         "android.permission.WRITE_EXTERNAL_STORAGE",
         "android.permission.ACCESS_MEDIA_LOCATION"
       ],
-      "package": "com.chonerGlobal.Choner"
+      "package": "com.chonerGlobal.Choner",
+      "softwareKeyboardLayoutMode": "pan"
     },
     "plugins": [
       "expo-router",
@@ -51,7 +52,8 @@
         }
       ],
       "expo-font",
-      "expo-secure-store"
+      "expo-secure-store",
+      "expo-asset"
     ],
     "experiments": {
       "typedRoutes": true

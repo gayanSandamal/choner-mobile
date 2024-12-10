@@ -64,7 +64,9 @@ const PostBottomActions = (props: PostBottomActionsProps) => {
     if (dateTime) {
       return 'Scheduled at'
     } else if (isScheduled) {
-      return 'Will be schedule at'
+      return 'Will be scheduled at'
+    } else {
+      return 'Schedule'
     }
   }
 
@@ -72,17 +74,17 @@ const PostBottomActions = (props: PostBottomActionsProps) => {
     <>
       <View className="flex items-center justify-end w-full mt-2">
         <View className="flex flex-row justify-between w-full">
-          <View className="flex flex-row items-center justify-between">
+          <View className="flex flex-row items-center justify-between" style={{ height: 50 }}>
             <Checkbox classNames="mr-2" isChecked={showDatePicker} onPress={(state) => toggleDatePicker(state)} />
-            <Label type={FontTypes.FSmall} label={'Schedule'} color={Colors.dark['grey-shade-3']} containerStyles={{ fontWeight: 400, textAlign: 'right' }} />
+            <Label type={FontTypes.FSmall} label={scheduledLabel()} color={Colors.dark['grey-shade-3']} containerStyles={{ fontWeight: 400, textAlign: 'right' }} />
+            {showDatePicker &&
+              <DateTimePicker mode="datetime" value={dateTime || new Date()} minimumDate={minTime()} onChange={(_event, date) => handleConfirm(date as unknown as Date)} />}
           </View>
+        </View>
+        <View className="flex flex-row justify-end w-full mt-4">
           <Btn isLoading={isLoading} disabled={isLoading || !isPostPublishable} size={InputSizes.md} fontType={FontTypes.FLabelBold} label={!!postTypeUpdate ? 'UPDATE' : 'PUBLISH'} icon={IconNames.send} onPress={onPressMutate} />
         </View>
       </View>
-      {showDatePicker && <View className="flex flex-row items-center mt-4">
-        <Label type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label={scheduledLabel()} />
-        <DateTimePicker mode="datetime" value={dateTime || new Date()} minimumDate={minTime()} onChange={(_event, date) => handleConfirm(date as unknown as Date)} />
-      </View>}
     </>
   );
 };
@@ -118,7 +120,7 @@ const PublishInterestPost = (props: PublishInterestPostProps) => {
     interestDesc: props.postParams?.interestDesc || '',
   })
   const [showDatePicker, setShowDatePicker] = useState(false)
-  const [isScheduled, setIsScheduled] = useState(!!props.postParams?.scheduledAt?._seconds || false)
+  const [isScheduled, setIsScheduled] = useState(Boolean(props.postParams?.scheduledAt?._seconds))
   const [dateTime, setDateTime] = useState<Date | null>(!!props.postParams?.scheduledAt ? timeDataToLocalString(props.postParams?.scheduledAt) : null)
   const [location, setLocation] = useState<LocationData>(props.postParams?.location || { name: '', address: '' })
   const [isPostPublishable, setIsPostPublishable] = useState(false)
@@ -126,14 +128,6 @@ const PublishInterestPost = (props: PublishInterestPostProps) => {
 
   const { mutate: createPost, isPending: isCreatingPost } = useCreateInterestPost(() => onSuccess(), () => { })
   const { mutate: updatePost, isPending: isUpdatingPost } = useUpdateInterestPost(() => onSuccess(), () => { })
-
-  useEffect(() => {
-    !props?.postParams && setDateTime(new Date())
-
-    return () => {
-      onClose()
-    }
-  }, [])
 
   useEffect(() => {
     setIsPostPublishable(
@@ -163,7 +157,7 @@ const PublishInterestPost = (props: PublishInterestPostProps) => {
       title: interestData.interest,
       description: interestData.interestDesc,
       location,
-      ...(dateTime && isScheduled && { scheduledAt: dateTime?.toISOString() })
+      ...(showDatePicker && isScheduled && { scheduledAt: dateTime?.toISOString() })
     } as CreateInterestProps
 
     canCreate && createPost(interestPostData)
@@ -178,7 +172,7 @@ const PublishInterestPost = (props: PublishInterestPostProps) => {
       title: interestData.interest,
       location,
       description: interestData.interestDesc,
-      ...(dateTime && isScheduled && { scheduledAt: dateTime?.toISOString() })
+      ...(showDatePicker && isScheduled && { scheduledAt: dateTime?.toISOString() })
     } as UpdateInterestProps
 
     canUpdate && updatePost(interestPostData)
@@ -199,7 +193,7 @@ const PublishInterestPost = (props: PublishInterestPostProps) => {
         <TextArea disabled={isCreatingPost || isUpdatingPost} clasName="mt-[10px]" height={80} maxCharacters={200} value={interestDesc} placeHolder={"Why are you interested?"} onChangeText={(text) => setInterestData((prev) => ({ ...prev, interestDesc: text }))} />
 
         <Label classNames="mt-3 mb-2" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label={`Location`} />
-        <TouchableOpacity className='shadow-sm flex flex-row items-center mb-5' style={{ backgroundColor: Colors.dark['field-bg-idle'], height: 50, width: '100%', borderRadius: 30, paddingHorizontal: 20 }} onPress={() => setShowDrawer(true)}>
+        <TouchableOpacity className='shadow-sm flex flex-row items-center' style={{ backgroundColor: Colors.dark['field-bg-idle'], height: 50, width: '100%', borderRadius: 30, paddingHorizontal: 20 }} onPress={() => setShowDrawer(true)}>
           <Icon name={IconNames.location} size={InputSizes.md} color={Colors.dark['primary-shade-3']} />
           <Label classNames="ml-3 pr-2" type={FontTypes.FLabel} ellipsizeMode="tail" numberOfLines={2} label={location?.name || "LOCATION"} />
         </TouchableOpacity>
@@ -526,12 +520,25 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
     })
   }
 
-  const scheduledText = date ? `Challenge at ${formatDateToCustomString(date)}` : 'Challenge at?'
-
   // const toggleType = (selectedType: ChallengePostCategory) => setType(selectedType)
   const updatePeopleCount = (countOption: any) => setPeopleCount(countOption)
 
   const publishDisabled = !uid || description?.trim() === '' || location?.name?.trim() === '' || !date
+
+  useEffect(() => {
+    if (date) {
+      setShowDatePicker(true)
+    }
+  }, [date])
+
+  const toggleDatePicker = (state: boolean) => {
+    setShowDatePicker(state)
+    if (state) {
+      setDate(new Date())
+    } else {
+      setDate(null)
+    }
+  }
 
   return (
     <View className="pl-[10px] pr-[10px] pt-[75px] w-full h-full">
@@ -568,13 +575,14 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
           <Label classNames="mt-3 mb-2" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label={`Challenge time & location${type !== ChallengePostCategory.VIRTUAL ? '*' : ''}`} />
           <TouchableOpacity className='shadow-sm flex flex-row items-center mb-5' style={{ backgroundColor: Colors.dark['field-bg-idle'], height: 50, width: '100%', borderRadius: 30, paddingHorizontal: 20 }} onPress={() => setShowDrawer(true)}>
             <Icon name={IconNames.location} size={InputSizes.md} color={Colors.dark['primary-shade-3']} />
-            <Label classNames="ml-3 pr-2" type={FontTypes.FLabel} ellipsizeMode="tail" numberOfLines={2} label={location?.name || "CHALLENGE LOCATION"} />
+            <Label classNames="ml-3 pr-2" type={FontTypes.FLabel} ellipsizeMode="tail" numberOfLines={2} label={location?.name || "Challenge location"} />
           </TouchableOpacity>
-          <View className="flex flex-row justify-between w-full pb-3" style={styles.bottomBorder}>
+          <View className="flex flex-row justify-between w-full pb-3" style={{ ...styles.bottomBorder, height: 50 }}>
             <Pressable className="flex flex-row items-center" onPress={() => setShowDatePicker(true)}>
-              <Checkbox classNames="mr-3" isChecked={!!date} onPress={() => (date ? setDate(null) : setShowDatePicker(true))} />
-              <Label label={scheduledText} type={FontTypes.FLabel} color={Colors.dark['grey-shade-3']} />
+              <Checkbox classNames="mr-3" isChecked={showDatePicker} onPress={(state) => toggleDatePicker(state)} />
+              <Label label={'Challenge at?'} type={FontTypes.FLabel} color={Colors.dark['grey-shade-3']} />
             </Pressable>
+            {showDatePicker ? <DateTimePicker mode="datetime" value={date || new Date()} minimumDate={minTime()} onChange={(d) => { setDate(d as unknown as Date); setShowDatePicker(false); }} /> : null}
           </View>
 
           <Label classNames="mt-3 mb-3" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label="Challenge participants" />
@@ -608,7 +616,6 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
         </PostWrapperComponent>
         <View className="mb-20" />
       </ScrollView>
-      {showDatePicker ? <DateTimePicker mode="datetime" value={date || new Date()} minimumDate={minTime()} onChange={(d) => { setDate(d as unknown as Date); setShowDatePicker(false); }} /> : null}
       <LocationBottomDrawer uid={uid || ''} showDrawer={showDrawer} setShowDrawer={setShowDrawer} setLocation={setLocation} />
     </View>
   )

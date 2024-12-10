@@ -42,6 +42,8 @@ export function SessionProvider({ children }: PropsWithChildren) {
               'phoneNumber': userCredential?.phoneNumber,
               'photoURL': userCredential?.photoURL,
             };
+            console.log('User session', essentials);
+            
             setSession(JSON.stringify(essentials));
           } catch (e) {
             console.error('Error saving user session', e);

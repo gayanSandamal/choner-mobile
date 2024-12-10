@@ -54,7 +54,7 @@ export default function ChallengesScreen() {
         </ImageBackground>
       </View> */}
 
-      <UserStatus />
+      {/* <UserStatus /> */}
 
       <View className="w-full mt-[10px] mb-[25px]">
         <ImageBackground source={{ uri: imageUrls[1] }} resizeMode="cover" style={styles.cardWrapper}>

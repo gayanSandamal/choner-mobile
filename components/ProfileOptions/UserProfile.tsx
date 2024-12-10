@@ -161,8 +161,8 @@ export default function UserProfile() {
                         setShowModal={onCloseModal}
                     />
                     <Bio />
-                    <Label classNames="mt-4 mb-3" label="Overview" type={FontTypes.FTitle3Bold} />
-                    <UserStatus />
+                    {/* <Label classNames="mt-4 mb-3" label="Overview" type={FontTypes.FTitle3Bold} />
+                    <UserStatus /> */}
                     <Label classNames="mt-4" label="Activity" type={FontTypes.FTitle3Bold} />
                     <View className="flex items-center flex-row justify-between items-center mt-4 mb-4" >
                         <View className="flex flex-row">
