@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react'
 import { User } from '@/types/User'
+import { router } from 'expo-router'
 
 interface UserContextType {
   user: User | null
@@ -19,9 +20,15 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 }
 
 export const useUser = () => {
-  const context = useContext(UserContext)
-  if (context === undefined) {
-    throw new Error('useUser must be used within a UserProvider')
+  try {
+    const context = useContext(UserContext)
+    if (!context) {
+      router.navigate('/sign-in')
+      throw new Error('useUser must be used within a UserProvider')
+    }
+    return context
+  } catch (error) {
+    router.navigate('/sign-in')
+    console.error(error)
   }
-  return context
 }
