@@ -34,6 +34,7 @@ export const Colors = {
     'primary-shade-4': '#FFF3E0',
     'background': '#FFFFFF',
     'grey': '#001827',
+    'grey-shade-elevated': '#001f33',
     'grey-shade-1': '#455A64',
     'grey-shade-2': '#78909C',
     'grey-shade-3': '#B0BEC5',

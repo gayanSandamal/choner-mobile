@@ -21,7 +21,7 @@ export const Input = (props: InputProps) => {
                 autoFocus={focus || false}
                 editable={editable}
                 textAlign={'left'}
-                style={{ flex: 1, padding: 10, color: Colors.dark.text, fontSize: props.fontSize || FontSizes.FLabel }}
+                style={{ flex: 1, padding: 10, color: Colors.dark.text, fontSize: props.fontSize || FontSizes.FLabel, fontStyle: '' }}
                 onChangeText={onChange}
                 placeholder={placeholder}
                 placeholderTextColor={Colors.dark['grey-shade-4']}

@@ -3,7 +3,7 @@ import Label from '@/components/Base/Label'
 import { Colors } from '@/constants/Colors'
 import { CommunityCardData, CommunityPostCategory, FontTypes, IconNames, InputSizes, PostType } from '@/types/Components'
 import { unescapePercent } from '@/utils/commonUtils'
-import {router, useLocalSearchParams } from 'expo-router'
+import { router, useLocalSearchParams } from 'expo-router'
 import { useCallback, useLayoutEffect, useState } from 'react'
 import { View, StyleSheet, ActivityIndicator, ScrollView, RefreshControl } from 'react-native'
 import { PostModal } from '../Post/Post'
@@ -21,15 +21,15 @@ import { CommentsList } from '../Common/CommentsList'
 import { useQueryClient } from '@tanstack/react-query'
 
 const styles = StyleSheet.create({
-  imageSmall: {width: '100%', aspectRatio: 1.5, borderRadius: 10, borderWidth: 3, borderColor: Colors.dark['grey-shade-3']},
-  btnDetailedWrapper: {width: 130, height: 35, marginEnd: 0, marginStart: 'auto', marginTop: 10, backgroundColor: Colors.dark['soundcloud-gdr-1'], borderRadius: 20, borderColor: Colors.dark['soundcloud-gdr-1'], paddingLeft: 9, paddingRight: 10, marginBottom: 0},
-  optionBtnWrapper: { position: 'absolute', height: 10, width: 120, right: 0, zIndex: 1},
-  commentsSelerator: {borderTopWidth: 1, borderTopColor: Colors.dark['grey-shade-3'], width: '100%'}
+  imageSmall: { width: '100%', aspectRatio: 1, borderRadius: 10, borderWidth: 3, borderColor: Colors.dark['grey-shade-3'] },
+  btnDetailedWrapper: { width: 130, height: 35, marginEnd: 0, marginStart: 'auto', marginTop: 10, backgroundColor: Colors.dark['soundcloud-gdr-1'], borderRadius: 20, borderColor: Colors.dark['soundcloud-gdr-1'], paddingLeft: 9, paddingRight: 10, marginBottom: 0 },
+  optionBtnWrapper: { position: 'absolute', height: 10, width: 120, right: 0, zIndex: 1 },
+  commentsSelerator: { borderTopWidth: 1, borderTopColor: Colors.dark['grey-shade-3'], width: '100%' }
 })
 
 export default function CommunityView() {
-  const {user} = useUser()
-  const  {data}  = useLocalSearchParams()
+  const { user } = useUser()
+  const { data } = useLocalSearchParams()
 
   const queryClient = useQueryClient()
 
@@ -40,48 +40,48 @@ export default function CommunityView() {
   const [commentText, setCommentText] = useState<string>('')
   const [refreshing, setRefreshing] = useState<boolean>(false)
 
-  const {mutate: deletePost, isPending: deletingPost} = useDeleteCommunityPost(() => router.back(), () => {})
-  const {mutate: addComment, isPending: addingComment} = useCreateComment(() => setCommentText(''), () => {})
-  const {data: comments, isFetching: fetchingComments, refetch : refetchComments} = useFetchCommemnts(postData?.id || '', user?.uid || '', postData?.type === CommunityPostTypes[0]? 'communityPost': 'communityQuestion', !!postData && !!user && postData.visibility === POST_VISIBILITY.PUBLIC)
+  const { mutate: deletePost, isPending: deletingPost } = useDeleteCommunityPost(() => router.back(), () => { })
+  const { mutate: addComment, isPending: addingComment } = useCreateComment(() => setCommentText(''), () => { })
+  const { data: comments, isFetching: fetchingComments, refetch: refetchComments } = useFetchCommemnts(postData?.id || '', user?.uid || '', postData?.type === CommunityPostTypes[0] ? 'communityPost' : 'communityQuestion', !!postData && !!user && postData.visibility === POST_VISIBILITY.PUBLIC)
 
   useLayoutEffect(() => {
     const post = JSON.parse(data as string)
     const decodedPost = {
-        ...post,
-        createdBy: {
-          ...post.createdBy,
-          profileImageUrl: unescapePercent(post.createdBy.profileImageUrl)
-        },
-        imageUrls: {
-          sm: unescapePercent(post?.imageUrls?.sm || ''),
-          md: unescapePercent(post?.imageUrls?.md || ''),
-          lg: unescapePercent(post?.imageUrls?.lg || '')
-        }
+      ...post,
+      createdBy: {
+        ...post.createdBy,
+        profileImageUrl: unescapePercent(post.createdBy.profileImageUrl)
+      },
+      imageUrls: {
+        sm: unescapePercent(post?.imageUrls?.sm || ''),
+        md: unescapePercent(post?.imageUrls?.md || ''),
+        lg: unescapePercent(post?.imageUrls?.lg || '')
       }
-      setPostData(decodedPost)
+    }
+    setPostData(decodedPost)
   }, [data])
-  
+
   const onCloseModal = () => {
     setShowUpdate(false)
   }
 
   const onSuccessUpdate = (data: CommunityCardData) => {
-    setPostData({...data, isOwner: postData?.isOwner})
+    setPostData({ ...data, isOwner: postData?.isOwner })
   }
 
   const onAddComment = () => addComment({
     uid: user?.uid || '',
     postId: postData?.id || '',
     comment: commentText,
-    type: postData?.type === CommunityPostTypes[0]? 'communityPost': 'communityQuestion'
+    type: postData?.type === CommunityPostTypes[0] ? 'communityPost' : 'communityQuestion'
   })
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true)
     await refetchComments().then(() => {
       try {
-        queryClient.invalidateQueries({queryKey: [QueryKeys.REPLIES, postData?.id]})
-      } catch (e) {}
+        queryClient.invalidateQueries({ queryKey: [QueryKeys.REPLIES, postData?.id] })
+      } catch (e) { }
     })
     setRefreshing(false)
   }, [refetchComments])
@@ -106,12 +106,12 @@ export default function CommunityView() {
           imageUrls: postData.imageUrls,
           scheduledAt: postData.scheduledAt,
           visibility: postData.visibility
-        }: undefined}
+        } : undefined}
         postHeaderData={{
           icon: IconNames.addPost,
-          title: `Edit this ${postData.type === CommunityPostTypes[0]? 'Post': 'Question'}`
+          title: `Edit this ${postData.type === CommunityPostTypes[0] ? 'Post' : 'Question'}`
         }}
-        actionBarData={{ title: `Hey, want to update your ${postData.type === CommunityPostTypes[0]? 'Post': 'Question'}..?` }}
+        actionBarData={{ title: `Hey, want to update your ${postData.type === CommunityPostTypes[0] ? 'Post' : 'Question'}..?` }}
         onCancel={onCloseModal}
         setShowModal={onCloseModal}
         onSuccess={(data) => onSuccessUpdate(data as CommunityCardData)}
@@ -129,7 +129,7 @@ export default function CommunityView() {
           )}
         </View>
         <View style={styles.commentsSelerator} />
-        
+
         {postData.visibility === POST_VISIBILITY.PUBLIC && (
           <CommentsList
             comments={comments}
@@ -139,7 +139,7 @@ export default function CommunityView() {
             user={user}
             commentText={commentText}
             addingComment={addingComment}
-            postType={postData?.type === CommunityPostTypes[0]? 'communityPost': 'communityQuestion'}
+            postType={postData?.type === CommunityPostTypes[0] ? 'communityPost' : 'communityQuestion'}
             setCommentText={setCommentText}
             onAddComment={onAddComment}
           />
@@ -151,7 +151,7 @@ export default function CommunityView() {
         <Label classNames="mt-5" type={FontTypes.FLabelBold} label={'This will be permanently removed!'} />
         <View className="mt-10 ml-0.5 mr-0.5 flex-row justify-between">
           <Btn outlined disabled={deletingPost} onPress={() => setShowDeleteModal(false)} icon={IconNames.cancel} size={InputSizes.md} color={Colors.light.white} label="Cancel" />
-          <Btn isLoading={deletingPost} disabled={deletingPost} onPress={() => deletePost({uid: postData.createdBy.uid, id: postData.id, type: postData.type, visibility: postData.visibility})} icon={IconNames.delete} size={InputSizes.md} backgroundColor={Colors.dark.red} label="Yes, Delete" />
+          <Btn isLoading={deletingPost} disabled={deletingPost} onPress={() => deletePost({ uid: postData.createdBy.uid, id: postData.id, type: postData.type, visibility: postData.visibility })} icon={IconNames.delete} size={InputSizes.md} backgroundColor={Colors.dark.red} label="Yes, Delete" />
         </View>
       </Modal>
     </>

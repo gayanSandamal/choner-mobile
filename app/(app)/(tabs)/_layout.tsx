@@ -19,8 +19,8 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     flexDirection: 'row',
     borderRadius: 20,
-    borderTopColor: Colors.dark.grey,
-    backgroundColor: Colors.dark.grey,
+    borderTopColor: Colors.dark['grey-shade-elevated'],
+    backgroundColor: Colors.dark['grey-shade-elevated'],
   }
 })
 

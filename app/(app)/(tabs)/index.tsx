@@ -64,13 +64,13 @@ const HomeScreen = () => {
           <InterestsWidget interests={dashboard?.similarInterestsCount || 0} />
         </GridItem>
         <GridItem columns={1} gridDimentions={dimensions}>
-          <InterestAutoSlider interval={3000} />
+          <InterestAutoSlider interval={5000} />
         </GridItem>
         <GridItem columns={2} gridDimentions={dimensions}>
-          <CommunityPostsAutoSlider communityPostType={CommunityPostTypes[0]} interval={3000} />
+          <CommunityPostsAutoSlider communityPostType={CommunityPostTypes[0]} interval={4500} />
         </GridItem>
         <GridItem columns={2} gridDimentions={dimensions}>
-          <CommunityPostsAutoSlider communityPostType={CommunityPostTypes[1]} interval={3000} />
+          <CommunityPostsAutoSlider communityPostType={CommunityPostTypes[1]} interval={4700} />
         </GridItem>
         {/* <GridItem columns={1} gridDimentions={dimensions}>
           <DiagnosisWidget />

@@ -17,7 +17,7 @@ export default function SignUp() {
             <ContentSection containerStyles={{ maxWidth: 353 }} cardMode={false}>
                 <Logo style={{ width: 169, height: 66 }} />
             </ContentSection>
-            <Label classNames='mb-8' type={FontTypes.FP} containerStyles={{ fontWeight: 700 }} label='SIGN UP' />
+            <Label classNames='mb-8' type={FontTypes.FP} containerStyles={{ fontWeight: 700 }} label='Sign up' />
             <SignUpScreen />
         </MainWrapper>
     )

@@ -8,6 +8,7 @@ import { Colors } from "@/constants/Colors"
 import { escapePercent } from "@/utils/commonUtils"
 import Icon from "../Base/Icon"
 import { router } from "expo-router"
+import { commonStyles } from "@/assets/styles/common"
 
 
 export const CommunityPostCard = (props: CommunityPostCardProps) => {
@@ -25,7 +26,8 @@ export const CommunityPostCard = (props: CommunityPostCardProps) => {
       backgroundColor: Colors.dark.darkText,
       marginBottom: 10,
       overflow: 'hidden',
-      position: 'relative'
+      position: 'relative',
+      ...commonStyles['shadow-md']
     }
   })
 
