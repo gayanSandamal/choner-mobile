@@ -1,4 +1,5 @@
 import { BtnDetailed } from '@/components/Base/Button'
+import Label from '@/components/Base/Label'
 import { Spacer } from '@/components/Base/Spacer'
 import { Circle } from '@/components/Common/Circle'
 import { InterestCard } from '@/components/Common/InterestCard'
@@ -6,13 +7,14 @@ import { ActionBar, PostModal } from '@/components/Post/Post'
 import { Colors } from '@/constants/Colors'
 import { useFetchInterestPosts } from '@/hooks/get/useFetchInterestPosts'
 import { useAuthUserId } from '@/hooks/useAuthUser'
-import { Circle as CircleType, IconNames, InterestPostParams, PostType, PostTypeProps } from '@/types/Components'
+import { Circle as CircleType, FontTypes, IconNames, InterestPostParams, PostType, PostTypeProps } from '@/types/Components'
 import { parseToInterestCardProps } from '@/utils/commonUtils'
 import React, { useEffect, useState } from 'react'
 import { FlatList, View, StyleSheet, ActivityIndicator } from 'react-native'
 
 const styles = StyleSheet.create({
-  btnDetailedWrapper: {width: 150, backgroundColor: Colors.dark.darkText, borderRadius: 20, borderColor: Colors.dark.darkText}
+  btnDetailedWrapper: {width: 150, backgroundColor: Colors.dark.darkText, borderRadius: 20, borderColor: Colors.dark.darkText},
+  loader: { marginTop: 20, alignSelf: 'center' },
 })
 
 const tempCircles: CircleType[] = [
@@ -97,7 +99,14 @@ export default function InterestsListScreen() {
         ListFooterComponent={<Spacer height={60}/>}
         ListEmptyComponent={() => {
           return <>
-            {isFetching && !interests && <ActivityIndicator color={Colors.light.white} className='mt-20' size={40} />}
+            {isFetching && !interests && <ActivityIndicator color={Colors.light.white} style={{ ...styles.loader, height: 400 }} size={40} />}
+            {!isFetching && (!interests || interests.length === 0) && (
+              <Label
+                label='No interest available at the moment. Try sharing an interest!'
+                type={FontTypes.FLabel}
+                containerStyles={{ ...styles.loader, marginTop: 200, textAlign: 'center', paddingHorizontal: 30 }}
+              />
+            )}
           </>
         }}
         refreshing={refreshing}

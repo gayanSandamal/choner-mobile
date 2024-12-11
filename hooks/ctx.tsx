@@ -1,5 +1,6 @@
 import { useContext, createContext, type PropsWithChildren } from 'react';
 import { useStorageState } from './../hooks/useStorageState';
+import { Toast } from 'toastify-react-native';
 
 const AuthContext = createContext<{
   signIn: (userCredential: any) => void;
@@ -32,8 +33,21 @@ export function SessionProvider({ children }: PropsWithChildren) {
     <AuthContext.Provider
       value={{
         signIn: (userCredential: any) => {
-          // Perform sign-in logic here
-          setSession(JSON.stringify(userCredential));
+          try {
+            const essentials = {
+              'uid': userCredential?.uid,
+              'displayName': userCredential?.displayName || '',
+              'email': userCredential?.email,
+              'emailVerified': userCredential?.emailVerified || false,
+              'phoneNumber': userCredential?.phoneNumber || '',
+              'photoURL': userCredential?.photoURL || '', 
+            };
+            
+            setSession(JSON.stringify(essentials));
+          } catch (e) {
+            console.error('Error saving user session', e);
+            Toast.error('Error saving user session');
+          }
         },
         signOut: (uid: string | null) => {
           // Enabe if fetched user cache need to be removed on sign-out

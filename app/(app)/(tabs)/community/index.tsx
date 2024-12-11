@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
-import { ActivityIndicator, FlatList, View} from 'react-native'
-import { CommunityPostParams, InputSizes, PostType } from '@/types/Components'
+import { ActivityIndicator, FlatList, View, StyleSheet } from 'react-native'
+import { CommunityPostParams, FontTypes, InputSizes, PostType } from '@/types/Components'
 import { ActionBar, PostModal } from '@/components/Post/Post'
 import { useFetchCommunityPosts } from '@/hooks/get/useFetchCommunityPosts'
 import { useAuthUserId } from '@/hooks/useAuthUser'
@@ -9,34 +9,42 @@ import { Colors } from '@/constants/Colors'
 import { CommunityPostTypes } from '@/constants/values'
 import { Btn } from '@/components/Base/Button'
 import { useTabSelector } from '@/contexts/tabSelectorContext'
-import { CommunityList } from '@/components/Common/CommunityList'
+import { CommunityPostCard } from '@/components/Common/CommunityPostCard'
+import Label from '@/components/Base/Label'
+
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: Colors.dark.grey },
+  actionContainer: { marginBottom: 10, flexDirection: 'row' },
+  loader: { marginTop: 20, alignSelf: 'center' },
+  flatList: { paddingHorizontal: 12 },
+})
 
 export default function CommunityScreen() {
   const uid = useAuthUserId()
-  const {tabs, setTabs} = useTabSelector()
-  
-  const [refreshing, setRefreching] = useState<boolean>(false)
+  const { tabs, setTabs } = useTabSelector()
+
+  const [refreshing, setRefreshing] = useState<boolean>(false)
   const [showPostTypeSelect, setShowPostTypeSelect] = useState<boolean>(false)
-  const [communitytPostData, setCommunityPostData] = useState<CommunityPostParams | null>(null)
-  
+  const [communityPostData, setCommunityPostData] = useState<CommunityPostParams | null>(null)
+
   const {
     data: communityPosts,
     isFetching: fetchingPosts,
     refetch: refetchPosts,
-    fetchNextPage: fetchNextPosts
+    fetchNextPage: fetchNextPosts,
   } = useFetchCommunityPosts(uid || '', tabs?.tab || CommunityPostTypes[0], !!uid && !!tabs)
 
   useEffect(() => {
-    !tabs && setTabs({tab: CommunityPostTypes[0]})
-    !communityPosts && refetchPosts()
-  }, [])
+    if (!tabs) setTabs({ tab: CommunityPostTypes[0] })
+    if (!communityPosts) refetchPosts()
+  }, [tabs, communityPosts, refetchPosts, setTabs])
 
   const { communityPostList1, communityPostList2 } = useMemo(() => {
-    const communityPostList1: any = []
-    const communityPostList2: any = []
-    
-    if (!communityPosts) return { communityPostList1, communityPostList2}
-    
+    const communityPostList1: any[] = []
+    const communityPostList2: any[] = []
+
+    if (!communityPosts) return { communityPostList1, communityPostList2 }
+
     communityPosts.forEach((item, index) => {
       if (index % 2 === 0) {
         communityPostList1.push(item)
@@ -49,58 +57,87 @@ export default function CommunityScreen() {
   }, [communityPosts])
 
   const onRefresh = async () => {
-    setRefreching(true)
-    await refetchPosts().then(() => setRefreching(false))
+    setRefreshing(true)
+    await refetchPosts()
+    setRefreshing(false)
   }
 
   const onCloseModal = () => {
-    showPostTypeSelect && setShowPostTypeSelect(false)
+    setShowPostTypeSelect(false)
     setCommunityPostData(null)
   }
- 
-  const setHeaderButtonBackgroundColor = (index: number) => {
-    return tabs?.tab === CommunityPostTypes[index]? Colors.dark['soundcloud-gdr-1']: undefined
-  }
 
-  const setHeaderButtonTextColor = (index: number) => {
-    return tabs?.tab !== CommunityPostTypes[index]? Colors.dark['primary-shade-2']: undefined
-  }
+  const setHeaderButtonBackgroundColor = (index: number) =>
+    tabs?.tab === CommunityPostTypes[index] ? Colors.dark['soundcloud-gdr-1'] : undefined
+
+  const setHeaderButtonTextColor = (index: number) =>
+    tabs?.tab !== CommunityPostTypes[index] ? Colors.dark['primary-shade-2'] : undefined
 
   return (
-    <View className='h-full' style={{backgroundColor: Colors.dark.grey}}>
+    <View style={styles.container}>
       <FlatList
-        className='px-3'
-        data={[{}]}
-        removeClippedSubviews={true}
-        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.flatList}
+        data={communityPosts || []}
+        keyExtractor={(_item, index) => `community-post-${index}`}
+        numColumns={2}
+        columnWrapperStyle={{ justifyContent: 'space-between' }}
         ListHeaderComponent={
           <>
-            <ActionBar title='Share your story...' active={false} onPress={() => setShowPostTypeSelect(true)} />
-            <View className="flex flex-row mb-2">
-              <Btn size={InputSizes.md} outlined={!!setHeaderButtonTextColor(0)} label="POSTS" color={setHeaderButtonTextColor(0)} backgroundColor={setHeaderButtonBackgroundColor(0)} wrapperClasses='mr-2 mb-2' onPress={() => setTabs({tab: CommunityPostTypes[0]})} />
-              <Btn size={InputSizes.md} outlined={!!setHeaderButtonTextColor(1)} label="QUESTIONS" color={setHeaderButtonTextColor(1)} backgroundColor={setHeaderButtonBackgroundColor(1)} wrapperClasses='mr-2 mb-2' onPress={() => setTabs({tab: CommunityPostTypes[1]})} />
+            <ActionBar
+              title='Share your story...'
+              active={false}
+              onPress={() => setShowPostTypeSelect(true)}
+            />
+            <View style={styles.actionContainer}>
+              {CommunityPostTypes?.map((type, index) => (
+                <Btn
+                  key={`tab-btn-${index}`}
+                  size={InputSizes.md}
+                  outlined={!!setHeaderButtonTextColor(index)}
+                  label={type === CommunityPostTypes[0] ? 'POSTS' : 'QUESTIONS'}
+                  color={setHeaderButtonTextColor(index)}
+                  backgroundColor={setHeaderButtonBackgroundColor(index)}
+                  wrapperClasses='mr-2 mb-2'
+                  onPress={() => setTabs({ tab: type })}
+                />
+              ))}
             </View>
-            {fetchingPosts && !communityPosts && <ActivityIndicator color={Colors.light.white} className='mt-20 mr-auto ml-auto' size={40} />}
+            {fetchingPosts && (
+              <ActivityIndicator color={Colors.light.white} style={{ ...styles.loader, height: 400 }} size={40} />
+            )}
+            {!fetchingPosts && (!communityPosts || communityPosts.length === 0) && (
+              <Label
+                label={`No ${tabs?.tab} available at the moment. Try sharing a ${tabs?.tab}!`}
+                type={FontTypes.FLabel}
+                containerStyles={{ ...styles.loader, marginTop: 200, textAlign: 'center', paddingHorizontal: 30 }}
+              />
+            )}
           </>
         }
-        renderItem={({}) => (<CommunityList uid={uid || ''} communityPostList1={communityPostList1} communityPostList2={communityPostList2} />)}
+        renderItem={({ item: parsedData, index }) => (
+          <CommunityPostCard key={index} data={parsedData} uid={uid} cols={2} />
+        )}
         ListFooterComponent={<Spacer height={60} />}
         refreshing={refreshing}
         onEndReachedThreshold={0.5}
-        onEndReached={() => fetchNextPosts()}
+        onEndReached={() => fetchNextPosts}
         onRefresh={onRefresh}
       />
       <PostModal
         postType={PostType.community}
         showModal={showPostTypeSelect}
-        postParams={communitytPostData ? {
-          id: communitytPostData.id,
-          imageUrls: communitytPostData.imageUrls,
-          title: communitytPostData.title,
-          scheduledAt: communitytPostData.scheduledAt,
-          type: communitytPostData.type,
-          visibility: communitytPostData.visibility
-        } : undefined}
+        postParams={
+          communityPostData
+            ? {
+              id: communityPostData.id,
+              imageUrls: communityPostData.imageUrls,
+              title: communityPostData.title,
+              scheduledAt: communityPostData.scheduledAt,
+              type: communityPostData.type,
+              visibility: communityPostData.visibility,
+            }
+            : undefined
+        }
         actionBarData={{ title: 'Share your story...' }}
         onCancel={onCloseModal}
         setShowModal={onCloseModal}

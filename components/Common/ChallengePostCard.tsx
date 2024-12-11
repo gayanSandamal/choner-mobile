@@ -33,7 +33,7 @@ export const ChallengePostCard = ({item, uid}: ChallengePostCardTypes) => {
 
     const navigateToInterest = () => {
         router.push({
-          pathname: '/challenges/challenge-view',
+          pathname: '/(app)/challenges/challenge-view',
           params: {
             data: JSON.stringify({
               ...item,

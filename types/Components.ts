@@ -47,7 +47,7 @@ export type SectionProps = {
 }
 
 export type BtnLinkProps = {
-  href: string
+  href: Link
   label?: string
   color?: string
 }
@@ -100,6 +100,8 @@ export interface CharmBtnProps extends BtnProps{
   clear?: boolean,
 }
 
+export type Link = string | object
+
 export type BtnProps = {
   label?: string
   iconColor?: string
@@ -111,6 +113,7 @@ export type BtnProps = {
   iconHeight?: number
   block?: boolean
   textMode?: boolean
+  link?: Link
   backgroundColor?: string
   style?: StyleProp<ViewStyle>
   isLoading?: boolean
@@ -411,15 +414,14 @@ export type PostTypesProps = {
 export type PostBottomActionsProps = {
   isScheduled: boolean
   dateTime: Date | null
-  showDatePicker: boolean
   isPostPublishable: boolean
   isLoading: boolean
   postTypeUpdate: boolean
+  showDatePicker: boolean
   onPressMutate: () => void
-  handleConfirm: (date: Date) => void
-  hideDatePicker: () => void
-  setShowDatePicker: (state: boolean) => void
   setIsScheduled: (state: boolean) => void
+  setShowDatePicker: (state: boolean) => void
+  handleConfirm: (date: Date | null) => void
 }
 
 export type PostWrapperComponentProps = {
@@ -674,20 +676,10 @@ export type CommunityListProps = {
 
 export type CommunityPostCardProps = {
   data: CommunityCardData
-  title: string
-  createdBy: {
-      uid: string
-      displayName: string
-      profileImageUrl?: string
-  }
-  createdAt: {
-      _seconds: number
-      _nanoseconds: number
-  } | undefined
-  scheduled?: boolean
-  image?: string
-  isOwner?: boolean
+  uid?: string | null
   navigationPath?: string
+  scheduled?: boolean
+  cols?: number
 }
 
 export enum ChallengeState {
@@ -801,6 +793,8 @@ export type TextAreaProps = {
   autoFocus?: boolean
   styles?: ViewStyle
   onChangeText: (text: string) => void
+  onFocus?: () => void
+  onBlur?: () => void
 }
 
 export type CommentInputProps = {

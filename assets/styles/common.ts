@@ -5,20 +5,20 @@ export const commonStyles = StyleSheet.create({
         shadowColor: "#fff",
         shadowOffset: {
             width: 0,
-            height: 1,
+            height: 0,
         },
         shadowOpacity: 0.1,
         shadowRadius: 2,
         elevation: 2,
     },
     'shadow-md': {
-        shadowColor: "#fff",
+        shadowColor: "#000",
         shadowOffset: {
             width: 0,
-            height: 4,
+            height: 0,
         },
-        shadowOpacity: 0.1,
-        shadowRadius: 2,
-        elevation: 3,
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
+        elevation: 5,
     }
 })

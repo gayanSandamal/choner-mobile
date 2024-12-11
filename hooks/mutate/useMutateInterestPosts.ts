@@ -4,7 +4,7 @@ import { isoDateTimeToSecond } from "@/utils/commonUtils"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 
-export const useCreateInteresPost = (onSuccess: () => void, onError: (error: Error) => void) => {
+export const useCreateInterestPost = (onSuccess: () => void, onError: (error: Error) => void) => {
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: createInterest,
@@ -65,7 +65,7 @@ export const useCreateInteresPost = (onSuccess: () => void, onError: (error: Err
     })
 }
 
-export const useUpdateInteresPost = (onSuccess: () => void, onError: (error: Error) => void) => {
+export const useUpdateInterestPost = (onSuccess: () => void, onError: (error: Error) => void) => {
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: updateInterest,

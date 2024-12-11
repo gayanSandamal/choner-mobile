@@ -2,24 +2,24 @@
   "expo": {
     "name": "Choner",
     "slug": "Choner",
-    "version": "1.0.0",
+    "version": "0.0.3",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp-choner",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/icon.png",
+      "image": "./assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#001827"
     },
-    "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "Allow $(PRODUCT_NAME) to access your photos so that you can upload them.",
         "NSPhotoLibraryAddUsageDescription": "Allow $(PRODUCT_NAME) to take photos and use them for uploading.",
         "NSCameraUsageDescription": "Allow $(PRODUCT_NAME) to take photos and use them for uploading."
-      }
+      },
+      "bundleIdentifier": "com.chonerGlobal.Choner"
     },
     "android": {
       "adaptiveIcon": {
@@ -31,7 +31,9 @@
         "android.permission.READ_EXTERNAL_STORAGE",
         "android.permission.WRITE_EXTERNAL_STORAGE",
         "android.permission.ACCESS_MEDIA_LOCATION"
-      ]
+      ],
+      "package": "com.chonerGlobal.Choner",
+      "softwareKeyboardLayoutMode": "pan"
     },
     "plugins": [
       "expo-router",
@@ -50,10 +52,19 @@
         }
       ],
       "expo-font",
-      "expo-secure-store"
+      "expo-secure-store",
+      "expo-asset"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "fb4a37d3-277b-4f57-b495-4753063aa96d"
+      }
     }
   }
 }

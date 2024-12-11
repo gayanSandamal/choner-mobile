@@ -24,7 +24,7 @@ export default function SignUpScreen() {
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   useLayoutEffect(() => {
-    session && router.replace('/')
+    session && router.replace('/(app)')
   }, [session])
   
   const onShowPasswordPress = () => {
@@ -63,7 +63,7 @@ export default function SignUpScreen() {
               fbSendEmailVerification()
             }
             signIn(userCredential.user)
-            router.replace('/survey')
+            router.replace('/(app)/survey')
           } else {
             router.navigate('/sign-in')
           }
@@ -89,13 +89,13 @@ export default function SignUpScreen() {
           <CharmBtn icon={IconNames.apple} onPress={() => { }} size={InputSizes.lg} />
         </View>
         <Separator /> */}
-        <Input classNames='mb-5' placeholder={'ENTER EMAIL'} value={email} onChange={setEmail} icon={IconNames.email} focus={true} />
-        <Input classNames='mb-5' placeholder={'ENTER PASSWORD'} value={password} onChange={setPassword} icon={IconNames.password} iconRight={showPassword ? IconNames.view : IconNames.hidden} onPressIconRight={onShowPasswordPress} secureTextEntry={!showPassword} />
-        <Input classNames='mb-5' placeholder={'CONFIRM PASSWORD'} value={confirmPassword} onChange={setConfirmPassword} icon={IconNames.password}  iconRight={showConfirmPassword ? IconNames.view : IconNames.hidden} onPressIconRight={onShowConfirmPasswordPress} secureTextEntry={!showConfirmPassword} />
+        <Input classNames='mb-5' placeholder={'Enter email'} value={email} onChange={setEmail} icon={IconNames.email} focus={true} />
+        <Input classNames='mb-5' placeholder={'Enter password'} value={password} onChange={setPassword} icon={IconNames.password} iconRight={showPassword ? IconNames.view : IconNames.hidden} onPressIconRight={onShowPasswordPress} secureTextEntry={!showPassword} />
+        <Input classNames='mb-5' placeholder={'Confirm password'} value={confirmPassword} onChange={setConfirmPassword} icon={IconNames.password}  iconRight={showConfirmPassword ? IconNames.view : IconNames.hidden} onPressIconRight={onShowConfirmPasswordPress} secureTextEntry={!showConfirmPassword} />
 
-        <Btn isLoading={isLoading} onPress={onPressSignUp} icon={IconNames.register} size={InputSizes.lg} block label="SIGN UP" wrapperClasses='mb-10' />
+        <Btn isLoading={isLoading} onPress={onPressSignUp} icon={IconNames.register} size={InputSizes.lg} block label="Sign up" wrapperClasses='mb-10' />
 
-        <Btn onPress={() => router.navigate('/sign-in')} icon={IconNames.login} size={InputSizes.lg} block outlined color={Colors.dark['primary-shade-2']} label="SIGN IN" wrapperClasses='mt-5'></Btn>
+        <Btn onPress={() => router.navigate('/sign-in')} icon={IconNames.login} size={InputSizes.lg} block outlined color={Colors.dark['primary-shade-2']} label="Sign in" wrapperClasses='mt-5'></Btn>
       </View>
     </ContentSection>
   )

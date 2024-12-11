@@ -13,7 +13,7 @@ import { useUser } from '@/contexts/userContext';
 
 const styles = StyleSheet.create({
     headerWrapper: {
-        backgroundColor: Colors.dark.grey,
+        backgroundColor: Colors.dark['grey-shade-elevated'],
         height: 60,
         marginTop: 5,
         marginBottom: 10,

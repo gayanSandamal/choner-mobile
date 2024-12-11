@@ -38,6 +38,8 @@ export const TextArea = (props: TextAreaProps) => {
             placeholder={props.placeHolder}
             placeholderTextColor={Colors.dark['grey-shade-3']}
             value={props.value}
+            onFocus={props.onFocus}
+            onBlur={props.onBlur}
         />
     )
 }

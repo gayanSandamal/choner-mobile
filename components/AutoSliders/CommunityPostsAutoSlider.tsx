@@ -23,7 +23,7 @@ type RenderCommunityPostProps = {
 const RenderCommunityPost = React.memo(({ item }: RenderCommunityPostProps) => {
     const navigateToPost = () => {
         router.push({
-          pathname: '/community/community-view',
+          pathname: '/(app)/(tabs)/community/community-view',
           params: {
             data: JSON.stringify({
               isOwner: item.isOwner,
@@ -75,7 +75,7 @@ export const CommunityPostsAutoSlider = ({ communityPostType, interval = 3000 }:
     if (!communityPosts || !uid) return
 
     const timer = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % communityPosts?.length)
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % (communityPosts?.length || 1))
     }, interval)
 
     return () => clearInterval(timer)

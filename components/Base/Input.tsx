@@ -9,7 +9,7 @@ export const Input = (props: InputProps) => {
     return (
         <View className={`shadow-sm flex flex-row items-center ${classNames}`} style={[
             {
-                backgroundColor: Colors.dark['fied-bg-idle'],
+                backgroundColor: Colors.dark['field-bg-idle'],
                 height: 60,
                 width: '100%',
                 borderRadius: 30,
@@ -21,7 +21,7 @@ export const Input = (props: InputProps) => {
                 autoFocus={focus || false}
                 editable={editable}
                 textAlign={'left'}
-                style={{ flex: 1, padding: 10, color: Colors.dark.text, fontSize: props.fontSize || FontSizes.FLabel }}
+                style={{ flex: 1, padding: 10, color: Colors.dark.text, fontSize: props.fontSize || FontSizes.FLabel, fontStyle: '' }}
                 onChangeText={onChange}
                 placeholder={placeholder}
                 placeholderTextColor={Colors.dark['grey-shade-4']}

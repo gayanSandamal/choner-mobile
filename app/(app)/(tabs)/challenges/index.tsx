@@ -54,7 +54,7 @@ export default function ChallengesScreen() {
         </ImageBackground>
       </View> */}
 
-      <UserStatus />
+      {/* <UserStatus /> */}
 
       <View className="w-full mt-[10px] mb-[25px]">
         <ImageBackground source={{ uri: imageUrls[1] }} resizeMode="cover" style={styles.cardWrapper}>
@@ -63,7 +63,7 @@ export default function ChallengesScreen() {
             <Label containerStyles={{ fontSize: 20, letterSpacing: 3, fontWeight: '700' }} color={Colors.dark.main} label="CHALLENGES" />
           </View>
           <View style={styles.bottomBtnWrapper}>
-            <BtnDetailed label="Explore" fontType={FontTypes.FTitle3} labelAlign={JustifyContent.center} wrapperStyle={styles.buttonSmall} onPress={() => router.navigate('/challenges/on-going-challenges')} />
+            <BtnDetailed label="Explore" fontType={FontTypes.FTitle3} labelAlign={JustifyContent.center} wrapperStyle={styles.buttonSmall} onPress={() => router.navigate('/(app)/(tabs)/challenges/on-going-challenges')} />
           </View>
         </ImageBackground>
       </View>

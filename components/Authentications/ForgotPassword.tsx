@@ -18,7 +18,7 @@ export default function ForgotPasswordScreen() {
     <ContentSection cardMode={false} containerStyles={{ maxWidth: 353 }}>
       <View className='flex items-center mt-3'>
         <Text></Text>
-        <Input classNames='mb-5' placeholder={'ENTER EMAIL'} value={email} onChange={setEmail} icon={IconNames.email} />
+        <Input classNames='mb-5' placeholder={'Enter email'} value={email} onChange={setEmail} icon={IconNames.email} />
         <Btn onPress={onPressResetEmail} icon={IconNames.email} size={InputSizes.lg} block label="SEND RESET LINK"></Btn>
       </View>
     </ContentSection>)

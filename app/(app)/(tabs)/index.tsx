@@ -22,18 +22,18 @@ import { Colors } from '@/constants/Colors';
 const HomeScreen = () => {
   const userId = useAuthUserId()
   const {user, setUser} = useUser()
-  
+
   // This cause grid dimentions to transform from 0 -> full. Creating a transform effect in the initial grid render
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
 
   const {data: fetchedUser, refetch: fetchUser} = useGetUser(userId || '', false)
-  const {data: dashboard} = useFetchDashboardData(userId || '', !!userId)
+  const {data: dashboard, isFetching: fetchingDashboard} = useFetchDashboardData(userId || '', !!userId)
 
     useEffect(() => {
       if (fetchedUser) {
         setUser(fetchedUser)
         if (!fetchedUser?.displayName) {
-          router.navigate('/basic-info')
+          router.navigate('/(app)/(profile)/(settings)/basic-info')
         }
       }
     }, [fetchedUser])
@@ -58,19 +58,19 @@ const HomeScreen = () => {
           <ChallengesWidget />
         </GridItem>
         <GridItem columns={2} gridDimentions={dimensions}>
-          <SurveyWidget uid={userId || ''} />
+          <SurveyWidget uid={userId as unknown as string} />
         </GridItem>
         <GridItem columns={2} gridDimentions={dimensions}>
-          <InterestsWidget interests={dashboard?.similarInterestsCount || 0} />
+          <InterestsWidget interests={dashboard?.similarInterestsCount} isFetching={fetchingDashboard} />
         </GridItem>
         <GridItem columns={1} gridDimentions={dimensions}>
-          <InterestAutoSlider interval={3000} />
+          <InterestAutoSlider interval={5000} />
         </GridItem>
         <GridItem columns={2} gridDimentions={dimensions}>
-          <CommunityPostsAutoSlider communityPostType={CommunityPostTypes[0]} interval={3000} />
+          <CommunityPostsAutoSlider communityPostType={CommunityPostTypes[0]} interval={4500} />
         </GridItem>
         <GridItem columns={2} gridDimentions={dimensions}>
-          <CommunityPostsAutoSlider communityPostType={CommunityPostTypes[1]} interval={3000} />
+          <CommunityPostsAutoSlider communityPostType={CommunityPostTypes[1]} interval={4700} />
         </GridItem>
         {/* <GridItem columns={1} gridDimentions={dimensions}>
           <DiagnosisWidget />
