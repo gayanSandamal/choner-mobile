@@ -540,6 +540,11 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
     }
   }
 
+  const handleConfirm = useCallback((date: Date | null) => {
+    setShowDatePicker(true)
+    if (date) setDate(date);
+  }, [showDatePicker])
+
   return (
     <View className="pl-[10px] pr-[10px] pt-[75px] w-full h-full">
       <ActionBar {...props.actionBarData} active onPress={() => { }} />
@@ -582,7 +587,7 @@ const PublishChallengePost = (props: PublishChallengePostProps) => {
               <Checkbox classNames="mr-3" isChecked={showDatePicker} onPress={(state) => toggleDatePicker(state)} />
               <Label label={'Challenge at?'} type={FontTypes.FLabel} color={Colors.dark['grey-shade-3']} />
             </Pressable>
-            {showDatePicker ? <DateTimePicker mode="datetime" value={date || new Date()} minimumDate={minTime()} onChange={(d) => { setDate(d as unknown as Date); setShowDatePicker(false); }} /> : null}
+            {showDatePicker ? <DateTimePicker mode="datetime" value={date || new Date()} minimumDate={minTime()} onChange={(d) => { handleConfirm(date as unknown as Date)} } /> : null}
           </View>
 
           <Label classNames="mt-3 mb-3" type={FontTypes.FLabel} color={Colors.dark["grey-shade-3"]} label="Challenge participants" />

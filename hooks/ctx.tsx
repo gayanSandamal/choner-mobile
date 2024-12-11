@@ -36,13 +36,12 @@ export function SessionProvider({ children }: PropsWithChildren) {
           try {
             const essentials = {
               'uid': userCredential?.uid,
-              'displayName': userCredential?.displayName,
+              'displayName': userCredential?.displayName || '',
               'email': userCredential?.email,
-              'emailVerified': userCredential?.emailVerified,
-              'phoneNumber': userCredential?.phoneNumber,
-              'photoURL': userCredential?.photoURL,
+              'emailVerified': userCredential?.emailVerified || false,
+              'phoneNumber': userCredential?.phoneNumber || '',
+              'photoURL': userCredential?.photoURL || '', 
             };
-            console.log('User session', essentials);
             
             setSession(JSON.stringify(essentials));
           } catch (e) {

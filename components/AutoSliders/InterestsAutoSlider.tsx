@@ -32,7 +32,7 @@ export const InterestAutoSlider = ({ interval = 3000 }: AutoSliderProps) => {
     if (!interests || !uid) return
 
     const timer = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % interests?.length)
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % (interests?.length || 1))
     }, interval)
 
     return () => clearInterval(timer)
