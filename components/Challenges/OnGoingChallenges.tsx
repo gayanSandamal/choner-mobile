@@ -5,10 +5,11 @@ import { Colors } from "@/constants/Colors"
 import { useTabSelector } from "@/contexts/tabSelectorContext"
 import { useFetchChallengePosts } from "@/hooks/get/useFetchChallengePosts"
 import { useAuthUserId } from "@/hooks/useAuthUser"
-import { IconNames, InputSizes, PostType } from "@/types/Components"
+import { FontTypes, IconNames, InputSizes, PostType } from "@/types/Components"
 import { router } from "expo-router"
 import { useEffect, useState } from "react"
 import { ActivityIndicator, FlatList, View } from "react-native"
+import Label from "../Base/Label"
 
 export const ChallegeScreenTabs = ['ALL', 'JOINED']
 
@@ -19,37 +20,37 @@ const OnGoingChallenges = () => {
     const [refreshing, setRefreching] = useState<boolean>(false)
     const [showChallengeCreate, setShowChallengeCreate] = useState<boolean>(false)
 
-    const {data: challenges, isFetching: fetchingPosts, fetchNextPage: fetchNextChallenges, refetch: refetchChallenges} = useFetchChallengePosts(uid || '', !!uid)
+    const { data: challenges, isFetching: fetchingPosts, fetchNextPage: fetchNextChallenges, refetch: refetchChallenges } = useFetchChallengePosts(uid || '', !!uid)
 
     useEffect(() => {
-        !tabs && setTabs({tab: ChallegeScreenTabs[0]})
+        !tabs && setTabs({ tab: ChallegeScreenTabs[0] })
         !challenges && refetchChallenges()
     }, [])
-  
+
     const onRefresh = async () => {
         setRefreching(true)
         await refetchChallenges().then(() => {
-          setRefreching(false)
+            setRefreching(false)
         })
-      }
-    
+    }
+
     const onCloseModal = () => {
         setShowChallengeCreate(false)
     }
 
     const setBtnBackgroundColor = (index: number) => {
-        return tabs?.tab === ChallegeScreenTabs[index]? Colors.dark['soundcloud-gdr-1']: undefined
+        return tabs?.tab === ChallegeScreenTabs[index] ? Colors.dark['soundcloud-gdr-1'] : undefined
     }
 
     const setBtnTextColor = (index: number) => {
-        return tabs?.tab !== ChallegeScreenTabs[index]? Colors.dark['primary-shade-2']: undefined
+        return tabs?.tab !== ChallegeScreenTabs[index] ? Colors.dark['primary-shade-2'] : undefined
     }
-    
+
     return (
         <>
             <FlatList
                 className="px-3 w-full h-full"
-                style={{backgroundColor: Colors.dark.grey}}
+                style={{ backgroundColor: Colors.dark.grey }}
                 data={[{}]}
                 removeClippedSubviews={true}
                 showsVerticalScrollIndicator={false}
@@ -64,10 +65,17 @@ const OnGoingChallenges = () => {
                         </View>
                         <View className="flex flex-row mb-2">
                             {ChallegeScreenTabs.map((item, index) => (
-                                <Btn key={index} size={InputSizes.md} outlined={!!setBtnTextColor(index)} label={item} color={setBtnTextColor(index)} backgroundColor={setBtnBackgroundColor(index)} wrapperClasses='mr-2 mb-2' onPress={() => setTabs({tab: ChallegeScreenTabs[index]})} />
+                                <Btn key={index} size={InputSizes.md} outlined={!!setBtnTextColor(index)} label={item} color={setBtnTextColor(index)} backgroundColor={setBtnBackgroundColor(index)} wrapperClasses='mr-2 mb-2' onPress={() => setTabs({ tab: ChallegeScreenTabs[index] })} />
                             ))}
                         </View>
-                        {fetchingPosts && !challenges && <ActivityIndicator color={Colors.light.white} className='mt-20 mr-auto ml-auto' size={40} />}
+                        {fetchingPosts && <ActivityIndicator color={Colors.light.white} style={{ marginTop: 20, alignSelf: 'center', height: 400 }} size={40} />}
+                        {!fetchingPosts && (!challenges || challenges.length === 0) && (
+                            <Label
+                                label='No challenge available at the moment. Try sharing a challenge!'
+                                type={FontTypes.FLabel}
+                                containerStyles={{ marginTop: 200, alignSelf: 'center', textAlign: 'center', paddingHorizontal: 30 }}
+                            />
+                        )}
                     </>
                 )}
                 renderItem={() => (
@@ -78,13 +86,13 @@ const OnGoingChallenges = () => {
                         showsVerticalScrollIndicator={false}
                         keyExtractor={(item, index) => `${item?.id}-${index}`}
                         renderItem={({ item }) => {
-                            const parsedItem = {...item, isOwner: uid === item.createdBy.uid}
+                            const parsedItem = { ...item, isOwner: uid === item.createdBy.uid }
                             return (
                                 <ChallengePostCard uid={uid || ''} item={parsedItem} />
                             )
                         }}
-                        ItemSeparatorComponent={() => <View className="w-full h-[15px]"/>}
-                        ListFooterComponent={() => <View className="w-full h-[70px]"/>}
+                        ItemSeparatorComponent={() => <View className="w-full h-[15px]" />}
+                        ListFooterComponent={() => <View className="w-full h-[70px]" />}
                     />
                 )}
                 refreshing={refreshing}

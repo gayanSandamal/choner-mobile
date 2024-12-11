@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { ActivityIndicator, FlatList, View, StyleSheet } from 'react-native'
-import { CommunityPostParams, InputSizes, PostType } from '@/types/Components'
+import { CommunityPostParams, FontTypes, InputSizes, PostType } from '@/types/Components'
 import { ActionBar, PostModal } from '@/components/Post/Post'
 import { useFetchCommunityPosts } from '@/hooks/get/useFetchCommunityPosts'
 import { useAuthUserId } from '@/hooks/useAuthUser'
@@ -10,6 +10,7 @@ import { CommunityPostTypes } from '@/constants/values'
 import { Btn } from '@/components/Base/Button'
 import { useTabSelector } from '@/contexts/tabSelectorContext'
 import { CommunityPostCard } from '@/components/Common/CommunityPostCard'
+import Label from '@/components/Base/Label'
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: Colors.dark.grey },
@@ -101,8 +102,15 @@ export default function CommunityScreen() {
                 />
               ))}
             </View>
-            {fetchingPosts && !communityPosts && (
-              <ActivityIndicator color={Colors.light.white} style={styles.loader} size={40} />
+            {fetchingPosts && (
+              <ActivityIndicator color={Colors.light.white} style={{ ...styles.loader, height: 400 }} size={40} />
+            )}
+            {!fetchingPosts && (!communityPosts || communityPosts.length === 0) && (
+              <Label
+                label={`No ${tabs?.tab} available at the moment. Try sharing a ${tabs?.tab}!`}
+                type={FontTypes.FLabel}
+                containerStyles={{ ...styles.loader, marginTop: 200, textAlign: 'center', paddingHorizontal: 30 }}
+              />
             )}
           </>
         }

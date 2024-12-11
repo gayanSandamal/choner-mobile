@@ -27,7 +27,7 @@ const HomeScreen = () => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
 
   const {data: fetchedUser, refetch: fetchUser} = useGetUser(userId || '', false)
-  const {data: dashboard} = useFetchDashboardData(userId || '', !!userId)
+  const {data: dashboard, isFetching: fetchingDashboard} = useFetchDashboardData(userId || '', !!userId)
 
     useEffect(() => {
       if (fetchedUser) {
@@ -58,10 +58,10 @@ const HomeScreen = () => {
           <ChallengesWidget />
         </GridItem>
         <GridItem columns={2} gridDimentions={dimensions}>
-          <SurveyWidget uid={userId || ''} />
+          <SurveyWidget uid={userId as unknown as string} />
         </GridItem>
         <GridItem columns={2} gridDimentions={dimensions}>
-          <InterestsWidget interests={dashboard?.similarInterestsCount || 0} />
+          <InterestsWidget interests={dashboard?.similarInterestsCount} isFetching={fetchingDashboard} />
         </GridItem>
         <GridItem columns={1} gridDimentions={dimensions}>
           <InterestAutoSlider interval={5000} />
